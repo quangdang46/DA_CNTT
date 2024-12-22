@@ -12,7 +12,7 @@ import Section7 from "pages-sections/market-2/Section7";
 import Section8 from "pages-sections/market-2/Section8";
 import Section9 from "pages-sections/market-2/Section9";
 import ShopLayout1 from "components/layouts/ShopLayout1";
-import api from "utils/__api__/market-2"; // =======================================================
+// import api from "utils/__api__/market-2"; // =======================================================
 
 // =======================================================
 const Market = (props) => {
