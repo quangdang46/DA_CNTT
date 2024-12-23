@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import { ModeToggle } from "@/components/common/ModeToggle";
 
 export default function Header() {
   return (
@@ -167,6 +168,9 @@ export default function Header() {
                 <User />
                 <span>Register or Sign in</span>
               </Link>
+            </li>
+            <li>
+              <ModeToggle />
             </li>
           </ul>
         </div>
