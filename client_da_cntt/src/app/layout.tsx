@@ -21,9 +21,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <HeaderBar />
-        <Header />
-        <BreadCrumb />
         {children}
       </body>
     </html>
