@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -14,6 +16,7 @@ import {
   Plus,
   PlusCircle,
   Repeat,
+  Search,
   User,
   UserPlus,
   Users,
@@ -30,17 +33,47 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/common/ModeToggle";
+import DropdownMenuTriggerCustom from "@/components/customize/DropdownMenuTriggerCustom";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import WrapperContent from "@/components/common/WrapperContent";
+const formSchema = z.object({
+  username: z.string(),
+});
 
 export default function Header() {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
-    <header>
-      <div className="lg:block lg:pl-[5%] lg:pr-[5%] relative ml-auto mr-auto pt-6 pb-2">
-        <div className="flex items-center">
+    <WrapperContent>
+      <header className="lg:block relative ml-auto mr-auto py-2">
+        <div className="flex items-center pb-1">
           <div className="">
             <a href="home-v1.html" className="custom-logo-link" rel="home">
               <Image
@@ -51,18 +84,21 @@ export default function Header() {
               />
             </a>
           </div>
-          <ul className="flex items-center gap-14 uppercase ml-20">
-            <li className="leading-2 pl-0 inline-block font-medium">
-              <a title="Super deals" href="product-category.html">
+
+          {/* middle menu */}
+          <ul className="flex items-center gap-14 uppercase mx-auto">
+            <li className="leading-2 pl-0 inline-block font-medium ">
+              <Link title="Super deals" href="product-category.html">
                 Super deals
-              </a>
+              </Link>
             </li>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-1 uppercase">
                 <span>Mother day</span>
                 <ChevronDown></ChevronDown>
-              </DropdownMenuTrigger>
+              </DropdownMenuTriggerCustom>
+
               <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
@@ -79,10 +115,10 @@ export default function Header() {
             </DropdownMenu>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-1 uppercase">
                 <span>Super deals</span>
                 <ChevronDown></ChevronDown>
-              </DropdownMenuTrigger>
+              </DropdownMenuTriggerCustom>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
@@ -133,21 +169,22 @@ export default function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           </ul>
+          {/* middle menu */}
 
-          <ul className="ml-auto flex items-center gap-3">
+          <ul className="ml-auto flex items-center justify-center gap-5 text-sm font-light">
             <li className="">
-              <Link href="#">
+              <Link href="#" className="flex items-center justify-center gap-1">
                 <Car />
-                Car
+                <span>Car</span>
               </Link>
             </li>
-            <li>
+            <li className="border-l border-gray-300 pl-4">
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-1">
                   <BadgeDollarSign />
                   <span>Dolar (USD)</span>
                   <ChevronDown></ChevronDown>
-                </DropdownMenuTrigger>
+                </DropdownMenuTriggerCustom>
                 <DropdownMenuContent className="w-56">
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
@@ -163,25 +200,27 @@ export default function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </li>
-            <li>
-              <Link href="#">
+            <li className="border-l border-gray-300 pl-4">
+              <Link href="#" className="flex items-center justify-center gap-1">
                 <User />
                 <span>Register or Sign in</span>
               </Link>
             </li>
-            <li>
+            <li className="border-l border-gray-300 pl-4">
               <ModeToggle />
             </li>
           </ul>
         </div>
-
-        <div className="flex items-center">
+        {/* bottom header */}
+        {/* bottom header */}
+        {/* bottom header */}
+        <div className="flex items-center justify-center gap-5">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-2 border-solid border-2 p-4 rounded-sm">
               <AlignJustify />
               <span>All deparments</span>
               <ChevronDown></ChevronDown>
-            </DropdownMenuTrigger>
+            </DropdownMenuTriggerCustom>
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>
                 <DropdownMenuItem>
@@ -231,86 +270,121 @@ export default function Header() {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div className="">
-            <div className="">
-              <Input />
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <span>TIm kiem</span>
-                  <ChevronDown></ChevronDown>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <span>Profile</span>
-                    </DropdownMenuItem>{" "}
-                    <DropdownMenuItem>
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
 
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Users />
-                      <span>Team</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>
-                        <UserPlus />
-                        <span>Invite users</span>
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent>
-                          <DropdownMenuItem>
-                            <Mail />
-                            <span>Email</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <MessageSquare />
-                            <span>Message</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>
-                            <PlusCircle />
-                            <span>More...</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>
-                      <Plus />
-                      <span>New Team</span>
-                      <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <Button variant="outline">Button</Button>
-          </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex items-center justify-center gap-2 lg:basis-0 lg:grow max-w-full  mb-0 ml-10 border-2 rounded-sm flex-grow basis-0"
+              autoComplete="off"
+            >
+              <div className="relative flex w-full">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem className="flex w-full relative">
+                      <FormControl>
+                        <Input
+                          placeholder="Enter search..."
+                          {...field}
+                          className="focus:outline-none border-none border-transparent bg-white shadow-none p-7 border rounded-tl-[5px] rounded-bl-[5px] border-r-0 flex flex-col justify-center"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="2xl:pr-16 bg-transparent flex flex-shrink-0 border-l border-gray-300 pl-4">
+                  <DropdownMenu>
+                    <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-1">
+                      <span className="flex flex-shrink-0">TIm kiem</span>
+                      <ChevronDown></ChevronDown>
+                    </DropdownMenuTriggerCustom>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                          <span>Profile</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <span>Profile</span>
+                        </DropdownMenuItem>{" "}
+                        <DropdownMenuItem>
+                          <span>Profile</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
 
-          <div className="flex items-center gap-4 ml-auto">
-            <div className="">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                          <Users />
+                          <span>Team</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <UserPlus />
+                            <span>Invite users</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem>
+                                <Mail />
+                                <span>Email</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <MessageSquare />
+                                <span>Message</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem>
+                                <PlusCircle />
+                                <span>More...</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                        <DropdownMenuItem>
+                          <Plus />
+                          <span>New Team</span>
+                          <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="relative whitespace-nowrap align-middle flex flex-col justify-center">
+                  <Input type="hidden" />
+                  <Button
+                    type="submit"
+                    className="z-10 ml-[-1px] relative flex-1 font-medium bg-slate-600 text-white px-10 rounded-sm"
+                  >
+                    <Search className="2xl:hidden" />
+                    <span>Search</span>
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </Form>
+
+          <div className="flex items-center gap-10 flex-shrink-0">
+            <div className="flex items-center gap-4 justify-center">
               <Repeat />
               <span>3</span>
             </div>
-            <div className="">
+            <div className="flex items-center gap-4 justify-center">
               <Heart />
               <span>3</span>
             </div>
 
-            <div className="">
+            <div className="flex items-center gap-4 justify-center">
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTriggerCustom className="outline-none flex items-center justify-center gap-2">
                   <BriefcaseBusiness />
-                  <span>3</span>
+                  <span className="">3</span>
                   <div className="">
                     <span>Your car</span>
                   </div>
-                </DropdownMenuTrigger>
+                </DropdownMenuTriggerCustom>
+
                 <DropdownMenuContent className="w-56">
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
@@ -363,7 +437,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </WrapperContent>
   );
 }
