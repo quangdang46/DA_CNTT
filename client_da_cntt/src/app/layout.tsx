@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import  HeaderBar  from "@/shared/components/layouts/HeaderBar";
-import Header from "@/shared/components/layouts/Header";
+import HeaderBar from "@/components/layouts/HeaderBar";
+import Header from "@/components/layouts/Header";
+import BreadCrumb from "@/components/layouts/BreadCrumb";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <HeaderBar></HeaderBar>
-        <Header></Header>
+        <HeaderBar />
+        <Header />
+        <BreadCrumb />
         {children}
       </body>
     </html>

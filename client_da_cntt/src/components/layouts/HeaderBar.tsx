@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link"; // Import Link từ Next.js
-import { headerBarItems } from "./../../constants/headerbar-constant";
+import { headerBarItems } from "../../shared/constants/headerbar-constant";
 
 function HeaderBar() {
   return (
