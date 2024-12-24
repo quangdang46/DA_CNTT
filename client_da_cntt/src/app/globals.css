@@ -5,5 +5,8 @@
   :root {
     --radius: 0.5rem;
   }
-
+  img {
+    width: 100%; /* hoặc kích thước cụ thể */
+    height: auto; /* Để duy trì tỷ lệ */
+  }
 }
