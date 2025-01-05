@@ -1,8 +1,13 @@
 import Header from "@/shared/components/ui/Header";
 import HeaderBar from "@/shared/components/ui/HeaderBar";
+
 import React from "react";
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
       <HeaderBar></HeaderBar>
@@ -10,6 +15,4 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       {children}
     </>
   );
-};
-
-export default MainLayout;
+}

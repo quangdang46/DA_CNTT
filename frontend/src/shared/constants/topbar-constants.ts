@@ -1,4 +1,4 @@
-export const headerBarItems = [
+export const headerBarItems: { url: string; title: string; content: string }[] = [
   {
     url: "/",
     title: "Home",
