@@ -3,6 +3,7 @@ import HeaderNav from "@/shared/components/ui/HeaderNav";
 import React from "react";
 import { Row } from "react-bootstrap";
 import SiteBranding from "@/shared/components/ui/SiteBranding";
+import DepartmentsMenu from "@/shared/components/ui/DepartmentsMenu";
 
 export default function Header() {
   return (
@@ -22,6 +23,10 @@ export default function Header() {
             </Row>
           </div>
         </div>
+
+        {/* ////////////////// */}
+
+        <div className="row align-items-center"><DepartmentsMenu></DepartmentsMenu></div>
       </div>
     </header>
   );

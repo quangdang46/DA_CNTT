@@ -10405,12 +10405,14 @@ article .wl-create-new.more-link:before {
   transition: 0.2s ease-in-out;
 }
 .departments-menu > .dropdown-menu {
-  transform: translate(0px, 24px) rotate(0deg) skew(0deg, 0deg) scale(1, 1);
   margin: 0 15px;
   padding: 0;
   border: none;
-  right: 0;
   z-index: 1;
+  left: 0 !important;
+  right: 0 !important;
+  top: 100% !important;
+  transform: translateY(20px);
 }
 .departments-menu > .dropdown-menu::before {
   content: "";
@@ -10578,22 +10580,20 @@ article .wl-create-new.more-link:before {
   color: #fff;
   display: block;
   height: 52px;
+  width: 100%;
 }
-.page-template-template-homepage-v1 .header-v1 .departments-menu button,
+.header-v1 .departments-menu button,
 .page-template-template-homepage-v2 .header-v1 .departments-menu button {
   color: #444;
   border-color: #eee;
   background-color: transparent;
 }
-.page-template-template-homepage-v1 .header-v1 .departments-menu button::after,
+.header-v1 .departments-menu button::after,
 .page-template-template-homepage-v2 .header-v1 .departments-menu button::after {
   filter: none;
 }
 @media (min-width: 1200px) {
-  .page-template-template-homepage-v1
-    .header-v1
-    .departments-menu
-    > .dropdown-menu,
+  .header-v1 .departments-menu > .dropdown-menu,
   .page-template-template-homepage-v1
     .header-v3
     .departments-menu
@@ -27492,25 +27492,41 @@ p.available-on-backorder {
     margin-left: -15px;
   }
   @media (min-width: 576px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody {
+    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody {
       margin-right: -15px;
       margin-left: -15px;
     }
   }
   @media (min-width: 768px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody {
+    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody {
       margin-right: -15px;
       margin-left: -15px;
     }
   }
   @media (min-width: 992px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody {
+    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody {
       margin-right: -15px;
       margin-left: -15px;
     }
   }
   @media (min-width: 1200px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody {
+    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody {
       margin-right: -15px;
       margin-left: -15px;
     }
@@ -27530,25 +27546,61 @@ p.available-on-backorder {
     padding-left: 15px;
   }
   @media (min-width: 576px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody tr, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody tr {
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      table
+      tbody
+      tr,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody
+      tr {
       padding-right: 15px;
       padding-left: 15px;
     }
   }
   @media (min-width: 768px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody tr, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody tr {
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      table
+      tbody
+      tr,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody
+      tr {
       padding-right: 15px;
       padding-left: 15px;
     }
   }
   @media (min-width: 992px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody tr, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody tr {
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      table
+      tbody
+      tr,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody
+      tr {
       padding-right: 15px;
       padding-left: 15px;
     }
   }
   @media (min-width: 1200px) {
-    #tab-specification .tm-shop-attributes-detail:not(.like-table) table tbody tr, #tab-specification .tm-shop-attributes-detail:not(.like-table) .shop_attributes tbody tr {
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      table
+      tbody
+      tr,
+    #tab-specification
+      .tm-shop-attributes-detail:not(.like-table)
+      .shop_attributes
+      tbody
+      tr {
       padding-right: 15px;
       padding-left: 15px;
     }
