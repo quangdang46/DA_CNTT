@@ -4,6 +4,7 @@ import React from "react";
 import { Row } from "react-bootstrap";
 import SiteBranding from "@/shared/components/ui/SiteBranding";
 import DepartmentsMenu from "@/shared/components/ui/DepartmentsMenu";
+import NavbarSearch from "@/shared/components/ui/NavbarSearch ";
 
 export default function Header() {
   return (
@@ -26,7 +27,10 @@ export default function Header() {
 
         {/* ////////////////// */}
 
-        <div className="row align-items-center"><DepartmentsMenu></DepartmentsMenu></div>
+        <div className="row align-items-center">
+          <DepartmentsMenu></DepartmentsMenu>
+          <NavbarSearch></NavbarSearch>
+        </div>
       </div>
     </header>
   );

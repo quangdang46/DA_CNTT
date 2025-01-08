@@ -10270,6 +10270,11 @@ article .wl-create-new.more-link:before {
 }
 .navbar-search .input-group-addon {
   color: #444;
+    padding: .5rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25;    text-align: center;
 }
 .navbar-search .search-categories {
   background-color: transparent;
@@ -10311,12 +10316,21 @@ article .wl-create-new.more-link:before {
   outline: none;
 }
 .navbar-search .input-group .input-group-btn {
+  vertical-align: middle;
+  position: relative;
+    font-size: 0;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
   font-size: 1.066em;
+
 }
 .navbar-search button {
   font-weight: 500;
   font-size: 0.938em;
   min-width: 9.067em;
+  border-top-left-radius: 0%;
+  border-bottom-left-radius: 0%;
 }
 @media (max-width: 1590px) {
   .navbar-search button {
@@ -10327,7 +10341,7 @@ article .wl-create-new.more-link:before {
   }
 }
 @media (min-width: 1590px) {
-  .navbar-search button i {
+  .navbar-search button svg {
     display: none;
   }
 }
