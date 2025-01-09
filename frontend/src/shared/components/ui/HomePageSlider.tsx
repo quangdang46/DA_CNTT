@@ -2,22 +2,13 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function HomePageSlider() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on("select", onSelect);
-  }, [emblaApi, onSelect]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({loop: true}, [Autoplay()]);
 
   const slides = [
     {

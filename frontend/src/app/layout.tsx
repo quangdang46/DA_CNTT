@@ -5,6 +5,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Inter } from "next/font/google";
+
 import "./globals.css";
 import "./customize.css";
 
