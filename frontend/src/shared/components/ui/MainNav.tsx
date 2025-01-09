@@ -1,8 +1,11 @@
-import ChevronDown from '@/shared/components/icons/ChevronDown';
-import Link from 'next/link';
-import React from 'react'
+"use client";
+import ChevronDown from "@/shared/components/icons/ChevronDown";
+import Link from "next/link";
+import React, { useState } from "react";
 
 export default function MainNav() {
+  const [show, setShow] = useState(false);
+  const toggleDropdown = () => setShow(!show);
   return (
     <nav
       id="primary-navigation"
@@ -17,11 +20,20 @@ export default function MainNav() {
           </Link>
         </li>
         <li className="menu-item menu-item-has-children animate-dropdown dropdown">
-          <Link href="#" title="Mother's Day" aria-haspopup="true">
+          <Link
+            href="#"
+            title="Mother's Day"
+            aria-haspopup="true"
+            onClick={toggleDropdown}
+          >
             Mother’s Day
             <ChevronDown></ChevronDown>
           </Link>
-          <ul role="menu" className="dropdown-menu">
+          <ul
+            role="menu"
+            className="dropdown-menu"
+            style={{ display: show ? "block" : "none" }}
+          >
             <li className="menu-item animate-dropdown">
               <Link href="/wishlist" title="Wishlist">
                 Wishlist

@@ -736,7 +736,7 @@ select::-ms-expand {
 }
 @media (min-width: 768px) {
   .error404 #content #primary,
-  .page-template-template-homepage-v1 #content #primary,
+  #content #primary,
   .page-template-template-homepage-v2 #content #primary,
   .page-template-template-homepage-v3 #content #primary,
   .page-template-template-homepage-v4 #content #primary,
@@ -2698,7 +2698,7 @@ body.can-uppercase
   outline: none;
 }
 @media (min-width: 1700px) and (max-width: 1900px) {
-  .page-template-template-homepage-v1 .site-header .departments-menu,
+  .site-header .departments-menu,
   .page-template-template-homepage-v2 .site-header .departments-menu {
     flex: 0 0 19.1666666667%;
     max-width: 19.1666666667%;
@@ -10608,19 +10608,19 @@ article .wl-create-new.more-link:before {
 }
 @media (min-width: 1200px) {
   .header-v1 .departments-menu > .dropdown-menu,
-  .page-template-template-homepage-v1
+  
     .header-v3
     .departments-menu
     > .dropdown-menu,
-  .page-template-template-homepage-v1
+  
     .header-v4
     .departments-menu
     > .dropdown-menu,
-  .page-template-template-homepage-v1
+  
     .header-v5
     .departments-menu
     > .dropdown-menu,
-  .page-template-template-homepage-v1
+  
     .header-v6
     .departments-menu
     > .dropdown-menu,
@@ -15960,7 +15960,7 @@ article .site-content .home-v5-slider .slider-1 .more-link:hover {
   height: 100%;
 }
 .organic-market
-  .page-template-template-homepage-v1
+  
   .banners
   .text-in-right
   .banner-bg {
@@ -17552,7 +17552,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
     font-size: 1em;
   }
 }
-.page-template-template-homepage-v1
+
   .section-categories-carousel.section-top-categories
   .section-header,
 .page-template-template-homepage-v5
@@ -17562,7 +17562,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
 }
 @media (min-width: 768px) {
   @media (max-width: 1199px) {
-    .page-template-template-homepage-v1
+    
       .section-categories-carousel.section-top-categories
       .section-header,
     .page-template-template-homepage-v5
@@ -17572,7 +17572,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
     }
   }
 }
-.page-template-template-homepage-v1
+
   .section-categories-carousel.section-top-categories
   .pre-title,
 .page-template-template-homepage-v5
@@ -17582,7 +17582,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
   font-weight: 300;
   margin-bottom: 1.857em;
 }
-.page-template-template-homepage-v1
+
   .section-categories-carousel.section-top-categories
   .section-title,
 .page-template-template-homepage-v5
@@ -17593,7 +17593,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
   margin: 0 0 0.8em;
 }
 @media (min-width: 1200px) and (max-width: 1400px) {
-  .page-template-template-homepage-v1
+  
     .section-categories-carousel.section-top-categories
     .section-title,
   .page-template-template-homepage-v5
@@ -17604,7 +17604,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
 }
 @media (min-width: 768px) {
   @media (max-width: 1199px) {
-    .page-template-template-homepage-v1
+    
       .section-categories-carousel.section-top-categories
       .section-title,
     .page-template-template-homepage-v5
@@ -17616,7 +17616,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
 }
 @media (min-width: 768px) {
   @media (max-width: 1199px) {
-    .page-template-template-homepage-v1
+    
       .section-categories-carousel.section-top-categories
       .custom-slick-nav,
     .page-template-template-homepage-v5
@@ -17624,7 +17624,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
       .custom-slick-nav {
       margin-bottom: 0.875em;
     }
-    .page-template-template-homepage-v1
+    
       .section-categories-carousel.section-top-categories
       .custom-slick-nav
       a,
@@ -17636,7 +17636,7 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
       height: 30px;
       position: relative;
     }
-    .page-template-template-homepage-v1
+    
       .section-categories-carousel.section-top-categories
       .custom-slick-nav
       a
