@@ -7,7 +7,7 @@ export default function Wishlist() {
     <ul className="header-wishlist nav navbar-nav">
       <li className="nav-item">
         <Link href="/wishlist" className="nav-link">
-            <HeartIcon></HeartIcon>
+            <HeartIcon size="2x"></HeartIcon>
           <span id="top-cart-wishlist-count" className="value">
             3
           </span>

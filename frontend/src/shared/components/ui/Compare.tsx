@@ -7,7 +7,7 @@ export default function Compare() {
     <ul className="header-compare nav navbar-nav">
       <li className="nav-item">
         <Link href="/compare" className="nav-link">
-            <CompareIcon></CompareIcon>
+            <CompareIcon size="2x"></CompareIcon>
           <span id="top-cart-compare-count" className="value">
             3
           </span>

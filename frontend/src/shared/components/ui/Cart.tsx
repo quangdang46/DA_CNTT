@@ -17,7 +17,7 @@ export default function Cart() {
           title="View your shopping cart"
           onClick={toggleDropdown}
         >
-          <CartIcon></CartIcon>
+          <CartIcon size="2x"></CartIcon>
           <span className="count">2</span>
           <span className="amount">
             <span className="price-label">Your Cart</span> $136.99
