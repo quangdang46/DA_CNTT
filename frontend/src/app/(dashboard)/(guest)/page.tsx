@@ -1,5 +1,6 @@
 import FeaturesList from "@/shared/components/ui/FeaturesList";
 import HomePageSlider from "@/shared/components/ui/HomePageSlider";
+import NoticeBanner from "@/shared/components/ui/NoticeBanner";
 import React from "react";
 
 const Home = () => {
@@ -12,6 +13,7 @@ const Home = () => {
               {/* //////////// */}
               <HomePageSlider></HomePageSlider>
               <FeaturesList></FeaturesList>
+              <NoticeBanner></NoticeBanner>
               {/* //////////// */}
             </main>
           </div>

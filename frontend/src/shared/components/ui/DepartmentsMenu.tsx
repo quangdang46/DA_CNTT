@@ -13,9 +13,7 @@ export default function DepartmentsMenu() {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <Bars></Bars>
-        <span>All Departments</span>
-        <ChevronDown></ChevronDown>
+        <Bars></Bars> <span>All Departments</span> <ChevronDown></ChevronDown>
       </button>
       <ul
         id="menu-departments-menu"
