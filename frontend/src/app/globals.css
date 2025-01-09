@@ -42,15 +42,15 @@ ul.nav {
   justify-content: space-between;
   align-items: center;
 }
-.custom-slick-nav a:first-child,
+.custom-slick-nav div:first-child,
 .slick-prev {
   padding-right: 0.52em;
 }
-.custom-slick-nav a,
+.custom-slick-nav div,
 .slick-arrow {
   color: #c3c3c3;
 }
-.custom-slick-nav a:hover,
+.custom-slick-nav div:hover,
 .slick-arrow:hover {
   color: #464646;
 }
@@ -1315,15 +1315,15 @@ body.can-uppercase
     display: flex;
   }
 }
-.custom-slick-nav a:first-child,
+.custom-slick-nav div:first-child,
 .custom-slick-nav .slick-prev {
   padding-right: 0.52em;
 }
-.custom-slick-nav a,
+.custom-slick-nav div,
 .custom-slick-nav .slick-arrow {
   color: #c3c3c3;
 }
-.custom-slick-nav a:hover,
+.custom-slick-nav div:hover,
 .custom-slick-nav .slick-arrow:hover {
   color: #464646;
 }
@@ -17612,17 +17612,10 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
   @media (max-width: 1199px) {
     
       .section-categories-carousel.section-top-categories
-      .custom-slick-nav,
-    .page-template-template-homepage-v5
-      .section-categories-carousel.section-top-categories
       .custom-slick-nav {
       margin-bottom: 0.875em;
     }
     
-      .section-categories-carousel.section-top-categories
-      .custom-slick-nav
-      a,
-    .page-template-template-homepage-v5
       .section-categories-carousel.section-top-categories
       .custom-slick-nav
       a {
@@ -17631,11 +17624,6 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
       position: relative;
     }
     
-      .section-categories-carousel.section-top-categories
-      .custom-slick-nav
-      a
-      i,
-    .page-template-template-homepage-v5
       .section-categories-carousel.section-top-categories
       .custom-slick-nav
       a

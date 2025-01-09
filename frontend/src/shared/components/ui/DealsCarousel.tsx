@@ -5,8 +5,34 @@ import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import ChevronLeft from "@/shared/components/icons/ChevronLeft";
 import ChevronRight from "@/shared/components/icons/ChevronRight";
+import { EmblaCarouselType } from "embla-carousel";
 export default function DealsCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({loop: true}, [Autoplay()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+
+  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+  const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
+
+  const onPrevButtonClick = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const onNextButtonClick = useCallback(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
+    setPrevBtnDisabled(!emblaApi.canScrollPrev());
+    setNextBtnDisabled(!emblaApi.canScrollNext());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onSelect(emblaApi);
+    emblaApi.on("reInit", onSelect).on("select", onSelect);
+  }, [emblaApi, onSelect]);
   const products = [
     {
       id: 1,
@@ -39,14 +65,22 @@ export default function DealsCarousel() {
             <h2 className="section-title">
               <strong>Deals</strong> of the week
             </h2>
-            <nav className="custom-slick-nav">
-              <a href="#" className="slick-arrow" aria-disabled="false">
+            <div className="custom-slick-nav">
+              <div
+                className="slick-arrow"
+                onClick={onPrevButtonClick}
+                aria-disabled={prevBtnDisabled}
+              >
                 <ChevronLeft></ChevronLeft>
-              </a>
-              <a href="#" className="slick-arrow" aria-disabled="false">
+              </div>
+              <div
+                className="slick-arrow"
+                onClick={onNextButtonClick}
+                aria-disabled={nextBtnDisabled}
+              >
                 <ChevronRight></ChevronRight>
-              </a>
-            </nav>
+              </div>
+            </div>
           </header>
 
           {/* ///////////// */}
@@ -251,21 +285,23 @@ export default function DealsCarousel() {
 
           <footer className="section-footer">
             <nav className="custom-slick-pagination">
-              <a
+              <div
                 className="slider-prev left"
-                href="#"
                 data-target="#sale-with-timer-carousel .products"
+                onClick={onPrevButtonClick}
+                aria-disabled={prevBtnDisabled}
               >
                 <ChevronLeft></ChevronLeft>
                 Previous deal
-              </a>
-              <a
+              </div>
+              <div
                 className="slider-next right"
-                href="#"
                 data-target="#sale-with-timer-carousel .products"
+                onClick={onNextButtonClick}
+                aria-disabled={nextBtnDisabled}
               >
                 Next deal <ChevronRight></ChevronRight>
-              </a>
+              </div>
             </nav>
           </footer>
         </div>

@@ -20,6 +20,14 @@ a {
   align-items: flex-start;
   gap: 5px;
 }
+
+
+
+
+.custom-slick-nav{
+  display: flex;
+  gap: 5px;
+}
 .embla {
   max-width: 48rem;
   margin: auto;
