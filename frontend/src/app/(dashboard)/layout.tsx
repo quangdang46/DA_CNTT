@@ -1,5 +1,6 @@
+import Footer from "@/shared/components/layouts/Footer";
+import HeaderBar from "@/shared/components/layouts/HeaderBar";
 import Header from "@/shared/components/ui/Header";
-import HeaderBar from "@/shared/components/ui/HeaderBar";
 
 import React from "react";
 
@@ -13,6 +14,7 @@ export default function MainLayout({
       <HeaderBar></HeaderBar>
       <Header></Header>
       {children}
+      <Footer></Footer>
     </>
   );
 }

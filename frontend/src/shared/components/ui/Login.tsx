@@ -21,7 +21,6 @@ export default function Login() {
             className="input-text"
             name="username"
             id="username"
-            value=""
           />
         </p>
         <p className="form-row form-row-wide">
