@@ -1,9 +1,9 @@
 "use client";
-import { EmblaCarouselType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
+import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 interface DealsCarouselProps {
   products: {
     title: string;
@@ -14,37 +14,14 @@ interface DealsCarouselProps {
   }[];
 }
 export default function ProductsCarousel({ products }: DealsCarouselProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start" });
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  const onDotButtonClick = useCallback(
-    (index: number) => {
-      if (!emblaApi) return;
-      emblaApi.scrollTo(index);
-    },
-    [emblaApi]
-  );
-  // Hàm này chạy khi người dùng tương tác
-  const onInit = useCallback((emblaApi: EmblaCarouselType) => {
-    setScrollSnaps(emblaApi.scrollSnapList());
-  }, []);
-
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    onInit(emblaApi);
-    onSelect(emblaApi);
-    emblaApi.on("reInit", onInit).on("reInit", onSelect).on("select", onSelect);
-  }, [emblaApi, onInit, onSelect]);
- 
   //   duplicate products
-  const duplicatedProducts = [...products, ...products, ...products];
+  const duplicatedProducts = [...products, ...products];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [emblaRef, emblaApi] = useEmblaCarousel({});
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
   return (
     <div className="tab-content">
       <div id="tab-59f89f0881f930" className="tab-pane active" role="tabpanel">

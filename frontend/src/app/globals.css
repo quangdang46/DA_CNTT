@@ -30627,7 +30627,7 @@ article .woocommerce-MyAccount-downloads .more-link {
   font-weight: 300;
 }
 #customer_login .register-benefits ul > li::before {
-  content: "\f00c";
+  content: "";
   color: #5bb300;
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
