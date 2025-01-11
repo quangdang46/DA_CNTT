@@ -28300,7 +28300,7 @@ article .form-row .more-link {
   font-weight: 400;
   word-break: keep-all;
 }
-.star-rating:before {
+/* .star-rating:before {
   content: "\f006\f006\f006\f006\f006";
   font-family: FontAwesome;
   letter-spacing: 0.313em;
@@ -28310,7 +28310,7 @@ article .form-row .more-link {
   left: 0;
   position: absolute;
   color: #2c2d33;
-}
+} */
 .star-rating span {
   overflow: hidden;
   float: left;
@@ -28319,7 +28319,7 @@ article .form-row .more-link {
   position: absolute;
   padding-top: 1.5em;
 }
-.star-rating span:before {
+/* .star-rating span:before {
   content: "\f005\f005\f005\f005\f005";
   font-family: FontAwesome;
   letter-spacing: 0.313em;
@@ -28327,7 +28327,7 @@ article .form-row .more-link {
   position: absolute;
   left: 0;
   color: #fed700;
-}
+} */
 p.stars {
   display: inline-block;
   margin: 0;
