@@ -1,11 +1,13 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect,  useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import ChevronLeft from "@/shared/components/icons/ChevronLeft";
 import ChevronRight from "@/shared/components/icons/ChevronRight";
 import { EmblaCarouselType } from "embla-carousel";
+import ProductsCarouselTabs from "@/shared/components/ui/ProductsCarouselTabs";
+import ProductsCarousel from "@/shared/components/ui/ProductsCarousel";
 export default function DealsCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
@@ -308,13 +310,16 @@ export default function DealsCarousel() {
       </section>
 
       <section className="column-2 section-products-carousel-tabs tab-carousel-1">
-        <div className="embla">
-          <div className="embla__container">
-            {/* Các item trong carousel của bạn */}
-            <div className="embla__slide">Product 1</div>
-            <div className="embla__slide">Product 2</div>
-            <div className="embla__slide">Product 3</div>
-          </div>
+        <div className="section-products-carousel-tabs-wrap">
+          <ProductsCarouselTabs
+            tabs={[
+              { title: "New Arrivals", content: "Content for New Arrivals." },
+              { title: "On Sale", content: "Content for On Sale." },
+              { title: "Best Rated", content: "Content for Best Rated." },
+            ]}
+          />
+         
+          <ProductsCarousel></ProductsCarousel>
         </div>
       </section>
     </div>
