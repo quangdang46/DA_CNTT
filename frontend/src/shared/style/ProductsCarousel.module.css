@@ -1,4 +1,4 @@
-.embla {
+/* .embla {
   margin: auto;
   --slide-height: 19rem;
   --slide-spacing: 1rem;
@@ -36,4 +36,22 @@
     flex: 0 0 var(--slide-size-lg);
     padding-left: var(--slide-spacing-lg);
   }
+} */
+
+
+.embla {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.embla__container {
+  display: flex;
+  user-select: none;
+}
+
+.embla__slide {
+  min-width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
