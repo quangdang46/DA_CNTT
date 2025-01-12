@@ -15,7 +15,7 @@ interface ProductProps {
   }[];
 }
 export default function RelatedProducts({ products }: ProductProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true ,slidesToScroll: 3}, [Autoplay()]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);

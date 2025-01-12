@@ -29464,9 +29464,9 @@ article .products .product .added.more-link {
     display: flex;
     flex-wrap: wrap;
   }
-  .products:not(.slick-initialized) .product {
+  /* .products:not(.slick-initialized) .product {
     width: 50%;
-  }
+  } */
   .products .product {
     display: flex;
     flex-direction: column;
