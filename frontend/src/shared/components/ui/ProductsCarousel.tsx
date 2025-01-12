@@ -1,10 +1,10 @@
 "use client";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
 import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
 import { DotButton, useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import Autoplay from "embla-carousel-autoplay";
+import ProductCard from "@/shared/components/ui/ProductCard";
 interface DealsCarouselProps {
   products: {
     title: string;
@@ -58,55 +58,60 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                           }}
                         >
                           {productPerPage.map((product, index) => (
-                            <div className={`product`} key={index}>
-                              <div className="yith-wcwl-add-to-wishlist">
-                                <a
-                                  href="wishlist.html"
-                                  rel="nofollow"
-                                  className="add_to_wishlist"
-                                >
-                                  Add to Wishlist
-                                </a>
-                              </div>
-                              <a
-                                href="single-product-fullwidth.html"
-                                className="woocommerce-LoopProduct-link"
-                              >
-                                <Image
-                                  src={product.imageUrl}
-                                  alt={product.title}
-                                  width={224}
-                                  height={130}
-                                  className="wp-post-image"
-                                />
-                                <span className="price">
-                                  <ins>
-                                    <span className="amount"></span>
-                                  </ins>
-                                  <span className="amount">
-                                    {product.price}
-                                  </span>
-                                </span>
-                                <h2 className="woocommerce-loop-product__title">
-                                  {product.title}
-                                </h2>
-                              </a>
-                              <div className="hover-area">
-                                <a
-                                  className="button add_to_cart_button"
-                                  href="cart.html"
-                                  rel="nofollow"
-                                >
-                                  Add to cart
-                                </a>
-                                <a
-                                  className="add-to-compare-link"
-                                  href="compare.html"
-                                >
-                                  Add to compare
-                                </a>
-                              </div>
-                            </div>
+                            // <div className={`product`} key={index}>
+                            //   <div className="yith-wcwl-add-to-wishlist">
+                            //     <Link
+                            //       href="wishlist.html"
+                            //       rel="nofollow"
+                            //       className="add_to_wishlist"
+                            //     >
+                            //       Add to Wishlist
+                            //     </Link>
+                            //   </div>
+                            //   <a
+                            //     href="single-product-fullwidth.html"
+                            //     className="woocommerce-LoopProduct-link"
+                            //   >
+                            //     <Image
+                            //       src={product.imageUrl}
+                            //       alt={product.title}
+                            //       width={224}
+                            //       height={130}
+                            //       className="wp-post-image"
+                            //     />
+                            //     <span className="price">
+                            //       <ins>
+                            //         <span className="amount"></span>
+                            //       </ins>
+                            //       <span className="amount">
+                            //         {product.price}
+                            //       </span>
+                            //     </span>
+                            //     <h2 className="woocommerce-loop-product__title">
+                            //       {product.title}
+                            //     </h2>
+                            //   </a>
+                            //   <div className="hover-area">
+                            //     <a
+                            //       className="button add_to_cart_button"
+                            //       href="cart.html"
+                            //       rel="nofollow"
+                            //     >
+                            //       Add to cart
+                            //     </a>
+                            //     <a
+                            //       className="add-to-compare-link"
+                            //       href="compare.html"
+                            //     >
+                            //       Add to compare
+                            //     </a>
+                            //   </div>
+                            // </div>
+
+                            <ProductCard
+                              product={product}
+                              key={index}
+                            ></ProductCard>
                           ))}
                         </div>
                       </div>
