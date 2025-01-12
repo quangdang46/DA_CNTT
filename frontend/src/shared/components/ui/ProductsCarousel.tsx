@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
-import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import { DotButton, useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import Autoplay from "embla-carousel-autoplay";
 interface DealsCarouselProps {
   products: {
@@ -25,10 +25,13 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
     duplicatedProducts.slice(i * itemsPerPage, (i + 1) * itemsPerPage)
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    slidesToScroll: 1, // Scroll theo từng trang
-    loop: false,
-  }, [Autoplay()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      slidesToScroll: 1, // Scroll theo từng trang
+      loop: false,
+    },
+    [Autoplay()]
+  );
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
@@ -44,9 +47,7 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
             <div className="woocommerce">
               <div className={styles.embla}>
                 <div className={styles.embla__viewport} ref={emblaRef}>
-                  <div
-                    className={`products ${styles.embla__container}`}
-                  >
+                  <div className={`products ${styles.embla__container}`}>
                     {paginatedItems.map((productPerPage, pageIndex) => (
                       <div className={styles.embla__slide} key={pageIndex}>
                         <div
@@ -112,28 +113,23 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                     ))}
                   </div>
                 </div>
-                <ul className="slick-dots" role="tablist">
+                <div className={`${styles.embla__dots}`}>
                   {scrollSnaps.map((_, index) => (
-                    <li
+                    <DotButton
                       key={index}
-                      className={index === selectedIndex ? "slick-active" : ""}
-                      aria-hidden="false"
-                      role="presentation"
-                      aria-controls={`navigation${index}`}
-                      id={`slick-slide${index}`}
-                    >
-                      <button
-                        type="button"
-                        data-role="none"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => onDotButtonClick(index)}
-                      >
-                        {index + 1}
-                      </button>
-                    </li>
+                      onClick={() => onDotButtonClick(index)}
+                      // className={"embla__dot".concat(
+                      //   index === selectedIndex ? " embla__dot--selected" : ""
+                      // )}
+
+                      className={`${styles.embla__dot} ${
+                        index === selectedIndex
+                          ? styles.embla__dot__selected
+                          : ""
+                      }`}
+                    />
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           </div>

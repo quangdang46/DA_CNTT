@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { ComponentPropsWithRef, useCallback, useEffect, useState } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 
 type UseDotButtonType = {
@@ -44,4 +44,15 @@ export const useDotButton = (
     scrollSnaps,
     onDotButtonClick,
   };
+};
+type PropType = ComponentPropsWithRef<"button">;
+
+export const DotButton: React.FC<PropType> = (props) => {
+  const { children, ...restProps } = props;
+
+  return (
+    <button type="button" {...restProps}>
+      {children}
+    </button>
+  );
 };

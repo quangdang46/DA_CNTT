@@ -13,7 +13,6 @@ interface DealsCarouselProps {
   }[];
 }
 export default function SaleProductsCarousel({ products }: DealsCarouselProps) {
-  console.log(products);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
   const { setEmblaApi } = useCarouselContext();
