@@ -3,7 +3,7 @@ import HomePageSlider from "@/shared/components/ui/HomePageSlider";
 import NoticeBanner from "@/shared/components/ui/NoticeBanner";
 import DealsCarousel from "@/shared/components/ui/DealsCarousel";
 import React from "react";
-import EmblaCarouselExample from "@/shared/components/ui/Test";
+// import EmblaCarouselExample from "@/shared/components/ui/Test";
 
 const Home = () => {
   return (
@@ -18,7 +18,7 @@ const Home = () => {
               <DealsCarousel></DealsCarousel>
               <NoticeBanner></NoticeBanner>
               {/* //////////// */}
-              <EmblaCarouselExample></EmblaCarouselExample>
+              {/* <EmblaCarouselExample></EmblaCarouselExample> */}
             </main>
           </div>
         </div>

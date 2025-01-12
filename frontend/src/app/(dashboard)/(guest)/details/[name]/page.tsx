@@ -1,7 +1,8 @@
-import Star from '@/shared/components/icons/Star';
-import WrapperContent from '@/shared/components/layouts/WrapperContent';
-import Image from 'next/image';
-import React from 'react'
+import Star from "@/shared/components/icons/Star";
+import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
+import Image from "next/image";
+import React from "react";
 
 const page = () => {
   return (
@@ -16,10 +17,10 @@ const page = () => {
                 <span className="woocommerce-Price-currencySymbol">$</span>
                 242.99
               </span>
-              {/* ////////////// */}
-              {/* còn tiếp */}
-              {/* ////////////// */}
             </span>
+            {/* ////////////// */}
+            {/* ////////////// */}
+            <SingleProductGallery></SingleProductGallery>
           </div>
 
           {/* detail san pham */}
@@ -155,6 +156,6 @@ const page = () => {
       </div>
     </WrapperContent>
   );
-}
+};
 
-export default page
+export default page;
