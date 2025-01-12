@@ -50,10 +50,3 @@ a {
   padding-left: var(--slide-spacing);
 }
 
-
-
-
-/* .products:not(.slick-slider) .product {
-  width: calc(100% / 5);
-  flex: 0 0 calc(100% / 5);
-} */

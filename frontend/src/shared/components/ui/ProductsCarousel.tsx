@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import Autoplay from "embla-carousel-autoplay";
 interface DealsCarouselProps {
   products: {
     title: string;
@@ -27,7 +28,7 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     slidesToScroll: 1, // Scroll theo từng trang
     loop: false,
-  });
+  }, [Autoplay()]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
@@ -43,7 +44,9 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
             <div className="woocommerce">
               <div className={styles.embla}>
                 <div className={styles.embla__viewport} ref={emblaRef}>
-                  <div className={`products ${styles.embla__container}`}>
+                  <div
+                    className={`products ${styles.embla__container}`}
+                  >
                     {paginatedItems.map((productPerPage, pageIndex) => (
                       <div className={styles.embla__slide} key={pageIndex}>
                         <div
@@ -54,10 +57,7 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                           }}
                         >
                           {productPerPage.map((product, index) => (
-                            <div
-                              className={`product`}
-                              key={index}
-                            >
+                            <div className={`product`} key={index}>
                               <div className="yith-wcwl-add-to-wishlist">
                                 <a
                                   href="wishlist.html"
