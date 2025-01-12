@@ -118,7 +118,7 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                     ))}
                   </div>
                 </div>
-                <div className={`${styles.embla__dots}`}>
+                <div className={`embla__dots`}>
                   {scrollSnaps.map((_, index) => (
                     <DotButton
                       key={index}
@@ -127,9 +127,9 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                       //   index === selectedIndex ? " embla__dot--selected" : ""
                       // )}
 
-                      className={`${styles.embla__dot} ${
+                      className={`embla__dot ${
                         index === selectedIndex
-                          ? styles.embla__dot__selected
+                          ? "embla__dot__selected"
                           : ""
                       }`}
                     />

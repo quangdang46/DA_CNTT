@@ -1,10 +1,141 @@
 import Star from "@/shared/components/icons/Star";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import RelatedProducts from "@/shared/components/ui/RelatedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import Image from "next/image";
 import React from "react";
 
 const page = () => {
+  const products = [
+    {
+      title: "Tablet Red EliteBook Revolve",
+      price: 425.89,
+      originalPrice: 545.89,
+      savedAmount: 120.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1736177046343-32c5d0f9bcc6?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      title: "Laptop EliteBook 1050",
+      price: 599.99,
+      originalPrice: 699.99,
+      savedAmount: 100.0,
+      imageUrl:
+        "https://images.unsplash.com/photo-1735722446915-3147b65b05c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+  ];
   return (
     <WrapperContent className="single-product">
       <div className="product product-type-simple">
@@ -152,6 +283,20 @@ const page = () => {
               </div>
             </div>
           </div>
+        </div>
+        {/* ///////////// */}
+
+        <div
+          className="tm-related-products-carousel section-products-carousel"
+          id="tm-related-products-carousel"
+        >
+          <section className="related">
+            <header className="section-header">
+              <h2 className="section-title">Related products</h2>
+              <nav className="custom-slick-nav"></nav>
+            </header>
+            <RelatedProducts products={products}></RelatedProducts>
+          </section>
         </div>
       </div>
     </WrapperContent>

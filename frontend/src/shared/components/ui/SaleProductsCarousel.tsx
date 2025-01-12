@@ -3,6 +3,7 @@ import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import styles from "@/shared/style/SaleProductsCarousel.module.css";
 interface DealsCarouselProps {
   products: {
     title: string;
@@ -24,17 +25,17 @@ export default function SaleProductsCarousel({ products }: DealsCarouselProps) {
     }
   }, [emblaApi, setEmblaApi]); // Đảm bảo chỉ gọi khi emblaApi thay đổi
 
-//   if (!emblaApi) return null; // Nếu emblaApi chưa có, không render carousel
+  //   if (!emblaApi) return null; // Nếu emblaApi chưa có, không render carousel
   return (
     <div className="sale-products-with-timer-carousel deals-carousel-v1">
       <div className="products-carousel">
         <div className="container-fluid">
           <div className="woocommerce columns-1">
-            <div className="embla">
-              <div className="embla__viewport" ref={emblaRef}>
-                <div className="embla__container">
+            <div className={styles.embla}>
+              <div className={styles.embla__viewport} ref={emblaRef}>
+                <div className={styles.embla__container}>
                   {products.map((product, index) => (
-                    <div className="embla__slide" key={index}>
+                    <div className={styles.embla__slide} key={index}>
                       <div className="sale-product-with-timer product">
                         <a
                           className="woocommerce-LoopProduct-link"
