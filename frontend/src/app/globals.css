@@ -5377,12 +5377,7 @@ article .banners-v2 .banner-action.more-link {
 .brands-carousel .slick-next {
   top: 49%;
 }
-.brands-carousel .slick-prev:before,
-.brands-carousel .slick-next:before {
-  font-family: "techmarket-icons" !important;
-  color: #c3c3c3;
-  font-size: 22px;
-}
+
 .brands-carousel .slick-prev:hover:before,
 .brands-carousel .slick-next:hover:before {
   color: #000;
@@ -5414,21 +5409,11 @@ article .banners-v2 .banner-action.more-link {
     width: 100%;
   }
 }
-.brands-carousel .slick-prev:before {
-  content: "\66";
-}
-[dir="rtl"] .brands-carousel .slick-prev:before {
-  content: "\6e";
-}
-.brands-carousel .slick-next:before {
-  content: "\6e";
-}
-[dir="rtl"] .brands-carousel .slick-next:before {
-  content: "\66";
-}
-.brands-carousel .slick-slider {
+
+
+/* .brands-carousel .slick-slider {
   overflow: visible;
-}
+} */
 .brands-carousel .slick-list {
   padding: 3.313em 0px;
   overflow: hidden;

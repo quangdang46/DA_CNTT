@@ -21,14 +21,10 @@ a {
   gap: 5px;
 }
 
-
-
-
-.custom-slick-nav{
+.custom-slick-nav {
   display: flex;
   gap: 5px;
 }
-
 
 .embla__dots {
   display: flex;
