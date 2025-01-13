@@ -19,7 +19,7 @@ export default function ProductCardLandscape({
             alt={product.title}
             width={0}
             height={0}
-            style={{ width: "100%", height: "100px" }} // optional
+            style={{ width: "200px", height: "130px" }} // optional
           />
           <div className="media-body">
             <span className="price">

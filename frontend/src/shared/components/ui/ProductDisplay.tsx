@@ -6,6 +6,8 @@ import styles from "@/shared/style/ProductDisplay.module.css";
 import ChevronLeft from "@/shared/components/icons/ChevronLeft";
 import ChevronRight from "@/shared/components/icons/ChevronRight";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
+import DotCarousel from "@/shared/components/ui/DotCarousel";
+import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 
 export default function ProductDisplay({
   title = "Related products",
@@ -14,8 +16,12 @@ export default function ProductDisplay({
   title: string | null;
   products: Product[];
 }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({});
-
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    slidesToScroll: 2,
+    loop: true,
+  });
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
   const {
     prevBtnDisabled,
     nextBtnDisabled,
@@ -65,6 +71,11 @@ export default function ProductDisplay({
                 </div>
               </div>
             </div>
+            <DotCarousel
+              scrollSnaps={scrollSnaps}
+              selectedIndex={selectedIndex}
+              onClick={onDotButtonClick}
+            ></DotCarousel>
           </div>
         </div>
       </div>

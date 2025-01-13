@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
-import { DotButton, useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import DotCarousel from "@/shared/components/ui/DotCarousel";
 interface DealsCarouselProps {
   products: {
     title: string;
@@ -58,56 +59,6 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                           }}
                         >
                           {productPerPage.map((product, index) => (
-                            // <div className={`product`} key={index}>
-                            //   <div className="yith-wcwl-add-to-wishlist">
-                            //     <Link
-                            //       href="wishlist.html"
-                            //       rel="nofollow"
-                            //       className="add_to_wishlist"
-                            //     >
-                            //       Add to Wishlist
-                            //     </Link>
-                            //   </div>
-                            //   <a
-                            //     href="single-product-fullwidth.html"
-                            //     className="woocommerce-LoopProduct-link"
-                            //   >
-                            //     <Image
-                            //       src={product.imageUrl}
-                            //       alt={product.title}
-                            //       width={224}
-                            //       height={130}
-                            //       className="wp-post-image"
-                            //     />
-                            //     <span className="price">
-                            //       <ins>
-                            //         <span className="amount"></span>
-                            //       </ins>
-                            //       <span className="amount">
-                            //         {product.price}
-                            //       </span>
-                            //     </span>
-                            //     <h2 className="woocommerce-loop-product__title">
-                            //       {product.title}
-                            //     </h2>
-                            //   </a>
-                            //   <div className="hover-area">
-                            //     <a
-                            //       className="button add_to_cart_button"
-                            //       href="cart.html"
-                            //       rel="nofollow"
-                            //     >
-                            //       Add to cart
-                            //     </a>
-                            //     <a
-                            //       className="add-to-compare-link"
-                            //       href="compare.html"
-                            //     >
-                            //       Add to compare
-                            //     </a>
-                            //   </div>
-                            // </div>
-
                             <ProductCard
                               product={product}
                               key={index}
@@ -118,23 +69,11 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                     ))}
                   </div>
                 </div>
-                <div className={`embla__dots`}>
-                  {scrollSnaps.map((_, index) => (
-                    <DotButton
-                      key={index}
-                      onClick={() => onDotButtonClick(index)}
-                      // className={"embla__dot".concat(
-                      //   index === selectedIndex ? " embla__dot--selected" : ""
-                      // )}
-
-                      className={`embla__dot ${
-                        index === selectedIndex
-                          ? "embla__dot__selected"
-                          : ""
-                      }`}
-                    />
-                  ))}
-                </div>
+                <DotCarousel
+                  scrollSnaps={scrollSnaps}
+                  selectedIndex={selectedIndex}
+                  onClick={onDotButtonClick}
+                ></DotCarousel>
               </div>
             </div>
           </div>

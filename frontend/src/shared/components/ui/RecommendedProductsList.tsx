@@ -4,7 +4,8 @@ import styles from "@/shared/style/RecommendedProductsList.module.css";
 import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { DotButton, useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import DotCarousel from "@/shared/components/ui/DotCarousel";
 interface ProductProps {
   products: {
     title: string;
@@ -15,7 +16,10 @@ interface ProductProps {
   }[];
 }
 export default function RecommendedProductsList({ products }: ProductProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true ,slidesToScroll: 3}, [Autoplay()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, slidesToScroll: 3 },
+    [Autoplay()]
+  );
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
@@ -31,17 +35,11 @@ export default function RecommendedProductsList({ products }: ProductProps) {
             ))}
         </div>
       </div>
-      <div className={`embla__dots`}>
-        {scrollSnaps.map((_, index) => (
-          <DotButton
-            key={index}
-            onClick={() => onDotButtonClick(index)}
-            className={`embla__dot ${
-              index === selectedIndex ? "embla__dot__selected" : ""
-            }`}
-          />
-        ))}
-      </div>
+      <DotCarousel
+        scrollSnaps={scrollSnaps}
+        selectedIndex={selectedIndex}
+        onClick={onDotButtonClick}
+      ></DotCarousel>
     </div>
   );
 }
