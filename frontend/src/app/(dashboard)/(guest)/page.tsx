@@ -10,6 +10,7 @@ import { products } from "@/shared/constants/products-test";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import ProductDisplay from "@/shared/components/ui/ProductDisplay";
 import BannerImage from "@/shared/components/ui/BannerImage";
+import PromotionalBanners from "@/shared/components/ui/PromotionalBanners";
 
 const Home = () => {
   const setProducts = useSetRecoilState(productsState);
@@ -37,6 +38,7 @@ const Home = () => {
                 products={products}
                 title={"New Arrivals"}
               ></ProductDisplay>
+              <PromotionalBanners></PromotionalBanners>
             </main>
           </div>
         </div>
