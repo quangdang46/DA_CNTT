@@ -52,8 +52,14 @@ CREATE TABLE products (
 CREATE TABLE product_attributes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
-    attribute_name VARCHAR(255),
-    attribute_value VARCHAR(255),
+    operating_system VARCHAR(255),
+    chipset VARCHAR(255),
+    ram VARCHAR(255),
+    storage VARCHAR(255),
+    camera_resolution VARCHAR(255),
+    battery_capacity VARCHAR(255),
+    battery_type VARCHAR(255),
+    dimensions VARCHAR(255),
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
@@ -98,15 +104,17 @@ CREATE TABLE order_items (
 -- Bảng reviews
 CREATE TABLE reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    parent_id INT DEFAULT NULL,
     user_id INT,
     product_id INT,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
+    rating INT CHECK (rating IS NULL OR rating BETWEEN 1 AND 5),
     comment TEXT,
     status ENUM('pending', 'approved') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+
 );
 
 -- Bảng wishlist
@@ -122,11 +130,14 @@ CREATE TABLE wishlist (
 -- Bảng chats
 CREATE TABLE chats (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    device_id VARCHAR(255),
+    sender_id INT,
+    receiver_id INT DEFAULT NULL,
     message TEXT,
+    status ENUM('seen', 'unseen') DEFAULT 'unseen',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE
+
 );
 
 -- Bảng inventory
@@ -190,16 +201,29 @@ CREATE TABLE cart_items (
     FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
-
 -- Bảng discounts
 CREATE TABLE discounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    code VARCHAR(50),
+    code VARCHAR(50) UNIQUE,
     amount DECIMAL(10, 2),
     start_date TIMESTAMP,
-    end_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    end_date TIMESTAMP NULL DEFAULT NULL,  -- Allow NULL if end date is not set
     status ENUM('active', 'expired', 'disabled') DEFAULT 'active'
 );
+
+CREATE TABLE product_discounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    discount_id INT,
+    amount DECIMAL(10, 2),
+    start_date TIMESTAMP,
+    end_date TIMESTAMP NULL DEFAULT NULL,  -- Allow NULL if end date is not set
+    status ENUM('active', 'expired', 'disabled') DEFAULT 'active',
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (discount_id) REFERENCES discounts(id) ON DELETE CASCADE
+);
+
+
 
 -- Bảng order_discounts
 CREATE TABLE order_discounts (

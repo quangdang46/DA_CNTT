@@ -1,7 +1,7 @@
 import Star from "@/shared/components/icons/Star";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
-import RelatedProducts from "@/shared/components/ui/RelatedProducts";
+import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { products } from "@/shared/constants/products-test";
 import Image from "next/image";
@@ -157,18 +157,10 @@ const page = () => {
           </div>
         </div>
         {/* ///////////// */}
-        <div
-          className="tm-related-products-carousel section-products-carousel"
-          id="tm-related-products-carousel"
-        >
-          <section className="related">
-            <header className="section-header">
-              <h2 className="section-title">Related products</h2>
-              <nav className="custom-slick-nav"></nav>
-            </header>
-            <RelatedProducts products={products}></RelatedProducts>
-          </section>
-        </div>
+        <RecommendedProducts
+          title={"Related products"}
+          products={products}
+        ></RecommendedProducts>
         {/* ///////////// */}
         <BrandsCarousel></BrandsCarousel>
       </div>

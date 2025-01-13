@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import styles from "@/shared/style/RelatedProducts.module.css";
+import styles from "@/shared/style/RecommendedProductsList.module.css";
 import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -14,7 +14,7 @@ interface ProductProps {
     imageUrl: string;
   }[];
 }
-export default function RelatedProducts({ products }: ProductProps) {
+export default function RecommendedProductsList({ products }: ProductProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true ,slidesToScroll: 3}, [Autoplay()]);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =

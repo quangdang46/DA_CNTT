@@ -1,10 +1,10 @@
 "use client";
-import useEmblaCarousel from "embla-carousel-react";
 import React from "react";
 import styles from "@/shared/style/ProductsCarousel.module.css";
 import { DotButton, useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
-import Autoplay from "embla-carousel-autoplay";
 import ProductCard from "@/shared/components/ui/ProductCard";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 interface DealsCarouselProps {
   products: {
     title: string;
