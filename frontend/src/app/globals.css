@@ -30490,7 +30490,7 @@ article .products-carousel-with-bg .products .product .more-link {
   .products .landscape-product.product a::before {
     content: " ";
     width: 1px;
-    height: 84px;
+    height: 100%;
     background-color: #ebebeb;
     display: block;
     position: absolute;

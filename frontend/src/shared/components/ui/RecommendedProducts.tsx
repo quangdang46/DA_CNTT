@@ -6,7 +6,7 @@ export default function RecommendedProducts({
   title = "Related products",
   products,
 }: {
-  title: string | null;
+  title?: string | null;
   products: Product[];
 }) {
   return (

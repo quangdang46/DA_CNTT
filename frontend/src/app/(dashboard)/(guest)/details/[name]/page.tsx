@@ -157,10 +157,7 @@ const page = () => {
           </div>
         </div>
         {/* ///////////// */}
-        <RecommendedProducts
-          title={"Related products"}
-          products={products}
-        ></RecommendedProducts>
+        <RecommendedProducts products={products}></RecommendedProducts>
         {/* ///////////// */}
         <BrandsCarousel></BrandsCarousel>
       </div>

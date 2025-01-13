@@ -8,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { productsState } from "@/shared/state/atoms";
 import { products } from "@/shared/constants/products-test";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
+import ProductDisplay from "@/shared/components/ui/ProductDisplay";
 
 const Home = () => {
   const setProducts = useSetRecoilState(productsState);
@@ -30,6 +31,10 @@ const Home = () => {
                 products={products}
                 title={"Hot Best Sellers"}
               ></RecommendedProducts>
+              <ProductDisplay 
+                products={products}
+                title={"New Arrivals"}
+              ></ProductDisplay>
             </main>
           </div>
         </div>

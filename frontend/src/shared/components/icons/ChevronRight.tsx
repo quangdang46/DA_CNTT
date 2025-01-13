@@ -3,12 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import IconType from "@/shared/types/IconTypes";
 
-export default function ChevronRight({ color = "black", size = "1x" }: IconType) {
+export default function ChevronRight({
+  color = "black",
+  size = "1x",
+  className,
+}: IconType) {
   return (
     <FontAwesomeIcon
       icon={faChevronRight}
       size={size}
       color={color}
+      className={className}
     ></FontAwesomeIcon>
   );
 }

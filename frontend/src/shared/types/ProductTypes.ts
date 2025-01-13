@@ -5,4 +5,5 @@ export interface Product {
   originalPrice: number;
   savedAmount: number;
   imageUrl: string;
+  rating: number;
 }
