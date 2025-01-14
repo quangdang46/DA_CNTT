@@ -1,4 +1,3 @@
-import { DotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import React from "react";
 interface DotCarousel {
   onClick: (index: number) => void;
@@ -12,16 +11,30 @@ export default function DotCarousel({
   selectedIndex,
 }: DotCarousel) {
   return (
-    <div className={`embla__dots`}>
+    // <div className={`embla__dots`}>
+    //   {scrollSnaps.map((_, index) => (
+    //     <DotButton
+    //       key={index}
+    //       onClick={() => onClick(index)}
+    //       className={`embla__dot ${
+    //         index === selectedIndex ? "embla__dot__selected" : ""
+    //       }`}
+    //     />
+    //   ))}
+    // </div>
+
+    <ul className="embla__dots">
       {scrollSnaps.map((_, index) => (
-        <DotButton
+        <li
           key={index}
-          onClick={() => onClick(index)}
           className={`embla__dot ${
             index === selectedIndex ? "embla__dot__selected" : ""
           }`}
-        />
+          onClick={() => onClick(index)}
+        >
+          <button className="embla__dot__button">{index + 1}</button>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
