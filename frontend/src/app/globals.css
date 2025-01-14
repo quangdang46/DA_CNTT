@@ -30636,14 +30636,7 @@ article .products .landscape-product-card .more-link {
     display: none;
   }
 }
-.products
-  .landscape-product-card
-  .yith-wcwl-add-to-wishlist
-  .add_to_wishlist::before {
-  content: "\6b";
-  font-family: "techmarket-icons";
-  color: #444;
-}
+
 @media (min-width: 768px) {
   .landscape-full-product-cards-carousel .products .landscape-product-card {
     margin-bottom: 1.441em;
@@ -30654,12 +30647,7 @@ article .products .landscape-product-card .more-link {
     height: 283px;
   }
 }
-.landscape-full-product-cards-carousel
-  .products
-  .landscape-product-card
-  .media {
-  padding: 2em 1.643em 1.6em 0.929em;
-}
+
 @media (max-width: 575px) {
   .landscape-full-product-cards-carousel
     .products
@@ -30945,33 +30933,7 @@ article .products .landscape-product-card .more-link {
     padding-top: 0;
   }
 }
-.section-landscape-full-product-cards-carousel
-  .landscape-full-product-cards-carousel
-  .products
-  .landscape-product-card
-  + .landscape-product-card {
-  padding-left: 0.7145em;
-  padding-right: 0;
-}
-@media (max-width: 767px) {
-  .section-landscape-full-product-cards-carousel
-    .landscape-full-product-cards-carousel
-    .products
-    .landscape-product-card
-    + .landscape-product-card {
-    padding-left: 0;
-  }
-}
-@media (max-width: 767px) {
-  .section-landscape-full-product-cards-carousel
-    .landscape-full-product-cards-carousel
-    .products
-    .slick-slide
-    > div
-    + div {
-    display: none;
-  }
-}
+
 .products .landscape-product-widget {
   border: none;
   padding: 0 0 2.857em 0;
@@ -34182,22 +34144,7 @@ form.track_order input[type="submit"] {
   text-indent: -99999px;
   display: block;
 }
-.yith-wcwl-add-to-wishlist .add_to_wishlist::before {
-  content: "\6b";
-  font-family: "techmarket-icons";
-  position: absolute;
-  top: 8px;
-  right: 14px;
-  text-indent: 0;
-  color: #444;
-  font-size: 1.429em;
-}
-@media (max-width: 1169px) {
-  .yith-wcwl-add-to-wishlist .add_to_wishlist::before {
-    left: 14px;
-    right: auto;
-  }
-}
+
 .yith-wcwl-add-to-wishlist {
   display: none;
 }

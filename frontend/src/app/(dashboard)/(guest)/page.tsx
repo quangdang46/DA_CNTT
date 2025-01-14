@@ -4,19 +4,22 @@ import HomePageSlider from "@/shared/components/ui/HomePageSlider";
 import NoticeBanner from "@/shared/components/ui/NoticeBanner";
 import DealsCarousel from "@/shared/components/ui/DealsCarousel";
 import React, { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { productsState } from "@/shared/state/atoms";
 import { products } from "@/shared/constants/products-test";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import ProductDisplay from "@/shared/components/ui/ProductDisplay";
 import BannerImage from "@/shared/components/ui/BannerImage";
 import PromotionalBanners from "@/shared/components/ui/PromotionalBanners";
+import LandscapeFullProductCardsCarousel from "@/shared/components/layouts/LandscapeFullProductCardsCarousel";
+import { useDispatch } from "react-redux";
+import { setProducts } from "@/shared/state/productsSlice";
 
 const Home = () => {
-  const setProducts = useSetRecoilState(productsState);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    setProducts(products); // Cập nhật giá trị của `products`
-  }, []);
+    dispatch(setProducts(products)); // Cập nhật giá trị của `products` trong Redux store
+  }, [dispatch, products]);
+
   return (
     <div id="content" className="site-content">
       <div className="col-full">
@@ -39,6 +42,7 @@ const Home = () => {
                 title={"New Arrivals"}
               ></ProductDisplay>
               <PromotionalBanners></PromotionalBanners>
+              <LandscapeFullProductCardsCarousel></LandscapeFullProductCardsCarousel>
             </main>
           </div>
         </div>

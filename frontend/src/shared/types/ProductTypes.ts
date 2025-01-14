@@ -1,9 +1,9 @@
 // src/types/Product.ts
-export interface Product {
+export type Product = {
   title: string;
   price: number;
   originalPrice: number;
   savedAmount: number;
   imageUrl: string;
   rating: number;
-}
+};
