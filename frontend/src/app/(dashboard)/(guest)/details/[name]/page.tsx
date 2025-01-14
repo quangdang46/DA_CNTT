@@ -1,4 +1,5 @@
 import Star from "@/shared/components/icons/Star";
+import ProductTabs from "@/shared/components/layouts/ProductTabs";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
@@ -160,6 +161,8 @@ const page = () => {
         <RecommendedProducts products={products}></RecommendedProducts>
         {/* ///////////// */}
         <BrandsCarousel></BrandsCarousel>
+
+        <ProductTabs></ProductTabs>
       </div>
     </WrapperContent>
   );

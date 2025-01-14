@@ -91,8 +91,9 @@ const GalleryImages = () => {
                 >
                   <div tabIndex={index === 0 ? 0 : -1}>
                     <Image
-                      width="600"
-                      height="600"
+                      width={0}
+                      height={0}
+                      style={{ width: "600px", height: "600px" ,objectFit:"cover"}} // optional
                       src={image.big}
                       className="attachment-shop_single size-shop_single wp-post-image"
                       alt=""

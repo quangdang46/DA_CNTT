@@ -24747,7 +24747,7 @@ p.available-on-backorder {
   th {
   color: #555353;
   display: block;
-  font-weight: 500;
+  font-weight: bold;
   text-transform: capitalize;
 }
 #tab-specification .columns-1 table.shop_attributes tbody tr {
