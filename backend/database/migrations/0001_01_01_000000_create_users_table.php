@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->string('phone')->nullable(); // Số điện thoại
+            $table->enum('role', ['guest', 'employee', 'admin']);
+            $table->integer('loyalty_points')->default(0); // Điểm tích lũy
             $table->rememberToken();
             $table->timestamps();
         });
