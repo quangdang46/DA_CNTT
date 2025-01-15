@@ -54,12 +54,11 @@ class AuthController extends Controller
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $status = Password::sendResetLink($request->only('email'));
-
         if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Password reset link sent']);
+            return response()->json(['message' => 'Password reset link sent'], 200);
         }
 
-        return response()->json(['message' => 'Unable to send reset link'], 500);
+        return response()->json(['message' => 'Unable to send reset link'], 400);
     }
 
     /**
@@ -76,10 +75,10 @@ class AuthController extends Controller
         );
 
         if ($status === Password::PASSWORD_RESET) {
-            return response()->json(['message' => 'Password reset successful']);
+            return response()->json(['message' => 'Password reset successful'], 200);
         }
 
-        return response()->json(['message' => 'Password reset failed'], 500);
+        return response()->json(['message' => 'Password reset failed', 'error' => $status], 400);
     }
 
     /**
