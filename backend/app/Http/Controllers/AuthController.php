@@ -29,7 +29,13 @@ class AuthController extends Controller
         $data = $request->only(['name', 'email', 'password']);
         $user = $this->userRepository->createUser($data);
 
-        return response()->json(['user' => $user, 'message' => 'Registration successful'], 201);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Registration successful',
+            'data' => [
+                'user' => $user
+            ]
+        ], 201);
     }
 
     /**
@@ -40,12 +46,24 @@ class AuthController extends Controller
         $user = $this->userRepository->authenticate($request->email, $request->password);
 
         if (!$user) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid credentials',
+                'data' => null
+            ], 401);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['user' => $user, 'token' => $token]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Login successful',
+            'data' => [
+                'user' => $user->only(['id', 'name', 'email', 'role']),
+                'token' => $token,
+                'role' => $user->role
+            ]
+        ]);
     }
 
     /**
@@ -53,12 +71,29 @@ class AuthController extends Controller
      */
     public function forgotPassword(ForgotPasswordRequest $request)
     {
-        $status = Password::sendResetLink($request->only('email'));
-        if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Password reset link sent'], 200);
+        $user = $this->userRepository->getUserByEmail($request->email);
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+                'data' => null
+            ], 404);
         }
 
-        return response()->json(['message' => 'Unable to send reset link'], 400);
+        $status = Password::sendResetLink($request->only('email'));
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password reset link sent',
+                'data' => null
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unable to send reset link',
+            'data' => null
+        ], 400);
     }
 
     /**
@@ -66,19 +101,36 @@ class AuthController extends Controller
      */
     public function resetPassword(ResetPasswordRequest $request)
     {
+        if ($request->password !== $request->password_confirmation) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Passwords do not match',
+                'data' => null
+            ], 400);
+        }
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
+
                 $user->password = Hash::make($password);
                 $user->save();
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
-            return response()->json(['message' => 'Password reset successful'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password reset successful',
+                'data' => null
+            ], 200);
         }
 
-        return response()->json(['message' => 'Password reset failed', 'error' => $status], 400);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Password reset failed',
+            'errors' => ['error' => $status],
+            'data' => null
+        ], 400);
     }
 
     /**
@@ -88,6 +140,10 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully',
+            'data' => null
+        ]);
     }
 }

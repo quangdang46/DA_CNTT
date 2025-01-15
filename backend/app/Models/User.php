@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone', // Thêm số điện thoại vào fillable
+        'role',  // Thêm vai trò vào fillable
+        'loyalty_points', // Thêm điểm tích lũy vào fillable
     ];
 
     /**
