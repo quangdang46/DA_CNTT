@@ -12,9 +12,6 @@ class UserController extends Controller
     public function index()
     {
         //
-        return [
-            'name' => 'John Doe',
-        ];
     }
 
     /**
