@@ -2,7 +2,6 @@
 import ProductDescription from "@/shared/components/ui/ProductDescription";
 import ProductReview from "@/shared/components/ui/ProductReview";
 import ProductSpecification from "@/shared/components/ui/ProductSpecification";
-import Link from "next/link";
 import React, { useState } from "react";
 
 export default function ProductTabs() {
@@ -50,41 +49,41 @@ export default function ProductTabs() {
     <div className="woocommerce-tabs wc-tabs-wrapper">
       <ul role="tablist" className="nav tabs wc-tabs">
         <li className="nav-item description_tab">
-          <Link
+          <div
             className={`nav-link ${
               activeTab === "description" ? "active" : ""
             }`}
             onClick={() => handleTabClick("description")}
             role="tab"
             aria-controls="tab-description"
-            href={"#"}
+            style={{ cursor: "pointer" }}
           >
             Description
-          </Link>
+          </div>
         </li>
         <li className="nav-item specification_tab">
-          <Link
+          <div
             className={`nav-link ${
               activeTab === "specification" ? "active" : ""
             }`}
             onClick={() => handleTabClick("specification")}
             role="tab"
-            href={"#"}
+            style={{ cursor: "pointer" }}
             aria-controls="tab-specification"
           >
             Specification
-          </Link>
+          </div>
         </li>
         <li className="nav-item reviews_tab">
-          <Link
+          <div
             className={`nav-link ${activeTab === "reviews" ? "active" : ""}`}
             onClick={() => handleTabClick("reviews")}
             role="tab"
-            href={"#"}
+            style={{ cursor: "pointer" }}
             aria-controls="tab-reviews"
           >
             Reviews (1)
-          </Link>
+          </div>
         </li>
       </ul>
       <div className="tab-content">

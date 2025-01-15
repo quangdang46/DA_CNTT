@@ -23339,7 +23339,7 @@ table.shop_table_responsive.my_account_orders .order-actions:before {
 .single-product .techmarket-tabs .tm-tabs li {
   border-bottom: none;
 }
-.single-product .woocommerce-tabs .wc-tabs li a,
+.single-product .woocommerce-tabs .wc-tabs li div,
 .single-product .woocommerce-tabs .tm-tabs li a,
 .single-product .techmarket-tabs .wc-tabs li a,
 .single-product .techmarket-tabs .tm-tabs li a {
@@ -23347,7 +23347,7 @@ table.shop_table_responsive.my_account_orders .order-actions:before {
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  .single-product .woocommerce-tabs .wc-tabs li a,
+  .single-product .woocommerce-tabs .wc-tabs li div,
   .single-product .woocommerce-tabs .tm-tabs li a,
   .single-product .techmarket-tabs .wc-tabs li a,
   .single-product .techmarket-tabs .tm-tabs li a {
@@ -28250,7 +28250,7 @@ p.stars.selected a:not(.active):before {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
 }
-.woocommerce-tabs ul.tabs li a,
+.woocommerce-tabs ul.tabs li div,
 .woocommerce-tabs .tm-tabs li a,
 .techmarket-tabs ul.tabs li a,
 .techmarket-tabs .tm-tabs li a {
@@ -34205,7 +34205,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
   background-color: #f9cc00; }
 
 
-.price, .features-list .feature i, .wcv-header-container ~ h3 a, .section-recent-posts-with-categories .post-items .post-item .post-info .btn-more, .section-products-with-image .load-more-button, .single-product .woocommerce-tabs .wc-tabs li.active a, .single-product .techmarket-tabs .tm-tabs li.active a, #respond.comment-respond .comment-form .form-submit input[type=submit], #respond.comment-respond .comment-form > p.logged-in-as a, .banner-action.button, .commentlist .comment .reply a, .pings-list .comment .reply a, .products .product .added_to_cart, .products .product .button, .full-width-banner .banner-bg .button, article.post.category-more-tag a[target=_blank], .commentlist .comment #respond .comment-reply-title small a, .commentlist .pingback #respond .comment-reply-title small a, .pings-list .comment #respond .comment-reply-title small a, .pings-list .pingback #respond .comment-reply-title small a, article.post.format-link .entry-content p a, article .post-readmore .btn-primary, article.post .post-readmore .btn-primary, .table-compare tbody tr td .button, .return-to-shop .button, .wcmp_main_page .wcmp_main_menu ul li a.active, .wcmp_main_page .wcmp_main_menu ul li a:hover, .wcmp_main_page .wcmp_displaybox2 h3, .wcmp_main_page .wcmp_displaybox3 h3, .widget_techmarket_poster_widget .poster-bg .caption .button:hover, .single-product .accessories .products .product .accessory-checkbox label input, .cart-collaterals .shop-features li i, .single-product .single_add_to_cart_button, .banners .banner .banner-bg .caption .price, .features-list .features .feature .media .feature-icon, .section-recent-posts-with-categories .nav .nav-link, #secondary.sidebar-blog .widget_recent_comments ul li.recentcomments a, .footer-widgets.sidebar-blog .widget_recent_comments ul li.recentcomments a, .widget_techmarket_banner_widget .banner .banner-bg .caption .price, #secondary .widget.widget_rss li .rsswidget, .footer-widgets .widget.widget_rss li .rsswidget, .single-product .accessories .accessories-product-total-price .accessories-add-all-to-cart .button, .wcmp_main_page .wcmp_main_holder .wcmp_dashboard_display_box h3, .site-content .home-v9-slider .slider-1 .button, .single-product .woocommerce-tabs .wc-tabs li a.active, .single-product .techmarket-tabs .tm-tabs li a.active, .home-v1-slider .slider-1 .button, .home-v2-slider .slider-1 .button, .home-v3-slider .slider-1 .button, .home-v4-slider .slider-1 .button, .home-v5-slider .slider-1 .button, .home-v6-slider .slider-1 .button, .home-v9-slider .slider-1 .button, .home-v11-slider .slider-1 .button, .home-v12-slider .slider-1 .button, .landing-v1-slider .slider-1 .button, .landing-v2-slider .slider-1 .button, .site-content .home-v6-slider .slider-1 .caption .offer-price {
+.price, .features-list .feature i, .wcv-header-container ~ h3 a, .section-recent-posts-with-categories .post-items .post-item .post-info .btn-more, .section-products-with-image .load-more-button, .single-product .woocommerce-tabs .wc-tabs li.active a, .single-product .techmarket-tabs .tm-tabs li.active a, #respond.comment-respond .comment-form .form-submit input[type=submit], #respond.comment-respond .comment-form > p.logged-in-as a, .banner-action.button, .commentlist .comment .reply a, .pings-list .comment .reply a, .products .product .added_to_cart, .products .product .button, .full-width-banner .banner-bg .button, article.post.category-more-tag a[target=_blank], .commentlist .comment #respond .comment-reply-title small a, .commentlist .pingback #respond .comment-reply-title small a, .pings-list .comment #respond .comment-reply-title small a, .pings-list .pingback #respond .comment-reply-title small a, article.post.format-link .entry-content p a, article .post-readmore .btn-primary, article.post .post-readmore .btn-primary, .table-compare tbody tr td .button, .return-to-shop .button, .wcmp_main_page .wcmp_main_menu ul li a.active, .wcmp_main_page .wcmp_main_menu ul li a:hover, .wcmp_main_page .wcmp_displaybox2 h3, .wcmp_main_page .wcmp_displaybox3 h3, .widget_techmarket_poster_widget .poster-bg .caption .button:hover, .single-product .accessories .products .product .accessory-checkbox label input, .cart-collaterals .shop-features li i, .single-product .single_add_to_cart_button, .banners .banner .banner-bg .caption .price, .features-list .features .feature .media .feature-icon, .section-recent-posts-with-categories .nav .nav-link, #secondary.sidebar-blog .widget_recent_comments ul li.recentcomments a, .footer-widgets.sidebar-blog .widget_recent_comments ul li.recentcomments a, .widget_techmarket_banner_widget .banner .banner-bg .caption .price, #secondary .widget.widget_rss li .rsswidget, .footer-widgets .widget.widget_rss li .rsswidget, .single-product .accessories .accessories-product-total-price .accessories-add-all-to-cart .button, .wcmp_main_page .wcmp_main_holder .wcmp_dashboard_display_box h3, .site-content .home-v9-slider .slider-1 .button, .single-product .woocommerce-tabs .wc-tabs li div.active, .single-product .techmarket-tabs .tm-tabs li a.active, .home-v1-slider .slider-1 .button, .home-v2-slider .slider-1 .button, .home-v3-slider .slider-1 .button, .home-v4-slider .slider-1 .button, .home-v5-slider .slider-1 .button, .home-v6-slider .slider-1 .button, .home-v9-slider .slider-1 .button, .home-v11-slider .slider-1 .button, .home-v12-slider .slider-1 .button, .landing-v1-slider .slider-1 .button, .landing-v2-slider .slider-1 .button, .site-content .home-v6-slider .slider-1 .caption .offer-price {
   color: #ffd40e; }
 
 #secondary.sidebar-blog .widget_recent_comments ul li.recentcomments a:hover, .footer-widgets.sidebar-blog .widget_recent_comments ul li.recentcomments a:hover, #secondary .widget.widget_rss li .rsswidget:hover, .footer-widgets .widget.widget_rss li .rsswidget:hover {
