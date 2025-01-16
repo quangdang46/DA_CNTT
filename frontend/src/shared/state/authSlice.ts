@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import envConfig from "@/shared/config/config";
+import apiClient from "@/shared/config/apiClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const API_URL = envConfig.NEXT_PUBLIC_API_ENDPOINT;
-
+import { setCookie } from "cookies-next";
 interface AuthState {
   user: Record<string, any> | null;
   token: string | null;
@@ -28,9 +25,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, credentials);
-      console.log(response.data);
-      return response.data.data; // Trả về dữ liệu user và token
+      const response = await apiClient.post(`/auth/login`, credentials);
+      const { token, user } = response.data.data;
+      setCookie("auth_token", token, { maxAge: 7 * 24 * 60 * 60, path: "/" });
+      console.log("login response", response);
+      return { user, token }; // Trả về dữ liệu user và token
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message || "Login failed");
     }
@@ -42,7 +41,7 @@ export const register = createAsyncThunk(
   "auth/register",
   async (data: RegisterData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, data);
+      const response = await apiClient.post(`/auth/register`, data);
       console.log("response", response);
       return response.data.data; // Trả về dữ liệu user
     } catch (error: any) {
@@ -59,11 +58,13 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const { auth }: { auth: AuthState } = getState() as { auth: AuthState }; // Lấy token từ state
-      await axios.post(
-        `${API_URL}/auth/logout`,
+      await apiClient.post(
+        `/auth/logout`,
         {},
         {
-          headers: { Authorization: `Bearer ${auth.token}` },
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
         }
       );
       return true; // Trả về trạng thái đăng xuất thành công
