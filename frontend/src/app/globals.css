@@ -27600,8 +27600,8 @@ article .woocommerce-MyAccount-downloads .more-link {
     padding-left: 15px;
   }
 }
-.customer-login-form form.login input[type="submit"],
-.customer-login-form form.register input[type="submit"] {
+.customer-login-form form.login button[type="submit"],
+.customer-login-form form.register button[type="submit"] {
   font-size: 0.938em;
   padding: 0.867em 5em;
   border-radius: 1.667em;
@@ -27628,7 +27628,7 @@ article .woocommerce-MyAccount-downloads .more-link {
     padding-left: 15px;
   }
 }
-.customer-login-form form input.woocommerce-Button {
+.customer-login-form form button.woocommerce-Button {
   margin-bottom: 1.333em;
   margin-top: 0.625em;
 }
