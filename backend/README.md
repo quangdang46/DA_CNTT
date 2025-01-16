@@ -2,10 +2,11 @@
 GET /api/products/search: Tìm kiếm sản phẩm theo từ khóa.
 GET /api/products/filter: Lọc sản phẩm theo các tiêu chí (loại sản phẩm, giá, thương hiệu, hệ điều hành, RAM, bộ nhớ trong, camera, v.v.).
 GET /api/products/{id}: Lấy thông tin chi tiết của sản phẩm (mô tả, thông số kỹ thuật, hình ảnh, đánh giá, bảo hành, đổi trả).
-POST /api/products/compare: Thêm sản phẩm vào danh sách so sánh.
-GET /api/products/compare: Lấy danh sách sản phẩm so sánh.
 GET /api/products/new: Lấy danh sách các sản phẩm mới cập nhật.
-GET /api/products: Lấy danh sách tất cả sản phẩm (dành cho quản trị viên, nhân viên).
+GET /api/products
+
+
+
 2. CartController (Quản lý giỏ hàng)
 GET /api/cart: Lấy thông tin giỏ hàng (lưu trữ local).
 POST /api/cart: Thêm sản phẩm vào giỏ hàng.
@@ -61,6 +62,9 @@ PUT /api/vendor/products/{id}: Cập nhật thông tin sản phẩm của bên b
 GET /api/vendor/orders: Lấy danh sách đơn hàng của bên bán.
 GET /api/vendor/inventory: Kiểm tra tình trạng kho của bên bán.
 PUT /api/vendor/inventory/{productId}: Cập nhật số lượng kho của sản phẩm.
+
+
+
 14. AuthController (Quản lý xác thực người dùng)
 POST /api/auth/register: Đăng ký tài khoản người dùng.
 POST /api/auth/login: Đăng nhập người dùng.

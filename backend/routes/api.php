@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,4 +14,12 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);  // Đăng xuất
     });
+});
+
+Route::prefix("products")->group(function () {
+    Route::get('search', [ProductController::class, 'search']);
+    Route::get('filter', [ProductController::class, 'filter']);
+    Route::get('{id}', [ProductController::class, 'show']);
+    Route::get('new', [ProductController::class, 'new']);
+    Route::get('/', [ProductController::class, 'index']);
 });
