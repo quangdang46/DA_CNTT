@@ -30,7 +30,7 @@ class ProductController extends Controller
         // Trả về danh sách sản phẩm (có thể là JSON)
         return response()->json([
             "status" => "success",
-            "message" => "Danh sách san pham",
+            "message" => "Danh sách san pham tat ca",
             "data" => $products,
 
         ]);
@@ -45,7 +45,7 @@ class ProductController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Danh sách san pham",
+            "message" => "Danh sách san pham search",
             "data" => $products,
 
         ]);
@@ -56,7 +56,7 @@ class ProductController extends Controller
         $product = $this->productService->findById($id);
         return response()->json([
             "status" => "success",
-            "message" => "Danh sach san pham",
+            "message" => "Danh sach san pham id",
             "data" => $product,
         ]);
     }
@@ -66,7 +66,7 @@ class ProductController extends Controller
         $products = $this->productService->getNewProducts();
         return response()->json([
             "status" => "success",
-            "message" => "Danh sach san pham",
+            "message" => "Danh sach san pham moi 2321321331",
             "data" => $products,
         ]);
     }
