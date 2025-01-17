@@ -4,9 +4,8 @@ namespace App\Repositories\Interfaces;
 
 interface ProductRepositoryInterface
 {
-    public function search($keyword);
-    public function filter($filters);
+    public function getAllProducts($perPage = null);
+    public function search($params);
     public function findById($id);
     public function getNewProducts();
-    public function getAllProducts();
 }

@@ -6,43 +6,55 @@ use App\Models\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
-class ProductRepository implements ProductRepositoryInterface
+class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
-    public function search($keyword)
+    public function __construct(Product $model)
     {
-        return Product::where('name', 'like', "%$keyword%")->get();
+        parent::__construct($model);
     }
 
-    public function filter($filters)
+    public function getAllProducts($perPage = null)
+    {
+        if (!$perPage) {
+            return $this->model->all();
+        }
+        return $this->model->paginate($perPage);
+    }
+
+    public function search($params)
     {
         $query = Product::query();
 
-        if (isset($filters['category'])) {
-            $query->where('category_id', $filters['category']);
+        // Kiểm tra và áp dụng tìm kiếm theo tên sản phẩm
+        if (!empty($params['keyword'])) {
+            $query->where('name', 'like', '%' . $params['keyword'] . '%');
         }
-        if (isset($filters['price_min'])) {
-            $query->where('price', '>=', $filters['price_min']);
-        }
-        if (isset($filters['price_max'])) {
-            $query->where('price', '<=', $filters['price_max']);
-        }
-        // Thêm các điều kiện lọc khác nếu cần
 
+        // Kiểm tra và áp dụng lọc theo danh mục
+        if (!empty($params['category'])) {
+            $query->where('category_id', $params['category']);
+        }
+
+        // Kiểm tra và áp dụng lọc theo giá tối thiểu
+        if (!empty($params['price_min'])) {
+            $query->where('price', '>=', $params['price_min']);
+        }
+
+        // Kiểm tra và áp dụng lọc theo giá tối đa
+        if (!empty($params['price_max'])) {
+            $query->where('price', '<=', $params['price_max']);
+        }
+
+        // Thực thi truy vấn và trả kết quả
         return $query->get();
     }
-
     public function findById($id)
     {
-        return Product::findOrFail($id);
+        return $this->model->find($id);
     }
 
     public function getNewProducts()
     {
-        return Product::where('created_at', '>=', now()->subDays(30))->get();
-    }
-
-    public function getAllProducts()
-    {
-        return Product::all();
+        return $this->model->where('created_at', '>=', now()->subDays(30))->get();
     }
 }

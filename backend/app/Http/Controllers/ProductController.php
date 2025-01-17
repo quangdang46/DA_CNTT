@@ -2,51 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $productRepository;
+    protected $productService;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(ProductService $productService)
     {
-        $this->productRepository = $productRepository;
+        $this->productService = $productService;
+    }
+
+    public function index(Request $request)
+    {
+        $perPage = $request->query('per_page', 15);
+
+        $products = $this->productService->getAllProducts($perPage);
+
+        // Trả về danh sách sản phẩm (có thể là JSON)
+        return response()->json([
+            "status" => "success",
+            "message" => "Danh sách san pham",
+            "data" => $products,
+
+        ]);
     }
 
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $products = $this->productRepository->search($keyword);
-        return response()->json($products);
-    }
+        // Lấy tất cả tham số từ request
+        $params = $request->only(['keyword', 'category', 'price_min', 'price_max']);
 
-    public function filter(Request $request)
-    {
-        $filters = $request->all();
-        $products = $this->productRepository->filter($filters);
-        return response()->json($products);
-    }
+        $products = $this->productService->search($params);
 
-    public function show($id)
-    {
-        $product = $this->productRepository->findById($id);
-        return response()->json($product);
-    }
-
-    public function new()
-    {
-        $products = $this->productRepository->getNewProducts();
-        return response()->json($products);
-    }
-
-    public function index()
-    {
-        $products = $this->productRepository->getAllProducts();
         return response()->json([
             "status" => "success",
-            "message" => "Lấy danh sách sản phẩm thành công",
-            "data" => $products
+            "message" => "Danh sách san pham",
+            "data" => $products,
+
+        ]);
+    }
+
+    public function findById($id)
+    {
+        $product = $this->productService->findById($id);
+        return response()->json([
+            "status" => "success",
+            "message" => "Danh sach san pham",
+            "data" => $product,
+        ]);
+    }
+
+    public function getNewProducts()
+    {
+        $products = $this->productService->getNewProducts();
+        return response()->json([
+            "status" => "success",
+            "message" => "Danh sach san pham",
+            "data" => $products,
         ]);
     }
 }
