@@ -22,4 +22,13 @@ class Product extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
 }

@@ -15,10 +15,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function getAllProducts($perPage = null)
     {
+        // Nếu không có tham số $perPage, trả về tất cả sản phẩm kèm theo các mối quan hệ
         if (!$perPage) {
-            return $this->model->all();
+            return $this->model->with(['images', 'attributes'])->get();
         }
-        return $this->model->paginate($perPage);
+
+        // Nếu có tham số $perPage, trả về sản phẩm phân trang kèm theo các mối quan hệ
+        return $this->model->with(['images', 'attributes'])->paginate($perPage);
     }
 
     public function search($params)
@@ -44,17 +47,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (!empty($params['price_max'])) {
             $query->where('price', '<=', $params['price_max']);
         }
-
+        // Eager load các mối quan hệ images và attributes
+        $query->with(['images', 'attributes']);
         // Thực thi truy vấn và trả kết quả
         return $query->get();
     }
     public function findById($id)
     {
-        return $this->model->find($id);
+        return $this->model->with(['attributes', 'images'])->find($id);
     }
 
     public function getNewProducts()
     {
-        return $this->model->where('created_at', '>=', now()->subDays(30))->get();
+        return $this->model->with(['attributes', 'images'])
+        ->where('created_at', '>=', now()->subDays(30))
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }
