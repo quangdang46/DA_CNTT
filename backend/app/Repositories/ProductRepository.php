@@ -23,7 +23,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function search($params)
     {
-        $query = Product::query();
+        $query = $this->model->query();
 
         // Kiểm tra và áp dụng tìm kiếm theo tên sản phẩm
         if (!empty($params['keyword'])) {

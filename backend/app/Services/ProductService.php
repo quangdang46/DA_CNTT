@@ -13,7 +13,7 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAllProducts($perPage = 15)
+    public function getAllProducts($perPage = 1)
     {
         // Gọi repository để lấy danh sách sản phẩm có phân trang
         return $this->productRepository->getAllProducts($perPage);

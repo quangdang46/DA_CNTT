@@ -18,7 +18,6 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix("products")->group(function () {
     Route::get('search', [ProductController::class, 'search']);
-    Route::get('filter', [ProductController::class, 'filter']);
     Route::get('{id}', [ProductController::class, 'show']);
     Route::get('new', [ProductController::class, 'new']);
     Route::get('/', [ProductController::class, 'index']);

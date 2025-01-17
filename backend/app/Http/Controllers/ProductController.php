@@ -16,7 +16,14 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->query('per_page', 15);
+        $perPage = $request->query('per_page', null);
+        // Kiểm tra giá trị perPage hợp lệ (chỉ cho phép số dương)
+        if ($perPage !== null && $perPage <= 0) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Giá trị phân trang không hợp lệ",
+            ], 400);
+        }
 
         $products = $this->productService->getAllProducts($perPage);
 
@@ -44,7 +51,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function findById($id)
+    public function show($id)
     {
         $product = $this->productService->findById($id);
         return response()->json([
@@ -54,7 +61,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getNewProducts()
+    public function new()
     {
         $products = $this->productService->getNewProducts();
         return response()->json([
