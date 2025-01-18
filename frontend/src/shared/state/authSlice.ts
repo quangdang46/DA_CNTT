@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiClient from "@/shared/config/apiClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 interface AuthState {
   user: Record<string, any> | null;
   token: string | null;
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
       const response = await apiClient.post(`/auth/login`, credentials);
       const { token, user } = response.data.data;
       setCookie("auth_token", token, { maxAge: 7 * 24 * 60 * 60, path: "/" });
-      console.log("login response", response);
+
       return { user, token }; // Trả về dữ liệu user và token
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message || "Login failed");
@@ -42,7 +42,6 @@ export const register = createAsyncThunk(
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/auth/register`, data);
-      console.log("response", response);
       return response.data.data; // Trả về dữ liệu user
     } catch (error: any) {
       return rejectWithValue(
@@ -74,6 +73,26 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const fetchUserData = createAsyncThunk(
+  "auth/fetchUserData",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { auth }: { auth: AuthState } = getState() as { auth: AuthState };
+      const token = auth.token || getCookie("auth_token");
+      if (!token) throw new Error("Token not found");
+      console.log("Token:", token);
+      const response = await apiClient.get(`/auth/me`);
+      console.log("Response data:", response.data);
+      return response.data.data.user; // Trả về thông tin người dùng
+    } catch (error: any) {
+      console.log("Error fetching user data:", error);
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to fetch user data"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -84,6 +103,7 @@ const authSlice = createSlice({
   } as AuthState,
   reducers: {
     setAuth(state, action) {
+      console.log("action.payload setAuth", action.payload);
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
@@ -127,6 +147,20 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+      })
+
+      // Xử lý fetchUserData
+      .addCase(fetchUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

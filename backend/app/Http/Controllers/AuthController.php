@@ -20,7 +20,26 @@ class AuthController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+    public function me(Request $request)
+    {
+        // Kiểm tra xem người dùng có được xác thực không
+        if (!$request->user()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ], 401);
+        }
 
+        // Trả về thông tin người dùng đã đăng nhập
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User information',
+            'data' => [
+                'user' => $request->user()
+            ]
+        ]);
+    }
     /**
      * Đăng ký người dùng mới.
      */
