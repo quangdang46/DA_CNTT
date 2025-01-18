@@ -1,12 +1,21 @@
-import Car from '@/shared/components/icons/Car';
-import ChevronDown from '@/shared/components/icons/ChevronDown';
-import DollarSign from '@/shared/components/icons/DollarSign';
-import User from '@/shared/components/icons/User';
-import Link from 'next/link';
-import React from 'react'
-import { DropdownItem, Nav, NavDropdown, NavItem } from 'react-bootstrap';
+import Car from "@/shared/components/icons/Car";
+import ChevronDown from "@/shared/components/icons/ChevronDown";
+import DollarSign from "@/shared/components/icons/DollarSign";
+import User from "@/shared/components/icons/User";
+import { fetchUserData } from "@/shared/state/authSlice";
+import { AppDispatch, RootState } from "@/shared/state/store";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { DropdownItem, Nav, NavDropdown, NavItem } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function HeaderNav() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    // Kiểm tra token trước khi gọi API
+    dispatch(fetchUserData());
+  }, [dispatch]); // Chỉ gọi fetchUserData khi token và user thay đổi
   return (
     <Nav
       id="secondary-navigation"
@@ -35,9 +44,15 @@ export default function HeaderNav() {
       </NavDropdown>
 
       <NavItem>
-        <Link href="login-and-register.html" className="nav-link">
-          <User></User> Register or Sign in
-        </Link>
+        {user ? (
+          <Link href="my-account.html" className="nav-link">
+            <User></User> {user.name}
+          </Link>
+        ) : (
+          <Link href="login-and-register.html" className="nav-link">
+            <User></User> Register or Sign in
+          </Link>
+        )}
       </NavItem>
     </Nav>
   );

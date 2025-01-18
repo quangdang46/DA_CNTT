@@ -27,7 +27,11 @@ export const login = createAsyncThunk(
     try {
       const response = await apiClient.post(`/auth/login`, credentials);
       const { token, user } = response.data.data;
-      setCookie("auth_token", token, { maxAge: 7 * 24 * 60 * 60, path: "/" });
+      setCookie("auth_token", token, {
+        maxAge: 7 * 24 * 60 * 60,
+        path: "/",
+        domain: "localhost",
+      });
 
       return { user, token }; // Trả về dữ liệu user và token
     } catch (error: any) {
@@ -80,12 +84,9 @@ export const fetchUserData = createAsyncThunk(
       const { auth }: { auth: AuthState } = getState() as { auth: AuthState };
       const token = auth.token || getCookie("auth_token");
       if (!token) throw new Error("Token not found");
-      console.log("Token:", token);
       const response = await apiClient.get(`/auth/me`);
-      console.log("Response data:", response.data);
       return response.data.data.user; // Trả về thông tin người dùng
     } catch (error: any) {
-      console.log("Error fetching user data:", error);
       return rejectWithValue(
         error?.response?.data?.message || "Failed to fetch user data"
       );
