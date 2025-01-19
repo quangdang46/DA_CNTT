@@ -15,7 +15,6 @@ export default function LandscapeFullProductCardsCarousel() {
       const response: ResType<ProductListResType> =
         await productApiRequest.getList();
       if (response.success) {
-        console.log("response.data", response.data);
         setProducts(response.data);
       }
     };

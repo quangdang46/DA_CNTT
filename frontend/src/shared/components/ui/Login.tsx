@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import authRequestApi from "@/shared/apiRequests/auth";
+import { setUser } from "@/shared/state/authSlice";
 import { LoginBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 export default function Login() {
@@ -19,7 +21,7 @@ export default function Login() {
   });
 
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data: LoginBodyType) => {
     if (loading) return;
@@ -30,14 +32,15 @@ export default function Login() {
       if (response.success) {
         toast.success(response.message);
         // Chuyển hướng đến dashboard hoặc trang khác
-        router.push("/");
-        router.refresh();
 
+        dispatch(setUser(response.data.user));
         setCookie("auth_token", response.data.token, {
           maxAge: response.data.expiresAt,
           path: "/",
           domain: "localhost",
         });
+
+        router.push("/");
       } else {
         toast.error(response.message);
       }
