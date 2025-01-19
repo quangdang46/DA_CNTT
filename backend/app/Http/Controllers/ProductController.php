@@ -71,7 +71,7 @@ class ProductController extends Controller
         return response()->json([
             "success" => true,
             "status" => "success",
-            "message" => "Danh sach san pham moi 2321321331",
+            "message" => "Danh sach san pham moi ",
             "data" => $products,
         ]);
     }
