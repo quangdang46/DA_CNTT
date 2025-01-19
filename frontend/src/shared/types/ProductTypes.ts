@@ -30,10 +30,11 @@ export type Product = {
   description: string;
   price: number;
   status: string;
-  rating: number | 10;
+  rating: number;
   slug: string;
   review_count: number;
   attributes: ProductAttributesList;
   images: ProductImageList;
-
 };
+
+export type ProductListResType = Product[];

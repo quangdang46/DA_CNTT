@@ -13,7 +13,7 @@ const page = () => {
               <span className="or-text">or</span>
               <div id="customer_login" className="u-columns col2-set">
                 <Login></Login>
-                <Register></Register>
+                {/* <Register></Register> */}
               </div>
             </div>
           </div>

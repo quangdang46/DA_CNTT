@@ -1,14 +1,15 @@
 import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
 import useEmblaCarousel from "embla-carousel-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/shared/style/ProductDisplay.module.css";
 import ChevronLeft from "@/shared/components/icons/ChevronLeft";
 import ChevronRight from "@/shared/components/icons/ChevronRight";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
-import { useSelector } from "react-redux";
-import { RootState } from "@/shared/state/store";
+import productApiRequest from "@/shared/apiRequests/product";
+import { ResType } from "@/shared/types/resType";
+import { ProductListResType } from "@/shared/types/ProductTypes";
 
 export default function ProductDisplay({
   title = "Related products",
@@ -28,8 +29,17 @@ export default function ProductDisplay({
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi);
 
-  const { products } = useSelector((state: RootState) => state.products);
-  console.log("products", products);
+  const [products, setProducts] = useState<ProductListResType | null>(null);;
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response:ResType<ProductListResType> = await productApiRequest.getList();
+      if (response.success) {
+        setProducts(response.data);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <section
       className="section-landscape-products-carousel 4-column-landscape-carousel"
@@ -62,7 +72,9 @@ export default function ProductDisplay({
             <div className={styles.embla}>
               <div className={styles.embla__viewport} ref={emblaRef}>
                 <div className={`products ${styles.embla__container}`}>
+                  {/* list */}
                   {products &&
+                    products.length > 0 &&
                     products.map((product, index) => (
                       <div className={styles.embla__slide} key={index}>
                         <ProductCardLandscape

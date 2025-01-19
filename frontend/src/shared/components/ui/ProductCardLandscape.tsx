@@ -11,7 +11,6 @@ export default function ProductCardLandscape({
   product: Product;
   version?: number;
 }) {
-  console.log("product", product);
 
   /*
   

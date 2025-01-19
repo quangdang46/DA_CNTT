@@ -20,6 +20,7 @@ class ProductController extends Controller
         // Kiểm tra giá trị perPage hợp lệ (chỉ cho phép số dương)
         if ($perPage !== null && $perPage <= 0) {
             return response()->json([
+                "success" => false,
                 "status" => "error",
                 "message" => "Giá trị phân trang không hợp lệ",
             ], 400);
@@ -29,6 +30,7 @@ class ProductController extends Controller
 
         // Trả về danh sách sản phẩm (có thể là JSON)
         return response()->json([
+            "success" => true,
             "status" => "success",
             "message" => "Danh sách san pham tat ca",
             "data" => $products,
@@ -44,6 +46,7 @@ class ProductController extends Controller
         $products = $this->productService->search($params);
 
         return response()->json([
+            "success" => true,
             "status" => "success",
             "message" => "Danh sách san pham search",
             "data" => $products,
@@ -55,6 +58,7 @@ class ProductController extends Controller
     {
         $product = $this->productService->findById($id);
         return response()->json([
+            "success" => true,
             "status" => "success",
             "message" => "Danh sach san pham id",
             "data" => $product,
@@ -65,6 +69,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->getNewProducts();
         return response()->json([
+            "success" => true,
             "status" => "success",
             "message" => "Danh sach san pham moi 2321321331",
             "data" => $products,

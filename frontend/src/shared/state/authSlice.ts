@@ -27,7 +27,7 @@ export const login = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(`/auth/login`, credentials);
-      const { token, user } = response.data.data;
+      const { token, user } = response.data;
       setCookie("auth_token", token, {
         maxAge: 7 * 24 * 60 * 60,
         path: "/",
@@ -136,8 +136,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.isLoggedIn = false;
-
-
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;

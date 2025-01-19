@@ -49,7 +49,7 @@ export default function HeaderNav() {
             <User></User> {user.name}
           </Link>
         ) : (
-          <Link href="login-and-register.html" className="nav-link">
+          <Link href="/authentication" className="nav-link">
             <User></User> Register or Sign in
           </Link>
         )}

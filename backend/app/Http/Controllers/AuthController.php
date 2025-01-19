@@ -25,6 +25,7 @@ class AuthController extends Controller
         // Kiểm tra xem người dùng có được xác thực không
         if (!$request->user()) {
             return response()->json([
+                "success" => false,
                 'status' => 'error',
                 'message' => 'User not authenticated',
                 'data' => null
@@ -33,6 +34,7 @@ class AuthController extends Controller
 
         // Trả về thông tin người dùng đã đăng nhập
         return response()->json([
+            'success' => true,
             'status' => 'success',
             'message' => 'User information',
             'data' => [
@@ -49,6 +51,7 @@ class AuthController extends Controller
         $user = $this->userRepository->createUser($data);
 
         return response()->json([
+            'success' => true,
             'status' => 'success',
             'message' => 'Registration successful',
             'data' => [
@@ -66,6 +69,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
+                'success' => false,
                 'status' => 'error',
                 'message' => 'Invalid credentials',
                 'data' => null
@@ -73,13 +77,16 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
-
+        // timestamp
+        $expiresAt = now()->addMinutes(30 * 24)->timestamp;
         return response()->json([
+            'success' => true,
             'status' => 'success',
             'message' => 'Login successful',
             'data' => [
-                'user' => $user->only(['id', 'name', 'email', 'role']),
                 'token' => $token,
+                'expiresAt' => $expiresAt,
+                'user' => $user,
                 'role' => $user->role
             ]
         ]);
@@ -93,6 +100,7 @@ class AuthController extends Controller
         $user = $this->userRepository->getUserByEmail($request->email);
         if (!$user) {
             return response()->json([
+                'success' => false,
                 'status' => 'error',
                 'message' => 'User not found',
                 'data' => null
@@ -102,6 +110,7 @@ class AuthController extends Controller
         $status = Password::sendResetLink($request->only('email'));
         if ($status === Password::RESET_LINK_SENT) {
             return response()->json([
+                'success' => true,
                 'status' => 'success',
                 'message' => 'Password reset link sent',
                 'data' => null
@@ -109,6 +118,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
+            'success' => false,
             'status' => 'error',
             'message' => 'Unable to send reset link',
             'data' => null
@@ -122,6 +132,7 @@ class AuthController extends Controller
     {
         if ($request->password !== $request->password_confirmation) {
             return response()->json([
+                'success' => false,
                 'status' => 'error',
                 'message' => 'Passwords do not match',
                 'data' => null
@@ -138,6 +149,7 @@ class AuthController extends Controller
 
         if ($status === Password::PASSWORD_RESET) {
             return response()->json([
+                'success' => true,
                 'status' => 'success',
                 'message' => 'Password reset successful',
                 'data' => null
@@ -145,6 +157,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
+            'success' => false,
             'status' => 'error',
             'message' => 'Password reset failed',
             'errors' => ['error' => $status],
@@ -160,6 +173,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
+            'success' => true,
             'status' => 'success',
             'message' => 'Logged out successfully',
             'data' => null

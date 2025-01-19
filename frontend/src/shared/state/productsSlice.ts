@@ -18,7 +18,6 @@ const initialState: ProductsState = {
 export const fetchProducts = createAsyncThunk("products/fetchProducts", async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get("/products");
-    console.log("response.data.data", response.data.data);
     return response.data.data as Product[];
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Failed to fetch products");

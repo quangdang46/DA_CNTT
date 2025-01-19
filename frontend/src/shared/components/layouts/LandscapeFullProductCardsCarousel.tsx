@@ -1,14 +1,27 @@
 "use client";
 import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
-import { RootState } from "@/shared/state/store";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import styles from "@/shared/style/LandscapeFullProductCardsCarousel.module.css";
 import useEmblaCarousel from "embla-carousel-react";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
+import { ProductListResType } from "@/shared/types/ProductTypes";
+import productApiRequest from "@/shared/apiRequests/product";
+import { ResType } from "@/shared/types/resType";
 export default function LandscapeFullProductCardsCarousel() {
-  const products = useSelector((state: RootState) => state.products.products);
+  const [products, setProducts] = useState<ProductListResType | []>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response: ResType<ProductListResType> =
+        await productApiRequest.getList();
+      if (response.success) {
+        console.log("response.data", response.data);
+        setProducts(response.data);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({});
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =

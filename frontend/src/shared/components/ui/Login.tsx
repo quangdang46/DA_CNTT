@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { login } from "@/shared/state/authSlice";
-import { AppDispatch, RootState } from "@/shared/state/store";
+import authRequestApi from "@/shared/apiRequests/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
 const loginSchema = z.object({
@@ -21,20 +21,36 @@ export default function Login() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading: loginLoading, isLoggedIn } = useSelector(
-    (state: RootState) => state.auth
-  );
-  const route = useRouter();
-  const onSubmit = (data: LoginFormData) => {
-    dispatch(login(data));
-  };
-  useEffect(() => {
-    if (isLoggedIn) {
-      toast.success("Login successfully");
-      route.push("/"); // Chuyển hướng đến dashboard hoặc trang khác
+
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const onSubmit = async (data: LoginFormData) => {
+    if (loading) return;
+
+    try {
+      const response = await authRequestApi.login(data);
+      console.log(response);
+      if (response.success) {
+        toast.success(response.message);
+        // Chuyển hướng đến dashboard hoặc trang khác
+        router.push("/");
+        router.refresh();
+
+        setCookie("auth_token", response.data.token, {
+          maxAge: response.data.expiresAt,
+          path: "/",
+          domain: "localhost",
+        });
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-  }, [isLoggedIn, route]);
+  };
 
   return (
     <div className="u-column1 col-1">
@@ -80,9 +96,9 @@ export default function Login() {
           <button
             type="submit"
             className="woocommerce-Button button"
-            disabled={loginLoading}
+            disabled={loading}
           >
-            {loginLoading ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login"}
           </button>
           <label
             htmlFor="rememberme"
