@@ -58,18 +58,9 @@ export const register = createAsyncThunk(
 // Async action: Đăng xuất
 export const logout = createAsyncThunk(
   "auth/logout",
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const { auth }: { auth: AuthState } = getState() as { auth: AuthState }; // Lấy token từ state
-      await apiClient.post(
-        `/auth/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }
-      );
+      await apiClient.post(`/auth/logout`, {});
       return true; // Trả về trạng thái đăng xuất thành công
     } catch (error: any) {
       return rejectWithValue(error?.response?.data?.message || "Logout failed");

@@ -2,9 +2,11 @@
 import { login } from "@/shared/state/authSlice";
 import { AppDispatch, RootState } from "@/shared/state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { z } from "zod";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -20,10 +22,14 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
   const dispatch = useDispatch<AppDispatch>();
-  const { loading: loginLoading } = useSelector((state: RootState) => state.auth);
-
+  const { loading: loginLoading } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const route = useRouter();
   const onSubmit = (data: LoginFormData) => {
     dispatch(login(data));
+    toast.success("Login successful");
+    route.push("/");
   };
   return (
     <div className="u-column1 col-1">
