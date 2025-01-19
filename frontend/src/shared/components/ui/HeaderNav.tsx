@@ -2,20 +2,11 @@ import Car from "@/shared/components/icons/Car";
 import ChevronDown from "@/shared/components/icons/ChevronDown";
 import DollarSign from "@/shared/components/icons/DollarSign";
 import User from "@/shared/components/icons/User";
-import { fetchUserData } from "@/shared/state/authSlice";
-import { AppDispatch, RootState } from "@/shared/state/store";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { DropdownItem, Nav, NavDropdown, NavItem } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function HeaderNav() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  useEffect(() => {
-    // Kiểm tra token trước khi gọi API
-    dispatch(fetchUserData());
-  }, [dispatch]); // Chỉ gọi fetchUserData khi token và user thay đổi
   return (
     <Nav
       id="secondary-navigation"

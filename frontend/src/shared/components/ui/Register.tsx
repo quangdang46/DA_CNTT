@@ -1,38 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import authRequestApi from "@/shared/apiRequests/auth";
 import Tick from "@/shared/components/icons/Check";
-import { register } from "@/shared/state/authSlice";
-import { AppDispatch, RootState } from "@/shared/state/store";
+import { RegisterBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { z } from "zod";
-// Define the validation schema with Zod
-const registerSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  password_confirmation: z
-    .string()
-    .min(6, "Password must be at least 6 characters"),
-});
+import { toast } from "react-toastify";
 
-type RegisterFormData = z.infer<typeof registerSchema>;
 export default function Register() {
-  const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(false);
 
   const {
     register: formRegister,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<RegisterBodyType>({
+    resolver: zodResolver(RegisterBodyType),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
   });
-  const { loading:registerLoading } = useSelector((state: RootState) => state.auth);
 
-  const onSubmit = (data: RegisterFormData) => {
-    // Dispatch the register action to Redux
-    dispatch(register(data));
+  const onSubmit =async (data: RegisterBodyType) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response =await authRequestApi.register(data);
+      if (response.success) {
+        toast.success(response.message);
+      }else{
+        toast.error(response.message);
+      }
+    } catch (error:any) {
+      toast.error(error.message);
+    }finally{
+      setLoading(false);
+    }
   };
   return (
     <div className="u-column2 col-2">
@@ -108,9 +115,9 @@ export default function Register() {
             className="woocommerce-Button button"
             name="register"
             value="Register"
-            disabled={registerLoading}
+            disabled={loading}
           >
-            {registerLoading ? "Loading..." : "Register"}
+            {loading ? "Loading..." : "Register"}
           </button>
         </div>
         <div className="register-benefits">
