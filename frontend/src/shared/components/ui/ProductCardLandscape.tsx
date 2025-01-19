@@ -11,14 +11,23 @@ export default function ProductCardLandscape({
   product: Product;
   version?: number;
 }) {
+  console.log("product", product);
+
+  /*
+  
+  
+  */
   return version == 1 ? (
     <div className={`landscape-product product`}>
-      <Link className="woocommerce-LoopProduct-link" href={product.imageUrl}>
+      <Link
+        className="woocommerce-LoopProduct-link"
+        href={`/details/${product.slug}`}
+      >
         <div className="media">
           <Image
             className="wp-post-image"
-            src={product.imageUrl}
-            alt={product.title}
+            src={product.images[1].image_url}
+            alt={""}
             width={0}
             height={0}
             style={{ width: "200px", height: "130px" }} // optional
@@ -29,17 +38,17 @@ export default function ProductCardLandscape({
                 <span className="amount">{product.price}</span>
               </ins>
               <del>
-                <span className="amount">{product.price}</span>
+                <span className="amount">{`${product.price * 1.2}`}</span>
               </del>
             </span>
-            <h2 className="woocommerce-loop-product__title">{product.title}</h2>
+            <h2 className="woocommerce-loop-product__title">{product.name}</h2>
             <div className="techmarket-product-rating">
               <div className="d-flex align-items-center gap-1">
                 {Array.from({ length: product.rating }).map((_, index) => (
                   <Star key={index}></Star>
                 ))}
               </div>
-              <span className="review-count">({product.rating})</span>
+              <span className="review-count">({product.review_count})</span>
             </div>
           </div>
         </div>
@@ -57,13 +66,13 @@ export default function ProductCardLandscape({
 
         {/* Product Image and Link */}
         <Link
-          href="/single-product-fullwidth"
+          href={product.images[1].image_url}
           className="woocommerce-LoopProduct-link"
         >
           <Image
             className="wp-post-image"
-            src={product.imageUrl}
-            alt={product.title}
+            src={product.images[1].image_url}
+            alt={" "}
             width={0}
             height={0}
             style={{ width: "200px", height: "200px" }}
@@ -72,7 +81,7 @@ export default function ProductCardLandscape({
 
         <div className="media-body">
           <Link
-            href="/single-product-fullwidth"
+            href={`/details/${product.slug}`}
             className="woocommerce-LoopProduct-link"
           >
             <span className="price">
@@ -80,10 +89,10 @@ export default function ProductCardLandscape({
                 <span className="amount">{product.price}</span>
               </ins>
               <del>
-                <span className="amount">{product.price}</span>
+                <span className="amount">{`${product.price * 1.2}`}</span>
               </del>
             </span>
-            <h2 className="woocommerce-loop-product__title">{product.title}</h2>
+            <h2 className="woocommerce-loop-product__title">{product.name}</h2>
             <div className="ribbon green-label">
               <span>{"A++"}</span>
             </div>
@@ -93,7 +102,7 @@ export default function ProductCardLandscape({
                   <Star key={index}></Star>
                 ))}
               </div>
-              <span className="review-count">({product.rating})</span>
+              <span className="review-count">({product.review_count})</span>
             </div>
           </Link>
 

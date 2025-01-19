@@ -7,12 +7,12 @@ INSERT INTO categories (id, name, created_at, updated_at) VALUES
 
 
 
-INSERT INTO products (name, description, price, status, category_id, created_at, updated_at) VALUES
-('iPhone 14 Pro', 'High-end Apple smartphone with A16 Bionic chip', 1099.99, 'available', 1, NOW(), NOW()),
-('Samsung Galaxy Tab S8', 'Powerful Android tablet for work and play', 699.99, 'available', 2, NOW(), NOW()),
-('AirPods Pro 2', 'Wireless noise-cancelling earbuds from Apple', 249.99, 'available', 3, NOW(), NOW()),
-('Apple Watch Series 8', 'Advanced health-tracking wearable device', 399.99, 'out_of_stock', 4, NOW(), NOW()),
-('ASUS ROG Phone 6', 'Gaming smartphone with powerful specs', 999.99, 'discontinued', 5, NOW(), NOW());
+INSERT INTO products (name, description, price, status, category_id, created_at, updated_at,rating,slug,review_count) VALUES
+('iPhone 14 Pro', 'High-end Apple smartphone with A16 Bionic chip', 1099.99, 'available', 1, NOW(), NOW(),4,'iphone-14-pro',12),
+('Samsung Galaxy Tab S8', 'Powerful Android tablet for work and play', 699.99, 'available', 2, NOW(), NOW(),4,'samsung-galaxy-tab-s8',10),
+('AirPods Pro 2', 'Wireless noise-cancelling earbuds from Apple', 249.99, 'available', 3, NOW(), NOW(),3.1,'airpods-pro-2',8),
+('Apple Watch Series 8', 'Advanced health-tracking wearable device', 399.99, 'out_of_stock', 4, NOW(), NOW(),4,'apple-watch-series-8',5),
+('ASUS ROG Phone 6', 'Gaming smartphone with powerful specs', 999.99, 'discontinued', 5, NOW(), NOW(),4,'asus-rog-phone-6',6);
 
 
 INSERT INTO product_attributes (product_id, operating_system, chip, ram, storage, camera_resolution, battery_capacity, battery_type, dimensions, created_at, updated_at) VALUES

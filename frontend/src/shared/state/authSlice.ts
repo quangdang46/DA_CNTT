@@ -7,6 +7,7 @@ interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  isLoggedIn: boolean;
 }
 
 interface LoginCredentials {
@@ -92,6 +93,7 @@ const authSlice = createSlice({
     token: null,
     loading: false,
     error: null,
+    isLoggedIn: false,
   } as AuthState,
   reducers: {
     setAuth(state, action) {
@@ -110,35 +112,44 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.isLoggedIn = false;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isLoggedIn = true;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.isLoggedIn = false;
       })
 
       // Xử lý register
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.isLoggedIn = false;
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
+        state.isLoggedIn = false;
+
+
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.isLoggedIn = false;
       })
 
       // Xử lý logout
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+        state.isLoggedIn = false;
       })
 
       // Xử lý fetchUserData

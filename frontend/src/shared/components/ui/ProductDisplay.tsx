@@ -1,5 +1,4 @@
 import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
-import { Product } from "@/shared/types/ProductTypes";
 import useEmblaCarousel from "embla-carousel-react";
 import React from "react";
 import styles from "@/shared/style/ProductDisplay.module.css";
@@ -8,13 +7,13 @@ import ChevronRight from "@/shared/components/icons/ChevronRight";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import { useSelector } from "react-redux";
+import { RootState } from "@/shared/state/store";
 
 export default function ProductDisplay({
   title = "Related products",
-  products,
 }: {
   title: string | null;
-  products: Product[];
 }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     slidesToScroll: 2,
@@ -28,6 +27,9 @@ export default function ProductDisplay({
     onPrevButtonClick,
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi);
+
+  const { products } = useSelector((state: RootState) => state.products);
+  console.log("products", products);
   return (
     <section
       className="section-landscape-products-carousel 4-column-landscape-carousel"

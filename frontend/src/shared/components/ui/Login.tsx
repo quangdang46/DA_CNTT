@@ -3,7 +3,7 @@ import { login } from "@/shared/state/authSlice";
 import { AppDispatch, RootState } from "@/shared/state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -22,15 +22,20 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
   const dispatch = useDispatch<AppDispatch>();
-  const { loading: loginLoading } = useSelector(
+  const { loading: loginLoading, isLoggedIn } = useSelector(
     (state: RootState) => state.auth
   );
   const route = useRouter();
   const onSubmit = (data: LoginFormData) => {
     dispatch(login(data));
-    toast.success("Login successful");
-    route.push("/");
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success("Login successfully");
+      route.push("/"); // Chuyển hướng đến dashboard hoặc trang khác
+    }
+  }, [isLoggedIn, route]);
+
   return (
     <div className="u-column1 col-1">
       <h2>Login</h2>
