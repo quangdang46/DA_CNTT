@@ -1,31 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import authRequestApi from "@/shared/apiRequests/auth";
+import { LoginBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-type LoginFormData = z.infer<typeof loginSchema>;
+
 export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<LoginBodyType>({
+    resolver: zodResolver(LoginBodyType),
   });
 
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: LoginBodyType) => {
     if (loading) return;
 
     try {
