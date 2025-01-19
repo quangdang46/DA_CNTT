@@ -47,7 +47,7 @@ export default function HomePageSlider() {
   useEffect(() => {
     const fetchProducts = async () => {
       const response: ResType<ProductListResType> =
-        await productApiRequest.getNewest();
+        await productApiRequest.getByUrl("/products/new");
       if (response.success) {
         setProducts(response.data);
       }

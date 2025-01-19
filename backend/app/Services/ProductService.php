@@ -33,4 +33,9 @@ class ProductService
     {
         return $this->productRepository->getNewProducts();
     }
+
+    public function getHighRatedProducts()
+    {
+        return $this->productRepository->getHighRatedProducts();
+    }
 }

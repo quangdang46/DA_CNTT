@@ -18,10 +18,11 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix("products")->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('high-rated', [ProductController::class, 'highRated']);
     Route::get('search', [ProductController::class, 'search']);
     Route::get('new', [ProductController::class, 'new']);
-    Route::get('{id}', [ProductController::class, 'show']);
-    Route::get('/', [ProductController::class, 'index']);
+    Route::get('details/{id}', [ProductController::class, 'show']);
 });
 
 

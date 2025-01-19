@@ -60,7 +60,7 @@ class ProductController extends Controller
         return response()->json([
             "success" => true,
             "status" => "success",
-            "message" => "Danh sach san pham id",
+            "message" => "Danh sach san pham id " . $id,
             "data" => $product,
         ]);
     }
@@ -72,6 +72,25 @@ class ProductController extends Controller
             "success" => true,
             "status" => "success",
             "message" => "Danh sach san pham moi ",
+            "data" => $products,
+        ]);
+    }
+
+    public function highRated()
+    {
+        $products = $this->productService->getHighRatedProducts();
+        if ($products->isEmpty()) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham co rating cao",
+                "data" => [],
+            ], 400);
+        }
+        return response()->json([
+            "success" => true,
+            "status" => "success",
+            "message" => "Danh sach san pham co rating cao",
             "data" => $products,
         ]);
     }

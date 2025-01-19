@@ -8,4 +8,5 @@ interface ProductRepositoryInterface
     public function search($params);
     public function findById($id);
     public function getNewProducts();
+    public function getHighRatedProducts();
 }

@@ -1,3 +1,7 @@
 composer require getsolaris/laravel-make-service --dev
 php artisan make:service UserService --i
 
+
+php artisan route:clear
+php artisan route:cache
+

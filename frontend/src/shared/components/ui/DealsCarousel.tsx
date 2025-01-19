@@ -60,7 +60,7 @@ export default function DealsCarousel() {
           <CarouselProvider>
             <SaleCarouselHeader></SaleCarouselHeader>
             {/* ///////////// */}
-            <SaleProductsCarousel products={products}></SaleProductsCarousel>
+            <SaleProductsCarousel></SaleProductsCarousel>
             {/* ///////////// */}
             <SaleCarouselFooter></SaleCarouselFooter>
           </CarouselProvider>

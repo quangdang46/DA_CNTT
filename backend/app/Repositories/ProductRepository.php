@@ -60,8 +60,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getNewProducts()
     {
         return $this->model->with(['attributes', 'images'])
-        ->where('created_at', '>=', now()->subDays(30))
+            ->where('created_at', '>=', now()->subDays(30))
             ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function getHighRatedProducts()
+    {
+        return $this->model->with(['attributes', 'images'])
+            ->where('rating', '>=', 4) // Rating từ 4 trở lên
+            ->where('review_count', '>=', 10) // Ít nhất 10 đánh giá
+            ->orderBy('rating', 'desc') // Sắp xếp theo rating cao nhất
             ->get();
     }
 }
