@@ -6,6 +6,6 @@ interface ProductRepositoryInterface
 {
     public function getAllProducts($perPage = null);
     public function search($params);
-    public function findById($id);
+    public function findBySlug($slug);
     public function getProductByType($type);
 }

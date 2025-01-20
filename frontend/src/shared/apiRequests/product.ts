@@ -8,7 +8,7 @@ const productApiRequest = {
     apiClient.post<{ type: string }, ResType<ProductListResType>>(url, {
       type,
     }),
-  getDetail: (id: number) => apiClient.get(`/products/details/${id}`),
+  getDetail: (slug: string) => apiClient.get(`/products/${slug}`),
 
   //   create: (body: any) => apiClient.post("/products", body),
   //   update: (id: number, body: any) => apiClient.put(`/products/${id}`, body),

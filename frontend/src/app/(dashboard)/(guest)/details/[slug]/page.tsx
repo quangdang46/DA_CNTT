@@ -1,17 +1,64 @@
 "use client";
+import productApiRequest from "@/shared/apiRequests/product";
 import Star from "@/shared/components/icons/Star";
 import ProductTabs from "@/shared/components/layouts/ProductTabs";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
+import { Product } from "@/shared/types/ProductTypes";
+import { ResType } from "@/shared/types/resType";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Page() {
-  const params = useParams();
-  const slug = params?.slug;
+  const { slug } = useParams(); // Lấy slug từ URL
+  const [product, setProduct] = useState<Product | null>(null); // Khởi tạo giá trị là null
+  const [loading, setLoading] = useState(true); // Trạng thái loading
+  const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!slug) {
+        toast.error("Slug not found");
+        return;
+      }
+      setLoading(true); // Bắt đầu quá trình tải
+      try {
+        const response: ResType<Product> = await productApiRequest.getDetail(
+          slug as string
+        ); // Gọi API
+        console.log("response", response);
+        if (response.success) {
+          setProduct(response.data); // Cập nhật dữ liệu sản phẩm
+        } else {
+          setError(response.message); // Xử lý khi có lỗi từ API
+          toast.error(response.message);
+        }
+      } catch (err) {
+        console.error("Error fetching product", err);
+        setError("Failed to fetch product");
+        toast.error("Failed to fetch product");
+      } finally {
+        setLoading(false); // Kết thúc quá trình tải
+      }
+    };
+
+    fetchProducts();
+  }, [slug]); // Thực hiện khi slug thay đổi
+
+  if (loading) {
+    return <div>Loading...</div>; // Hiển thị khi đang tải
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; // Hiển thị lỗi nếu có
+  }
+
+  if (!product) {
+    return <div>Product not found</div>; // Nếu không có dữ liệu sản phẩm
+  }
   return (
     <WrapperContent className="single-product">
       <div className="product product-type-simple">
@@ -22,7 +69,7 @@ export default function Page() {
               -
               <span className="woocommerce-Price-amount amount">
                 <span className="woocommerce-Price-currencySymbol">$</span>
-                242.99
+                {product.price}
               </span>
             </span>
             {/* ////////////// */}
@@ -33,9 +80,7 @@ export default function Page() {
           {/* detail san pham */}
           <div className="summary entry-summary">
             <div className="single-product-header">
-              <h1 className="product_title entry-title">
-                60UH6150 60-Inch 4K Ultra HD Smart LED TV
-              </h1>
+              <h1 className="product_title entry-title">{product.name}</h1>
               <a className="add-to-wishlist" href="wishlist.html">
                 Add to Wishlist
               </a>
@@ -54,7 +99,7 @@ export default function Page() {
               <div className="cat-and-sku">
                 <span className="posted_in categories">
                   <a rel="tag" href="product-category.html">
-                    TV &amp; Video
+                    {product.category.name}
                   </a>
                 </span>
                 <span className="sku_wrapper">
@@ -71,7 +116,7 @@ export default function Page() {
             <div className="rating-and-sharing-wrapper">
               <div className="woocommerce-product-rating">
                 <div className="star-rating">
-                  {Array(5)
+                  {Array(Math.floor(product.rating))
                     .fill(0)
                     .map((_, i) => (
                       <Star key={i}></Star>
@@ -79,7 +124,8 @@ export default function Page() {
                   <span style={{ width: "100%" }}>
                     Rated
                     <strong className="rating">5.00</strong> out of 5 based on
-                    <span className="rating">1</span> customer rating
+                    <span className="rating">{product.review_count}</span>{" "}
+                    customer rating
                   </span>
                 </div>
                 <a
@@ -87,13 +133,14 @@ export default function Page() {
                   className="woocommerce-review-link"
                   href="#reviews"
                 >
-                  (<span className="count">1</span> customer review)
+                  (<span className="count">{product.review_count}</span>{" "}
+                  customer review)
                 </a>
               </div>
             </div>
             <div className="woocommerce-product-details__short-description">
               <ul>
-                <li>Multimedia Speakers</li>
+                {/* <li>Multimedia Speakers</li>
                 <li>120 watts peak</li>
                 <li>Front-facing subwoofer</li>
                 <li>Refresh Rate: 120Hz (Effective)</li>
@@ -106,7 +153,22 @@ export default function Page() {
                 <li>
                   Inputs: 3 HMDI, 2 USB, 1 RF, 1 Component, 1 Composite, 1
                   Optical, 1 RS232C, 1 Ethernet
-                </li>
+                </li> */}
+
+                {product.attributes && product.attributes.length > 0 ? (
+                  Object.entries(product.attributes[0]).map(
+                    ([key, value], index) => (
+                      <div key={index}>
+                        <strong style={{ textTransform: "capitalize" }}>
+                          {key}:
+                        </strong>{" "}
+                        {value}
+                      </div>
+                    )
+                  )
+                ) : (
+                  <div>No attributes available</div>
+                )}
               </ul>
             </div>
             <div className="product-actions-wrapper">

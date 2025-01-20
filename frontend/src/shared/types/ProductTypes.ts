@@ -24,6 +24,11 @@ export type ProductImage = {
 
 export type ProductImageList = ProductImage[];
 
+export type Category = {
+  id: number;
+  name: string;
+};
+
 export type Product = {
   id: number;
   name: string;
@@ -35,6 +40,7 @@ export type Product = {
   review_count: number;
   attributes: ProductAttributesList;
   images: ProductImageList;
+  category: Category;
 };
 
 export type ProductListResType = Product[];

@@ -54,13 +54,29 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = $this->productService->findById($id);
+        if (!$slug) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Product not found for slug: " . $slug,
+                "data" => [],
+            ], 404);
+        }
+        $product = $this->productService->findBySlug($slug);
+        if (!$product) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham slug " . $slug,
+                "data" => [],
+            ], 400);
+        }
         return response()->json([
             "success" => true,
             "status" => "success",
-            "message" => "Danh sach san pham id " . $id,
+            "message" => "Danh sach san pham slug " . $slug,
             "data" => $product,
         ]);
     }
@@ -68,6 +84,14 @@ class ProductController extends Controller
     public function byType(Request $request)
     {
         $type = $request->input('type');
+        if (!$type) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham by type " . $type,
+                "data" => [],
+            ], 400);
+        }
         $products = $this->productService->getProductByType($type);
         if ($products->isEmpty()) {
             return response()->json([
@@ -83,6 +107,5 @@ class ProductController extends Controller
             "message" => "Danh sach san pham theo type " . $type,
             "data" => $products,
         ]);
-
     }
 }

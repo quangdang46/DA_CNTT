@@ -12,21 +12,33 @@ export default function HomePageSlider() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
-  
   const [products, setProducts] = useState<ProductListResType | []>([]);
+
+
   useEffect(() => {
     const fetchProducts = async () => {
-      const response: ResType<ProductListResType> =
-        await productApiRequest.getByUrlAndType({
-          url: "/products/byType",
-          type: "new",
-        });
-      if (response.success) {
-        setProducts(response.data);
+      try {
+        const response: ResType<ProductListResType> =
+          await productApiRequest.getByUrlAndType({
+            url: "/products/byType",
+            type: "new",
+          });
+
+        if (response.success) {
+          setProducts(response.data);
+        } else {
+          // Xử lý khi API trả về lỗi
+          console.error("Error fetching products:", response.message);
+        }
+      } catch (error) {
+        // Xử lý lỗi kết nối API hoặc lỗi khác
+        console.error("API error:", error);
       }
     };
+
     fetchProducts();
   }, []);
+
   const slides = products.map((product) => ({
     backgroundImage: "/static/images/slider/background.jpg",
     image: product.images[0].image_url,

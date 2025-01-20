@@ -24,9 +24,9 @@ class ProductService
         return $this->productRepository->search($params);
     }
 
-    public function findById($id)
+    public function findBySlug($id)
     {
-        return $this->productRepository->findById($id);
+        return $this->productRepository->findBySlug($id);
     }
 
     public function getProductByType($type = "high-rated")

@@ -52,9 +52,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         // Thực thi truy vấn và trả kết quả
         return $query->get();
     }
-    public function findById($id)
+    public function findBySlug($slug)
     {
-        return $this->model->with(['attributes', 'images'])->find($id);
+        return $this->model->with(['attributes', 'images', 'category'])
+            ->where('slug', $slug)
+            ->first();
     }
 
 

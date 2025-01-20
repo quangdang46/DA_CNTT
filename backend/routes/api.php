@@ -22,7 +22,7 @@ Route::prefix("products")->group(function () {
     Route::post('byType', [ProductController::class, 'byType']);
     Route::get('search', [ProductController::class, 'search']);
     Route::get('new', [ProductController::class, 'new']);
-    Route::get('{id}', [ProductController::class, 'show']);
+    Route::get('{slug}', [ProductController::class, 'show']);
 });
 
 
