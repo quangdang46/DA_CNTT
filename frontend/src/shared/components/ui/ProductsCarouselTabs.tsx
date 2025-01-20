@@ -1,22 +1,29 @@
+import { useTabs } from "@/shared/contexts/TabsContext";
 import React from "react";
+interface PropsTab {
+  title: string;
+  content: string;
+  type: string;
+}
 
-export default function ProductsCarouselTabs({
-  tabs,
-}: {
-  tabs: { title: string; content: string }[];
-}) {
+export default function ProductsCarouselTabs({ tabs }: { tabs: PropsTab[] }) {
+  const { activeTab, setActiveTab } = useTabs();
   return (
     <header className="section-header">
       <ul role="tablist" className="nav justify-content-end">
-        {tabs.map((tab: { title: string; content: string }, index: number) => (
-          <li className="nav-item" key={index}>
-            <a
-              className={`nav-link ${index === 0 ? "active" : ""}`}
-              href={`#tab-${index}`}
+        {tabs.map((tab: PropsTab, index: number) => (
+          <li
+            className="nav-item"
+            key={index}
+            onClick={() => setActiveTab(tab.type)}
+            style={{ cursor: "pointer" }}
+          >
+            <div
+              className={`nav-link ${activeTab === tab.type ? "active" : ""}`}
               data-toggle="tab"
             >
               {tab.title}
-            </a>
+            </div>
           </li>
         ))}
       </ul>

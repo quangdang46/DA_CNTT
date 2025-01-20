@@ -19,10 +19,10 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix("products")->group(function () {
     Route::get('/', [ProductController::class, 'index']);
-    Route::get('high-rated', [ProductController::class, 'highRated']);
+    Route::post('byType', [ProductController::class, 'byType']);
     Route::get('search', [ProductController::class, 'search']);
     Route::get('new', [ProductController::class, 'new']);
-    Route::get('details/{id}', [ProductController::class, 'show']);
+    Route::get('{id}', [ProductController::class, 'show']);
 });
 
 

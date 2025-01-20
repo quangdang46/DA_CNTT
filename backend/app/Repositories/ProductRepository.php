@@ -57,20 +57,39 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model->with(['attributes', 'images'])->find($id);
     }
 
-    public function getNewProducts()
-    {
-        return $this->model->with(['attributes', 'images'])
-            ->where('created_at', '>=', now()->subDays(30))
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
 
-    public function getHighRatedProducts()
+    public function getProductByType($type = "high-rated")
     {
-        return $this->model->with(['attributes', 'images'])
-            ->where('rating', '>=', 4) // Rating từ 4 trở lên
-            ->where('review_count', '>=', 10) // Ít nhất 10 đánh giá
-            ->orderBy('rating', 'desc') // Sắp xếp theo rating cao nhất
-            ->get();
+        switch ($type) {
+            case "new":
+                return $this->model->with(['attributes', 'images'])
+                    ->where('created_at', '>=', now()->subDays(30))
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+                break;
+
+            case "high-rated":
+                return $this->model->with(['attributes', 'images'])
+                    ->where('rating', '>=', 4) // Rating từ 4 trở lên
+                    ->where('review_count', '>=', 10) // Ít nhất 10 đánh giá
+                    ->orderBy('rating', 'desc') // Sắp xếp theo rating cao nhất
+                    ->get();
+                break;
+            case "on-sale":
+                return $this->model->with(['attributes', 'images'])
+                    ->where("status", "available")
+                    ->orderBy('price', 'asc')
+                    ->take(10)
+                    ->get();
+                break;
+            case "best-seller":
+                return $this->model->with(['attributes', 'images'])
+                    ->where("status", "available")
+                    ->orderBy('review_count', 'desc')
+                    ->take(10)
+                    ->get();
+                break;
+        }
+        return [];
     }
 }

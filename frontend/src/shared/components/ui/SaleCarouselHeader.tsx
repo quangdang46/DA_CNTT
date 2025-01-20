@@ -18,7 +18,7 @@ export default function SaleCarouselHeader() {
   return (
     <header className="section-header">
       <h2 className="section-title">
-        <strong>Deals</strong> of the week
+        <strong>Best</strong> of ratings
       </h2>
       <div className="custom-slick-nav">
         <div

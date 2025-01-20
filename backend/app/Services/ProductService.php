@@ -29,13 +29,8 @@ class ProductService
         return $this->productRepository->findById($id);
     }
 
-    public function getNewProducts()
+    public function getProductByType($type = "high-rated")
     {
-        return $this->productRepository->getNewProducts();
-    }
-
-    public function getHighRatedProducts()
-    {
-        return $this->productRepository->getHighRatedProducts();
+        return $this->productRepository->getProductByType($type);
     }
 }

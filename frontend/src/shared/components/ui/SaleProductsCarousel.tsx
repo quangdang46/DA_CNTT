@@ -26,7 +26,10 @@ export default function SaleProductsCarousel() {
   useEffect(() => {
     const fetchProducts = async () => {
       const response: ResType<ProductListResType> =
-        await productApiRequest.getByUrl("/products/high-rated");
+        await productApiRequest.getByUrlAndType({
+          url: "/products/byType",
+          type: "high-rated",
+        });
       if (response.success) {
         setProducts(response.data);
       }

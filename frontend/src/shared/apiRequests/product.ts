@@ -4,8 +4,10 @@ import { ResType } from "@/shared/types/resType";
 
 const productApiRequest = {
   getList: () => apiClient.get<ResType<ProductListResType>>("/products"),
-  getByUrl: (url: string) => apiClient.get<ResType<ProductListResType>>(url),
-
+  getByUrlAndType: ({ url, type }: { url: string; type: string }) =>
+    apiClient.post<{ type: string }, ResType<ProductListResType>>(url, {
+      type,
+    }),
   getDetail: (id: number) => apiClient.get(`/products/details/${id}`),
 
   //   create: (body: any) => apiClient.post("/products", body),

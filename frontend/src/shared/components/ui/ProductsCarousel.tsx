@@ -6,24 +6,19 @@ import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
-interface DealsCarouselProps {
-  products: {
-    title: string;
-    price: number;
-    originalPrice: number;
-    savedAmount: number;
-    imageUrl: string;
-  }[];
+import { ProductListResType } from "@/shared/types/ProductTypes";
+interface ProductsCarouselProps {
+  products: ProductListResType;
 }
-export default function ProductsCarousel({ products }: DealsCarouselProps) {
+
+export default function ProductsCarousel({ products }: ProductsCarouselProps) {
   //   duplicate products
-  const duplicatedProducts = [...products, ...products, ...products];
   const itemsPerPage = 10; // 5 phần tử/hàng x 2 hàng
-  const totalPages = Math.ceil(duplicatedProducts.length / itemsPerPage);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
 
   // Chia danh sách thành các trang
   const paginatedItems = Array.from({ length: totalPages }, (_, i) =>
-    duplicatedProducts.slice(i * itemsPerPage, (i + 1) * itemsPerPage)
+    products.slice(i * itemsPerPage, (i + 1) * itemsPerPage)
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -58,12 +53,14 @@ export default function ProductsCarousel({ products }: DealsCarouselProps) {
                             gap: "10px",
                           }}
                         >
-                          {productPerPage.map((product, index) => (
-                            <ProductCard
-                              product={product}
-                              key={index}
-                            ></ProductCard>
-                          ))}
+                          {productPerPage &&
+                            productPerPage.length > 0 &&
+                            productPerPage.map((product, index) => (
+                              <ProductCard
+                                product={product}
+                                key={index}
+                              ></ProductCard>
+                            ))}
                         </div>
                       </div>
                     ))}

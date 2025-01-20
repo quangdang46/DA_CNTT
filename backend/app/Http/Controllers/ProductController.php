@@ -65,33 +65,24 @@ class ProductController extends Controller
         ]);
     }
 
-    public function new()
+    public function byType(Request $request)
     {
-        $products = $this->productService->getNewProducts();
-        return response()->json([
-            "success" => true,
-            "status" => "success",
-            "message" => "Danh sach san pham moi ",
-            "data" => $products,
-        ]);
-    }
-
-    public function highRated()
-    {
-        $products = $this->productService->getHighRatedProducts();
+        $type = $request->input('type');
+        $products = $this->productService->getProductByType($type);
         if ($products->isEmpty()) {
             return response()->json([
                 "success" => false,
                 "status" => "error",
-                "message" => "Khong co san pham co rating cao",
+                "message" => "Khong co san pham by type " . $type,
                 "data" => [],
             ], 400);
         }
         return response()->json([
             "success" => true,
             "status" => "success",
-            "message" => "Danh sach san pham co rating cao",
+            "message" => "Danh sach san pham theo type " . $type,
             "data" => $products,
         ]);
+
     }
 }

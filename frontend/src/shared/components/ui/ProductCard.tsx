@@ -1,15 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Product } from "@/shared/types/ProductTypes";
 
 interface ProductProps {
-  product: {
-    imageUrl: string;
-    title: string;
-    price: number;
-  };
+  product: Product;
 }
-
 export default function ProductCard({ product }: ProductProps) {
   return (
     <div className="product">
@@ -18,13 +14,13 @@ export default function ProductCard({ product }: ProductProps) {
           Add to Wishlist
         </Link>
       </div>
-      <a
-        href="single-product-fullwidth.html"
+      <Link
+        href={`/details/${product.slug}`}
         className="woocommerce-LoopProduct-link"
       >
         <Image
-          src={product.imageUrl}
-          alt={product.title}
+          src={product.images[0].image_url}
+          alt={product.name}
           width={224}
           height={130}
           className="wp-post-image"
@@ -35,8 +31,8 @@ export default function ProductCard({ product }: ProductProps) {
           </ins>
           <span className="amount">{product.price}</span>
         </span>
-        <h2 className="woocommerce-loop-product__title">{product.title}</h2>
-      </a>
+        <h2 className="woocommerce-loop-product__title">{product.name}</h2>
+      </Link>
       <div className="hover-area">
         <Link
           href="cart.html"
