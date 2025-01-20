@@ -9,8 +9,7 @@ export default function BannerImage() {
           style={{
             backgroundSize: "cover",
             backgroundPosition: "center center",
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1735290675000-236a69c7542d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+            backgroundImage: "url('/static/images/banner/banner-home.jpg')",
             height: "236px",
           }}
           className="banner-bg"

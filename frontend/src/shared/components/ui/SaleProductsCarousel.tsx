@@ -7,6 +7,7 @@ import styles from "@/shared/style/SaleProductsCarousel.module.css";
 import { ResType } from "@/shared/types/resType";
 import { ProductListResType } from "@/shared/types/ProductTypes";
 import productApiRequest from "@/shared/apiRequests/product";
+import Link from "next/link";
 
 export default function SaleProductsCarousel() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,9 +51,9 @@ export default function SaleProductsCarousel() {
                     products.map((product, index) => (
                       <div className={styles.embla__slide} key={index}>
                         <div className="sale-product-with-timer product">
-                          <a
+                          <Link
                             className="woocommerce-LoopProduct-link"
-                            href="single-product-fullwidth.html"
+                            href={`/details/${product.slug}`}
                           >
                             <div className="sale-product-with-timer-header">
                               <div className="price-and-title">
@@ -130,7 +131,7 @@ export default function SaleProductsCarousel() {
                               </span>
                               <div className="deal-countdown countdown"></div>
                             </div>
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     ))}
