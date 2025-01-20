@@ -25,7 +25,7 @@ const Home = () => {
                 title={"Hot Best Sellers"}
               ></RecommendedProducts>
               <BannerImage></BannerImage>
-              <ProductDisplay title={"New Arrivals"}></ProductDisplay>
+              <ProductDisplay title={"All products"}></ProductDisplay>
               <PromotionalBanners></PromotionalBanners>
               <LandscapeFullProductCardsCarousel></LandscapeFullProductCardsCarousel>
             </main>

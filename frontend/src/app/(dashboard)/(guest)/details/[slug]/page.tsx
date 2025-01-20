@@ -1,14 +1,17 @@
+"use client";
 import Star from "@/shared/components/icons/Star";
 import ProductTabs from "@/shared/components/layouts/ProductTabs";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
-import { products } from "@/shared/constants/products-test";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React from "react";
 
-const page = () => {
+export default function Page() {
+  const params = useParams();
+  const slug = params?.slug;
   return (
     <WrapperContent className="single-product">
       <div className="product product-type-simple">
@@ -42,7 +45,7 @@ const page = () => {
                 <a href="#">
                   <Image
                     alt="galaxy"
-                    src="https://images.unsplash.com/photo-1529653762956-b0a27278529c?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src="/static/images/brands/1.png"
                     width={100}
                     height={50}
                   />
@@ -158,7 +161,7 @@ const page = () => {
           </div>
         </div>
         {/* ///////////// */}
-        <RecommendedProducts products={products}></RecommendedProducts>
+        {/* <RecommendedProducts products={products}></RecommendedProducts> */}
         {/* ///////////// */}
         <BrandsCarousel></BrandsCarousel>
 
@@ -166,6 +169,4 @@ const page = () => {
       </div>
     </WrapperContent>
   );
-};
-
-export default page;
+}

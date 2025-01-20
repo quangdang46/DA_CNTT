@@ -13,7 +13,7 @@ export default function BrandItem() {
             </div>
           </figcaption>
           <Image
-            src="https://images.unsplash.com/photo-1693533846949-5df11d41642e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/static/images/brands/1.png"
             alt="apple"
             width={300}
             height={50}
