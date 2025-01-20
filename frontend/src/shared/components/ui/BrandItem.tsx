@@ -15,8 +15,10 @@ export default function BrandItem() {
           <Image
             src="/static/images/brands/1.png"
             alt="apple"
-            width={300}
-            height={50}
+            width="0"
+            height="0"
+            sizes="100vw"
+            style={{ width: "100%", height: "auto" }}
             className="img-responsive desaturate"
           />
         </figure>

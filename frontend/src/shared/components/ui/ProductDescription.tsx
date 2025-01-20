@@ -37,12 +37,12 @@ export default function ProductDescription({
           {description}
         </p>
         <div style={{ textAlign: "center" }}>
-          <iframe
+          {/* <iframe
             width="854"
             height="480"
             allowFullScreen={true}
             src={videoUrl}
-          ></iframe>
+          ></iframe> */}
         </div>
         {images &&
           images.map((image, index) => (
