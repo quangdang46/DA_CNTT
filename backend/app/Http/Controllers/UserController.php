@@ -3,62 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function me(Request $request)
     {
-        //
-    }
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+        } catch (JWTException $e) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ], 401);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'status' => 'success',
+            'message' => 'User information',
+            'data' => [
+                'user' => $user
+            ]
+        ]);
     }
 }

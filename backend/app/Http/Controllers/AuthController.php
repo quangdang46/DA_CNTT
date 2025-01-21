@@ -24,30 +24,6 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
     }
 
-
-    public function me(Request $request)
-    {
-        try {
-            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
-        } catch (JWTException $e) {
-            return response()->json([
-                "success" => false,
-                'status' => 'error',
-                'message' => 'User not authenticated',
-                'data' => null
-            ], 401);
-        }
-
-        return response()->json([
-            'success' => true,
-            'status' => 'success',
-            'message' => 'User information',
-            'data' => [
-                'user' => $user
-            ]
-        ]);
-    }
-
     public function logout(Request $request)
     {
         try {

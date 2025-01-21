@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,13 +13,18 @@ Route::group([
 
 ], function ($router) {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');  // Đăng xuất
-    Route::get('me', [AuthController::class, 'me']);
     Route::post('register', [AuthController::class, 'register']);  // Đăng ký
     Route::post('login', [AuthController::class, 'login']);        // Đăng nhập
     Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('password.reset'); // Quên mật khẩu
     Route::post('reset-password', [AuthController::class, 'resetPassword']);   // Đặt lại mật khẩu
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'account'
+], function ($router) {
+    Route::get('/me', [UserController::class, 'me']);
+});
 
 
 Route::group(

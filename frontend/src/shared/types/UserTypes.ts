@@ -1,3 +1,4 @@
+import { ResType } from "@/shared/types/resType";
 import { z } from "zod";
 
 export const UserType = z.object({
@@ -10,3 +11,5 @@ export const UserType = z.object({
 });
 
 export type UserResType = z.infer<typeof UserType>;
+
+export type AccountResType = ResType<UserResType>;
