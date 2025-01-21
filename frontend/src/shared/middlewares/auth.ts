@@ -8,7 +8,7 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
 
     const publicPages = ["/", "/details", "/about", "/contact"];
     const adminPages = ["/admin", "/admin/dashboard"]; // Trang chỉ admin truy cập
-
+    const guestPages = ["/my-account"]; // Trang khóa
     if (!token && publicPages.includes(pathName)) {
       // Không yêu cầu xác thực nếu là trang công khai
       return next(req, _next);
@@ -28,6 +28,11 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
           id: number;
           role: string;
         };
+
+        if (guestPages.includes(pathName) && decoded.role !== "guest") {
+          return NextResponse.redirect(new URL("/403", req.url)); // Trang không đủ quyền
+        }
+
         // Kiểm tra quyền truy cập dựa trên role
         if (adminPages.includes(pathName) && decoded.role !== "admin") {
           return NextResponse.redirect(new URL("/403", req.url)); // Trang không đủ quyền
@@ -37,12 +42,13 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
         // (req as any).user = decoded;
       } catch (err) {
         console.error("Invalid token:", err);
-        return NextResponse.redirect(new URL("/login", req.url));
+        // return NextResponse.redirect(new URL("/", req.url));
       }
     } else {
       // Nếu không có token và không phải trang công khai -> chuyển hướng đến login
       if (!publicPages.includes(pathName)) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        console.log("error middlweaee");
+        // return NextResponse.redirect(new URL("/", req.url));
       }
     }
 

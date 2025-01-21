@@ -20,46 +20,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
     description: product.description,
     images: product.images.map((image) => image.image_url),
   };
-  // product.attributes[0]
-  /*
-    battery_capacity: string;
-  battery_type: string;
-  camera_resolution: string;
-  chip: string;
-  created_at: string;
-  dimensions: string;
-  id: number;
-  operating_system: string;
-  product_id: number;
-  ram: string;
-  storage: string;
-  */
-
-  // const specifications = [
-  //   {
-  //     title: "General",
-  //     attributes: [
-  //       { label: "Brand", value: "Galaxy" },
-  //       { label: "Label", value: "A+" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Technical Specs",
-  //     attributes: [
-  //       { label: "Screen Size", value: "40″" },
-  //       { label: "Aspect Ratio", value: "16:9" },
-  //       { label: "3DTV", value: "No" },
-  //     ],
-  //   },
-  //   {
-  //     title: "Connectivity",
-  //     attributes: [
-  //       { label: "HDMI", value: "2 In" },
-  //       { label: "LAN", value: "1" },
-  //       { label: "USB", value: "2" },
-  //     ],
-  //   },
-  // ];
+ 
 
   const groupMapping = {
     General: ["operating_system", "battery_capacity", "battery_type"],

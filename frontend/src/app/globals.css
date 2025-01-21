@@ -8192,75 +8192,12 @@ a.remove:before {
 .woocommerce-password-strength.good:after {
   content: "\f11a";
 }
-.woocommerce-MyAccount-navigation ul li.is-active a:before {
+
+
+.woocommerce-MyAccount-navigation ul li div:hover:before {
   opacity: 1;
 }
-.woocommerce-MyAccount-navigation ul li a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f0f6";
-  line-height: 1.618;
-  margin-left: 0.5407911001em;
-  width: 1.41575em;
-  text-align: right;
-  float: right;
-  opacity: 0.25;
-}
-.woocommerce-MyAccount-navigation ul li a:hover:before {
-  opacity: 1;
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--dashboard
-  a:before {
-  content: "\f0e4";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--orders
-  a:before {
-  content: "\f291";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--downloads
-  a:before {
-  content: "\f1c6";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--edit-address
-  a:before {
-  content: "\f015";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--payment-methods
-  a:before {
-  content: "\f09d";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--edit-account
-  a:before {
-  content: "\f007";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--customer-logout
-  a:before {
-  content: "\f08b";
-}
-.woocommerce-MyAccount-navigation
-  ul
-  li.woocommerce-MyAccount-navigation-link--subscriptions
-  a:before {
-  content: "\f021";
-}
+
 .my_account_orders .button.view:after,
 .my_account_orders article .view.more-link:after,
 article .my_account_orders .view.more-link:after {
@@ -26621,7 +26558,7 @@ article #payment .place-order .more-link:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
 }
-.woocommerce-MyAccount-navigation ul li a {
+.woocommerce-MyAccount-navigation ul li div {
   padding: 0.875em 0;
   display: block;
   font-weight: 500;
@@ -26855,10 +26792,10 @@ article .woocommerce-MyAccount-downloads .more-link {
       width: 30%;
       flex-shrink: 0;
     }
-    .woocommerce-MyAccount-navigation ul li a {
+    .woocommerce-MyAccount-navigation ul li div {
       padding: 0.875em;
     }
-    .woocommerce-MyAccount-navigation ul li.is-active a {
+    .woocommerce-MyAccount-navigation ul li.is-active div {
       background-color: #f1f1f1;
     }
     .woocommerce-MyAccount-navigation ul li + li {
