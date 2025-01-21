@@ -1,16 +1,14 @@
 import Image from "next/image";
 import React from "react";
 interface ProductDescriptionProps {
-  title: string;
+  name: string;
   description: string;
-  videoUrl: string;
   images: string[];
   activeTab: string;
 }
 export default function ProductDescription({
-  title,
+  name,
   description,
-  videoUrl,
   images,
   activeTab,
 }: ProductDescriptionProps) {
@@ -23,10 +21,8 @@ export default function ProductDescription({
         role="tabpanel"
         style={isActive ? { display: "block" } : { display: "none" }}
       >
-        <h2>{title}</h2>
-        <h1 style={{ textAlign: "center" }}>
-          Exceptional color. Authentic images.
-        </h1>
+        <h2>{name}</h2>
+        <h1 style={{ textAlign: "center" }}>{name}</h1>
         <p
           style={{
             textAlign: "center",
@@ -46,7 +42,15 @@ export default function ProductDescription({
         </div>
         {images &&
           images.map((image, index) => (
-            <div key={index} className="outer-wrap">
+            <div
+              key={index}
+              className="outer-wrap"
+              style={
+                index % 2 === 0
+                  ? { justifyContent: "flex-start" }
+                  : { justifyContent: "flex-end" }
+              }
+            >
               {index % 2 === 0 ? (
                 <>
                   <div className="image-info">

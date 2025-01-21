@@ -12,6 +12,7 @@ export type ProductAttributes = {
   product_id: number;
   ram: string;
   storage: string;
+  [key: string]: string | number;
 };
 
 export type ProductAttributesList = ProductAttributes[];

@@ -31,7 +31,7 @@ export default function Page() {
         const response: ResType<Product> = await productApiRequest.getDetail(
           slug as string
         ); // Gọi API
-        console.log("response", response);
+
         if (response.success) {
           setProduct(response.data); // Cập nhật dữ liệu sản phẩm
         } else {
@@ -240,7 +240,7 @@ export default function Page() {
           {/* ///////////// */}
           <BrandsCarousel></BrandsCarousel>
 
-          <ProductTabs></ProductTabs>
+          <ProductTabs product={product}></ProductTabs>
         </div>
       </WrapperContent>
     </GalleryProvider>

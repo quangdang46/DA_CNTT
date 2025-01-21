@@ -2,49 +2,79 @@
 import ProductDescription from "@/shared/components/ui/ProductDescription";
 import ProductReview from "@/shared/components/ui/ProductReview";
 import ProductSpecification from "@/shared/components/ui/ProductSpecification";
+import { Product } from "@/shared/types/ProductTypes";
 import React, { useState } from "react";
 
-export default function ProductTabs() {
+interface ProductTabsProps {
+  product: Product;
+}
+
+export default function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("description");
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
+
   const productDetails = {
-    title: "Exceptional color and clarity",
-    description:
-      "Nullam dignissim elit ut urna rutrum, a fermentum mi auctor. Mauris efficitur magna orci, et dignissim lacus scelerisque sit amet...",
-    videoUrl: "https://www.youtube.com/embed/K5OGs8a3vlM?ecver=1",
-    images: [
-      "https://plus.unsplash.com/premium_photo-1673126680854-0a20e55c61d7?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1711284882804-e2dad4e21429?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ],
+    name: product.name,
+    description: product.description,
+    images: product.images.map((image) => image.image_url),
+  };
+  // product.attributes[0]
+  /*
+    battery_capacity: string;
+  battery_type: string;
+  camera_resolution: string;
+  chip: string;
+  created_at: string;
+  dimensions: string;
+  id: number;
+  operating_system: string;
+  product_id: number;
+  ram: string;
+  storage: string;
+  */
+
+  // const specifications = [
+  //   {
+  //     title: "General",
+  //     attributes: [
+  //       { label: "Brand", value: "Galaxy" },
+  //       { label: "Label", value: "A+" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Technical Specs",
+  //     attributes: [
+  //       { label: "Screen Size", value: "40″" },
+  //       { label: "Aspect Ratio", value: "16:9" },
+  //       { label: "3DTV", value: "No" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Connectivity",
+  //     attributes: [
+  //       { label: "HDMI", value: "2 In" },
+  //       { label: "LAN", value: "1" },
+  //       { label: "USB", value: "2" },
+  //     ],
+  //   },
+  // ];
+
+  const groupMapping = {
+    General: ["operating_system", "battery_capacity", "battery_type"],
+    "Technical Specs": ["camera_resolution", "chip"],
+    Physical: ["dimensions", "ram", "storage"],
   };
 
-  const specifications = [
-    {
-      title: "General",
-      attributes: [
-        { label: "Brand", value: "Galaxy" },
-        { label: "Label", value: "A+" },
-      ],
-    },
-    {
-      title: "Technical Specs",
-      attributes: [
-        { label: "Screen Size", value: "40″" },
-        { label: "Aspect Ratio", value: "16:9" },
-        { label: "3DTV", value: "No" },
-      ],
-    },
-    {
-      title: "Connectivity",
-      attributes: [
-        { label: "HDMI", value: "2 In" },
-        { label: "LAN", value: "1" },
-        { label: "USB", value: "2" },
-      ],
-    },
-  ];
+  const specifications = Object.entries(groupMapping).map(([title, keys]) => ({
+    title,
+    attributes: keys.map((key) => ({
+      label: key,
+      value: product.attributes[0][key], // Truy cập trực tiếp vào đối tượng
+    })),
+  }));
+
   return (
     <div className="woocommerce-tabs wc-tabs-wrapper">
       <ul role="tablist" className="nav tabs wc-tabs">
@@ -89,9 +119,8 @@ export default function ProductTabs() {
       <div className="tab-content">
         <ProductDescription
           activeTab={activeTab}
-          title={productDetails.title}
+          name={productDetails.name}
           description={productDetails.description}
-          videoUrl={productDetails.videoUrl}
           images={productDetails.images}
         ></ProductDescription>
         <ProductSpecification
