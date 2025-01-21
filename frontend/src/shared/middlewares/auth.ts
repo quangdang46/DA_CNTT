@@ -8,10 +8,18 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
 
     const publicPages = ["/", "/details", "/about", "/contact"];
     const adminPages = ["/admin", "/admin/dashboard"]; // Trang chỉ admin truy cập
-    const guestPages = ["/my-account"]; // Trang khóa
-    if (!token && publicPages.includes(pathName)) {
-      // Không yêu cầu xác thực nếu là trang công khai
-      return next(req, _next);
+    const guestPages = ["/my-account"]; // Trang dành cho khách
+
+    if (!token) {
+      // Nếu không có token và là trang công khai, cho phép truy cập
+      if (publicPages.includes(pathName)) {
+        return next(req, _next);
+      }
+
+      // Nếu không có token và cố truy cập vào admin hoặc guest -> Chuyển hướng
+      if (adminPages.includes(pathName) || guestPages.includes(pathName)) {
+        return NextResponse.redirect(new URL("/403", req.url)); // Chuyển đến trang đăng nhập
+      }
     }
 
     if (pathName.startsWith("/authentication")) {
@@ -29,29 +37,23 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
           role: string;
         };
 
+        // Kiểm tra quyền truy cập dành cho guest
         if (guestPages.includes(pathName) && decoded.role !== "guest") {
-          return NextResponse.redirect(new URL("/403", req.url)); // Trang không đủ quyền
+          return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
         }
 
-        // Kiểm tra quyền truy cập dựa trên role
+        // Kiểm tra quyền truy cập dành cho admin
         if (adminPages.includes(pathName) && decoded.role !== "admin") {
-          return NextResponse.redirect(new URL("/403", req.url)); // Trang không đủ quyền
+          return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
         }
-
-        // Thêm thông tin người dùng vào request để sử dụng sau này
-        // (req as any).user = decoded;
       } catch (err) {
         console.error("Invalid token:", err);
-        // return NextResponse.redirect(new URL("/", req.url));
-      }
-    } else {
-      // Nếu không có token và không phải trang công khai -> chuyển hướng đến login
-      if (!publicPages.includes(pathName)) {
-        console.log("error middlweaee");
-        // return NextResponse.redirect(new URL("/", req.url));
+        // Nếu token không hợp lệ -> Chuyển hướng đến trang đăng nhập
+        return NextResponse.redirect(new URL("/authentication", req.url));
       }
     }
 
+    // Nếu không rơi vào các trường hợp trên, cho phép truy cập
     return next(req, _next);
   };
 };
