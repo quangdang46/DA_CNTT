@@ -1,3 +1,4 @@
+import { LoginResType } from "@/shared/types/AuthenTypes";
 import { UserResType } from "@/shared/types/UserTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -27,13 +28,14 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialStateFromLocalStorage,
   reducers: {
-    setUser(state, action: PayloadAction<UserResType>) {
-      state.user = action.payload;
+    setUser(state, action: PayloadAction<LoginResType>) {
+      console.log("action.payload", action.payload);
+      state.user = action.payload.user;
       state.isLoggedIn = true;
       // Lưu thông tin người dùng vào localStorage
       if (typeof window !== "undefined") {
-        localStorage.setItem("user", JSON.stringify(action.payload));
-        localStorage.setItem("auth_token", "your-auth-token"); // Thêm token vào localStorage
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("auth_token", action.payload.token); // Thêm token vào localStorage
       }
     },
     logout(state) {

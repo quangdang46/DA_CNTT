@@ -11,6 +11,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -20,6 +21,30 @@ class AuthController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+
+    public function roleCheck(Request $request)
+    {
+
+        $user = $request->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                "data" => null
+            ], 401);
+        }
+
+        return response()->json([
+            'success' => true,
+            'status' => 'success',
+            'message' => 'User information',
+            'data' => [
+                "role" => $user->role
+            ]
+        ]);
+    }
+
     public function me(Request $request)
     {
         // Kiểm tra xem người dùng có được xác thực không
@@ -41,6 +66,30 @@ class AuthController extends Controller
                 'user' => $request->user()
             ]
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'status' => 'success',
+            'message' => 'Logged out successfully',
+            'data' => null
+        ]);
+    }
+
+    public function storeSession(Request $request)
+    {
+        $token = $request->input('token');
+        $expiresAt = $request->input('expiresAt');
+        $cookie = Cookie::make('auth_token', $token, $expiresAt);
+        return response()->json([
+            'success' => true,
+            'status' => 'success',
+            'message' => 'Login successful',
+        ])->cookie($cookie);
     }
     /**
      * Đăng ký người dùng mới.
@@ -163,20 +212,5 @@ class AuthController extends Controller
             'errors' => ['error' => $status],
             'data' => null
         ], 400);
-    }
-
-    /**
-     * Đăng xuất người dùng.
-     */
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'success' => true,
-            'status' => 'success',
-            'message' => 'Logged out successfully',
-            'data' => null
-        ]);
     }
 }

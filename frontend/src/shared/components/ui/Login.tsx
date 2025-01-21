@@ -28,18 +28,21 @@ export default function Login() {
 
     try {
       const response = await authRequestApi.login(data);
-      console.log(response);
       if (response.success) {
         toast.success(response.message);
         // Chuyển hướng đến dashboard hoặc trang khác
+        // await authRequestApi.auth({
+        //   token: response.data.token,
+        //   expiresAt: response.data.expiresAt,
+        // });
 
-        dispatch(setUser(response.data.user));
         setCookie("auth_token", response.data.token, {
           maxAge: response.data.expiresAt,
           path: "/",
           domain: "localhost",
         });
-
+        dispatch(setUser(response.data));
+        router.refresh();
         router.push("/");
       } else {
         toast.error(response.message);

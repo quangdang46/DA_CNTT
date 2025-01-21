@@ -1,3 +1,4 @@
+import { ResType } from "@/shared/types/resType";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 class ApiClient {
@@ -16,7 +17,6 @@ class ApiClient {
     this.instance.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem("auth_token");
-        console.log("token api", token);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -26,8 +26,10 @@ class ApiClient {
     );
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.instance.get<T>(url, config);
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<ResType<T>> {
+    const response: AxiosResponse<ResType<T>> = await this.instance.get<
+      ResType<T>
+    >(url, config);
     return response.data;
   }
 
@@ -36,12 +38,10 @@ class ApiClient {
     url: string,
     data: T,
     config?: AxiosRequestConfig
-  ): Promise<U> {
-    const response: AxiosResponse<U> = await this.instance.post<U>(
-      url,
-      data,
-      config
-    );
+  ): Promise<ResType<U>> {
+    const response: AxiosResponse<ResType<U>> = await this.instance.post<
+      ResType<U>
+    >(url, data, config);
     return response.data;
   }
 
@@ -50,21 +50,21 @@ class ApiClient {
     url: string,
     data: T,
     config?: AxiosRequestConfig
-  ): Promise<U> {
-    const response: AxiosResponse<U> = await this.instance.put<U>(
-      url,
-      data,
-      config
-    );
+  ): Promise<ResType<U>> {
+    const response: AxiosResponse<ResType<U>> = await this.instance.put<
+      ResType<U>
+    >(url, data, config);
     return response.data;
   }
 
   // Phương thức DELETE
-  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.instance.delete<T>(
-      url,
-      config
-    );
+  async delete<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<ResType<T>> {
+    const response: AxiosResponse<ResType<T>> = await this.instance.delete<
+      ResType<T>
+    >(url, config);
     return response.data;
   }
 
@@ -73,12 +73,10 @@ class ApiClient {
     url: string,
     data: T,
     config?: AxiosRequestConfig
-  ): Promise<U> {
-    const response: AxiosResponse<U> = await this.instance.patch<U>(
-      url,
-      data,
-      config
-    );
+  ): Promise<ResType<U>> {
+    const response: AxiosResponse<ResType<U>> = await this.instance.patch<
+      ResType<U>
+    >(url, data, config);
     return response.data;
   }
 }
