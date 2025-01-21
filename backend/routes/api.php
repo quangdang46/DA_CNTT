@@ -5,28 +5,34 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('auth')->group(function () {
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');  // Đăng xuất
+    Route::get('me', [AuthController::class, 'me']);
     Route::post('register', [AuthController::class, 'register']);  // Đăng ký
     Route::post('login', [AuthController::class, 'login']);        // Đăng nhập
     Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('password.reset'); // Quên mật khẩu
     Route::post('reset-password', [AuthController::class, 'resetPassword']);   // Đặt lại mật khẩu
-    Route::post("storeSession", [AuthController::class, 'storeSession']);
-
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('logout', [AuthController::class, 'logout']);  // Đăng xuất
-        Route::get("roleCheck", [AuthController::class, 'roleCheck']);
-        Route::get('me', [AuthController::class, 'me']);
-    });
 });
 
 
-Route::prefix("products")->group(function () {
-    Route::get('/', [ProductController::class, 'index']);
-    Route::post('byType', [ProductController::class, 'byType']);
-    Route::get('search', [ProductController::class, 'search']);
-    Route::get('new', [ProductController::class, 'new']);
-    Route::get('{slug}', [ProductController::class, 'show']);
-});
+
+Route::group(
+    [
+        'prefix' => 'products',
+    ],
+    function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('byType', [ProductController::class, 'byType']);
+        Route::get('search', [ProductController::class, 'search']);
+        Route::get('new', [ProductController::class, 'new']);
+        Route::get('{slug}', [ProductController::class, 'show']);
+    }
+);
 
 
 /*

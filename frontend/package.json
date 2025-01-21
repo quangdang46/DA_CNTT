@@ -21,6 +21,7 @@
     "embla-carousel": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "jose": "^5.9.6",
     "next": "^15.1.4",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.7",

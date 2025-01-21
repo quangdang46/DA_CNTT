@@ -12,6 +12,8 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -22,33 +24,12 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function roleCheck(Request $request)
-    {
-
-        $user = $request->user();
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'status' => 'error',
-                'message' => 'User not authenticated',
-                "data" => null
-            ], 401);
-        }
-
-        return response()->json([
-            'success' => true,
-            'status' => 'success',
-            'message' => 'User information',
-            'data' => [
-                "role" => $user->role
-            ]
-        ]);
-    }
 
     public function me(Request $request)
     {
-        // Kiểm tra xem người dùng có được xác thực không
-        if (!$request->user()) {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+        } catch (JWTException $e) {
             return response()->json([
                 "success" => false,
                 'status' => 'error',
@@ -57,20 +38,28 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Trả về thông tin người dùng đã đăng nhập
         return response()->json([
             'success' => true,
             'status' => 'success',
             'message' => 'User information',
             'data' => [
-                'user' => $request->user()
+                'user' => $user
             ]
         ]);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken()); // Hủy token hiện tại
+        } catch (JWTException $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Could not invalidate token',
+                'data' => null
+            ], 500);
+        }
 
         return response()->json([
             'success' => true,
@@ -80,31 +69,44 @@ class AuthController extends Controller
         ]);
     }
 
-    public function storeSession(Request $request)
-    {
-        $token = $request->input('token');
-        $expiresAt = $request->input('expiresAt');
-        $cookie = Cookie::make('auth_token', $token, $expiresAt);
-        return response()->json([
-            'success' => true,
-            'status' => 'success',
-            'message' => 'Login successful',
-        ])->cookie($cookie);
-    }
     /**
      * Đăng ký người dùng mới.
      */
     public function register(RegisterRequest $request)
     {
+        // Kiểm tra xem email đã được đăng ký chưa
+        $existingUser = $this->userRepository->getUserByEmail($request->email);
+        if ($existingUser) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Email is already registered',
+                'data' => null
+            ], 400);
+        }
+
+        // Băm mật khẩu
         $data = $request->only(['name', 'email', 'password']);
+        $data['password'] = Hash::make($data['password']); // Băm mật khẩu trước khi lưu
+
+        // Tạo người dùng mới
         $user = $this->userRepository->createUser($data);
+
+        // Tạo một token cho người dùng mới (nếu cần)
+        // Nếu bạn muốn tự động đăng nhập người dùng sau khi đăng ký
+        $token =
+            $token = JWTAuth::claims([
+                'id' => $user->id,      // ID của user
+                'role' => $user->role,  // Role của user
+            ])->fromUser($user);;
 
         return response()->json([
             'success' => true,
             'status' => 'success',
             'message' => 'Registration successful',
             'data' => [
-                'user' => $user
+                'user' => $user,
+                'token' => $token, // Bạn có thể trả về token nếu cần
             ]
         ], 201);
     }
@@ -112,8 +114,10 @@ class AuthController extends Controller
     /**
      * Đăng nhập.
      */
+
     public function login(LoginRequest $request)
     {
+        // Xác thực người dùng từ email và mật khẩu
         $user = $this->userRepository->authenticate($request->email, $request->password);
 
         if (!$user) {
@@ -125,21 +129,39 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
-        // timestamp
+        try {
+            // Tạo JWT token
+            $token =
+                $token = JWTAuth::claims([
+                    'id' => $user->id,      // ID của user
+                    'role' => $user->role,  // Role của user
+                ])->fromUser($user);
+        } catch (JWTException $e) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Could not create token',
+                'data' => null
+            ], 500);
+        }
+
+        // Thời gian hết hạn token (30 ngày, có thể thay đổi)
         $expiresAt = now()->addMinutes(30 * 24)->timestamp;
+
+        // Trả về token và thông tin người dùng
         return response()->json([
             'success' => true,
             'status' => 'success',
             'message' => 'Login successful',
             'data' => [
                 'token' => $token,
-                'expiresAt' => $expiresAt,
                 'user' => $user,
-                'role' => $user->role
+                'role' => $user->role,
+                'expiresAt' => $expiresAt, // Thời gian hết hạn của token
             ]
         ]);
     }
+
 
     /**
      * Quên mật khẩu: Gửi email đặt lại mật khẩu.

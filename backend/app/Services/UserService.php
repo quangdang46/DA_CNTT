@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 /**
  * Class UserService
@@ -9,5 +10,14 @@ namespace App\Services;
  */
 class UserService
 {
+    protected $userRepository;
 
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+    public function getUserByEmail($email){
+        return $this->userRepository->getUserByEmail($email);
+    }
 }
