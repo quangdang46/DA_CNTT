@@ -4,6 +4,7 @@ import authRequestApi from "@/shared/apiRequests/auth";
 import Tick from "@/shared/components/icons/Check";
 import { RegisterBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -24,20 +25,21 @@ export default function Register() {
       password_confirmation: "",
     },
   });
-
-  const onSubmit =async (data: RegisterBodyType) => {
+  const router = useRouter();
+  const onSubmit = async (data: RegisterBodyType) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response =await authRequestApi.register(data);
+      const response = await authRequestApi.register(data);
       if (response.success) {
         toast.success(response.message);
-      }else{
+        router.refresh();
+      } else {
         toast.error(response.message);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };

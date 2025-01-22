@@ -1,15 +1,21 @@
 import { useTabs } from "@/shared/contexts/TabsContext";
 import { RootState } from "@/shared/state/store";
-import Link from "next/link";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function DashboardTab() {
   const { activeTab, setActiveTab } = useTabs();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [isClient, setIsClient] = useState(false);
 
-  const { user, token } = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
+  if (!isClient) {
+    return null; // Không render nội dung này trong SSR
+  }
   return (
     <div
       className="woocommerce-MyAccount-content"
@@ -20,13 +26,11 @@ export default function DashboardTab() {
       }
     >
       <div className="woocommerce-notices-wrapper"></div>
-      <p>
-        Hello <strong>{user.email}</strong> (not
-        <strong> {user.email}</strong>?
-        <Link href={`/my-account/logout?auth_token=${token}`}>Log out</Link>)
-      </p>
+      <div>
+        Hello <strong>{user?.email}</strong>
+      </div>
 
-      <p>
+      <div>
         From your account dashboard you can view your
         <strong
           className="text-danger"
@@ -55,7 +59,7 @@ export default function DashboardTab() {
           edit your password and account details
         </strong>
         .
-      </p>
+      </div>
     </div>
   );
 }
