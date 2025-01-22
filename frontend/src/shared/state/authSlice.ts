@@ -54,7 +54,7 @@ const authSlice = createSlice({
         localStorage.setItem("auth_token", action.payload.token); // Thêm token vào localStorage
       }
     },
-    logout(state) {
+    setLogout(state) {
       state.user = null;
       state.isLoggedIn = false;
       state.token = null;
@@ -73,6 +73,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setError } = authSlice.actions;
+export const { setUser, setError, setLogout } = authSlice.actions;
 
 export default authSlice.reducer;

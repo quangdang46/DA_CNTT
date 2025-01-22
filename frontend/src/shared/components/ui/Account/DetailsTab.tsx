@@ -22,7 +22,6 @@ export default function DetailsTab() {
     // Gửi dữ liệu tới server tại đây
     
   };
-  console.log(errors); // Log lỗi nếu có
   return (
     <div
       className="woocommerce-MyAccount-content"

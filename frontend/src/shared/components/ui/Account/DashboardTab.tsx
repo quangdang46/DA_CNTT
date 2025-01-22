@@ -1,5 +1,6 @@
 import { useTabs } from "@/shared/contexts/TabsContext";
 import { RootState } from "@/shared/state/store";
+import Link from "next/link";
 
 import React from "react";
 import { useSelector } from "react-redux";
@@ -32,7 +33,7 @@ export default function DashboardTab() {
   //   fetchUser();
   // }, []);
 
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, token } = useSelector((state: RootState) => state.auth);
 
   // if (isLoading) {
   //   return <div>Loading...</div>;
@@ -54,10 +55,7 @@ export default function DashboardTab() {
       <p>
         Hello <strong>{user.email}</strong> (not
         <strong> {user.email}</strong>?
-        <a href="https://techmarket.madrasthemes.com/wp-login.php?action=logout&amp;redirect_to=https%3A%2F%2Ftechmarket.madrasthemes.com%2Fmy-account%2F&amp;_wpnonce=9672074694">
-          Log out
-        </a>
-        )
+        <Link href={`/my-account/logout?auth_token=${token}`}>Log out</Link>)
       </p>
 
       <p>

@@ -24,11 +24,45 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    // public function logout(Request $request)
+    // {
+    //     try {
+    //         JWTAuth::invalidate(JWTAuth::getToken()); // Hủy token hiện tại
+    //     } catch (JWTException $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'status' => 'error',
+    //             'message' => 'Could not invalidate token',
+    //             'data' => null
+    //         ], 500);
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'status' => 'success',
+    //         'message' => 'Logged out successfully',
+    //         'data' => null
+    //     ]);
+    // }
+
     public function logout(Request $request)
     {
+        // Kiểm tra nếu có token trong header Authorization
+        $token = $request->header('Authorization');
+        if (!$token) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Token not provided',
+                'data' => null
+            ], 400);
+        }
+
         try {
-            JWTAuth::invalidate(JWTAuth::getToken()); // Hủy token hiện tại
+            // Hủy token hiện tại
+            JWTAuth::invalidate(JWTAuth::parseToken()->getToken());
         } catch (JWTException $e) {
+            // Lỗi khi không thể hủy token
             return response()->json([
                 'success' => false,
                 'status' => 'error',
@@ -37,6 +71,7 @@ class AuthController extends Controller
             ], 500);
         }
 
+        // Trả về phản hồi thành công
         return response()->json([
             'success' => true,
             'status' => 'success',
@@ -107,11 +142,13 @@ class AuthController extends Controller
 
         try {
             // Tạo JWT token
-            $token =
-                $token = JWTAuth::claims([
-                    'id' => $user->id,      // ID của user
-                    'role' => $user->role,  // Role của user
-                ])->fromUser($user);
+            // Thời gian hết hạn token (30 ngày, có thể thay đổi)
+            $expiresAt = now()->addMinutes(30 * 24)->timestamp;
+            $token = JWTAuth::claims([
+                'id' => $user->id,      // ID của user
+                'role' => $user->role,  // Role của user
+                'exp' => $expiresAt
+            ])->fromUser($user);
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
@@ -121,8 +158,7 @@ class AuthController extends Controller
             ], 500);
         }
 
-        // Thời gian hết hạn token (30 ngày, có thể thay đổi)
-        $expiresAt = now()->addMinutes(30 * 24)->timestamp;
+
 
         // Trả về token và thông tin người dùng
         return response()->json([

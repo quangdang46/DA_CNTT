@@ -1,6 +1,4 @@
-import authRequestApi from "@/shared/apiRequests/auth";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { setCookie } from "cookies-next/client";
 
 class ApiClient {
   private instance: AxiosInstance;
@@ -11,30 +9,9 @@ class ApiClient {
         "Content-Type": "application/json",
       },
     });
-    // this.instance.interceptors.response.use(
-    //   (response) => response,
-    //   (error) => Promise.reject(error) // Xu ly loi
-    // );
-    // Interceptor cho response
     this.instance.interceptors.response.use(
       (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true; // Đánh dấu yêu cầu này đã được thử lại
-          const newToken = await this.refreshAccessToken();
-          if (newToken) {
-            // Lưu token mới vào localStorage
-            localStorage.setItem("auth_token", newToken);
-            setCookie("auth_token", newToken, { maxAge: 60 * 60 });
-            // Cập nhật lại headers của yêu cầu
-            originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
-            // Thực hiện lại yêu cầu ban đầu
-            return this.instance(originalRequest);
-          }
-        }
-        return Promise.reject(error); // Trả về lỗi nếu không thể refresh token
-      }
+      (error) => Promise.reject(error) // Xu ly loi
     );
     this.instance.interceptors.request.use(
       (config) => {
@@ -47,16 +24,6 @@ class ApiClient {
       (error) => Promise.reject(error)
     );
   }
-  private refreshAccessToken = async () => {
-    try {
-      const response = await authRequestApi.refresh();
-      if (response.success) {
-        return response.data.token;
-      }
-    } catch (error) {
-      console.log("Error refreshing access token:", error);
-    }
-  };
 
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response: AxiosResponse<T> = await this.instance.get<T>(url, config);
