@@ -15,7 +15,14 @@ export async function verifyJwtToken(token: string) {
     );
     return verified.payload;
   } catch (error) {
-    console.log(error);
-    // throw new Error("Invalid or expired token.");
+    // Kiểm tra loại lỗi và xử lý phù hợp
+    if (error instanceof Error && error.message.includes("JWT expired")) {
+      console.log("Token has expired.");
+      // Thực hiện các bước xử lý khi token hết hạn, ví dụ như làm mới token
+      throw new Error("Token expired. Please log in again.");
+    } else {
+      console.log("Token verification failed:", error);
+      throw new Error("Invalid token.");
+    }
   }
 }

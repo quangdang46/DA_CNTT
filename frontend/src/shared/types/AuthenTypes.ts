@@ -58,3 +58,8 @@ export const RegisterResData = z.object({
   }),
 });
 export type RegisterResType = ResType<typeof RegisterResData>;
+
+export const RefreshTokenResData = z.object({
+  token: z.string(),
+});
+export type RefreshTokenResType = ResType<typeof RefreshTokenResData>;

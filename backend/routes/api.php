@@ -17,6 +17,7 @@ Route::group([
     Route::post('login', [AuthController::class, 'login']);        // Đăng nhập
     Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->name('password.reset'); // Quên mật khẩu
     Route::post('reset-password', [AuthController::class, 'resetPassword']);   // Đặt lại mật khẩu
+    Route::get("refreshToken", [AuthController::class, 'refreshToken']);
 });
 
 Route::group([
