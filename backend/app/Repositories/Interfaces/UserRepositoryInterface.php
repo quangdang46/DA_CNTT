@@ -8,4 +8,5 @@ interface UserRepositoryInterface
 
     public function getUserByEmail(string $email);
     public function authenticate(string $email, string $password);
+    public function createUser(array $data);
 }

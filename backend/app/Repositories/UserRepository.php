@@ -37,4 +37,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return null; // Xác thực thất bại
     }
+    public function createUser(array $data)
+    {
+        $data['password'] = Hash::make($data['password']); // Mã hóa mật khẩu
+        return User::create($data);
+    }
 }
