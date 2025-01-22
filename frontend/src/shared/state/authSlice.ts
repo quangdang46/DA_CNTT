@@ -41,17 +41,40 @@ const authSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    setUser(state, action: PayloadAction<LoginResType>) {
-      state.user = action.payload.user;
+    setUser(state, action: PayloadAction<Partial<LoginResType>>) {
+      // state.user = action.payload.user;
       state.isLoggedIn = true;
-      state.token = action.payload.token;
+      // state.token = action.payload.token;
 
-      state.loading = false; // Tắt trạng thái loading
-      state.error = null; // Xóa lỗi (nếu có)
-      // Lưu thông tin người dùng vào localStorage
+      state.loading = false;
+      state.error = null;
+      // // Lưu thông tin người dùng vào localStorage
+      // if (typeof window !== "undefined") {
+      //   localStorage.setItem("user", JSON.stringify(action.payload.user));
+      //   localStorage.setItem("auth_token", action.payload.token); // Thêm token vào localStorage
+      // }
+
+      // Cập nhật chỉ thông tin người dùng
+      if (action.payload.user) {
+        state.user = { ...state.user, ...action.payload.user }; // Giữ nguyên các giá trị cũ trong `user` nếu không có thay đổi
+      }
+
+      // Cập nhật token
+      if (action.payload.token) {
+        state.token = action.payload.token;
+      }
+
+      // Không thay đổi `isLoggedIn`, `token`, `loading`, và `error`
       if (typeof window !== "undefined") {
-        localStorage.setItem("user", JSON.stringify(action.payload.user));
-        localStorage.setItem("auth_token", action.payload.token); // Thêm token vào localStorage
+        if (action.payload.user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...state.user, ...action.payload.user })
+          );
+        }
+        if (action.payload.token) {
+          localStorage.setItem("auth_token", action.payload.token); // Chỉ lưu token nếu có
+        }
       }
     },
     setLogout(state) {

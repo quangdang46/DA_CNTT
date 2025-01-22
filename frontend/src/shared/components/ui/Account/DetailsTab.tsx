@@ -1,10 +1,13 @@
+import accountApiRequest from "@/shared/apiRequests/account";
 import { useTabs } from "@/shared/contexts/TabsContext";
+import { setUser } from "@/shared/state/authSlice";
 import { RootState } from "@/shared/state/store";
 import { UpdateMeBody, UpdateMeBodyType } from "@/shared/types/UserTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function DetailsTab() {
   const { activeTab } = useTabs();
@@ -16,11 +19,19 @@ export default function DetailsTab() {
     resolver: zodResolver(UpdateMeBody),
   });
   const { user } = useSelector((state: RootState) => state.auth);
-
-  const onSubmit = (data: UpdateMeBodyType) => {
-    console.log("Form Data:", data);
-    // Gửi dữ liệu tới server tại đây
-    
+  const dispatch = useDispatch();
+  const onSubmit = async (data: UpdateMeBodyType) => {
+    try {
+      const response = await accountApiRequest.updateMe(data);
+      if (response.success) {
+        // localStorage.setItem("user", JSON.stringify(response.data.user));
+        dispatch(setUser({ user: response.data.user }));
+      }
+      toast.success(response.message);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
   return (
     <div
@@ -96,51 +107,55 @@ export default function DetailsTab() {
             <p className="text-danger">{errors.email.message}</p>
           )}
         </div>
-
-        <fieldset>
-          <legend>Password change</legend>
-          <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-            <label htmlFor="password">
-              Current password (leave blank to leave unchanged)
-            </label>
-            <input
-              type="password"
-              id="password"
-              {...register("password")}
-              className="woocommerce-Input woocommerce-Input--password input-text"
-            />
-            {errors.password && (
-              <p className="text-danger">{errors.password.message}</p>
-            )}
-          </div>
-          <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-            <label htmlFor="password_1">
-              New password (leave blank to leave unchanged)
-            </label>
-            <input
-              type="password"
-              id="password_1"
-              {...register("password_1")}
-              className="woocommerce-Input woocommerce-Input--password input-text"
-            />
-            {errors.password_1 && (
-              <p className="text-danger">{errors.password_1.message}</p>
-            )}
-          </div>
-          <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-            <label htmlFor="password_2">Confirm new password</label>
-            <input
-              type="password"
-              id="password_2"
-              {...register("password_2")}
-              className="woocommerce-Input woocommerce-Input--password input-text"
-            />
-            {errors.password_2 && (
-              <p className="text-danger">{errors.password_2.message}</p>
-            )}
-          </div>
-        </fieldset>
-
+        <div className="woocommerce-info">
+          Change your password.
+          <span className="button wc-forward">Change password</span>
+        </div>
+        {
+          <fieldset className="animated">
+            <legend>Password change</legend>
+            <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+              <label htmlFor="password">
+                Current password (leave blank to leave unchanged)
+              </label>
+              <input
+                type="password"
+                id="password"
+                {...register("password")}
+                className="woocommerce-Input woocommerce-Input--password input-text"
+              />
+              {errors.password && (
+                <p className="text-danger">{errors.password.message}</p>
+              )}
+            </div>
+            <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+              <label htmlFor="password_1">
+                New password (leave blank to leave unchanged)
+              </label>
+              <input
+                type="password"
+                id="password_1"
+                {...register("password_1")}
+                className="woocommerce-Input woocommerce-Input--password input-text"
+              />
+              {errors.password_1 && (
+                <p className="text-danger">{errors.password_1.message}</p>
+              )}
+            </div>
+            <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+              <label htmlFor="password_2">Confirm new password</label>
+              <input
+                type="password"
+                id="password_2"
+                {...register("password_2")}
+                className="woocommerce-Input woocommerce-Input--password input-text"
+              />
+              {errors.password_2 && (
+                <p className="text-danger">{errors.password_2.message}</p>
+              )}
+            </div>
+          </fieldset>
+        }
         <button type="submit" className="woocommerce-Button button">
           Save changes
         </button>

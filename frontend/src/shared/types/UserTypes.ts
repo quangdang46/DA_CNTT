@@ -24,16 +24,19 @@ export const UpdateMeBody = z
     email: z.string().email("Email không hợp lệ"),
     password: z
       .string()
-      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
-      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+      // .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      // .max(100, { message: "Mật khật không quá 100 ký tự" })
+      .optional(),
     password_1: z
       .string()
-      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
-      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+      // .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      // .max(100, { message: "Mật khật không quá 100 ký tự" })
+      .optional(),
     password_2: z
       .string()
-      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
-      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+      // .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      // .max(100, { message: "Mật khật không quá 100 ký tự" })
+      .optional(),
     loyalty_points: z.preprocess((value) => Number(value), z.number().min(0)),
   })
   .superRefine(({ password_1, password_2 }, ctx) => {

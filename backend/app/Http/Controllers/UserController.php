@@ -39,11 +39,11 @@ class UserController extends Controller
     }
 
 
-    public function updateMe(UpdateMeRequest  $request)
+    public function updateMe(UpdateMeRequest $request)
     {
-
         try {
             $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+
             // Nếu người dùng không xác thực được
             if (!$user) {
                 return response()->json([
@@ -54,9 +54,8 @@ class UserController extends Controller
                 ], 401);
             }
 
+            // Nếu người dùng có cung cấp mật khẩu hiện tại, kiểm tra mật khẩu
             if ($request->password) {
-
-                // Kiểm tra mật khẩu hiện tại nếu có thay đổi mật khẩu
                 if (!Hash::check($request->password, $user->password)) {
                     return response()->json([
                         "success" => false,
@@ -66,24 +65,17 @@ class UserController extends Controller
                     ]);
                 }
             }
-            $data = $request->except(['password_1', 'password_2']);
 
-            // Nếu người dùng có cung cấp mật khẩu mới, kiểm tra và cập nhật mật khẩu
-            if ($request->password_1) {
-                // Kiểm tra nếu password_1 và password_2 khớp nhau
-                if ($request->password_1 !== $request->password_2) {
-                    return response()->json([
-                        "success" => false,
-                        'status' => 'error',
-                        'message' => 'Mật khẩu mới và xác nhận mật khẩu không khớp',
-                        'data' => null
-                    ], 400);
-                }
+            $data = $request->except(['password_1', 'password_2']); // Loại bỏ password_1 và password_2 khỏi dữ liệu
 
-                // Mã hóa mật khẩu mới
+            // Nếu người dùng cung cấp mật khẩu mới, kiểm tra và cập nhật mật khẩu
+            if ($request->password_1 && $request->password_1 === $request->password_2) {
+                // Nếu password_1 và password_2 khớp, cập nhật mật khẩu mới
                 $data['password'] = Hash::make($request->password_1);
+            } else {
+                // Nếu không thay đổi mật khẩu, không thêm trường 'password' vào $data
+                unset($data['password']); // Đảm bảo không có trường password rỗng
             }
-            // Chuyển đổi dữ liệu từ request thành mảng và loại bỏ password_1, password_2
 
             // Cập nhật các thông tin khác (ngoại trừ mật khẩu) vào cơ sở dữ liệu
             $updatedUser = $this->userService->update($user->id, $data);
@@ -95,6 +87,7 @@ class UserController extends Controller
                 'data' => null
             ], 401);
         }
+
         return response()->json([
             'success' => true,
             'status' => 'success',
@@ -104,4 +97,5 @@ class UserController extends Controller
             ]
         ]);
     }
+
 }
