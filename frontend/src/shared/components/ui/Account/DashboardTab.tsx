@@ -1,42 +1,46 @@
-import accountApiRequest from "@/shared/apiRequests/account";
 import { useTabs } from "@/shared/contexts/TabsContext";
-import { UserResType } from "@/shared/types/UserTypes";
-import React, { useEffect, useState } from "react";
+import { RootState } from "@/shared/state/store";
+
+import React from "react";
+import { useSelector } from "react-redux";
 
 export default function DashboardTab() {
   const { activeTab } = useTabs();
-  const [account, setAccount] = useState<UserResType>({} as UserResType); // UserResType hoặc null
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  // const [account, setAccount] = useState<UserResType>({} as UserResType); // UserResType hoặc null
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setIsLoading(true);
-        const response = await accountApiRequest.me();
-        if (response.success) {
-          setAccount(response.data.user); // Cập nhật thông tin người dùng
-        } else {
-          console.error("Failed to fetch user data:", response.message);
-          setIsError(true);
-        }
-      } catch (error) {
-        console.error("Error while fetching user:", error);
-        setIsError(true); // Cập nhật trạng thái lỗi
-      } finally {
-        setIsLoading(false); // Kết thúc loading
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await accountApiRequest.me();
+  //       if (response.success) {
+  //         setAccount(response.data.user); // Cập nhật thông tin người dùng
+  //       } else {
+  //         console.error("Failed to fetch user data:", response.message);
+  //         setIsError(true);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error while fetching user:", error);
+  //       setIsError(true); // Cập nhật trạng thái lỗi
+  //     } finally {
+  //       setIsLoading(false); // Kết thúc loading
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  //   fetchUser();
+  // }, []);
 
-  if (isError) {
-    return <div>Error occurred while fetching user data.</div>;
-  }
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (isError) {
+  //   return <div>Error occurred while fetching user data.</div>;
+  // }
   return (
     <div
       className="woocommerce-MyAccount-content"
@@ -48,8 +52,8 @@ export default function DashboardTab() {
     >
       <div className="woocommerce-notices-wrapper"></div>
       <p>
-        Hello <strong>{account.email}</strong> (not
-        <strong> {account.email}</strong>?
+        Hello <strong>{user.email}</strong> (not
+        <strong> {user.email}</strong>?
         <a href="https://techmarket.madrasthemes.com/wp-login.php?action=logout&amp;redirect_to=https%3A%2F%2Ftechmarket.madrasthemes.com%2Fmy-account%2F&amp;_wpnonce=9672074694">
           Log out
         </a>
