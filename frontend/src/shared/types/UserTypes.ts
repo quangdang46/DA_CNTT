@@ -18,16 +18,27 @@ export const UpdateMeBody = z
   .object({
     name: z.string().trim().min(2).max(256),
     phone: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6).max(100),
-    password_confirmation: z.string().min(6).max(100),
+    email: z.string().email("Email không hợp lệ"),
+    password: z
+      .string()
+      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+    password_1: z
+      .string()
+      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+    password_2: z
+      .string()
+      .min(6, { message: "Mật khật phải nhất 6 ký tự" })
+      .max(100, { message: "Mật khật không quá 100 ký tự" }),
+    loyalty_points: z.preprocess((value) => Number(value), z.number().min(0)),
   })
-  .superRefine(({ password_confirmation, password }, ctx) => {
-    if (password_confirmation !== password) {
+  .superRefine(({ password_1, password_2 }, ctx) => {
+    if (password_2 !== password_1) {
       ctx.addIssue({
         code: "custom",
-        message: "Mật khật khớp nhau",
-        path: ["password_confirmation"],
+        message: "Mật khật không khớp nhau",
+        path: ["password_2"],
       });
     }
   });

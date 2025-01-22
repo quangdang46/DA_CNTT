@@ -44,7 +44,7 @@ export default function HeaderNav() {
 
       <NavItem>
         <Link
-          href={isLoggedIn ? "/profile" : "/authentication"}
+          href={isLoggedIn ? "/my-account" : "/authentication"}
           className="nav-link"
         >
           <User></User>{" "}
