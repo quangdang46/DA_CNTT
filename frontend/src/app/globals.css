@@ -8341,9 +8341,7 @@ article .woocommerce-MyAccount-downloads .more-link:after {
   content: "\f044";
   margin-right: 0.5407911001em;
 }
-.woocommerce-page .addresses + .addresses header.title a:before {
-  content: "\f067";
-}
+
 /**
  * Product reviews pro
  */
@@ -8397,14 +8395,7 @@ article .wl-create-new.more-link:before {
   content: "\f067";
   margin-right: 0.5407911001em;
 }
-.addresses header.title::after,
-.addresses .woocommerce-Address-title::after,
-.woocommerce-Address header.title::after,
-.woocommerce-Address .woocommerce-Address-title::after {
-  display: block;
-  content: "";
-  clear: both;
-}
+
 .addresses header.title a,
 .addresses .woocommerce-Address-title a,
 .woocommerce-Address header.title a,
@@ -8418,26 +8409,7 @@ article .wl-create-new.more-link:before {
   margin-top: 0.23em;
   margin-left: 6px;
 }
-.addresses header.title a:before,
-.addresses .woocommerce-Address-title a:before,
-.woocommerce-Address header.title a:before,
-.woocommerce-Address .woocommerce-Address-title a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f044";
-  line-height: 1.618;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  text-indent: 0;
-}
+
 @media (min-width: 768px) {
   .main-navigation ul.menu > li.menu-item-has-children > a:after,
   .main-navigation ul.menu > li.page_item_has_children > a:after,

@@ -4,6 +4,7 @@ import { setUser } from "@/shared/state/authSlice";
 import { RootState } from "@/shared/state/store";
 import { UpdateMeBody, UpdateMeBodyType } from "@/shared/types/UserTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function DetailsTab() {
   const { activeTab } = useTabs();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -28,6 +30,7 @@ export default function DetailsTab() {
         dispatch(setUser({ user: response.data.user }));
       }
       toast.success(response.message);
+      router.refresh();
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
