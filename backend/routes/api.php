@@ -24,6 +24,7 @@ Route::group([
     'prefix' => 'account'
 ], function ($router) {
     Route::get('/me', [UserController::class, 'me']);
+    Route::put('/updateMe', [UserController::class, 'updateMe']);
 });
 
 

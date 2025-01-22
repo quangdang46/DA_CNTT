@@ -11,10 +11,11 @@ export async function verifyJwtToken(token: string) {
   try {
     const verified = await jwtVerify(
       token,
-      new TextEncoder().encode(getJwtSecretKey())
+      new TextEncoder().encode(envConfig.NEXT_PUBLIC_JWT_SECRET)
     );
     return verified.payload;
   } catch (error) {
-    throw new Error("Invalid or expired token.");
+    console.log(error);
+    // throw new Error("Invalid or expired token.");
   }
 }

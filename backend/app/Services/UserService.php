@@ -20,4 +20,8 @@ class UserService
     public function getUserByEmail($email){
         return $this->userRepository->getUserByEmail($email);
     }
+
+    public function update($id, $data){
+        return $this->userRepository->updateUser($id, $data);
+    }
 }

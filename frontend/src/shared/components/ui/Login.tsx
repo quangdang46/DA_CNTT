@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import authRequestApi from "@/shared/apiRequests/auth";
-import { setUser } from "@/shared/state/authSlice";
+import { setError, setUser } from "@/shared/state/authSlice";
 import { LoginBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
@@ -39,9 +39,11 @@ export default function Login() {
         router.refresh();
         router.push("/");
       } else {
+        dispatch(setError(response.message));
         toast.error(response.message);
       }
     } catch (error: any) {
+      dispatch(setError(error.message));
       toast.error(error.message);
     } finally {
       setLoading(false);

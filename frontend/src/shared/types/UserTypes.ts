@@ -17,7 +17,10 @@ export type AccountResType = ResType<UserResType>;
 export const UpdateMeBody = z
   .object({
     name: z.string().trim().min(2).max(256),
-    phone: z.string(),
+    phone: z
+      .string()
+      .min(10, { message: "Sdt phải nhất 10 ký tự" })
+      .max(11, { message: "Sdt không quá 11 ký tự" }),
     email: z.string().email("Email không hợp lệ"),
     password: z
       .string()

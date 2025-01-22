@@ -1,8 +1,10 @@
 import { useTabs } from "@/shared/contexts/TabsContext";
+import { RootState } from "@/shared/state/store";
 import { UpdateMeBody, UpdateMeBodyType } from "@/shared/types/UserTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export default function DetailsTab() {
   const { activeTab } = useTabs();
@@ -13,10 +15,12 @@ export default function DetailsTab() {
   } = useForm<UpdateMeBodyType>({
     resolver: zodResolver(UpdateMeBody),
   });
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const onSubmit = (data: UpdateMeBodyType) => {
     console.log("Form Data:", data);
     // Gửi dữ liệu tới server tại đây
+    
   };
   console.log(errors); // Log lỗi nếu có
   return (
@@ -41,9 +45,10 @@ export default function DetailsTab() {
             type="text"
             id="name"
             {...register("name")}
+            defaultValue={user?.name}
             className="woocommerce-Input woocommerce-Input--text input-text"
           />
-          {errors.name && <p>{errors.name.message}</p>}
+          {errors.name && <p className="text-danger">{errors.name.message}</p>}
         </div>
         <div className="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
           <label htmlFor="phone">
@@ -53,9 +58,12 @@ export default function DetailsTab() {
             type="text"
             id="phone"
             {...register("phone")}
+            defaultValue={user?.phone}
             className="woocommerce-Input woocommerce-Input--text input-text"
           />
-          {errors.phone && <p>{errors.phone.message}</p>}
+          {errors.phone && (
+            <p className="text-danger">{errors.phone.message}</p>
+          )}
         </div>
         <div className="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
           <label htmlFor="loyalty_points">
@@ -65,9 +73,13 @@ export default function DetailsTab() {
             type="number"
             id="loyalty_points"
             {...register("loyalty_points")}
+            readOnly
+            defaultValue={user?.loyalty_points}
             className="woocommerce-Input woocommerce-Input--text input-text"
           />
-          {errors.loyalty_points && <p>{errors.loyalty_points.message}</p>}
+          {errors.loyalty_points && (
+            <p className="text-danger">{errors.loyalty_points.message}</p>
+          )}
         </div>
         <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
           <label htmlFor="email">
@@ -77,9 +89,13 @@ export default function DetailsTab() {
             type="email"
             id="email"
             {...register("email")}
+            defaultValue={user?.email}
+            readOnly
             className="woocommerce-Input woocommerce-Input--email input-text"
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-danger">{errors.email.message}</p>
+          )}
         </div>
 
         <fieldset>
@@ -94,6 +110,9 @@ export default function DetailsTab() {
               {...register("password")}
               className="woocommerce-Input woocommerce-Input--password input-text"
             />
+            {errors.password && (
+              <p className="text-danger">{errors.password.message}</p>
+            )}
           </div>
           <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
             <label htmlFor="password_1">
@@ -105,6 +124,9 @@ export default function DetailsTab() {
               {...register("password_1")}
               className="woocommerce-Input woocommerce-Input--password input-text"
             />
+            {errors.password_1 && (
+              <p className="text-danger">{errors.password_1.message}</p>
+            )}
           </div>
           <div className="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
             <label htmlFor="password_2">Confirm new password</label>
@@ -114,7 +136,9 @@ export default function DetailsTab() {
               {...register("password_2")}
               className="woocommerce-Input woocommerce-Input--password input-text"
             />
-            {errors.password_2 && <p>{errors.password_2.message}</p>}
+            {errors.password_2 && (
+              <p className="text-danger">{errors.password_2.message}</p>
+            )}
           </div>
         </fieldset>
 
