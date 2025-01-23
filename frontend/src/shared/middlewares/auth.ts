@@ -20,6 +20,16 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
       if (adminPages.includes(pathName) || guestPages.includes(pathName)) {
         return NextResponse.redirect(new URL("/403", req.url)); // Chuyển đến trang đăng nhập
       }
+
+      // Đặt role mặc định cho khách (guest) nếu không có token
+      // const response = NextResponse.next();
+      // response.cookies.set("role", "guest", {
+      //   httpOnly: true, // Bảo vệ cookie khỏi XSS
+      //   secure: process.env.NODE_ENV === "production", // Sử dụng `secure` trong môi trường production
+      //   sameSite: "strict", // Bảo vệ cookie khỏi CSRF
+      // });
+
+      // return response;
     }
 
     if (pathName.startsWith("/authentication")) {
@@ -37,6 +47,14 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
           role: string;
         };
 
+        // Set role vào cookie để có thể sử dụng trên các request sau
+        // const response = NextResponse.next();
+        // response.cookies.set("role", decoded.role, {
+        //   httpOnly: true, // Bảo vệ cookie khỏi XSS
+        //   secure: process.env.NODE_ENV === "production", // Sử dụng `secure` trong môi trường production
+        //   sameSite: "strict", // Bảo vệ cookie khỏi CSRF
+        // });
+
         // Kiểm tra quyền truy cập dành cho guest
         if (guestPages.includes(pathName) && decoded.role !== "guest") {
           return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
@@ -46,6 +64,8 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
         if (adminPages.includes(pathName) && decoded.role !== "admin") {
           return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
         }
+
+        // return response;
       } catch (err) {
         console.error("Invalid token:", err);
         // Nếu token không hợp lệ -> Chuyển hướng đến trang đăng nhập

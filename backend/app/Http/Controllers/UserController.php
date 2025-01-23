@@ -33,7 +33,8 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'User information',
             'data' => [
-                'user' => $user
+                'user' => $user,
+                'role' => $user->role
             ]
         ]);
     }

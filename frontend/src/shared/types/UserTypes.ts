@@ -11,8 +11,12 @@ export const UserType = z.object({
 });
 
 export type UserResType = z.infer<typeof UserType>;
+export type AccountType = {
+  user: UserResType;
+  role: string;
+};
 
-export type AccountResType = ResType<UserResType>;
+export type AccountResType = ResType<AccountType>;
 
 export const UpdateMeBody = z
   .object({

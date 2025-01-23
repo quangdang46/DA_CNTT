@@ -14,9 +14,8 @@
   display: inline-block;
   margin: 0 1.457em;
 } */
-ol,
-ul,
-menu {
+
+ul {
   list-style: none;
   margin: 0;
   padding: 0;

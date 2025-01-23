@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import accountApiRequest from "@/shared/apiRequests/account";
 import { useTabs } from "@/shared/contexts/TabsContext";
 import { setUser } from "@/shared/state/authSlice";
