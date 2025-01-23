@@ -2,43 +2,32 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Autoplay from "embla-carousel-autoplay";
-import { ProductListResType } from "@/shared/types/ProductTypes";
-import { ResType } from "@/shared/types/resType";
 import productApiRequest from "@/shared/apiRequests/product";
 
 export default function HomePageSlider() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
-  const [products, setProducts] = useState<ProductListResType | []>([]);
+ 
 
+  const { data, isLoading, error } = productApiRequest.useProducts("new");
+  console.log({
+    data,
+    isLoading,
+    error,
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response: ResType<ProductListResType> =
-          await productApiRequest.getByUrlAndType({
-            url: "/products/byType",
-            type: "new",
-          });
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-        if (response.success) {
-          setProducts(response.data);
-        } else {
-          // Xử lý khi API trả về lỗi
-          console.error("Error fetching products:", response.message);
-        }
-      } catch (error) {
-        // Xử lý lỗi kết nối API hoặc lỗi khác
-        console.error("API error:", error);
-      }
-    };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-    fetchProducts();
-  }, []);
-
+  const products = data?.data || [];
   const slides = products.map((product) => ({
     backgroundImage: "/static/images/slider/background.jpg",
     image: product.images[0].image_url,

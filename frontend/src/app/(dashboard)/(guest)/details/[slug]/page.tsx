@@ -8,65 +8,23 @@ import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { GalleryProvider } from "@/shared/contexts/GalleryContext";
 import { Product } from "@/shared/types/ProductTypes";
-import { ResType } from "@/shared/types/resType";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import React from "react";
 
 export default function Page() {
   const { slug } = useParams(); // Lấy slug từ URL
-  const [product, setProduct] = useState<Product | null>(null); // Khởi tạo giá trị là null
-  const [loading, setLoading] = useState(true); // Trạng thái loading
-  const [error, setError] = useState<string | null>(null); // Trạng thái lỗi
-  const [thumbnails, setThumbnails] = useState<string[]>([]); // Mảng thumbnails
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (!slug) {
-        toast.error("Slug not found");
-        return;
-      }
-      setLoading(true); // Bắt đầu quá trình tải
-      try {
-        const response: ResType<Product> = await productApiRequest.getDetail(
-          slug as string
-        ); // Gọi API
+  
+  const { data, isLoading, error } = productApiRequest.useProductDetail(
+    slug as string
+  );
 
-        if (response.success) {
-          setProduct(response.data); // Cập nhật dữ liệu sản phẩm
-        } else {
-          setError(response.message); // Xử lý khi có lỗi từ API
-          toast.error(response.message);
-        }
-      } catch (err) {
-        console.error("Error fetching product", err);
-        setError("Failed to fetch product");
-        toast.error("Failed to fetch product");
-      } finally {
-        setLoading(false); // Kết thúc quá trình tải
-      }
-    };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!data?.data) return <div>Product not found</div>;
 
-    fetchProducts();
-  }, [slug]); // Thực hiện khi slug thay đổi
-
-  useEffect(() => {
-    if (product) {
-      setThumbnails(product.images.map((image) => image.image_url)); // Cập nhật thumbnails
-    }
-  }, [product]);
-
-  if (loading) {
-    return <div>Loading...</div>; // Hiển thị khi đang tải
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>; // Hiển thị lỗi nếu có
-  }
-
-  if (!product) {
-    return <div>Product not found</div>; // Nếu không có dữ liệu sản phẩm
-  }
+  const product = data.data as Product;
+  const thumbnails = product.images.map((image) => image.image_url);
   return (
     <GalleryProvider>
       <WrapperContent className="single-product">

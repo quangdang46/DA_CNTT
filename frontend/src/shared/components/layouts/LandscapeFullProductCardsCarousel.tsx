@@ -1,41 +1,25 @@
 "use client";
 import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "@/shared/style/LandscapeFullProductCardsCarousel.module.css";
 import useEmblaCarousel from "embla-carousel-react";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
-import { ProductListResType } from "@/shared/types/ProductTypes";
 import productApiRequest from "@/shared/apiRequests/product";
-import { ResType } from "@/shared/types/resType";
 export default function LandscapeFullProductCardsCarousel() {
-  const [products, setProducts] = useState<ProductListResType | []>([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response: ResType<ProductListResType> =
-          await productApiRequest.getList();
-
-        if (response.success) {
-          setProducts(response.data);
-        } else {
-          // Xử lý khi API trả về lỗi
-          console.error("Error fetching products:", response.message);
-        }
-      } catch (error) {
-        // Xử lý lỗi kết nối API hoặc lỗi khác
-        console.error("API error:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({});
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
+
+  const { data, isLoading, error } = productApiRequest.useProductList();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const products = data?.data || [];
+
   const itemsPerPage = 4; // 2 phần tử/hàng x 2 hàng
   const totalPages = Math.ceil(products.length / itemsPerPage);
 

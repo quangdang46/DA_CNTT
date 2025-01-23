@@ -2,10 +2,8 @@ import { useCarouselContext } from "@/shared/contexts/CarouselContext";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "@/shared/style/SaleProductsCarousel.module.css";
-import { ResType } from "@/shared/types/resType";
-import { ProductListResType } from "@/shared/types/ProductTypes";
 import productApiRequest from "@/shared/apiRequests/product";
 import Link from "next/link";
 
@@ -23,31 +21,49 @@ export default function SaleProductsCarousel() {
 
   //   if (!emblaApi) return null; // Nếu emblaApi chưa có, không render carousel
 
-  const [products, setProducts] = useState<ProductListResType | []>([]);
+  const { data, isLoading, error } =
+    productApiRequest.useProducts("high-rated");
+  console.log({
+    data,
+    isLoading,
+    error,
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response: ResType<ProductListResType> =
-          await productApiRequest.getByUrlAndType({
-            url: "/products/byType",
-            type: "high-rated",
-          });
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-        if (response.success) {
-          setProducts(response.data);
-        } else {
-          // Xử lý khi API trả về lỗi
-          console.error("Error fetching products:", response.message);
-        }
-      } catch (error) {
-        // Xử lý lỗi kết nối API hoặc lỗi khác
-        console.error("API error:", error);
-      }
-    };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-    fetchProducts();
-  }, []);
+  const products = data?.data || [];
+
+  // const [products, setProducts] = useState<ProductListResType | []>([]);
+
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const response: ResType<ProductListResType> =
+  //         await productApiRequest.getByUrlAndType({
+  //           url: "/products/byType",
+  //           type: "high-rated",
+  //         });
+
+  //       if (response.success) {
+  //         setProducts(response.data);
+  //       } else {
+  //         // Xử lý khi API trả về lỗi
+  //         console.error("Error fetching products:", response.message);
+  //       }
+  //     } catch (error) {
+  //       // Xử lý lỗi kết nối API hoặc lỗi khác
+  //       console.error("API error:", error);
+  //     }
+  //   };
+
+  //   fetchProducts();
+  // }, []);
 
   return (
     <div className="sale-products-with-timer-carousel deals-carousel-v1">

@@ -29,8 +29,8 @@ export async function verifyJwtToken(token: string) {
         console.log("Token verification failed:", error);
       }
       deleteCookie("auth_token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("auth_token");
+      // localStorage.removeItem("user");
+      // localStorage.removeItem("auth_token");
     }
   }
 }

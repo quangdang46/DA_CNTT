@@ -1,6 +1,6 @@
 import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
 import useEmblaCarousel from "embla-carousel-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "@/shared/style/ProductDisplay.module.css";
 import ChevronLeft from "@/shared/components/icons/ChevronLeft";
 import ChevronRight from "@/shared/components/icons/ChevronRight";
@@ -8,8 +8,6 @@ import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import productApiRequest from "@/shared/apiRequests/product";
-import { ResType } from "@/shared/types/resType";
-import { ProductListResType } from "@/shared/types/ProductTypes";
 
 export default function ProductDisplay({
   title = "Related products",
@@ -29,16 +27,14 @@ export default function ProductDisplay({
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi);
 
-  const [products, setProducts] = useState<ProductListResType | null>(null);;
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response:ResType<ProductListResType> = await productApiRequest.getList();
-      if (response.success) {
-        setProducts(response.data);
-      }
-    };
-    fetchProducts();
-  }, []);
+
+
+  const { data, isLoading, error } = productApiRequest.useProductList();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  const products = data?.data || [];
 
   return (
     <section
