@@ -4,14 +4,44 @@ import authRequestApi from "@/shared/apiRequests/auth";
 import Tick from "@/shared/components/icons/Check";
 import { RegisterBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export default function Register() {
-  const [loading, setLoading] = useState(false);
+export const useRegister = () => {
+  const router = useRouter();
 
+  return useMutation({
+    mutationFn: async (data: RegisterBodyType) => {
+      const response = await authRequestApi.register(data);
+
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+
+      // if (!response.success) {
+      //   if (response.errors && response.errors.email) {
+      //     throw new Error(response.errors.email[0]); // Lấy thông báo lỗi email
+      //   }
+      //   throw new Error(response.message); // Nếu có lỗi chung, throw lỗi chung
+      // }
+
+      return response;
+    },
+    onSuccess: (response) => {
+      toast.success(response.message);
+      router.refresh();
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export default function Register() {
+  const registerMutation = useRegister();
   const {
     register: formRegister,
     handleSubmit,
@@ -25,24 +55,11 @@ export default function Register() {
       password_confirmation: "",
     },
   });
-  const router = useRouter();
-  const onSubmit = async (data: RegisterBodyType) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const response = await authRequestApi.register(data);
-      if (response.success) {
-        toast.success(response.message);
-        router.refresh();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+
+  const onSubmit = (data: RegisterBodyType) => {
+    registerMutation.mutate(data);
   };
+
   return (
     <div className="u-column2 col-2">
       <h2>Register</h2>
@@ -117,9 +134,9 @@ export default function Register() {
             className="woocommerce-Button button"
             name="register"
             value="Register"
-            disabled={loading}
+            disabled={registerMutation.isPending}
           >
-            {loading ? "Loading..." : "Register"}
+            {registerMutation.isPending ? "Loading..." : "Register"}
           </button>
         </div>
         <div className="register-benefits">

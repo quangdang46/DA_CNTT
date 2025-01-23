@@ -105,11 +105,11 @@ class AuthController extends Controller
 
         // Tạo một token cho người dùng mới (nếu cần)
         // Nếu bạn muốn tự động đăng nhập người dùng sau khi đăng ký
-        $token =
-            $token = JWTAuth::claims([
-                'id' => $user->id,      // ID của user
-                'role' => $user->role,  // Role của user
-            ])->fromUser($user);;
+
+        $token = JWTAuth::claims([
+            'id' => $user->id,      // ID của user
+            'role' => $user->role,  // Role của user
+        ])->fromUser($user);;
 
         return response()->json([
             'success' => true,

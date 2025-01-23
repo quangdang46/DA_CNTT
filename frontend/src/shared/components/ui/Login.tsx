@@ -4,13 +4,24 @@ import authRequestApi from "@/shared/apiRequests/auth";
 import { setError, setUser } from "@/shared/state/authSlice";
 import { LoginBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-
+const useLogin = () => {
+  return useMutation({
+    mutationFn: async (data: LoginBodyType) => {
+      const response = await authRequestApi.login(data);
+      if (!response.success) {
+        throw new Error(response.message); // Throw error nếu login thất bại
+      }
+      return response;
+    },
+  });
+};
 export default function Login() {
   const {
     register,
@@ -23,33 +34,36 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  // Dùng hook useLogin từ react-query
+  const loginMutation = useLogin();
+
   const onSubmit = async (data: LoginBodyType) => {
     if (loading) return;
 
+    setLoading(true); // Set loading true khi bắt đầu submit
+
     try {
-      const response = await authRequestApi.login(data);
-      if (response.success) {
-        toast.success(response.message);
-        setCookie("auth_token", response.data.token, {
-          maxAge: response.data.expiresAt,
-          path: "/",
-          domain: "localhost",
-        });
-        dispatch(setUser(response.data));
-        router.refresh();
-        router.push("/");
-      } else {
-        dispatch(setError(response.message));
-        toast.error(response.message);
-      }
+      const response = await loginMutation.mutateAsync(data); // Call API thông qua useMutation
+      toast.success(response.message);
+
+      setCookie("auth_token", response.data.token, {
+        maxAge: response.data.expiresAt,
+        path: "/",
+        domain: "localhost",
+      });
+
+      dispatch(setUser(response.data));
+      router.refresh();
+      router.push("/");
     } catch (error: any) {
+      // Handle error
       dispatch(setError(error.message));
       toast.error(error.message);
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading false khi hoàn thành
     }
   };
-
   return (
     <div className="u-column1 col-1">
       <h2>Login</h2>

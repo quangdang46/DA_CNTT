@@ -16,7 +16,10 @@ const authRequestApi = {
   logout: (signal: AbortSignal) => apiClient.post("/auth/logout", { signal }),
 };
 
-
-
+const authQueryRequest = {
+  
+};
 
 export default authRequestApi;
+
+export { authQueryRequest };

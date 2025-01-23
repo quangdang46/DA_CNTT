@@ -38,7 +38,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return null; // Xác thực thất bại
     }
     public function createUser(array $data)
-    {
+    { // Trước khi tạo người dùng mới, bạn cần kiểm tra lại email có trùng không
+        $existingUser = $this->getUserByEmail($data['email']);
+        if ($existingUser) {
+            throw new \Exception("The email has already been taken.");
+        }
         $data['password'] = Hash::make($data['password']); // Mã hóa mật khẩu
         return User::create($data);
     }
