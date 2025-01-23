@@ -1,4 +1,5 @@
 import envConfig from "@/shared/config/config";
+import { deleteCookie } from "cookies-next";
 import { jwtVerify } from "jose";
 export const getJwtSecretKey = () => {
   const secret = envConfig.NEXT_PUBLIC_JWT_SECRET;
@@ -21,8 +22,15 @@ export async function verifyJwtToken(token: string) {
       // Thực hiện các bước xử lý khi token hết hạn, ví dụ như làm mới token
       throw new Error("Token expired. Please log in again.");
     } else {
-      console.log("Token verification failed:", error);
-      throw new Error("Invalid token.");
+      // Kiểm tra loại lỗi
+      if (error instanceof Error && error.message.includes("JWT expired")) {
+        console.log("Token has expired.");
+      } else {
+        console.log("Token verification failed:", error);
+      }
+      deleteCookie("auth_token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("auth_token");
     }
   }
 }

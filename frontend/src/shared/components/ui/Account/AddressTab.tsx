@@ -1,8 +1,31 @@
 import { useTabs } from "@/shared/contexts/TabsContext";
-import React from "react";
-
+import React, { useEffect, useRef, useState } from "react";
+import styles from "@/shared/style/AddressTab.module.css";
+import useClickOutside from "@/shared/hooks/useClickOutside";
+import Check from "@/shared/components/icons/Check";
+import CloseIcon from "@/shared/components/icons/CloseIcon";
 export default function AddressTab() {
   const { activeTab } = useTabs();
+  const [show, setShow] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null); // No need for `HTMLDivElement | null`
+  useClickOutside(modalRef as React.RefObject<HTMLElement>, () =>
+    setShow(false)
+  );
+
+  // Effect to manage body scroll
+  useEffect(() => {
+    if (show) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    // Cleanup function to remove the class on unmount
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [show]);
+
   return (
     <div
       className="woocommerce-MyAccount-content"
@@ -19,197 +42,160 @@ export default function AddressTab() {
 
       <div className="u-columns woocommerce-Addresses col2-set addresses">
         <div className="u-column1 col-1 woocommerce-Address">
-          <header className="woocommerce-Address-title title align-items-end">
+          <header
+            className="woocommerce-Address-title title align-items-end"
+            onClick={() => setShow(!show)}
+          >
             <h2>Billing address</h2>
           </header>
           <address>You have not set up this type of address yet.</address>
         </div>
       </div>
+      <div className=""></div>
+      <div
+        className={styles.address_overlay}
+        style={{ display: show ? "block" : "none" }}
+        onClick={() => setShow(false)} // Đóng modal khi click vào overlay
+      ></div>
 
-      <form method="post">
-        <h2>Billing address</h2>
-        <div className="woocommerce-address-fields">
-          <div className="woocommerce-address-fields__field-wrapper">
-            <p
-              className="form-row form-row-wide address-field validate-required"
-              id="billing_address_1_field"
-              data-priority="50"
-            >
-              <label htmlFor="billing_address_1">
-                Street address&nbsp;
-                <abbr className="required" title="required">
-                  *
-                </abbr>
-              </label>
-              <span className="woocommerce-input-wrapper">
-                <input
-                  type="text"
-                  className="input-text"
-                  name="billing_address_1"
-                  id="billing_address_1"
-                  placeholder="House number and street name"
-                  value=""
-                  aria-required="true"
-                  autoComplete="address-line1"
-                />
-              </span>
+      <div
+        className={styles.address_modal}
+        style={{ display: show ? "block" : "none" }}
+        ref={modalRef} // Tham chiếu modal
+      >
+        {/* <div className={`${styles.address_item} ${styles.address_item__right}`}>
+          <div className={styles.top_location}>
+            <b>Chọn địa chỉ nhận hàng</b>
+            <p className={styles.full_location}>
+              <span className={styles.choose_text}>Địa chỉ đang chọn: </span>
+              <span className={styles.fulladdress}></span>
+              <a className={styles.hide}>Thay đổi</a>
             </p>
-
-            <p
-              className="form-row form-row-wide address-field"
-              id="billing_address_2_field"
-              data-priority="60"
-            >
-              <label htmlFor="billing_address_2" className="screen-reader-text">
-                Apartment, suite, unit, etc.&nbsp;
-                <span className="optional">(optional)</span>
-              </label>
-              <span className="woocommerce-input-wrapper">
-                <input
-                  type="text"
-                  className="input-text"
-                  name="billing_address_2"
-                  id="billing_address_2"
-                  placeholder="Apartment, suite, unit, etc. (optional)"
-                  value=""
-                  autoComplete="address-line2"
-                />
-              </span>
-            </p>
-
-            <p
-              className="form-row form-row-wide address-field validate-required"
-              id="billing_city_field"
-              data-priority="70"
-            >
-              <label htmlFor="billing_city">
-                Town / City&nbsp;
-                <abbr className="required" title="required">
-                  *
-                </abbr>
-              </label>
-              <span className="woocommerce-input-wrapper">
-                <input
-                  type="text"
-                  className="input-text"
-                  name="billing_city"
-                  id="billing_city"
-                  placeholder=""
-                  value=""
-                  aria-required="true"
-                  autoComplete="address-level2"
-                />
-              </span>
-            </p>
-            <p
-              className="form-row form-row-wide address-field validate-required validate-state"
-              id="billing_state_field"
-              data-priority="80"
-            >
-              <label htmlFor="billing_state" className="">
-                State&nbsp;
-                <abbr className="required" title="required">
-                  *
-                </abbr>
-              </label>
-              <span className="woocommerce-input-wrapper">
-                <select
-                  name="billing_state"
-                  id="billing_state"
-                  className="state_select select2-hidden-accessible"
-                  aria-required="true"
-                  data-placeholder="Select an option…"
-                  data-label="State"
-                  aria-hidden="true"
-                >
-                  <option value="">Select an option…</option>
-                </select>
-                <span
-                  className="select2 select2-container select2-container--default select2-container--below"
-                  dir="ltr"
-                  style={{ width: "100" }}
-                >
-                  <span className="selection">
-                    <span
-                      className="select2-selection select2-selection--single"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      aria-required="true"
-                      aria-label="State"
-                      role="combobox"
-                    >
-                      <span
-                        className="select2-selection__rendered"
-                        aria-required="true"
-                        id="select2-billing_state-container"
-                        role="textbox"
-                        aria-readonly="true"
-                      >
-                        <span className="select2-selection__placeholder">
-                          Select an option…
-                        </span>
-                      </span>
-                      <span
-                        className="select2-selection__arrow"
-                        role="presentation"
-                      >
-                        <b role="presentation"></b>
-                      </span>
-                    </span>
-                  </span>
-                  <span className="dropdown-wrapper" aria-hidden="true"></span>
-                </span>
-              </span>
-            </p>
-            <p
-              className="form-row form-row-wide address-field validate-required validate-postcode"
-              id="billing_postcode_field"
-              data-priority="90"
-            >
-              <label htmlFor="billing_postcode" className="">
-                ZIP Code&nbsp;
-                <abbr className="required" title="required">
-                  *
-                </abbr>
-              </label>
-              <span className="woocommerce-input-wrapper">
-                <input
-                  type="text"
-                  className="input-text"
-                  name="billing_postcode"
-                  id="billing_postcode"
-                  placeholder=""
-                  value=""
-                  aria-required="true"
-                />
-              </span>
-            </p>
+            <a className={styles.cls_location}>
+              <Check></Check>
+            </a>
+            <a className={styles.cls_back}>
+              <Check></Check>
+            </a>
           </div>
+          <div className={styles.location_search}>
+            <Check className={styles.icon_search}></Check>
 
-          <p>
-            <button
-              type="submit"
-              className="button"
-              name="save_address"
-              value="Save address"
-            >
-              Save address
-            </button>
             <input
-              type="hidden"
-              id="woocommerce-edit-address-nonce"
-              name="woocommerce-edit-address-nonce"
-              value="52e537e29c"
+              className=""
+              id="locationSearch"
+              name="locationSearch"
+              placeholder="Tìm nhanh tỉnh thành, quận huyện, phường xã"
             />
-            <input
-              type="hidden"
-              name="_wp_http_referer"
-              value="/my-account/edit-address/billing/"
-            />
-            <input type="hidden" name="action" value="edit_address" />
-          </p>
+            <a className={styles.clear_searchbox}>
+              <span className={styles.box_relative}>
+                <Check className={styles.close_symbol}></Check>
+              </span>
+            </a>
+          </div>
         </div>
-      </form>
+
+        <strong className={styles.choose_province}>
+          <span>Hoặc chọn</span>
+        </strong>
+
+        <div className={styles.listing_location}>
+          <div id={styles.suggest_location}></div>
+          <div className={styles.lst_tab}>
+            <a data-list="#lst-prov" className={styles.active}>
+              Tỉnh/TP
+            </a>
+            <a data-list="#lst-dis" className={styles.disable}>
+              Quận/Huyện
+            </a>
+            <a data-list="#lst-ward" className={styles.disable}>
+              Phường/Xã
+            </a>
+          </div>
+          <div id="lst-prov" className="lst-location">
+            <div className="listing-locale">
+              <ul>
+                <li>
+                  <a className="" data-value="3">
+                    Hồ Chí Minh
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="lst-dis" className="lst-location hide"></div>
+          <div id="lst-ward" className="lst-location hide"></div>
+          <div id={styles.lst_address} className="lst-location hide">
+            <input
+              type="text"
+              id="hdLocationAddress"
+              name="hdLocationAddress"
+              value=""
+              placeholder="Số nhà, tên đường"
+            />
+            <span>
+              Vui lòng cho Thế Giới Di Động biết số nhà, tên đường để thuận tiện
+              giao hàng cho quý khách.
+            </span>
+            <label>Vui lòng nhập địa chỉ số nhà, tên đường để giao hàng.</label>
+          </div>
+        </div>
+
+        <div className={styles.location_confirm}>
+          <a>Xác nhận địa chỉ</a>
+        </div>
+
+        <div className={styles.location__none}>
+          <i></i>
+          <span>Không hiển thị lại, tôi sẽ cung cấp địa chỉ sau</span>
+        </div> */}
+
+        <div
+          className={`${styles.address_location} `}
+          style={{ display: show ? "block" : "none" }}
+        >
+          <a onClick={() => setShow(false)}>
+            <CloseIcon></CloseIcon>
+          </a>
+          <b>Thông tin giao hàng</b>
+          <ul>
+            <li className="active">
+              123 a, Phường 07, Quận 5, Hồ Chí Minh <i>Mặc định</i>
+              <br />
+              <a className="btn-edit">Chỉnh sửa</a>
+            </li>
+            <li
+              className=""
+              data-default="0"
+              data-id="59801784"
+              data-province="9"
+              data-district="850"
+              data-ward="1828"
+              data-address="asasdsa"
+            >
+              asasdsa, Phường Hoà Cường Nam, Quận Hải Châu, Đà Nẵng
+              <br />
+              <a className="btn-edit">Chỉnh sửa</a>
+              <a className="btn-delete">Xóa</a>
+            </li>
+          </ul>
+
+          <a className={styles.btn_add}>Thêm thông tin địa chỉ giao hàng mới</a>
+          <span className={styles.check} style={{ display: "none" }}>
+            <i></i>Thêm địa chỉ giao hàng thành công
+          </span>
+          <a className={styles.btn_confirm}>Xác nhận</a>
+          <div className={styles.la_delete} style={{ display: "none" }}>
+            <div>
+              <Check></Check>
+              <b>Xóa địa chỉ</b>
+              <span>Bạn có chắc chắn muốn xóa địa chỉ này không?</span>
+              <a className="btn-delete-cancel">Hủy</a>
+              <a className="btn-delete-confirm">Xóa</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -11112,7 +11112,7 @@ article.post.category-more-tag a[target="_blank"] {
   left: 0;
   top: 0;
   background-color: #fff;
-  z-index: 9999;
+  z-index: 10;
   box-shadow: 0px 0px 17px -1px rgba(0, 0, 0, 0.66);
 }
 .sticky-wrapper .techmarket-sticky-wrap.stuck.faster {
