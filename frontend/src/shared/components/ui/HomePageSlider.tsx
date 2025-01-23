@@ -13,11 +13,7 @@ export default function HomePageSlider() {
  
 
   const { data, isLoading, error } = productApiRequest.useProducts("new");
-  console.log({
-    data,
-    isLoading,
-    error,
-  });
+
 
   if (isLoading) {
     return <div>Loading...</div>;

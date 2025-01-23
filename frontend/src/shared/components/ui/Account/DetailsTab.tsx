@@ -4,6 +4,7 @@ import { setUser } from "@/shared/state/authSlice";
 import { RootState } from "@/shared/state/store";
 import { UpdateMeBody, UpdateMeBodyType } from "@/shared/types/UserTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +14,7 @@ import { toast } from "react-toastify";
 export default function DetailsTab() {
   const { activeTab } = useTabs();
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -20,22 +22,36 @@ export default function DetailsTab() {
   } = useForm<UpdateMeBodyType>({
     resolver: zodResolver(UpdateMeBody),
   });
+
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const onSubmit = async (data: UpdateMeBodyType) => {
-    try {
+
+  // Hook to use mutation from react-query
+  const mutation = useMutation({
+    mutationFn: async (data: UpdateMeBodyType) => {
       const response = await accountApiRequest.updateMe(data);
-      if (response.success) {
-        // localStorage.setItem("user", JSON.stringify(response.data.user));
-        dispatch(setUser({ user: response.data.user }));
+      if (!response.success) {
+        throw new Error(response.message);
       }
+      return response;
+    },
+    onSuccess: (response) => {
+      // Dispatch the updated user data to the store
+      dispatch(setUser({ user: response.data.user }));
       toast.success(response.message);
       router.refresh();
-    } catch (error: any) {
-      console.log(error);
+    },
+    onError: (error: any) => {
+      // Handle error
       toast.error(error.message);
-    }
+    },
+  });
+
+  // Submit handler for the form
+  const onSubmit = async (data: UpdateMeBodyType) => {
+    mutation.mutate(data); // Trigger mutation to update user data
   };
+
   return (
     <div
       className="woocommerce-MyAccount-content"

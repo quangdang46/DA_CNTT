@@ -8,11 +8,6 @@ export default function ProductsCarouselWrapper() {
   const { activeTab } = useTabs();
 
   const { data, isLoading, error } = productApiRequest.useProducts(activeTab);
-  console.log({
-    data,
-    isLoading,
-    error,
-  });
 
   if (isLoading) {
     return <div>Loading...</div>;

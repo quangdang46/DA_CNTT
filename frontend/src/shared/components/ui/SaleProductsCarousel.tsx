@@ -23,11 +23,6 @@ export default function SaleProductsCarousel() {
 
   const { data, isLoading, error } =
     productApiRequest.useProducts("high-rated");
-  console.log({
-    data,
-    isLoading,
-    error,
-  });
 
   if (isLoading) {
     return <div>Loading...</div>;
