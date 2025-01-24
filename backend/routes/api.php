@@ -38,6 +38,7 @@ Route::group(
         Route::post('byType', [ProductController::class, 'byType']);
         Route::get('search', [ProductController::class, 'search']);
         Route::get('new', [ProductController::class, 'new']);
+        Route::get("related/{slug}", [ProductController::class, 'related']);
         Route::get('{slug}', [ProductController::class, 'show']);
     }
 );

@@ -4,7 +4,6 @@ import { ResType } from "@/shared/types/resType";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-
 const productApiRequest = {
   useProducts: (type: string) => {
     return useQuery<ResType<ProductListResType>, Error>({
@@ -75,6 +74,27 @@ const productApiRequest = {
         }
       },
       enabled: !!slug, // Only run the query if slug exists
+    });
+  },
+  useProductsRelatedBySlug: (slug: string) => {
+    return useQuery<ResType<ProductListResType>, Error>({
+      queryKey: ["products-related", slug],
+      queryFn: async () => {
+        try {
+          const response = await apiClient.get<ResType<ProductListResType>>(
+            `/products/related/${slug}`
+          );
+
+          if (!response.success) {
+            throw new Error(response.message || "Failed to fetch products");
+          }
+
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
     });
   },
 };

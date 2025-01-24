@@ -42,6 +42,7 @@ export type Product = {
   attributes: ProductAttributesList;
   images: ProductImageList;
   category: Category;
+  category_id: number;
 };
 
 export type ProductListResType = Product[];

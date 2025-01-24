@@ -108,4 +108,23 @@ class ProductController extends Controller
             "data" => $products,
         ]);
     }
+
+    public function related($slug)
+    {
+        if (!$slug) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham by related " . $slug,
+                "data" => [],
+            ], 400);
+        }
+        $products = $this->productService->getRelatedProducts($slug);
+        return response()->json([
+            "success" => true,
+            "status" => "success",
+            "message" => "Danh sach san pham theo type " . $slug,
+            "data" => $products,
+        ]);
+    }
 }

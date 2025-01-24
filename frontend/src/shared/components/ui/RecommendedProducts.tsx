@@ -1,11 +1,11 @@
 import React from "react";
 import RecommendedProductsList from "@/shared/components/ui/RecommendedProductsList";
-
+interface Props {
+  title?: string | null;
+}
 export default function RecommendedProducts({
   title = "Related products",
-}: {
-  title?: string | null;
-}) {
+}: Props) {
   return (
     <div
       className="tm-related-products-carousel section-products-carousel"

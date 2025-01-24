@@ -8,4 +8,5 @@ interface ProductRepositoryInterface
     public function search($params);
     public function findBySlug($slug);
     public function getProductByType($type);
+    public function related($slug);
 }

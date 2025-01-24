@@ -94,4 +94,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
         return [];
     }
+
+    public function related($slug)
+    {
+        // get related products by slug
+        return $this->model->with(['attributes', 'images'])
+            ->where('category_id', $this->findBySlug($slug)->category_id)
+            // ->where('slug', '!=', $slug)
+            ->get();
+    }
 }

@@ -33,4 +33,9 @@ class ProductService
     {
         return $this->productRepository->getProductByType($type);
     }
+
+    public function getRelatedProducts($slug)
+    {
+        return $this->productRepository->related($slug);
+    }
 }

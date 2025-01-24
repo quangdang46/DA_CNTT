@@ -14,7 +14,7 @@ import React from "react";
 
 export default function Page() {
   const { slug } = useParams(); // Lấy slug từ URL
-  
+
   const { data, isLoading, error } = productApiRequest.useProductDetail(
     slug as string
   );
@@ -194,7 +194,7 @@ export default function Page() {
             </div>
           </div>
           {/* ///////////// */}
-          {/* <RecommendedProducts products={products}></RecommendedProducts> */}
+          <RecommendedProducts></RecommendedProducts>
           {/* ///////////// */}
           <BrandsCarousel></BrandsCarousel>
 
