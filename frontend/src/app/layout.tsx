@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Inter } from "next/font/google";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import "./admin.css";
 import "./customize.css";
 import { ToastContainer } from "react-toastify";
 import { queryClient } from "@/shared/config/queryClient";

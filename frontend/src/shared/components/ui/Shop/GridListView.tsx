@@ -1,3 +1,4 @@
+import Star from "@/shared/components/icons/Star";
 import Image from "next/image";
 import React from "react";
 
@@ -36,11 +37,9 @@ export default function GridListView() {
                       60UH6150 60-Inch 4K Ultra HD Smart LED TV
                     </h2>
                     <div className="techmarket-product-rating">
-                      <div title="Rated 5.00 out of 5" className="star-rating">
-                        <span style={{ width: "100%" }}>
-                          <strong className="rating">5.00</strong> out of 5
-                        </span>
-                      </div>
+                      {Array.from({ length: 5 }, (_, index) => (
+                                              <Star key={index}></Star>
+                                            ))}
                       <span className="review-count">(1)</span>
                     </div>
                   </a>

@@ -43,7 +43,7 @@ export default function MainLayout({
   });
   const role = data?.data?.role || "guest";
 
-  if (role === "admin") return <div id="layout-wrapper">{"admin"}</div>;
+  if (role === "admin") return <>{children}</>;
 
   return (
     <>
