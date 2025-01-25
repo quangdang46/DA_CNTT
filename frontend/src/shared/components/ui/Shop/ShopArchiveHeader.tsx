@@ -27,9 +27,7 @@ export default function ShopArchiveHeader() {
             Maecenas in sodales nisl. Pellentesque ac nibh mi. Ut lobortis odio
             nulla, congue rhoncus risus facilisis eget. Orci varius natoque
             penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-            <a href="#">
-              read more <i className="tm tm-long-arrow-right" />
-            </a>
+            <a href="#">read more →</a>
           </p>
         </div>
         {/* .jumbotron-caption */}

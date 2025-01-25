@@ -1,3 +1,4 @@
+import Car from "@/shared/components/icons/Car";
 import React from "react";
 
 export default function ShopControlBar() {
@@ -5,7 +6,7 @@ export default function ShopControlBar() {
     <div className="shop-control-bar">
       <div className="handheld-sidebar-toggle">
         <button type="button" className="btn sidebar-toggler">
-          <i className="fa fa-sliders" />
+          <Car></Car>
           <span>Filters</span>
         </button>
       </div>
@@ -79,7 +80,7 @@ export default function ShopControlBar() {
         <select className="orderby" name="orderby">
           <option value="popularity">Sort by popularity</option>
           <option value="rating">Sort by average rating</option>
-          <option selected={true} value="date">
+          <option defaultValue={"date"} value="date">
             Sort by newness
           </option>
           <option value="price">Sort by price: low to high</option>

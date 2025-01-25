@@ -9,8 +9,8 @@ import React from "react";
 
 export default function MainShopList() {
   return (
-    <div id="primary" className="content-area">
-      <main id="main" className="site-main">
+    <div id="primary-shop" className="content-area">
+      <main id="main-shop" className="site-main">
         <ShopArchiveHeader></ShopArchiveHeader>
         <ShopControlBar></ShopControlBar>
         <div className="tab-content">

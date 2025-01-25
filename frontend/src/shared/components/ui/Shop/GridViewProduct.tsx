@@ -1,4 +1,5 @@
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 
 export default function GridViewProduct() {
   return (
@@ -21,12 +22,12 @@ export default function GridViewProduct() {
               className="woocommerce-LoopProduct-link woocommerce-loop-product__link"
               href="single-product-fullwidth.html"
             >
-              <img
+              <Image
                 width={224}
                 height={197}
                 alt=""
                 className="attachment-shop_catalog size-shop_catalog wp-post-image"
-                src="assets/images/products/1.jpg"
+                src="https://images.unsplash.com/photo-1736942900911-96fe2afc5b96?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               />
               <span className="price">
                 <span className="woocommerce-Price-amount amount">

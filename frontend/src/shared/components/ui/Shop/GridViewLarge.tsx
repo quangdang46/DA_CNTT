@@ -1,3 +1,5 @@
+import Star from "@/shared/components/icons/Star";
+import Image from "next/image";
 import React from "react";
 
 export default function GridViewLarge() {
@@ -7,12 +9,12 @@ export default function GridViewLarge() {
         <div className="products">
           <div className="product list-view-large first ">
             <div className="media">
-              <img
+              <Image
                 width={224}
                 height={197}
                 alt=""
                 className="attachment-shop_catalog size-shop_catalog wp-post-image"
-                src="assets/images/products/1.jpg"
+                src="https://images.unsplash.com/photo-1736942900911-96fe2afc5b96?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               />
               <div className="media-body">
                 <div className="product-info">
@@ -35,18 +37,22 @@ export default function GridViewLarge() {
                       60UH6150 60-Inch 4K Ultra HD Smart LED TV
                     </h2>
                     <div className="techmarket-product-rating">
-                      <div title="Rated 5.00 out of 5" className="star-rating">
-                        <span style={{ width: "100%" }}>
-                          <strong className="rating">5.00</strong> out of 5
-                        </span>
-                      </div>
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <Star key={index}></Star>
+                      ))}
                       <span className="review-count">(1)</span>
                     </div>
                   </a>
                   {/* .woocommerce-LoopProduct-link */}
                   <div className="brand">
                     <a href="#">
-                      <img alt="galaxy" src="assets/images/brands/5.png" />
+                      <Image
+                        width={224}
+                        height={197}
+                        alt=""
+                        className="attachment-shop_catalog size-shop_catalog wp-post-image"
+                        src="https://images.unsplash.com/photo-1736942900911-96fe2afc5b96?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      />
                     </a>
                   </div>
                   {/* .brand */}
