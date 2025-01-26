@@ -43,7 +43,7 @@ class ProductController extends Controller
         try {
             // Lấy tất cả tham số từ request
             $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice']);
-
+          
             // Gọi service để thực hiện tìm kiếm
             $products = $this->productService->search($params);
 

@@ -4,7 +4,7 @@ import { useShopContext } from "@/shared/contexts/ShopContext";
 import React from "react";
 
 export default function GridViewProduct() {
-  const { activeTab } = useShopContext();
+  const { activeTab, products } = useShopContext();
   return (
     <div
       id="grid"
@@ -13,13 +13,12 @@ export default function GridViewProduct() {
     >
       <div className="woocommerce columns-4">
         <div className="products">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <ProductGrid key={index} />
+         
+          {products.map((product) => (
+            <ProductGrid key={product.id} product={product} />
           ))}
         </div>
-        {/* .products */}
       </div>
-      {/* .woocommerce */}
     </div>
   );
 }

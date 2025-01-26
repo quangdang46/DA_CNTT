@@ -21,6 +21,11 @@ class ProductService
 
     public function search($params)
     {
+        if (!empty($params['categories'])) {
+            $params['categories'] = explode(',', $params['categories']);
+            // Kiểm tra xem các giá trị trong categories có phải là số không
+            $params['categories'] = array_map('intval', $params['categories']);
+        }
         return $this->productRepository->search($params);
     }
 

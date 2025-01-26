@@ -34,7 +34,7 @@ export default function RangeSlider({
 
   const handleMinChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("handleMinChange", e.target.value);
+    // console.log("handleMinChange", e.target.value);
     const newMinVal = Math.min(+e.target.value, maxValue - step);
     if (!value) setMinValue(newMinVal);
     onChange({ min: newMinVal, max: maxValue });
@@ -42,7 +42,7 @@ export default function RangeSlider({
 
   const handleMaxChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("handleMaxChange", e.target.value);
+    // console.log("handleMaxChange", e.target.value);
     const newMaxVal = Math.max(+e.target.value, minValue + step);
     if (!value) setMaxValue(newMaxVal);
     onChange({ min: minValue, max: newMaxVal });

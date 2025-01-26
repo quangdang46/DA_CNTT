@@ -7,7 +7,10 @@ import React, { useState } from "react";
 export default function FilterBar() {
   const searchParams = useSearchParams();
 
-  const [value, setValue] = useState({ min: 0, max: 100 });
+  const [value, setValue] = useState({
+    min: 0,
+    max: 1000,
+  });
   const [name, setName] = useState(searchParams?.get("name") || ""); // Lấy giá trị "name" từ URL nếu có
   const [checkboxes, setCheckboxes] = useState([
     { id: 1, label: "Smartphones", checked: false },
@@ -34,7 +37,6 @@ export default function FilterBar() {
       .join(",");
 
     const updatedParams = new URLSearchParams(searchParams?.toString() || "");
-
     // Cập nhật giá trị query trong URL
     updatedParams.set("minPrice", value.min.toString());
     updatedParams.set("maxPrice", value.max.toString());
@@ -46,7 +48,7 @@ export default function FilterBar() {
     if (selectedCategory) {
       updatedParams.set("categories", selectedCategory);
     } else {
-      updatedParams.delete("categories"); // Xóa nếu không có brand nào được chọn
+      updatedParams.delete("categories"); 
     }
 
     // Cập nhật URL
@@ -101,9 +103,9 @@ export default function FilterBar() {
           </div>
           <RangeSlider
             min={0}
-            max={100}
+            max={100000}
             value={value}
-            step={1}
+            step={1000}
             onChange={(value) => setValue(value)}
           ></RangeSlider>
         </div>

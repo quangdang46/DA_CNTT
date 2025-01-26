@@ -111,20 +111,6 @@ export default function Page() {
               </div>
               <div className="woocommerce-product-details__short-description">
                 <ul>
-                  {/* <li>Multimedia Speakers</li>
-                <li>120 watts peak</li>
-                <li>Front-facing subwoofer</li>
-                <li>Refresh Rate: 120Hz (Effective)</li>
-                <li>Backlight: LED</li>
-                <li>Smart Functionality: Yes, webOS 3.0</li>
-                <li>
-                  Dimensions (W x H x D): TV without stand: 43.5″ x 25.4″ x
-                  3.0″, TV with stand: 43.5″ x 27.6″ x 8.5″
-                </li>
-                <li>
-                  Inputs: 3 HMDI, 2 USB, 1 RF, 1 Component, 1 Composite, 1
-                  Optical, 1 RS232C, 1 Ethernet
-                </li> */}
 
                   {product.attributes && product.attributes.length > 0 ? (
                     Object.entries(product.attributes[0]).map(

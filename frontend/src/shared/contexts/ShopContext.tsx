@@ -1,21 +1,16 @@
 "use client";
+import { ProductListResType } from "@/shared/types/ProductTypes";
 import React, { createContext, useContext, useState } from "react";
 
 // Tạo interface cho dữ liệu context
 interface ShopContextProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  products: Product[];
-  setProducts: (products: Product[]) => void;
+  products: ProductListResType;
+  setProducts: (products: ProductListResType) => void;
 }
 
 // Interface cho sản phẩm
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
-}
 
 // Giá trị mặc định của context
 const ShopContext = createContext<ShopContextProps>({
@@ -30,7 +25,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [activeTab, setActiveTab] = useState<string>("grid-view");
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductListResType>([]);
 
   return (
     <ShopContext.Provider

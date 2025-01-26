@@ -4,8 +4,7 @@ import { useShopContext } from "@/shared/contexts/ShopContext";
 import React from "react";
 
 export default function GridExtendedProduct() {
-  const { activeTab } = useShopContext();
-
+  const { activeTab, products } = useShopContext();
   return (
     <div
       id="grid-extended"
@@ -16,13 +15,11 @@ export default function GridExtendedProduct() {
     >
       <div className="woocommerce columns-4">
         <div className="products">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <ProductExtended key={index} />
+          {products.map((product) => (
+            <ProductExtended key={product.id} product={product} />
           ))}
         </div>
-        {/* .products */}
       </div>
-      {/* .woocommerce */}
     </div>
   );
 }

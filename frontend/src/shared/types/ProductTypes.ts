@@ -46,3 +46,10 @@ export type Product = {
 };
 
 export type ProductListResType = Product[];
+
+export type ProductSearchType = {
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  categories?: number[];
+};

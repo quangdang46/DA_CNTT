@@ -4,7 +4,7 @@ import { useShopContext } from "@/shared/contexts/ShopContext";
 import React from "react";
 
 export default function GridViewSmall() {
-  const { activeTab } = useShopContext();
+  const { activeTab, products } = useShopContext();
 
   return (
     <div
@@ -14,13 +14,11 @@ export default function GridViewSmall() {
     >
       <div className="woocommerce columns-1">
         <div className="products">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <ProductSmall key={index} />
+          {products.map((product, index) => (
+            <ProductSmall key={index} product={product} />
           ))}
         </div>
-        {/* .products */}
       </div>
-      {/* .woocommerce */}
     </div>
   );
 }
