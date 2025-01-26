@@ -29,26 +29,29 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $query = $this->model->query();
 
         // Kiểm tra và áp dụng tìm kiếm theo tên sản phẩm
-        if (!empty($params['keyword'])) {
-            $query->where('name', 'like', '%' . $params['keyword'] . '%');
+        if (!empty($params['name'])) {
+            $query->where('name', 'like', '%' . $params['name'] . '%');
         }
 
-        // Kiểm tra và áp dụng lọc theo danh mục
-        if (!empty($params['category'])) {
-            $query->where('category_id', $params['category']);
+        // Kiểm tra và áp dụng lọc theo danh mục (categories)
+        if (!empty($params['categories'])) {
+            // Nếu có nhiều danh mục, tìm kiếm theo nhiều giá trị
+            $query->whereIn('category_id', $params['categories']);
         }
 
         // Kiểm tra và áp dụng lọc theo giá tối thiểu
-        if (!empty($params['price_min'])) {
-            $query->where('price', '>=', $params['price_min']);
+        if (!empty($params['minPrice'])) {
+            $query->where('price', '>=', $params['minPrice']);
         }
 
         // Kiểm tra và áp dụng lọc theo giá tối đa
-        if (!empty($params['price_max'])) {
-            $query->where('price', '<=', $params['price_max']);
+        if (!empty($params['maxPrice'])) {
+            $query->where('price', '<=', $params['maxPrice']);
         }
+
         // Eager load các mối quan hệ images và attributes
         $query->with(['images', 'attributes']);
+
         // Thực thi truy vấn và trả kết quả
         return $query->get();
     }

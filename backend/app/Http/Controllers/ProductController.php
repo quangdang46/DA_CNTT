@@ -40,18 +40,28 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        // Lấy tất cả tham số từ request
-        $params = $request->only(['keyword', 'category', 'price_min', 'price_max']);
+        try {
+            // Lấy tất cả tham số từ request
+            $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice']);
 
-        $products = $this->productService->search($params);
+            // Gọi service để thực hiện tìm kiếm
+            $products = $this->productService->search($params);
 
-        return response()->json([
-            "success" => true,
-            "status" => "success",
-            "message" => "Danh sách san pham search",
-            "data" => $products,
-
-        ]);
+            // Trả về kết quả tìm kiếm
+            return response()->json([
+                "success" => true,
+                "status" => "success",
+                "message" => "Danh sách sản phẩm tìm kiếm",
+                "data" => $products,
+            ]);
+        } catch (\Exception $e) {
+            // Bắt lỗi và trả về thông báo lỗi nếu có vấn đề xảy ra
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Đã xảy ra lỗi: " . $e->getMessage(),
+            ], 500);  // Mã lỗi 500 - Internal Server Error
+        }
     }
 
     public function show($slug)

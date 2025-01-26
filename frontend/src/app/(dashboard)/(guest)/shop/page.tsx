@@ -1,6 +1,7 @@
 import Breadcrumb from "@/shared/components/ui/Breadcrumb";
 import FilterBar from "@/shared/components/ui/Shop/FilterBar";
 import MainShopList from "@/shared/components/ui/Shop/MainShopList";
+import { ShopProvider } from "@/shared/contexts/ShopContext";
 import React from "react";
 
 export default function Page() {
@@ -9,8 +10,10 @@ export default function Page() {
       <div className="col-full">
         <div className="row">
           <Breadcrumb></Breadcrumb>
-          <MainShopList></MainShopList>
-          <FilterBar></FilterBar>
+          <ShopProvider>
+            <MainShopList></MainShopList>
+            <FilterBar></FilterBar>
+          </ShopProvider>
         </div>
       </div>
     </div>

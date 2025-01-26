@@ -1,14 +1,20 @@
 "use client";
 import CheckBox from "@/shared/components/ui/Component/CheckBox";
 import RangeSlider from "@/shared/components/ui/Component/RangeSlider";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 export default function FilterBar() {
+  const searchParams = useSearchParams();
+
   const [value, setValue] = useState({ min: 0, max: 100 });
+  const [name, setName] = useState(searchParams?.get("name") || ""); // Lấy giá trị "name" từ URL nếu có
   const [checkboxes, setCheckboxes] = useState([
-    { id: 1, label: "Option 1", checked: false },
-    { id: 2, label: "Option 2", checked: false },
-    { id: 3, label: "Option 3", checked: false },
+    { id: 1, label: "Smartphones", checked: false },
+    { id: 2, label: "Tablets", checked: false },
+    { id: 3, label: "Accessories", checked: false },
+    { id: 4, label: "Wearable Devices", checked: false },
+    { id: 5, label: "Gaming Phones", checked: false },
   ]);
 
   const handleCheck = (id: number) => {
@@ -21,12 +27,36 @@ export default function FilterBar() {
     );
   };
 
-  const getCheckedValues = () => {
-    return checkboxes
+  const applyFilters = () => {
+    const selectedCategory = checkboxes
       .filter((checkbox) => checkbox.checked)
-      .map((checkbox) => checkbox.label);
-  };
+      .map((checkbox) => checkbox.id)
+      .join(",");
 
+    const updatedParams = new URLSearchParams(searchParams?.toString() || "");
+
+    // Cập nhật giá trị query trong URL
+    updatedParams.set("minPrice", value.min.toString());
+    updatedParams.set("maxPrice", value.max.toString());
+    if (name) {
+      updatedParams.set("name", name); // Thêm tên sản phẩm vào URL
+    } else {
+      updatedParams.delete("name");
+    }
+    if (selectedCategory) {
+      updatedParams.set("categories", selectedCategory);
+    } else {
+      updatedParams.delete("categories"); // Xóa nếu không có brand nào được chọn
+    }
+
+    // Cập nhật URL
+    // router.push(`?${updatedParams.toString()}`);
+    const url = new URL(window.location.href);
+    // url.searchParams.set("name", nameFilter);
+    // window.history.pushState({}, "", url);
+    url.search = updatedParams.toString();
+    window.history.pushState({}, "", url.toString());
+  };
   return (
     <div id="secondary-shop" className="widget-area shop-sidebar">
       <div
@@ -34,6 +64,21 @@ export default function FilterBar() {
         className="widget widget_techmarket_products_filter"
       >
         <span className="gamma widget-title">Filters</span>
+        <div
+          className="widget woocommerce widget_price_filter"
+          id="woocommerce_price_filter-2"
+        >
+          <span className="gamma widget-title">Filter by name</span>
+          <div className="price_slider_amount">
+            <input
+              id="name_product"
+              type="text"
+              placeholder="Name"
+              value={name} // Giá trị luôn được kiểm soát từ state
+              onChange={(e) => setName(e.target.value)} // Cập nhật state
+            />
+          </div>
+        </div>
         <div
           className="widget woocommerce widget_price_filter"
           id="woocommerce_price_filter-2"
@@ -50,7 +95,7 @@ export default function FilterBar() {
               name="min_price"
               style={{ display: "none" }}
             />
-            <button className="button" type="submit">
+            <button className="button" onClick={applyFilters}>
               Filter
             </button>
           </div>

@@ -1,7 +1,37 @@
+"use client";
 import Car from "@/shared/components/icons/Car";
+import GridLarge from "@/shared/components/icons/GridLarge";
+import GridListingSmall from "@/shared/components/icons/GridListingSmall";
+import GridSmall from "@/shared/components/icons/GridSmall";
+import GridSmallExtended from "@/shared/components/icons/GridSmallExtended";
+import { useShopContext } from "@/shared/contexts/ShopContext";
 import React from "react";
 
 export default function ShopControlBar() {
+  const { activeTab, setActiveTab } = useShopContext();
+  const tabs = [
+    {
+      title: "Grid View",
+      icon: <GridSmall></GridSmall>,
+      type: "grid-view",
+    },
+    {
+      title: "Grid Extended View",
+      icon: <GridSmallExtended></GridSmallExtended>,
+      type: "grid-view-extended",
+    },
+    {
+      title: "List View Large",
+      icon: <GridLarge></GridLarge>,
+      type: "list-view-large",
+    },
+ 
+    {
+      title: "List View Small",
+      icon: <GridListingSmall></GridListingSmall>,
+      type: "list-view-small",
+    },
+  ];
   return (
     <div className="shop-control-bar">
       <div className="handheld-sidebar-toggle">
@@ -13,58 +43,18 @@ export default function ShopControlBar() {
       {/* .handheld-sidebar-toggle */}
       <h1 className="woocommerce-products-header__title page-title">Shop</h1>
       <ul role="tablist" className="shop-view-switcher nav nav-tabs">
-        <li className="nav-item">
-          <a
-            href="#grid"
-            title="Grid View"
-            data-toggle="tab"
-            className="nav-link"
-          >
-            <i className="tm tm-grid-small" />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            href="#grid-extended"
-            title="Grid Extended View"
-            data-toggle="tab"
-            className="nav-link active"
-          >
-            <i className="tm tm-grid" />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            href="#list-view-large"
-            title="List View Large"
-            data-toggle="tab"
-            className="nav-link "
-          >
-            <i className="tm tm-listing-large" />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            href="#list-view"
-            title="List View"
-            data-toggle="tab"
-            className="nav-link "
-          >
-            <i className="tm tm-listing" />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            href="#list-view-small"
-            title="List View Small"
-            data-toggle="tab"
-            className="nav-link "
-          >
-            <i className="tm tm-listing-small" />
-          </a>
-        </li>
+        {tabs.map((tab, index) => (
+          <li key={index} className="nav-item">
+            <div
+              title={tab.title}
+              className={`nav-link ${activeTab === tab.type ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.type)}
+            >
+              {tab.icon}
+            </div>
+          </li>
+        ))}
       </ul>
-      {/* .shop-view-switcher */}
       <form className="form-techmarket-wc-ppp" method="POST">
         <select className="techmarket-wc-wppp-select c-select" name="ppp">
           <option value={20}>Show 20</option>
@@ -75,7 +65,6 @@ export default function ShopControlBar() {
         <input type="hidden" defaultValue={15} name="shop_per_page" />
         <input type="hidden" defaultValue="right-sidebar" name="shop_layout" />
       </form>
-      {/* .form-techmarket-wc-ppp */}
       <form method="get" className="woocommerce-ordering">
         <select className="orderby" name="orderby">
           <option value="popularity">Sort by popularity</option>
@@ -90,7 +79,6 @@ export default function ShopControlBar() {
         <input type="hidden" defaultValue={15} name="shop_per_page" />
         <input type="hidden" defaultValue="right-sidebar" name="shop_layout" />
       </form>
-      {/* .woocommerce-ordering */}
       <nav className="techmarket-advanced-pagination">
         <form className="form-adv-pagination" method="post">
           <input
@@ -109,7 +97,6 @@ export default function ShopControlBar() {
           →
         </a>
       </nav>
-      {/* .techmarket-advanced-pagination */}
     </div>
   );
 }

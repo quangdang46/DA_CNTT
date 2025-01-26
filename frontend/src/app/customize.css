@@ -143,45 +143,98 @@ ul {
   }
 }
 
-
-
-
 #content #secondary-shop {
-    z-index: 10;
-    order: 1;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
+  z-index: 10;
+  order: 1;
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 @media (min-width: 1700px) {
-    #content #secondary-shop {
-        flex: 0 0 16.6666666667%;
-        max-width: 16.6666666667%;
-    }
+  #content #secondary-shop {
+    flex: 0 0 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
 }
 @media (min-width: 1200px) {
-    #content #secondary-shop {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+  #content #secondary-shop {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 }
 @media (min-width: 992px) {
-    #content #secondary-shop {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+  #content #secondary-shop {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 }
 @media (min-width: 768px) {
-    #content #secondary-shop {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+  #content #secondary-shop {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 }
 @media (min-width: 576px) {
-    #content #secondary-shop {
-        padding-right: 15px;
-        padding-left: 15px;
+  #content #secondary-shop {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+@media (min-width: 550px) {
+  #main-shop .products {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+@media (min-width: 550px) {
+  @media (min-width: 576px) {
+    #main-shop .products {
+      margin-right: -15px;
+      margin-left: -15px;
     }
+  }
+}
+@media (min-width: 550px) {
+  @media (min-width: 768px) {
+    #main-shop .products {
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+  }
+}
+
+@media (min-width: 550px) {
+  @media (min-width: 992px) {
+    #main-shop .products {
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+  }
+}
+@media (min-width: 550px) {
+  @media (min-width: 1200px) {
+    #main-shop .products {
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+  }
+}
+
+/* @media (min-width: 1200px) {
+  #main-shop .products .product {
+    flex: 0 0 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+} */
+
+@media (min-width: 1200px) {
+  #main-shop .columns-4 .products .product {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
 }
