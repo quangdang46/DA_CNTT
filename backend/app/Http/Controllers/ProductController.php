@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -38,12 +39,12 @@ class ProductController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
         try {
             // Lấy tất cả tham số từ request
-            $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice']);
-          
+            $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice','page', 'perPage', 'sortBy']);
+
             // Gọi service để thực hiện tìm kiếm
             $products = $this->productService->search($params);
 

@@ -51,5 +51,17 @@ export type ProductSearchType = {
   name?: string;
   minPrice?: number;
   maxPrice?: number;
-  categories?: number[];
+  categories?: string[];
+  page?: number;
+  sortBy?: string;
+  perPage?: number;
+};
+
+export type ProductSearchResType = {
+  current_page: number;
+  data: ProductListResType;
+  per_page: number;
+  total: number;
+  from: number;
+  to: number;
 };

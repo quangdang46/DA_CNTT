@@ -26,33 +26,67 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function search($params)
     {
+        // Khởi tạo truy vấn
         $query = $this->model->query();
 
-        // Kiểm tra và áp dụng tìm kiếm theo tên sản phẩm
+
+        // Eager load các mối quan hệ như images và attributes
+        $query->with(['images', 'attributes']);
+        // Lọc theo tên sản phẩm
         if (!empty($params['name'])) {
             $query->where('name', 'like', '%' . $params['name'] . '%');
         }
 
-        // Kiểm tra và áp dụng lọc theo danh mục (categories)
+        // Lọc theo danh mục (categories)
         if (!empty($params['categories'])) {
             // Nếu có nhiều danh mục, tìm kiếm theo nhiều giá trị
             $query->whereIn('category_id', $params['categories']);
         }
 
-        // Kiểm tra và áp dụng lọc theo giá tối thiểu
+        // Lọc theo giá tối thiểu (minPrice)
         if (!empty($params['minPrice'])) {
             $query->where('price', '>=', $params['minPrice']);
         }
 
-        // Kiểm tra và áp dụng lọc theo giá tối đa
+        // Lọc theo giá tối đa (maxPrice)
         if (!empty($params['maxPrice'])) {
             $query->where('price', '<=', $params['maxPrice']);
         }
 
-        // Eager load các mối quan hệ images và attributes
-        $query->with(['images', 'attributes']);
+        // Sắp xếp theo sortBy
+        if (!empty($params['sortBy'])) {
+            switch ($params['sortBy']) {
+                case 'rating':
+                    $query->orderBy('rating', 'desc');
+                    break;
+                case 'date':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'price-asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price-desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                default:
+                    // Sắp xếp mặc định (nếu có)
+                    break;
+            }
+        }
 
-        // Thực thi truy vấn và trả kết quả
+        if (!empty($params['perPage']) && $params['perPage'] != -1) {
+            return $query->paginate($params['perPage']);
+        } elseif (!empty($params['perPage']) && $params['perPage'] == -1) {
+            // Nếu perPage là -1, lấy tất cả sản phẩm
+            return $query->get();  // Sử dụng get() khi không cần phân trang
+        } else {
+            // Nếu không có tham số perPage, mặc định lấy 20 sản phẩm
+            return $query->paginate(20);
+        }
+
+
+
+        // Thực thi truy vấn và trả về kết quả
         return $query->get();
     }
     public function findBySlug($slug)

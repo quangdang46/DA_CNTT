@@ -2,6 +2,7 @@ import apiClient from "@/shared/config/apiClient";
 import {
   Product,
   ProductListResType,
+  ProductSearchResType,
   ProductSearchType,
 } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
@@ -107,35 +108,47 @@ const productApiRequest = {
     minPrice,
     maxPrice,
     categories,
+    page,
+    perPage,
+    sortBy,
   }: ProductSearchType) => {
-    return useQuery<ResType<ProductListResType>, Error>({
-      queryKey: ["products-search", name, minPrice, maxPrice, categories],
+    return useQuery<ResType<ProductSearchResType>, Error>({
+      queryKey: [
+        "products-search",
+        name,
+        minPrice,
+        maxPrice,
+        categories,
+        page,
+        perPage,
+        sortBy,
+      ],
       queryFn: async () => {
         try {
           // Khởi tạo URLSearchParams
           const params = new URLSearchParams();
 
           // Chỉ thêm tham số nếu có giá trị hợp lệ
-          if (name?.trim()) {
-            params.append("name", name.trim());
-          }
-          if (minPrice && minPrice > 0) {
+          // Conditionally append query parameters only if valid
+          if (name?.trim()) params.append("name", name.trim());
+          if (minPrice && minPrice > 0)
             params.append("minPrice", minPrice.toString());
-          }
-          if (maxPrice && maxPrice !== Infinity) {
+          if (maxPrice && maxPrice !== Infinity)
             params.append("maxPrice", maxPrice.toString());
-          }
-          if (categories?.length) {
+          if (categories?.length)
             params.append("categories", categories.join(","));
-          }
+          if (page && page > 1) params.append("page", page.toString());
+          if (perPage && perPage > 0)
+            params.append("perPage", perPage.toString());
+          if (sortBy && sortBy !== "default") params.append("sortBy", sortBy);
 
           // Nếu không có tham số nào, URL chỉ là `/products/search`
           const baseUrl = "/products/search";
           const url = params.toString()
             ? `${baseUrl}?${params.toString()}`
             : baseUrl;
-
-          const response = await apiClient.get<ResType<ProductListResType>>(
+          console.log("url", url);
+          const response = await apiClient.get<ResType<ProductSearchResType>>(
             // `/products/search?name=${name}&minPrice=${minPrice}&maxPrice=${maxPrice}&categories=${categories}`
             url
           );

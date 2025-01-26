@@ -1,14 +1,17 @@
 "use client";
+import productApiRequest from "@/shared/apiRequests/product";
 import Car from "@/shared/components/icons/Car";
 import GridLarge from "@/shared/components/icons/GridLarge";
 import GridListingSmall from "@/shared/components/icons/GridListingSmall";
 import GridSmall from "@/shared/components/icons/GridSmall";
 import GridSmallExtended from "@/shared/components/icons/GridSmallExtended";
 import { useShopContext } from "@/shared/contexts/ShopContext";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function ShopControlBar() {
-  const { activeTab, setActiveTab } = useShopContext();
+  const { activeTab, setActiveTab, setProducts } = useShopContext();
+  const searchParams = useSearchParams();
   const tabs = [
     {
       title: "Grid View",
@@ -25,13 +28,76 @@ export default function ShopControlBar() {
       icon: <GridLarge></GridLarge>,
       type: "list-view-large",
     },
- 
+
     {
       title: "List View Small",
       icon: <GridListingSmall></GridListingSmall>,
       type: "list-view-small",
     },
   ];
+
+  // Chuyển đổi tham số URL thành đối tượng lọc
+  const filters = new URLSearchParams(searchParams?.toString() || "");
+  const name = filters.get("name") || "";
+  const minPrice = parseFloat(filters.get("minPrice") || "0");
+  const maxPrice = parseFloat(filters.get("maxPrice") || "Infinity");
+  const categories =
+    filters
+      .get("categories")
+      ?.split(",")
+      .map((cat) => cat.trim()) || [];
+  const sortBy = filters.get("sortBy") || "default";
+  const page = parseInt(filters.get("page") || "1", 10);
+  const perPage = parseInt(filters.get("perPage") || "20", 10);
+
+  const filtersObj = {
+    name,
+    minPrice,
+    maxPrice,
+    categories,
+    sortBy,
+    page,
+    perPage,
+  };
+
+  // Sử dụng custom hook để gọi API
+  const { data } = productApiRequest.useSearchProducts(filtersObj);
+
+  // Lưu kết quả vào context khi có dữ liệu
+  useEffect(() => {
+    if (data) {
+      console.log(data.data.data);
+      setProducts(data?.data.data);
+    }
+  }, [data, setProducts]);
+
+  const updateURLAndFetch = (params: Record<string, string | number>) => {
+    const currentParams = new URLSearchParams(searchParams?.toString() || "");
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) currentParams.set(key, value.toString());
+      else currentParams.delete(key); // Xóa nếu không có giá trị
+    });
+
+    // Cập nhật URL
+    const url = new URL(window.location.href);
+    url.search = currentParams.toString();
+    window.history.pushState({}, "", url.toString());
+    console.log(currentParams.toString());
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    updateURLAndFetch({ sortBy: event.target.value });
+  };
+
+  const handlePaginationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const page = event.target.value || "1";
+    updateURLAndFetch({ page });
+  };
+
+  
   return (
     <div className="shop-control-bar">
       <div className="handheld-sidebar-toggle">
@@ -56,28 +122,25 @@ export default function ShopControlBar() {
         ))}
       </ul>
       <form className="form-techmarket-wc-ppp" method="POST">
-        <select className="techmarket-wc-wppp-select c-select" name="ppp">
+        <select
+          className="techmarket-wc-wppp-select c-select"
+          name="ppp"
+          onChange={(e) => updateURLAndFetch({ perPage: e.target.value })}
+        >
           <option value={20}>Show 20</option>
           <option value={40}>Show 40</option>
           <option value={-1}>Show All</option>
         </select>
-        <input type="hidden" defaultValue={5} name="shop_columns" />
-        <input type="hidden" defaultValue={15} name="shop_per_page" />
-        <input type="hidden" defaultValue="right-sidebar" name="shop_layout" />
       </form>
       <form method="get" className="woocommerce-ordering">
-        <select className="orderby" name="orderby">
-          <option value="popularity">Sort by popularity</option>
+        <select className="orderby" name="orderby" onChange={handleSortChange}>
           <option value="rating">Sort by average rating</option>
           <option defaultValue={"date"} value="date">
             Sort by newness
           </option>
-          <option value="price">Sort by price: low to high</option>
+          <option value="price-asc">Sort by price: low to high</option>
           <option value="price-desc">Sort by price: high to low</option>
         </select>
-        <input type="hidden" defaultValue={5} name="shop_columns" />
-        <input type="hidden" defaultValue={15} name="shop_per_page" />
-        <input type="hidden" defaultValue="right-sidebar" name="shop_layout" />
       </form>
       <nav className="techmarket-advanced-pagination">
         <form className="form-adv-pagination" method="post">
@@ -90,6 +153,7 @@ export default function ShopControlBar() {
             min={1}
             size={2}
             id="goto-page"
+            onChange={handlePaginationChange}
           />
         </form>{" "}
         of 5

@@ -8,16 +8,25 @@ import ShopArchiveHeader from "@/shared/components/ui/Shop/ShopArchiveHeader";
 import ShopBottomControls from "@/shared/components/ui/Shop/ShopBottomControls";
 import ShopControlBar from "@/shared/components/ui/Shop/ShopControlBar";
 import { useShopContext } from "@/shared/contexts/ShopContext";
+import { ProductSearchType } from "@/shared/types/ProductTypes";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 export default function MainShopList() {
   const { setProducts } = useShopContext();
   const searchParams = useSearchParams();
-  const [filters, setFilters] = useState({});
-  // const { setProducts } = useShopContext();
+  const [filters, setFilters] = useState<ProductSearchType>({
+    name: "",
+    minPrice: 0,
+    maxPrice: Infinity,
+    categories: [],
+    sortBy: "default",
+    perPage: 20,
+    page: 1,
+  });
+
   useEffect(() => {
-    // Lấy các tham số từ URL
+    // Lấy các tham số từ URL và cập nhật filters
     const nameFilter = searchParams?.get("name") || "";
     const minPrice = parseFloat(searchParams?.get("minPrice") || "0");
     const maxPrice = parseFloat(searchParams?.get("maxPrice") || "Infinity");
@@ -26,17 +35,46 @@ export default function MainShopList() {
         ?.get("categories")
         ?.split(",")
         .map((cat) => cat.trim()) || [];
+    const sortBy = searchParams?.get("sortBy") || "default";
+    const perPage = parseInt(searchParams?.get("perPage") || "20");
+    const page = parseInt(searchParams?.get("page") || "1");
 
-    setFilters({ name: nameFilter, minPrice, maxPrice, categories });
+    // Chỉ cập nhật khi các tham số thực sự thay đổi
+    setFilters((prevFilters: ProductSearchType) => {
+      const newFilters = {
+        name: nameFilter,
+        minPrice,
+        maxPrice,
+        categories,
+        sortBy,
+        perPage,
+        page,
+      };
+      if (JSON.stringify(prevFilters) !== JSON.stringify(newFilters)) {
+        return newFilters;
+      }
+      return prevFilters;
+    });
   }, [searchParams]);
-  const { data } = productApiRequest.useSearchProducts(filters);
-  const products = useMemo(() => data?.data || [], [data]);
-  console.log(products);
+
+  const { data } = productApiRequest.useSearchProducts({
+    name: filters.name,
+    minPrice: filters.minPrice,
+    maxPrice: filters.maxPrice,
+    categories: filters.categories,
+    sortBy: filters.sortBy,
+    page: filters.page,
+    perPage: filters.perPage,
+  });
+
+  const products = useMemo(() => data?.data?.data || [], [data]);
+
   useEffect(() => {
     if (products.length > 0) {
       setProducts(products);
     }
   }, [products, setProducts]);
+
   return (
     <div id="primary-shop" className="content-area">
       <main id="main-shop" className="site-main">
