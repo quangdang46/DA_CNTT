@@ -8114,8 +8114,7 @@ a.remove {
   position: relative;
 }
 a.remove:before {
-  content: "\43";
-  font-family: "techmarket-icons";
+  content: "X";
   position: absolute;
   top: 0;
   left: 0;
@@ -11317,7 +11316,6 @@ article.post.category-more-tag a[target="_blank"] {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 .handheld-navigation .tmhm-close:before {
-  font-family: "techmarket-icons";
   font-weight: 400;
   content: "\43";
   margin-right: 1em;
@@ -15798,7 +15796,6 @@ article .widget_techmarket_poster_widget .poster-bg .caption .more-link:hover {
   font-size: 0px;
 }
 .techmarket-wc-product-gallery ul.flex-direction-nav li a:before {
-  font-family: "techmarket-icons";
   font-size: 20px;
   opacity: 0.5;
 }
