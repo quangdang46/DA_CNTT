@@ -21467,26 +21467,7 @@ article .section-media-single-banner .more-link {
 .yith-wcwl-share ul > li {
   padding-right: 10px;
 }
-.yith-wcwl-share .facebook:before {
-  content: "\f09a";
-  color: #3b5998;
-}
-.yith-wcwl-share .twitter:before {
-  content: "\f099";
-  color: #00aced;
-}
-.yith-wcwl-share .pinterest:before {
-  content: "\f0d2";
-  color: #cb2027;
-}
-.yith-wcwl-share .googleplus:before {
-  content: "\f0d5";
-  color: #dd4b39;
-}
-.yith-wcwl-share .email:before {
-  content: "\f0e0";
-  color: #43454b;
-}
+
 @media (min-width: 768px) {
   @media (max-width: 1199px) {
     table.cart.wishlist_table td.product-add-to-cart .button,
