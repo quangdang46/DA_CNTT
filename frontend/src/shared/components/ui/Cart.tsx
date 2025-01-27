@@ -1,5 +1,5 @@
 "use client";
-import CartIcon from "@/shared/components/icons/CartIcon";
+import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -17,7 +17,7 @@ export default function Cart() {
           title="View your shopping cart"
           onClick={toggleDropdown}
         >
-          <CartIcon size="2x"></CartIcon>
+          <ShoppingCart strokeWidth={1} />
           <span className="count">2</span>
           <span className="amount">
             <span className="price-label">Your Cart</span> $136.99

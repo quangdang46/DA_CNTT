@@ -1,5 +1,5 @@
-import Star from "@/shared/components/icons/Star";
 import { Product } from "@/shared/types/ProductTypes";
+import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -43,9 +43,15 @@ export default function ProductCardLandscape({
             <h2 className="woocommerce-loop-product__title">{product.name}</h2>
             <div className="techmarket-product-rating">
               <div className="d-flex align-items-center gap-1">
-                {Array.from({ length: product.rating }).map((_, index) => (
-                  <Star key={index}></Star>
-                ))}
+                {Array(Math.floor(product.rating))
+                  .fill(0)
+                  .map((_, i) => (
+                    <Star strokeWidth={1} key={`full-${i}`} />
+                  ))}
+
+                {product.rating % 1 !== 0 && (
+                  <StarHalf strokeWidth={1} key="half-star" />
+                )}
               </div>
               <span className="review-count">({product.review_count})</span>
             </div>

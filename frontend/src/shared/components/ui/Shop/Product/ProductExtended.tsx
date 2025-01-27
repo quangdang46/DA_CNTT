@@ -1,5 +1,6 @@
-import Star from "@/shared/components/icons/Star";
+
 import { Product } from "@/shared/types/ProductTypes";
+import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 interface Props {
@@ -37,8 +38,12 @@ export default function ProductExtended({ product }: Props) {
         {Array(Math.floor(product.rating))
           .fill(0)
           .map((_, i) => (
-            <Star key={i}></Star>
+            <Star strokeWidth={1} key={`full-${i}`} />
           ))}
+
+        {product.rating % 1 !== 0 && (
+          <StarHalf strokeWidth={1} key="half-star" />
+        )}
         <span className="review-count">({product.review_count})</span>
       </div>
       <span className="sku_wrapper">

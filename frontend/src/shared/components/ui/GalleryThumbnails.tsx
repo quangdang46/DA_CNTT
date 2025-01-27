@@ -7,8 +7,8 @@ import styles from "@/shared/style/GalleryThumbnails.module.css";
 import { useGalleryContext } from "@/shared/contexts/GalleryContext";
 import clsx from "clsx";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
-import ChevronDown from "@/shared/components/icons/ChevronDown";
-import ChevronUp from "@/shared/components/icons/ChevronUp";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 const GalleryThumbnails = () => {
   const { selectedIndex, setSelectedIndex, thumbnails } = useGalleryContext();
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -38,7 +38,7 @@ const GalleryThumbnails = () => {
           onClick={onPrevButtonClick}
           aria-disabled={prevBtnDisabled}
         >
-          <ChevronUp></ChevronUp>
+          <ChevronUp strokeWidth={1} />
         </div>
         <div className={styles.embla__thumbs__viewport} ref={emblaThumbsRef}>
           <figure
@@ -74,7 +74,7 @@ const GalleryThumbnails = () => {
           onClick={onNextButtonClick}
           aria-disabled={nextBtnDisabled}
         >
-          <ChevronDown></ChevronDown>
+          <ChevronDown strokeWidth={1} />
         </div>
       </div>
     </div>

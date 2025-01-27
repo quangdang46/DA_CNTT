@@ -1,5 +1,5 @@
 "use client";
-import ChevronDown from "@/shared/components/icons/ChevronDown";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -27,7 +27,7 @@ export default function MainNav() {
             onClick={toggleDropdown}
           >
             Mother’s Day
-            <ChevronDown></ChevronDown>
+            <ChevronDown strokeWidth={1} />
           </Link>
           <ul
             role="menu"

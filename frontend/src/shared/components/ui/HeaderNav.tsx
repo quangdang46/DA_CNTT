@@ -1,9 +1,11 @@
 "use client";
-import Car from "@/shared/components/icons/Car";
-import ChevronDown from "@/shared/components/icons/ChevronDown";
-import DollarSign from "@/shared/components/icons/DollarSign";
-import User from "@/shared/components/icons/User";
 import { RootState } from "@/shared/state/store";
+import {
+  ChevronDown,
+  CircleDollarSign,
+  CircleUser,
+  Truck,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { DropdownItem, Nav, NavDropdown, NavItem } from "react-bootstrap";
@@ -24,14 +26,15 @@ export default function HeaderNav() {
     >
       <NavItem>
         <Link href="track-your-order.html" className="nav-link">
-          <Car></Car> Track Your Order
+          <Truck strokeWidth={1} /> Track Your Order
         </Link>
       </NavItem>
 
       <NavDropdown
         title={
           <>
-            <DollarSign></DollarSign> Dollar (US) <ChevronDown></ChevronDown>
+            <CircleDollarSign strokeWidth={1} /> Dollar (US){" "}
+            <ChevronDown strokeWidth={1} />
           </>
         }
         id="currency-dropdown"
@@ -47,7 +50,7 @@ export default function HeaderNav() {
           href={isLoggedIn ? "/my-account" : "/authentication"}
           className="nav-link"
         >
-          <User></User>{" "}
+          <CircleUser strokeWidth={1} />{" "}
           <span>{isLoggedIn ? user?.name : "Login or Register"}</span>
         </Link>
       </NavItem>

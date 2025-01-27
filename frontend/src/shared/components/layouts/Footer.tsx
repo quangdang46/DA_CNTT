@@ -1,6 +1,12 @@
 import Logo from "@/shared/components/common/Logo";
-import Car from "@/shared/components/icons/Car";
-import Image from "next/image";
+import {
+  BadgeJapaneseYen,
+  HandCoins,
+  Headset,
+  MapPin,
+  Send,
+  Shield,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -12,7 +18,7 @@ export default function Footer() {
           <div className="col-full">
             <div className="footer-newsletter">
               <div className="media">
-                <Car size="3x"></Car>
+                <Send strokeWidth={1} size={48} />
                 <div className="media-body">
                   <div className="clearfix">
                     <div className="newsletter-header">
@@ -44,7 +50,7 @@ export default function Footer() {
                 {Array.from({ length: 3 }).map((_, index) => (
                   <li className="nav-item" key={index}>
                     <Link className="sm-icon-label-link nav-link" href="#">
-                      <Car color="black"></Car> Facebook
+                      <HandCoins strokeWidth={1} /> Facebook
                     </Link>
                   </li>
                 ))}
@@ -66,7 +72,7 @@ export default function Footer() {
                 <div className="footer-contact-info">
                   <div className="media">
                     <span className="media-left icon media-middle">
-                      <Car></Car>
+                      <Headset strokeWidth={1} size={48} />
                     </span>
                     <div className="media-body">
                       <span className="call-us-title">
@@ -79,7 +85,7 @@ export default function Footer() {
                         17 Princess Road, London, Greater London NW1 8JR, UK
                       </address>
                       <Link href={"#"} className="footer-address-map-link">
-                        <Car></Car>
+                        <MapPin strokeWidth={1} />
                         Find us on map
                       </Link>
                     </div>
@@ -88,7 +94,7 @@ export default function Footer() {
                 <div className="footer-payment-info">
                   <div className="media">
                     <span className="media-left icon media-middle">
-                      <Car></Car>
+                      <HandCoins strokeWidth={1} size={48}/>
                     </span>
                     <div className="media-body">
                       <h5 className="footer-payment-info-title">
@@ -98,13 +104,7 @@ export default function Footer() {
                         <ul className="list-payment-icons nav">
                           {Array.from({ length: 4 }).map((_, index) => (
                             <li className="nav-item" key={index}>
-                              <Image
-                                className="payment-icon-image"
-                                src="https://images.unsplash.com/photo-1603348929190-0257ea827c97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="mastercard"
-                                width={30}
-                                height={20}
-                              />
+                              <BadgeJapaneseYen size={30} strokeWidth={1} />
                             </li>
                           ))}
                         </ul>
@@ -114,22 +114,10 @@ export default function Footer() {
                         <h6 className="footer-secured-by-title">Secured by:</h6>
                         <ul className="footer-secured-by-icons">
                           <li className="nav-item">
-                            <Image
-                              className="secure-icons-image"
-                              src="https://images.unsplash.com/photo-1603348929190-0257ea827c97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                              alt="norton"
-                              width={30}
-                              height={20}
-                            />
+                            <Shield size={48} strokeWidth={1} />
                           </li>
                           <li className="nav-item">
-                            <Image
-                              className="secure-icons-image"
-                              src="https://images.unsplash.com/photo-1603348929190-0257ea827c97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                              alt="mcafee"
-                              width={30}
-                              height={20}
-                            />
+                            <Shield size={48} strokeWidth={1} />
                           </li>
                         </ul>
                       </div>

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import authRequestApi from "@/shared/apiRequests/auth";
-import Tick from "@/shared/components/icons/Check";
 import { RegisterBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -143,13 +143,13 @@ export default function Register() {
           <h3>Sign up today and you will be able to :</h3>
           <ul>
             <li>
-              <Tick></Tick> Speed your way through checkout
+              <Check strokeWidth={1} /> Speed your way through checkout
             </li>
             <li>
-              <Tick></Tick> Track your orders easily
+              <Check strokeWidth={1} /> Track your orders easily
             </li>
             <li>
-              <Tick></Tick> Keep a record of all your purchases
+              <Check strokeWidth={1} /> Keep a record of all your purchases
             </li>
           </ul>
         </div>

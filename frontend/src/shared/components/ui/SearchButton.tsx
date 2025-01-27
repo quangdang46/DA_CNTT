@@ -1,6 +1,6 @@
-import Search from '@/shared/components/icons/Search';
-import React from 'react'
-import { Button, FormControl } from 'react-bootstrap';
+import { Search } from "lucide-react";
+import React from "react";
+import { Button, FormControl } from "react-bootstrap";
 
 export default function SearchButton() {
   return (
@@ -12,7 +12,7 @@ export default function SearchButton() {
         value="product"
       />
       <Button type="submit" variant="primary">
-        <Search></Search>
+        <Search strokeWidth={1} />
         <span className="search-btn">Search</span>
       </Button>
     </div>

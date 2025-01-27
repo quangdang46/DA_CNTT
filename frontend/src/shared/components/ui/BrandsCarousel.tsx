@@ -4,8 +4,7 @@ import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import useEmblaCarousel from "embla-carousel-react";
 import React from "react";
 import styles from "@/shared/style/BrandsCarousel.module.css";
-import ChevronLeft from "@/shared/components/icons/ChevronLeft";
-import ChevronRight from "@/shared/components/icons/ChevronRight";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function BrandsCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
 
@@ -24,7 +23,7 @@ export default function BrandsCarousel() {
           onClick={onPrevButtonClick}
           aria-disabled={prevBtnDisabled}
         >
-          <ChevronLeft size="2x"></ChevronLeft>
+          <ChevronLeft strokeWidth={1} size={30} />
         </div>
         <div className={styles.embla}>
           <div className={styles.embla__viewport} ref={emblaRef}>
@@ -40,7 +39,7 @@ export default function BrandsCarousel() {
           onClick={onNextButtonClick}
           aria-disabled={nextBtnDisabled}
         >
-          <ChevronRight size="2x"></ChevronRight>
+          <ChevronRight strokeWidth={1} size={30} />
         </div>
       </div>
     </section>

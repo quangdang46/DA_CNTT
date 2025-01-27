@@ -1,8 +1,7 @@
 "use client";
-import ChevronLeft from "@/shared/components/icons/ChevronLeft";
-import ChevronRight from "@/shared/components/icons/ChevronRight";
 import { useCarouselContext } from "@/shared/contexts/CarouselContext";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 
 export default function SaleCarouselFooter() {
@@ -23,7 +22,7 @@ export default function SaleCarouselFooter() {
           onClick={onPrevButtonClick}
           aria-disabled={prevBtnDisabled}
         >
-          <ChevronLeft></ChevronLeft>
+          <ChevronLeft strokeWidth={1} />
           Previous deal
         </div>
         <div
@@ -32,7 +31,7 @@ export default function SaleCarouselFooter() {
           onClick={onNextButtonClick}
           aria-disabled={nextBtnDisabled}
         >
-          Next deal <ChevronRight></ChevronRight>
+          Next deal <ChevronRight strokeWidth={1} />
         </div>
       </nav>
     </footer>

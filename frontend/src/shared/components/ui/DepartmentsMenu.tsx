@@ -1,6 +1,5 @@
 "use client";
-import Bars from "@/shared/components/icons/Bars";
-import ChevronDown from "@/shared/components/icons/ChevronDown";
+import { ChevronDown, Menu } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -16,7 +15,8 @@ export default function DepartmentsMenu() {
         aria-expanded="false"
         onClick={() => setShow(!show)}
       >
-        <Bars></Bars> <span>All Departments</span> <ChevronDown></ChevronDown>
+        <Menu strokeWidth={1} /> <span>All Departments</span>{" "}
+        <ChevronDown strokeWidth={1} />
       </button>
       {show && (
         <ul

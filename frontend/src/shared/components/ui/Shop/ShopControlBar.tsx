@@ -1,11 +1,8 @@
 "use client";
 import productApiRequest from "@/shared/apiRequests/product";
-import Car from "@/shared/components/icons/Car";
-import GridLarge from "@/shared/components/icons/GridLarge";
-import GridListingSmall from "@/shared/components/icons/GridListingSmall";
-import GridSmall from "@/shared/components/icons/GridSmall";
-import GridSmallExtended from "@/shared/components/icons/GridSmallExtended";
+
 import { useShopContext } from "@/shared/contexts/ShopContext";
+import { Filter, Grid2x2, Grid3x3, Rows2, Rows4, Table } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -15,23 +12,28 @@ export default function ShopControlBar() {
   const tabs = [
     {
       title: "Grid View",
-      icon: <GridSmall></GridSmall>,
+      icon: <Grid3x3 strokeWidth={1} />,
       type: "grid-view",
     },
     {
       title: "Grid Extended View",
-      icon: <GridSmallExtended></GridSmallExtended>,
+      icon: <Table strokeWidth={1} />,
       type: "grid-view-extended",
     },
     {
+      title: "List View",
+      icon: <Rows4 strokeWidth={1} />,
+      type: "grid-list-view",
+    },
+    {
       title: "List View Large",
-      icon: <GridLarge></GridLarge>,
+      icon: <Grid2x2 strokeWidth={1} />,
       type: "list-view-large",
     },
 
     {
       title: "List View Small",
-      icon: <GridListingSmall></GridListingSmall>,
+      icon: <Rows2 strokeWidth={1} />,
       type: "list-view-small",
     },
   ];
@@ -97,12 +99,11 @@ export default function ShopControlBar() {
     updateURLAndFetch({ page });
   };
 
-  
   return (
     <div className="shop-control-bar">
       <div className="handheld-sidebar-toggle">
         <button type="button" className="btn sidebar-toggler">
-          <Car></Car>
+          <Filter strokeWidth={1} />
           <span>Filters</span>
         </button>
       </div>

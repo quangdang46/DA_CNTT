@@ -2,8 +2,7 @@ import { useTabs } from "@/shared/contexts/TabsContext";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/shared/style/AddressTab.module.css";
 import useClickOutside from "@/shared/hooks/useClickOutside";
-import Check from "@/shared/components/icons/Check";
-import CloseIcon from "@/shared/components/icons/CloseIcon";
+import { CircleCheckBig, CircleX } from "lucide-react";
 export default function AddressTab() {
   const { activeTab } = useTabs();
   const [show, setShow] = useState(false);
@@ -155,7 +154,7 @@ export default function AddressTab() {
           style={{ display: show ? "block" : "none" }}
         >
           <a onClick={() => setShow(false)}>
-            <CloseIcon></CloseIcon>
+            <CircleX strokeWidth={1} />
           </a>
           <b>Thông tin giao hàng</b>
           <ul>
@@ -187,7 +186,7 @@ export default function AddressTab() {
           <a className={styles.btn_confirm}>Xác nhận</a>
           <div className={styles.la_delete} style={{ display: "none" }}>
             <div>
-              <Check></Check>
+              <CircleCheckBig strokeWidth={1} />
               <b>Xóa địa chỉ</b>
               <span>Bạn có chắc chắn muốn xóa địa chỉ này không?</span>
               <a className="btn-delete-cancel">Hủy</a>

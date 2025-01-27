@@ -1,3 +1,4 @@
+import { CornerDownLeft } from "lucide-react";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import React from "react";
 
@@ -18,7 +19,7 @@ export default function page() {
                 className="button"
                 href="https://techmarket.madrasthemes.com/shop/"
               >
-                <i className="icon fa fa-mail-reply" />
+                <CornerDownLeft></CornerDownLeft>
                 Return To Shop{" "}
               </a>
             </p>

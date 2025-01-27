@@ -1,5 +1,4 @@
 "use client";
-import User from "@/shared/components/icons/User";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import AddressTab from "@/shared/components/ui/Account/AddressTab";
 import DashboardTab from "@/shared/components/ui/Account/DashboardTab";
@@ -8,6 +7,13 @@ import LogoutTab from "@/shared/components/ui/Account/LogoutTab";
 import NavigationAccount from "@/shared/components/ui/Account/NavigationAccount";
 import OrdersTab from "@/shared/components/ui/Account/OrdersTab";
 import { TabsProvider } from "@/shared/contexts/TabsContext";
+import {
+  CircleUser,
+  LayoutDashboard,
+  ListOrdered,
+  LogOut,
+  UserPen,
+} from "lucide-react";
 import React from "react";
 
 export default function Page() {
@@ -15,28 +21,28 @@ export default function Page() {
     {
       label: "Dashboard",
       type: "account-dashboard",
-      icon: <User />,
+      icon: <LayoutDashboard strokeWidth={1} />,
     },
     {
       label: "Orders",
       type: "account-orders",
-      icon: <User />,
+      icon: <ListOrdered strokeWidth={1} />,
     },
 
     {
       label: "Addresses",
       type: "account-address",
-      icon: <User />,
+      icon: <CircleUser strokeWidth={1} />,
     },
     {
       label: "Account details",
       type: "account-details",
-      icon: <User />,
+      icon: <UserPen strokeWidth={1} />,
     },
     {
       label: "Log out",
       type: "account-logout",
-      icon: <User />,
+      icon: <LogOut strokeWidth={1} />,
     },
   ];
   return (

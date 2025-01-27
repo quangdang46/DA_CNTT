@@ -1,5 +1,5 @@
-import Car from "@/shared/components/icons/Car";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import { BadgeAlert } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -226,7 +226,7 @@ export default function page() {
                             className="facebook"
                             target="_blank"
                           >
-                            <Car></Car>
+                            <BadgeAlert strokeWidth={1} />
                           </a>
                         </li>
                       </ul>

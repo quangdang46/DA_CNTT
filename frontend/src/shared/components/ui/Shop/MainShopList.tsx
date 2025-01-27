@@ -1,6 +1,7 @@
 "use client";
 import productApiRequest from "@/shared/apiRequests/product";
 import GridExtendedProduct from "@/shared/components/ui/Shop/GridExtendedProduct";
+import GridListView from "@/shared/components/ui/Shop/GridListView";
 import GridViewLarge from "@/shared/components/ui/Shop/GridViewLarge";
 import GridViewProduct from "@/shared/components/ui/Shop/GridViewProduct";
 import GridViewSmall from "@/shared/components/ui/Shop/GridViewSmall";
@@ -83,6 +84,7 @@ export default function MainShopList() {
         <div className="tab-content">
           <GridViewProduct></GridViewProduct>
           <GridExtendedProduct></GridExtendedProduct>
+          <GridListView></GridListView>
           <GridViewLarge></GridViewLarge>
           <GridViewSmall></GridViewSmall>
         </div>

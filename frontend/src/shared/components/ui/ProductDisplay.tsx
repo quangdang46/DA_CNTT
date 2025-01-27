@@ -2,12 +2,11 @@ import ProductCardLandscape from "@/shared/components/ui/ProductCardLandscape";
 import useEmblaCarousel from "embla-carousel-react";
 import React from "react";
 import styles from "@/shared/style/ProductDisplay.module.css";
-import ChevronLeft from "@/shared/components/icons/ChevronLeft";
-import ChevronRight from "@/shared/components/icons/ChevronRight";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import DotCarousel from "@/shared/components/ui/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import productApiRequest from "@/shared/apiRequests/product";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ProductDisplay({
   title = "Related products",
@@ -57,7 +56,9 @@ export default function ProductDisplay({
               onClick={onNextButtonClick}
               aria-disabled={nextBtnDisabled}
             >
-              <ChevronRight></ChevronRight>
+              <ChevronRight
+                className={styles.embla__button__svg}
+              ></ChevronRight>
             </button>
           </div>
         </nav>

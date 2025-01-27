@@ -1,10 +1,8 @@
 "use client";
-import ChevronLeft from "@/shared/components/icons/ChevronLeft";
-import ChevronRight from "@/shared/components/icons/ChevronRight";
 import { useCarouselContext } from "@/shared/contexts/CarouselContext";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
-
 
 export default function SaleCarouselHeader() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,14 +24,14 @@ export default function SaleCarouselHeader() {
           onClick={onPrevButtonClick}
           aria-disabled={prevBtnDisabled}
         >
-          <ChevronLeft></ChevronLeft>
+          <ChevronLeft strokeWidth={1} />
         </div>
         <div
           className="slick-arrow"
           onClick={onNextButtonClick}
           aria-disabled={nextBtnDisabled}
         >
-          <ChevronRight></ChevronRight>
+          <ChevronRight strokeWidth={1} />
         </div>
       </div>
     </header>

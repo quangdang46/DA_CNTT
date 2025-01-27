@@ -1,8 +1,4 @@
 "use client"; // Thêm dòng này để đánh dấu đây là Client Component
-// import Font Awesome CSS
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-config.autoAddCss = false;
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Inter } from "next/font/google";
 import "react-toastify/dist/ReactToastify.css";

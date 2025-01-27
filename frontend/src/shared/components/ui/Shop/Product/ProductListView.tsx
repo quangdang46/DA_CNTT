@@ -5,9 +5,9 @@ import React from "react";
 interface Props {
   product: Product;
 }
-export default function ProductSmall({ product }: Props) {
+export default function ProductListView({ product }: Props) {
   return (
-    <div className="product list-view-small">
+    <div className="product list-view ">
       <div className="media">
         <Image
           width={224}
@@ -45,9 +45,19 @@ export default function ProductSmall({ product }: Props) {
                 {product.rating % 1 !== 0 && (
                   <StarHalf strokeWidth={1} key="half-star" />
                 )}
-                <span className="review-count">(1)</span>
+                <span className="review-count">({product.review_count})</span>
               </div>
             </a>
+            <div className="brand">
+              <a href="#">
+                <Image
+                  alt="galaxy"
+                  src="/static/images/brands/1.png"
+                  width={224}
+                  height={197}
+                />
+              </a>
+            </div>
             <div className="woocommerce-product-details__short-description">
               <ul>
                 <li>{product.description}</li>
@@ -55,12 +65,17 @@ export default function ProductSmall({ product }: Props) {
             </div>
           </div>
           <div className="product-actions">
+            <div className="availability">
+              Availability:
+              <p className="stock in-stock">1000 in stock</p>
+            </div>
             <span className="price">
               <span className="woocommerce-Price-amount amount">
                 <span className="woocommerce-Price-currencySymbol">$</span>
                 {product.price}
               </span>
             </span>
+            {/* .price */}
             <a className="button add_to_cart_button" href="cart.html">
               Add to Cart
             </a>

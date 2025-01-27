@@ -1,5 +1,5 @@
 "use client";
-import Star from "@/shared/components/icons/Star";
+import { Star } from "lucide-react";
 import React, { useState } from "react";
 interface ProductReviewProps {
   activeTab: string;
@@ -43,6 +43,19 @@ export default function ProductReview({ activeTab }: ProductReviewProps) {
                 {Array.from({ length: 5 - 5 }).map((_, index) => (
                   <Star key={index} color="#e4e4e4"></Star>
                 ))}
+
+                {/* 
+                
+                    {Array(Math.floor(product.rating))
+                      .fill(0)
+                      .map((_, i) => (
+                        <Star strokeWidth={1} key={`full-${i}`} />
+                      ))}
+
+                    {product.rating % 1 !== 0 && (
+                      <StarHalf strokeWidth={1} key="half-star" />
+                    )}
+                */}
               </div>
             </div>
             <div className="rating-histogram">

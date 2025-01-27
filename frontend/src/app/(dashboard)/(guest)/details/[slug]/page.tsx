@@ -1,6 +1,5 @@
 "use client";
 import productApiRequest from "@/shared/apiRequests/product";
-import Star from "@/shared/components/icons/Star";
 import ProductTabs from "@/shared/components/layouts/ProductTabs";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
@@ -8,6 +7,7 @@ import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { GalleryProvider } from "@/shared/contexts/GalleryContext";
 import { Product } from "@/shared/types/ProductTypes";
+import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -88,8 +88,13 @@ export default function Page() {
                     {Array(Math.floor(product.rating))
                       .fill(0)
                       .map((_, i) => (
-                        <Star key={i}></Star>
+                        <Star strokeWidth={1} key={`full-${i}`} />
                       ))}
+
+                    {product.rating % 1 !== 0 && (
+                      <StarHalf strokeWidth={1} key="half-star" />
+                    )}
+
                     <span style={{ width: "100%" }}>
                       Rated
                       <strong className="rating">5.00</strong> out of 5 based on
@@ -111,7 +116,6 @@ export default function Page() {
               </div>
               <div className="woocommerce-product-details__short-description">
                 <ul>
-
                   {product.attributes && product.attributes.length > 0 ? (
                     Object.entries(product.attributes[0]).map(
                       ([key, value], index) => (

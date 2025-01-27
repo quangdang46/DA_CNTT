@@ -6,7 +6,8 @@ import Wishlist from "@/shared/components/ui/Wishlist";
 import Cart from "@/shared/components/ui/Cart";
 import StickyHeader from "@/shared/components/ui/StickyHeader";
 import SiteBranding from "@/shared/components/ui/SiteBranding";
-import Car from "@/shared/components/icons/Car";
+import Link from "next/link";
+import { CircleUser, Heart, Menu, ShoppingCart } from "lucide-react";
 
 export default function Header() {
   return (
@@ -23,7 +24,6 @@ export default function Header() {
         <div className="d-flex justify-content-center align-items-center">
           <DepartmentsMenu></DepartmentsMenu>
           <NavbarSearch></NavbarSearch>
-          {/* right */}
 
           <>
             <Compare></Compare>
@@ -32,6 +32,7 @@ export default function Header() {
           </>
         </div>
       </div>
+      {/* mobile */}
       <div className="col-full handheld-only">
         <div className="handheld-header">
           <div className="row">
@@ -39,22 +40,19 @@ export default function Header() {
             <div className="handheld-header-links">
               <ul className="columns-3">
                 <li className="my-account">
-                  <a href="login-and-register.html" className="has-icon">
-                    <Car />
-                  </a>
+                  <Link href="/my-account" className="has-icon">
+                    <CircleUser strokeWidth={1} />
+                  </Link>
                 </li>
                 <li className="wishlist">
-                  <a href="wishlist.html" className="has-icon">
-                    <Car />
+                  <Link href="/wishlist" className="has-icon">
+                    <Heart strokeWidth={1} />
                     <span className="count">3</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
-              {/* .columns-3 */}
             </div>
-            {/* .handheld-header-links */}
           </div>
-          {/* /.row */}
           <div className="techmarket-sticky-wrap">
             <div className="row">
               <nav
@@ -63,7 +61,7 @@ export default function Header() {
                 aria-label="Handheld Navigation"
               >
                 <button className="btn navbar-toggler" type="button">
-                  <Car />
+                  <Menu strokeWidth={1} />
                   <span>Menu</span>
                 </button>
                 <div className="handheld-navigation-menu">
@@ -109,21 +107,17 @@ export default function Header() {
                     />
                   </form>
                 </div>
-                {/* .widget */}
               </div>
-              {/* .site-search */}
-              <a
+              <Link
                 className="handheld-header-cart-link has-icon"
-                href="cart.html"
+                href="/cart"
                 title="View your shopping cart"
               >
-                <Car />
+                <ShoppingCart strokeWidth={1} />
                 <span className="count">2</span>
-              </a>
+              </Link>
             </div>
-            {/* /.row */}
           </div>
-          {/* .techmarket-sticky-wrap */}
         </div>
       </div>
     </header>

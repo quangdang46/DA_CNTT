@@ -1,15 +1,13 @@
-import ChevronRight from '@/shared/components/icons/ChevronRight';
-import Link from 'next/link';
-import React from 'react'
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import React from "react";
 
 export default function Breadcrumb() {
   return (
     <nav className="woocommerce-breadcrumb">
-      <Link href="/">
-        Home
-      </Link>
+      <Link href="/">Home</Link>
       <span className="delimiter">
-        <ChevronRight></ChevronRight>
+        <ChevronRight strokeWidth={1} />
       </span>
       My Account
     </nav>
