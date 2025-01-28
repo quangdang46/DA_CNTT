@@ -95,14 +95,7 @@ export default function Page() {
                       <StarHalf strokeWidth={1} key="half-star" />
                     )}
 
-                    <span style={{ width: "100%" }}>
-                      Rated
-                      <strong className="rating">5.00</strong> out of 5 based on
-                      <span className="rating">
-                        {product.review_count}
-                      </span>{" "}
-                      customer rating
-                    </span>
+               
                   </div>
                   <a
                     rel="nofollow"

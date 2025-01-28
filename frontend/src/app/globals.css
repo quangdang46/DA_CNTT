@@ -16,7 +16,7 @@ body {
   height: auto;
   margin-left: 0.6em;
   content: "";
-  font-family: FontAwesome;
+  
 }
 ul.nav {
   margin-left: 0;
@@ -1501,7 +1501,7 @@ body.can-uppercase
   color: #a7a7a7;
   content: "\f10d";
   float: left;
-  font-family: FontAwesome;
+  
   font-size: 1.786em;
   margin-left: -1.5em;
   margin-top: -0.4em;
@@ -6829,7 +6829,7 @@ article.post .entry-content blockquote:before {
   color: #a7a7a7;
   content: "\f10d";
   float: left;
-  font-family: FontAwesome;
+  
   font-size: 1.786em;
   margin-left: -1.5em;
   margin-top: -0.4em;
@@ -10798,7 +10798,7 @@ article.post .comments-link a:after,
 article.post .likes a:before,
 article.post .likes a:after {
   color: #999999;
-  font-family: FontAwesome;
+  
 }
 article .comments-link a:hover,
 article .comments-link a:focus,
@@ -14900,7 +14900,6 @@ article .widget-area .widget a.more-link:hover {
   font-size: 0.6em;
   margin-left: -2.5em;
   position: absolute;
-  font-family: "techmarket-icons" !important;
   content: "\6e";
 }
 .footer-widgets-block .widget_layered_nav li:last-child,
@@ -15249,7 +15248,7 @@ article .footer-newsletter .newsletter-form .more-link {
   .post-content
   .comments-link
   a:before {
-  font-family: FontAwesome;
+  
   content: "\f0e5";
   font-size: 14px;
   margin-right: 5px;
@@ -20263,7 +20262,7 @@ h3.faq-title {
   }
 }
 .faq-accordion-wrap .card .card-header h5 > a:after {
-  font-family: FontAwesome;
+  
   font-size: 19px;
   color: #090909;
   position: absolute;
@@ -20338,7 +20337,7 @@ h3.faq-title {
   padding: 0;
 }
 .vc_tta-accordion .faq-accordion.vc_tta-panel .vc_tta-panel-heading a:after {
-  font-family: FontAwesome;
+  
   content: "\f067";
   font-size: 19px;
   color: #090909;
@@ -20485,7 +20484,7 @@ h3.faq-title {
   position: relative;
 }
 .about-accordion .card .card-header h5 > a i:before {
-  font-family: FontAwesome;
+  
 }
 .about-accordion .card .card-header h5 > a:not(.collapsed) {
   color: #090909;
@@ -21458,7 +21457,7 @@ article .section-media-single-banner .more-link {
 }
 .yith-wcwl-share ul > li > a {
   line-height: 1;
-  font-family: FontAwesome;
+  
   font-style: normal;
 }
 .yith-wcwl-share ul > li {
@@ -21563,8 +21562,7 @@ article .section-media-single-banner .more-link {
   border: 1px solid #e74c3c;
   color: #e74c3c;
 }
-.table-compare tbody tr td .product-image,
-.table-compare tbody tr td .star-rating {
+.table-compare tbody tr td .product-image{
   display: inline-block;
 }
 .table-compare tbody tr td p,
@@ -21771,14 +21769,14 @@ article .return-to-shop .more-link .icon {
 .products .list-view-small.product .star-rating:before,
 .products .list-view-large.product .star-rating:before {
   content: "\f006\f006\f006\f006\f006";
-  font-family: FontAwesome;
+  
 }
 #grid-extended .products .product .star-rating span:before,
 .products .list-view.product .star-rating span:before,
 .products .list-view-small.product .star-rating span:before,
 .products .list-view-large.product .star-rating span:before {
   content: "\f005\f005\f005\f005\f005";
-  font-family: FontAwesome;
+  
 }
 .shop-archive-header:after {
   content: "";
@@ -23013,7 +23011,6 @@ table.shop_table_responsive.my_account_orders .order-actions:before {
 }
 .single-product div[itemprop="description"] ul,
 .single-product .woocommerce-product-details__short-description ul {
-  padding-left: 1.1em;
   margin-left: 0;
 }
 @media (min-width: 1200px) {
@@ -24198,11 +24195,11 @@ p.available-on-backorder {
 }
 #reviews .advanced-review .advanced-review-rating .star-rating:before {
   content: "\f006\f006\f006\f006\f006";
-  font-family: FontAwesome;
+  
 }
 #reviews .advanced-review .advanced-review-rating .star-rating span:before {
   content: "\f005\f005\f005\f005\f005";
-  font-family: FontAwesome;
+  
 }
 #reviews .advanced-review .advanced-review-comment {
   flex: 0 0 100%;
@@ -24721,7 +24718,6 @@ article .widget_shopping_cart .buttons .more-link:nth-child(odd) {
 }
 #secondary-shop .widget.widget_layered_nav ul li a:before {
   content: "\f096";
-  font-family: FontAwesome;
   margin-right: 15px;
   font-size: 22px;
   text-rendering: auto;
@@ -24748,7 +24744,6 @@ article .widget_shopping_cart .buttons .more-link:nth-child(odd) {
 }
 #secondary-shop .widget.widget_layered_nav_filters ul li.chosen a:before {
   content: "\f057";
-  font-family: FontAwesome;
   margin-right: 15px;
   font-size: 19px;
   text-rendering: auto;
@@ -27415,20 +27410,21 @@ article .form-row .more-link {
   text-decoration: none;
 }
 .star-rating {
-  overflow: hidden;
+  /* overflow: hidden; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   height: 1em;
   line-height: 1;
   font-size: 1em;
-  width: 6em;
   /*rtl:6.2em */
-  font-family: "star";
   font-weight: 400;
   word-break: keep-all;
 }
 /* .star-rating:before {
   content: "\f006\f006\f006\f006\f006";
-  font-family: FontAwesome;
+  
   letter-spacing: 0.313em;
   opacity: 0.25;
   float: left;
@@ -27447,7 +27443,7 @@ article .form-row .more-link {
 }
 /* .star-rating span:before {
   content: "\f005\f005\f005\f005\f005";
-  font-family: FontAwesome;
+  
   letter-spacing: 0.313em;
   top: 0;
   position: absolute;

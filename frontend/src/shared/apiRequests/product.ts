@@ -21,7 +21,7 @@ const productApiRequest = {
           >("/products/byType", { type });
 
           if (!response.success) {
-            throw new Error(response.message || "Failed to fetch products");
+            return response;
           }
 
           return response;
@@ -42,7 +42,7 @@ const productApiRequest = {
           );
 
           if (!response.success) {
-            throw new Error(response.message || "Failed to fetch products");
+            return response;
           }
 
           return response;
@@ -69,7 +69,7 @@ const productApiRequest = {
 
           if (!response.success) {
             toast.error(response.message);
-            throw new Error(response.message);
+            return response;
           }
 
           return response;
@@ -91,7 +91,7 @@ const productApiRequest = {
           );
 
           if (!response.success) {
-            throw new Error(response.message || "Failed to fetch products");
+            return response;
           }
 
           return response;
@@ -153,7 +153,7 @@ const productApiRequest = {
             url
           );
           if (!response.success) {
-            throw new Error(response.message || "Failed to fetch products");
+            return response;
           }
           return response;
         } catch (error) {
