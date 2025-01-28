@@ -24,6 +24,7 @@ export default function Page() {
   if (!data?.data) return <div>Product not found</div>;
 
   const product = data.data as Product;
+  console.log(product);
   const thumbnails = product.images.map((image) => image.image_url);
   return (
     <GalleryProvider>
@@ -109,8 +110,8 @@ export default function Page() {
               </div>
               <div className="woocommerce-product-details__short-description">
                 <ul>
-                  {product.attributes && product.attributes.length > 0 ? (
-                    Object.entries(product.attributes[0]).map(
+                  {product.attributes  ? (
+                    Object.entries(product.attributes).map(
                       ([key, value], index) => (
                         <div key={index}>
                           <strong style={{ textTransform: "capitalize" }}>

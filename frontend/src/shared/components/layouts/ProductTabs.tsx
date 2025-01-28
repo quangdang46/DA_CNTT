@@ -5,11 +5,11 @@ import ProductSpecification from "@/shared/components/ui/ProductSpecification";
 import { Product } from "@/shared/types/ProductTypes";
 import React, { useState } from "react";
 
-interface ProductTabsProps {
+interface Props {
   product: Product;
 }
 
-export default function ProductTabs({ product }: ProductTabsProps) {
+export default function ProductTabs({ product }: Props) {
   const [activeTab, setActiveTab] = useState("description");
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -20,7 +20,6 @@ export default function ProductTabs({ product }: ProductTabsProps) {
     description: product.description,
     images: product.images.map((image) => image.image_url),
   };
- 
 
   const groupMapping = {
     General: ["operating_system", "battery_capacity", "battery_type"],
@@ -32,7 +31,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
     title,
     attributes: keys.map((key) => ({
       label: key,
-      value: product.attributes[0][key], // Truy cập trực tiếp vào đối tượng
+      value: product.attributes[key], // Truy cập trực tiếp vào đối tượng
     })),
   }));
 

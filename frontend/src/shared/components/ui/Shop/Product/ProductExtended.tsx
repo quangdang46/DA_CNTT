@@ -1,4 +1,3 @@
-
 import { Product } from "@/shared/types/ProductTypes";
 import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
@@ -52,8 +51,8 @@ export default function ProductExtended({ product }: Props) {
       </span>
       <div className="woocommerce-product-details__short-description">
         <ul>
-          {product.attributes && product.attributes.length > 0 ? (
-            Object.entries(product.attributes[0]).map(([atr, value], index) => (
+          {product.attributes ? (
+            Object.entries(product.attributes).map(([atr, value], index) => (
               <li key={index}>{value}</li>
             ))
           ) : (

@@ -15,7 +15,6 @@ export type ProductAttributes = {
   [key: string]: string | number;
 };
 
-export type ProductAttributesList = ProductAttributes[];
 
 export type ProductImage = {
   id: number;
@@ -39,7 +38,7 @@ export type Product = {
   rating: number;
   slug: string;
   review_count: number;
-  attributes: ProductAttributesList;
+  attributes: ProductAttributes;
   images: ProductImageList;
   category: Category;
   category_id: number;
