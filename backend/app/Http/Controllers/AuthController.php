@@ -62,10 +62,12 @@ class AuthController extends Controller
     /**
      * Đăng ký người dùng mới.
      */
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
+        $data = $request->only(['name', 'email', 'password']);
+
         // Kiểm tra xem email đã được đăng ký chưa
-        $existingUser = $this->userRepository->getUserByEmail($request->email);
+        $existingUser = $this->userRepository->getUserByEmail($data['email']);
         if ($existingUser) {
             return response()->json([
                 'success' => false,
@@ -76,8 +78,6 @@ class AuthController extends Controller
         }
 
         // Băm mật khẩu
-        $data = $request->only(['name', 'email', 'password']);
-        $data['password'] = Hash::make($data['password']); // Băm mật khẩu trước khi lưu
 
         // Tạo người dùng mới
         $user = $this->userRepository->createUser($data);
@@ -105,7 +105,7 @@ class AuthController extends Controller
      * Đăng nhập.
      */
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
         // Xác thực người dùng từ email và mật khẩu
         $user = $this->userRepository->authenticate($request->email, $request->password);

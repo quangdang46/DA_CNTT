@@ -29,7 +29,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function authenticate(string $email, string $password)
     {
-        $user = User::where('email', $email)->first();
+        $user = $this->model->where('email', $email)->first();
 
         if ($user && Hash::check($password, $user->password)) {
             return $user; // Xác thực thành công, trả về thông tin người dùng
@@ -44,6 +44,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             throw new \Exception("The email has already been taken.");
         }
         $data['password'] = Hash::make($data['password']); // Mã hóa mật khẩu
-        return User::create($data);
+        return $this->model->create($data);
     }
 }
