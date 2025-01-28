@@ -25,7 +25,7 @@ export default function HeaderNav() {
       data-nav="flex-menu"
     >
       <NavItem>
-        <Link href="track-your-order.html" className="nav-link">
+        <Link href="/track-order" className="nav-link">
           <Truck strokeWidth={1} /> Track Your Order
         </Link>
       </NavItem>

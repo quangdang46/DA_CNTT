@@ -6,6 +6,7 @@ import Header from "@/shared/components/ui/Header";
 import { RootState } from "@/shared/state/store";
 import { AccountResType } from "@/shared/types/UserTypes";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 // import type { Metadata } from "next";
@@ -20,6 +21,7 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const { data } = useQuery<Partial<AccountResType>, Error>({
     queryKey: ["user-info"],
@@ -45,7 +47,11 @@ export default function MainLayout({
     retry: false,
   });
   const role = data?.data?.role || "guest";
-
+  React.useEffect(() => {
+    if (role === "admin") {
+      router.push("/admin"); // Chuyển hướng admin
+    }
+  }, [role, router]);
   if (role === "admin") return <>{children}</>;
 
   return (

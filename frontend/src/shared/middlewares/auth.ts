@@ -18,18 +18,8 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
 
       // Nếu không có token và cố truy cập vào admin hoặc guest -> Chuyển hướng
       if (adminPages.includes(pathName) || guestPages.includes(pathName)) {
-        return NextResponse.redirect(new URL("/403", req.url)); // Chuyển đến trang đăng nhập
+        return NextResponse.redirect(new URL("/authentication", req.url)); // Chuyển đến trang đăng nhập
       }
-
-      // Đặt role mặc định cho khách (guest) nếu không có token
-      // const response = NextResponse.next();
-      // response.cookies.set("role", "guest", {
-      //   httpOnly: true, // Bảo vệ cookie khỏi XSS
-      //   secure: process.env.NODE_ENV === "production", // Sử dụng `secure` trong môi trường production
-      //   sameSite: "strict", // Bảo vệ cookie khỏi CSRF
-      // });
-
-      // return response;
     }
 
     if (pathName.startsWith("/authentication")) {
@@ -47,14 +37,16 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
           role: string;
         };
 
-        // Set role vào cookie để có thể sử dụng trên các request sau
-        // const response = NextResponse.next();
-        // response.cookies.set("role", decoded.role, {
-        //   httpOnly: true, // Bảo vệ cookie khỏi XSS
-        //   secure: process.env.NODE_ENV === "production", // Sử dụng `secure` trong môi trường production
-        //   sameSite: "strict", // Bảo vệ cookie khỏi CSRF
-        // });
+        if (decoded.role === "admin") {
+          // Nếu là admin, không cho phép truy cập vào các trang công khai như "/"
+          if (publicPages.includes(pathName)) {
+            return NextResponse.redirect(new URL("/admin", req.url)); // Chuyển hướng đến trang admin
+          }
+        }
 
+
+
+        
         // Kiểm tra quyền truy cập dành cho guest
         if (guestPages.includes(pathName) && decoded.role !== "guest") {
           return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
