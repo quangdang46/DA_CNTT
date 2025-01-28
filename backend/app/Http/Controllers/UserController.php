@@ -25,7 +25,7 @@ class UserController extends Controller
                 'status' => 'error',
                 'message' => 'User not authenticated',
                 'data' => null
-            ], 401);
+            ]);
         }
 
         return response()->json([
@@ -52,7 +52,7 @@ class UserController extends Controller
                     'status' => 'error',
                     'message' => 'User not authenticated',
                     'data' => null
-                ], 401);
+                ]);
             }
 
             // Nếu người dùng có cung cấp mật khẩu hiện tại, kiểm tra mật khẩu
@@ -86,7 +86,7 @@ class UserController extends Controller
                 'status' => 'error',
                 'message' => 'User not authenticated ' . $e,
                 'data' => null
-            ], 401);
+            ]);
         }
 
         return response()->json([
@@ -98,5 +98,4 @@ class UserController extends Controller
             ]
         ]);
     }
-
 }

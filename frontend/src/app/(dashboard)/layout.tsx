@@ -28,18 +28,21 @@ export default function MainLayout({
         try {
           const response = await accountApiRequest.me();
           if (!response.success) {
-            throw new Error(response.message);
+            // throw new Error(response.message);
+            // Đảm bảo trả về response thay vì ném lỗi
+            return { data: { role: "guest" } } as Partial<AccountResType>;
           }
           return response;
         } catch (error) {
           console.error("API error:", error);
-          throw error;
+          return { data: { role: "guest" } } as Partial<AccountResType>;
         }
       } else {
         return { data: { role: "guest" } } as Partial<AccountResType>;
       }
     },
     enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
+    retry: false,
   });
   const role = data?.data?.role || "guest";
 

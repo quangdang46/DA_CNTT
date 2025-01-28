@@ -16,20 +16,20 @@ export async function verifyJwtToken(token: string) {
     );
     return verified.payload;
   } catch (error) {
-    // Kiểm tra loại lỗi và xử lý phù hợp
     if (error instanceof Error && error.message.includes("JWT expired")) {
       console.log("Token has expired.");
-      // Thực hiện các bước xử lý khi token hết hạn, ví dụ như làm mới token
       throw new Error("Token expired. Please log in again.");
     } else {
-      // Kiểm tra loại lỗi
       if (error instanceof Error && error.message.includes("JWT expired")) {
         console.log("Token has expired.");
       } else {
         console.log("Token verification failed:", error);
       }
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
+      }
       deleteCookie("auth_token");
-
     }
   }
 }

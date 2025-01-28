@@ -63,7 +63,7 @@ export default function Footer() {
           <div className="row">
             <div className="footer-contact" style={{ flex: "1" }}>
               <div className="footer-logo">
-                <Link href={"/"} className="custom-logo-link" rel="home" aria-label="Trang chủ">
+                <Link href={"/"} className="custom-logo-link" rel="home">
                   <Logo></Logo>
                 </Link>
               </div>

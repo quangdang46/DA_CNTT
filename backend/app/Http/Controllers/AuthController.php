@@ -24,27 +24,6 @@ class AuthController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    // public function logout(Request $request)
-    // {
-    //     try {
-    //         JWTAuth::invalidate(JWTAuth::getToken()); // Hủy token hiện tại
-    //     } catch (JWTException $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'status' => 'error',
-    //             'message' => 'Could not invalidate token',
-    //             'data' => null
-    //         ], 500);
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'status' => 'success',
-    //         'message' => 'Logged out successfully',
-    //         'data' => null
-    //     ]);
-    // }
-
     public function logout(Request $request)
     {
         // Kiểm tra nếu có token trong header Authorization
@@ -55,7 +34,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Token not provided',
                 'data' => null
-            ], 400);
+            ]);
         }
 
         try {
@@ -68,7 +47,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Could not invalidate token',
                 'data' => null
-            ], 500);
+            ]);
         }
 
         // Trả về phản hồi thành công
@@ -93,7 +72,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Email is already registered',
                 'data' => null
-            ], 400);
+            ]);
         }
 
         // Băm mật khẩu
@@ -119,7 +98,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'token' => $token, // Bạn có thể trả về token nếu cần
             ]
-        ], 201);
+        ]);
     }
 
     /**
@@ -137,7 +116,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Invalid credentials',
                 'data' => null
-            ], 401);
+            ]);
         }
 
         try {
@@ -155,7 +134,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Could not create token',
                 'data' => null
-            ], 500);
+            ]);
         }
 
 
@@ -187,7 +166,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'User not found',
                 'data' => null
-            ], 404);
+            ]);
         }
 
         $status = Password::sendResetLink($request->only('email'));
@@ -197,7 +176,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'Password reset link sent',
                 'data' => null
-            ], 200);
+            ]);
         }
 
         return response()->json([
@@ -205,7 +184,7 @@ class AuthController extends Controller
             'status' => 'error',
             'message' => 'Unable to send reset link',
             'data' => null
-        ], 400);
+        ]);
     }
 
     /**
@@ -219,7 +198,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Passwords do not match',
                 'data' => null
-            ], 400);
+            ]);
         }
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -236,7 +215,7 @@ class AuthController extends Controller
                 'status' => 'success',
                 'message' => 'Password reset successful',
                 'data' => null
-            ], 200);
+            ]);
         }
 
         return response()->json([
@@ -245,7 +224,7 @@ class AuthController extends Controller
             'message' => 'Password reset failed',
             'errors' => ['error' => $status],
             'data' => null
-        ], 400);
+        ]);
     }
 
     public function refreshToken()
@@ -267,7 +246,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'message' => 'Refresh token failed',
                 'data' => null
-            ], 500);
+            ]);
         }
     }
 }

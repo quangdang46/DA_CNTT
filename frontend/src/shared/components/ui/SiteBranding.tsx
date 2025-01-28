@@ -8,7 +8,6 @@ export default function SiteBranding() {
       <Link
         href="/"
         className="custom-logo-link"
-        aria-label="Trang chủ"
         rel="home"
       >
         <Logo></Logo>

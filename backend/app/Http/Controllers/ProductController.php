@@ -24,7 +24,7 @@ class ProductController extends Controller
                 "success" => false,
                 "status" => "error",
                 "message" => "Giá trị phân trang không hợp lệ",
-            ], 400);
+            ]);
         }
 
         $products = $this->productService->getAllProducts($perPage);
@@ -61,7 +61,7 @@ class ProductController extends Controller
                 "success" => false,
                 "status" => "error",
                 "message" => "Đã xảy ra lỗi: " . $e->getMessage(),
-            ], 500);  // Mã lỗi 500 - Internal Server Error
+            ]);  // Mã lỗi 500 - Internal Server Error
         }
     }
 
@@ -73,7 +73,7 @@ class ProductController extends Controller
                 "status" => "error",
                 "message" => "Product not found for slug: " . $slug,
                 "data" => [],
-            ], 404);
+            ]);
         }
         $product = $this->productService->findBySlug($slug);
         if (!$product) {
@@ -82,7 +82,7 @@ class ProductController extends Controller
                 "status" => "error",
                 "message" => "Khong co san pham slug " . $slug,
                 "data" => [],
-            ], 400);
+            ]);
         }
         return response()->json([
             "success" => true,
@@ -101,7 +101,7 @@ class ProductController extends Controller
                 "status" => "error",
                 "message" => "Khong co san pham by type " . $type,
                 "data" => [],
-            ], 400);
+            ]);
         }
         $products = $this->productService->getProductByType($type);
         if ($products->isEmpty()) {
@@ -110,7 +110,7 @@ class ProductController extends Controller
                 "status" => "error",
                 "message" => "Khong co san pham by type " . $type,
                 "data" => [],
-            ], 400);
+            ]);
         }
         return response()->json([
             "success" => true,
@@ -128,7 +128,7 @@ class ProductController extends Controller
                 "status" => "error",
                 "message" => "Khong co san pham by related " . $slug,
                 "data" => [],
-            ], 400);
+            ]);
         }
         $products = $this->productService->getRelatedProducts($slug);
         return response()->json([
