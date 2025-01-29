@@ -238,3 +238,28 @@ ul {
     max-width: 25%;
   }
 }
+.wish-list {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.wish-list {
+  display: none;
+}
+
+.products .product:hover .wish-list {
+  display: block;
+}
+.products .product .button_add_to_wishlist {
+  position: relative;
+  cursor: pointer;
+}
+
+.products .product .button_add_to_wishlist:hover svg {
+  stroke-width: 2px;
+  
+}

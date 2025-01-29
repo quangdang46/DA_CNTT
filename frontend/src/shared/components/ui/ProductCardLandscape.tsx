@@ -1,5 +1,5 @@
 import { Product } from "@/shared/types/ProductTypes";
-import { Star, StarHalf } from "lucide-react";
+import { Heart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -11,7 +11,6 @@ export default function ProductCardLandscape({
   product: Product;
   version?: number;
 }) {
-
   /*
   
   
@@ -62,11 +61,10 @@ export default function ProductCardLandscape({
   ) : (
     <div className="landscape-product-card product">
       <div className="media">
-        {/* Add to Wishlist */}
-        <div className="yith-wcwl-add-to-wishlist">
-          <Link href="/wishlist" rel="nofollow" className="add_to_wishlist">
-            Add to Wishlist
-          </Link>
+        <div className="wish-list">
+          <div className="button_add_to_wishlist">
+            <Heart strokeWidth={1} size={30} />
+          </div>
         </div>
 
         {/* Product Image and Link */}

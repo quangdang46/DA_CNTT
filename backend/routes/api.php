@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,18 @@ Route::group(
         Route::get('new', [ProductController::class, 'new']);
         Route::get("related/{slug}", [ProductController::class, 'related']);
         Route::get('{slug}', [ProductController::class, 'show']);
+    }
+);
+
+
+Route::group(
+    [
+        'middleware' => 'api',
+        'prefix' => 'wishlist',
+    ],
+    function () {
+        Route::get('/', [Wishlist::class, 'index']);
+        Route::post('toggle', [Wishlist::class, 'toggleWishList']);
     }
 );
 

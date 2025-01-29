@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/shared/types/ProductTypes";
+import { Heart } from "lucide-react";
 
 interface ProductProps {
   product: Product;
@@ -9,10 +10,11 @@ interface ProductProps {
 export default function ProductCard({ product }: ProductProps) {
   return (
     <div className="product">
-      <div className="yith-wcwl-add-to-wishlist">
-        <Link href="wishlist.html" rel="nofollow" className="add_to_wishlist">
-          Add to Wishlist
-        </Link>
+
+      <div className="wish-list">
+        <div className="button_add_to_wishlist" >
+          <Heart strokeWidth={1} size={30}/>
+        </div>
       </div>
       <Link
         href={`/details/${product.slug}`}

@@ -6,3 +6,11 @@ php artisan route:clear
 php artisan config:clear
 php artisan cache:clear
 
+
+php artisan migrate:fresh
+
+php artisan db:seed
+5️⃣ Làm lại nếu cần thiết
+Nếu bạn muốn xóa toàn bộ bảng và chạy lại seeder, bạn có thể chạy lệnh:
+
+php artisan migrate:fresh --seed

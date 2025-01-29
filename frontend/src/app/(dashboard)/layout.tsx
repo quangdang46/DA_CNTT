@@ -1,14 +1,18 @@
 "use client";
 import accountApiRequest from "@/shared/apiRequests/account";
+import wishlistApiRequest from "@/shared/apiRequests/wishlist";
 import Footer from "@/shared/components/layouts/Footer";
 import HeaderBar from "@/shared/components/layouts/HeaderBar";
 import Header from "@/shared/components/ui/Header";
 import { RootState } from "@/shared/state/store";
+import { setWishlist } from "@/shared/state/wishlistSlice";
+import { ERoleType } from "@/shared/types/RoleTypes";
 import { AccountResType } from "@/shared/types/UserTypes";
+import { WishlistResType } from "@/shared/types/WishlistTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import type { Metadata } from "next";
 
 // export const metadata: Metadata = {
@@ -23,6 +27,8 @@ export default function MainLayout({
 }) {
   const router = useRouter();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
+  const dispatch = useDispatch();
   const { data } = useQuery<Partial<AccountResType>, Error>({
     queryKey: ["user-info"],
     queryFn: async () => {
@@ -46,8 +52,50 @@ export default function MainLayout({
     enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
     retry: false,
   });
+
+  // Lấy thông tin wishlist chỉ khi người dùng đã đăng nhập
+
+  const { data: wishlistData } = useQuery<Partial<WishlistResType>, Error>({
+    queryKey: ["wishlist"],
+    queryFn: async () => {
+      if (isLoggedIn && data?.data?.role !== ERoleType.ADMIN) {
+        try {
+          const response = await wishlistApiRequest.getWishlist();
+          if (!response.success) {
+            // throw new Error(response.message);
+            // Đảm bảo trả về response thay vì ném lỗi
+            if (!response.success) {
+              return {
+                data: { wishlist: [], user_id: 0 },
+              } as Partial<WishlistResType>;
+            }
+          }
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          return {
+            data: { wishlist: [], user_id: 0 },
+          } as Partial<WishlistResType>;
+        }
+      } else {
+        return {
+          data: { wishlist: [], user_id: 0 },
+        } as Partial<WishlistResType>;
+      }
+    },
+    enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
+    retry: false,
+  });
+  console.log("wishlistData", wishlistData?.data?.wishlist);
+  useEffect(() => {
+    // Dispatch wishlist to Redux
+    if (wishlistData?.data) {
+      dispatch(setWishlist(wishlistData.data.wishlist));
+    }
+  }, [dispatch, wishlistData]);
   const role = data?.data?.role || "guest";
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (role === "admin") {
       router.push("/admin"); // Chuyển hướng admin
     }

@@ -48,3 +48,34 @@
 ### Chức năng dành cho bên bán (người bán điện thoại)
 - **Quản lý sản phẩm và đơn hàng:** Bên bán có thể quản lý sản phẩm của mình, thêm mới sản phẩm, chỉnh sửa thông tin sản phẩm, và theo dõi đơn hàng.
 - **Quản lý kho và giao hàng:** Bên bán có thể cập nhật số lượng sản phẩm trong kho và tình trạng giao hàng cho các đơn hàng đã được xác nhận.
+
+
+1. Xử lý khi người dùng chưa đăng nhập (Guest User):
+Lưu trữ danh sách yêu thích ở localStorage hoặc sessionStorage:
+Khi người dùng thêm sản phẩm vào wishlist, bạn sẽ lưu thông tin sản phẩm vào localStorage.
+Dữ liệu lưu trữ sẽ bao gồm thông tin sản phẩm (ID sản phẩm) mà người dùng yêu thích.
+Hiển thị danh sách yêu thích:
+Mỗi khi người dùng truy cập vào trang wishlist, bạn sẽ kiểm tra localStorage để lấy danh sách yêu thích và hiển thị sản phẩm tương ứng.
+Khi người dùng xóa sản phẩm khỏi wishlist, cập nhật lại localStorage.
+2. Xử lý khi người dùng đã đăng nhập (Logged-in User):
+Lưu trữ dữ liệu vào cơ sở dữ liệu:
+Khi người dùng đăng nhập, thông tin về sản phẩm yêu thích sẽ được lưu vào bảng wishlist trong cơ sở dữ liệu.
+Cột user_id sẽ lưu ID của người dùng, product_id lưu ID sản phẩm, và created_at lưu thời gian thêm vào danh sách yêu thích.
+Hiển thị danh sách yêu thích từ cơ sở dữ liệu:
+Khi người dùng vào trang wishlist, bạn sẽ truy vấn dữ liệu từ bảng wishlist dựa trên user_id để hiển thị các sản phẩm mà người dùng đã yêu thích.
+Cập nhật (Thêm/Sửa/Xóa sản phẩm):
+Khi người dùng thêm hoặc xóa sản phẩm khỏi wishlist, dữ liệu sẽ được cập nhật vào bảng wishlist.
+Nếu người dùng đã đăng nhập, cập nhật cơ sở dữ liệu; nếu chưa, cập nhật localStorage.
+3. Xử lý chuyển đổi giữa Guest và Logged-in User:
+Khi người dùng đăng nhập, bạn cần kiểm tra xem họ đã có danh sách yêu thích trong localStorage hay chưa. Nếu có, bạn sẽ cần đồng bộ hóa dữ liệu từ localStorage vào cơ sở dữ liệu.
+Ví dụ: Khi người dùng đăng nhập, bạn sẽ kiểm tra tất cả sản phẩm trong localStorage và thêm vào bảng wishlist của người dùng trong cơ sở dữ liệu (nếu chưa có).
+4. Flow tổng quan:
+Người dùng chưa đăng nhập:
+Thêm sản phẩm vào localStorage.
+Hiển thị sản phẩm từ localStorage.
+Người dùng đã đăng nhập:
+Thêm sản phẩm vào cơ sở dữ liệu (wishlist).
+Hiển thị sản phẩm từ cơ sở dữ liệu.
+5. Các vấn đề cần lưu ý:
+Quản lý trạng thái: Khi người dùng chuyển từ guest sang logged-in, phải đồng bộ hóa wishlist từ localStorage sang cơ sở dữ liệu.
+Xử lý khi xóa sản phẩm: Đảm bảo rằng khi người dùng xóa sản phẩm, sẽ cập nhật đúng vào cả localStorage (cho guest) hoặc cơ sở dữ liệu (cho logged-in user).
