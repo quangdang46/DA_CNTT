@@ -135,7 +135,6 @@ input[type="submit"].cta,
 input[type="submit"].alt,
 .button.cta,
 article .cta.more-link,
-.button.alt,
 article .alt.more-link,
 .added_to_cart.cta,
 .added_to_cart.alt {
@@ -21478,12 +21477,12 @@ article .section-media-single-banner .more-link {
   position: relative;
   padding-top: 0px;
 }
-.woocommerce-wishlist table.cart .product-remove a.remove {
+.woocommerce-wishlist table.cart .product-remove div.remove {
   position: absolute;
   top: 60px;
 }
 @media (max-width: 1200px) and (min-width: 768px) {
-  .woocommerce-wishlist table.cart .product-remove a.remove {
+  .woocommerce-wishlist table.cart .product-remove div.remove {
     top: 0px;
     left: 0px;
   }
@@ -24889,14 +24888,7 @@ table.cart dl.variation dd {
 table.cart dl.variation dt {
   margin-right: 4px;
 }
-table.cart th.product-remove,
-table.cart td.product-remove {
-  display: none;
-}
-table.cart td.product-thumbnail,
-table.cart th.product-thumbnail {
-  display: none;
-}
+
 table.cart td.product-name {
   font-size: 0.875em;
   line-height: 1.5em;

@@ -261,5 +261,37 @@ ul {
 
 .products .product .button_add_to_wishlist:hover svg {
   stroke-width: 2px;
-  
+}
+
+mark,
+ins {
+  text-decoration: none;
+  font-weight: 500;
+  background: transparent;
+}
+
+
+div.remove {
+  cursor: pointer;
+  display: block;
+  width: 1.618em;
+  height: 1.618em;
+  line-height: 1.618;
+  padding-top: 2px;
+  font-weight: 400;
+  text-indent: -9999px;
+  position: relative;
+}
+div.remove:before {
+  content: "X";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 14px;
+  color: #858585;
+  line-height: 1.618;
+  text-indent: 0;
+  text-align: center;
 }

@@ -1,32 +1,32 @@
 import apiClient from "@/shared/config/apiClient";
 import {
-  WishListBodyType,
+  InfoWishlistBodyType,
+  InfoWishlistResType,
   WishlistResType,
 } from "@/shared/types/WishlistTypes";
 import { useQuery } from "@tanstack/react-query";
 
 const wishlistApiRequest = {
   getWishlist: () => apiClient.get<WishlistResType>("/wishlist"),
-  useToggleWishlist: (productId: string) => {
-    return useQuery<WishlistResType, Error>({
-      queryKey: ["toggle-wishlist", productId],
+  useInfoWishlist: (product_ids: string[]) => {
+    return useQuery<InfoWishlistResType, Error>({
+      queryKey: ["wishlist", product_ids],
       queryFn: async () => {
         try {
           const response = await apiClient.post<
-            WishListBodyType,
-            WishlistResType
-          >("/wishlist/toggle", { product_id: productId });
-
+            InfoWishlistBodyType,
+            InfoWishlistResType
+          >("/wishlist/info", { product_ids });
           if (!response.success) {
             return response;
           }
-
           return response;
         } catch (error) {
           console.error("API error:", error);
           throw error;
         }
       },
+      enabled: product_ids.length > 0,
     });
   },
 };

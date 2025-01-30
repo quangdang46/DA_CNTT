@@ -95,8 +95,6 @@ export default function Page() {
                     {product.rating % 1 !== 0 && (
                       <StarHalf strokeWidth={1} key="half-star" />
                     )}
-
-               
                   </div>
                   <a
                     rel="nofollow"
@@ -110,7 +108,7 @@ export default function Page() {
               </div>
               <div className="woocommerce-product-details__short-description">
                 <ul>
-                  {product.attributes  ? (
+                  {product.attributes && product.attributes !== null ? (
                     Object.entries(product.attributes).map(
                       ([key, value], index) => (
                         <div key={index}>
