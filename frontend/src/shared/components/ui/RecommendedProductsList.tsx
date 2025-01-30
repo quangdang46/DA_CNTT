@@ -9,9 +9,11 @@ import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useParams } from "next/navigation";
 import productApiRequest from "@/shared/apiRequests/product";
 import { ProductListResType } from "@/shared/types/ProductTypes";
+import useCompare from "@/shared/hooks/useCompare";
 
 export default function RecommendedProductsList() {
   const { slug } = useParams(); // Lấy slug từ URL
+  const { handleAddToCompare, CompareModal } = useCompare();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, slidesToScroll: 3 },
     [Autoplay()]
@@ -29,23 +31,29 @@ export default function RecommendedProductsList() {
   if (error) return <div>Error: {error.message}</div>;
   const products = data?.data as ProductListResType;
   return (
-    <div className={styles.embla}>
-      <div className={styles.embla__viewport} ref={emblaRef}>
-        <div className={`products ${styles.embla__container}`}>
-          {products &&
-            products.length > 0 &&
-            products.map((product, index) => (
-              <div className={styles.embla__slide} key={index}>
-                <ProductCard product={product} />
-              </div>
-            ))}
+    <>
+      <CompareModal></CompareModal>
+      <div className={styles.embla}>
+        <div className={styles.embla__viewport} ref={emblaRef}>
+          <div className={`products ${styles.embla__container}`}>
+            {products &&
+              products.length > 0 &&
+              products.map((product, index) => (
+                <div className={styles.embla__slide} key={index}>
+                  <ProductCard
+                    product={product}
+                    onAddToCompare={handleAddToCompare}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
+        <DotCarousel
+          scrollSnaps={scrollSnaps}
+          selectedIndex={selectedIndex}
+          onClick={onDotButtonClick}
+        ></DotCarousel>
       </div>
-      <DotCarousel
-        scrollSnaps={scrollSnaps}
-        selectedIndex={selectedIndex}
-        onClick={onDotButtonClick}
-      ></DotCarousel>
-    </div>
+    </>
   );
 }
