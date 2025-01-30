@@ -3,7 +3,9 @@
   width: 100%;
   margin: 0 auto;
 }
-
+.embla__viewport{
+  margin-bottom: 3rem;
+}
 .embla__container {
   display: flex;
   user-select: none;

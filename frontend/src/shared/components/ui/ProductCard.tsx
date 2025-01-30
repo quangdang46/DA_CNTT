@@ -7,8 +7,9 @@ import { useWishlist } from "@/shared/hooks/useWishlist";
 
 interface ProductProps {
   product: Product;
+  onAddToCompare: (product: Product) => void;
 }
-export default function ProductCard({ product }: ProductProps) {
+export default function ProductCard({ product, onAddToCompare }: ProductProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   return (
     <div className="product">
@@ -48,9 +49,12 @@ export default function ProductCard({ product }: ProductProps) {
         >
           Add to Cart
         </Link>
-        <Link href="compare.html" className="add-to-compare-link">
+        <button
+          className="add-to-compare-link"
+          onClick={() => onAddToCompare(product)}
+        >
           Add to Compare
-        </Link>
+        </button>
       </div>
     </div>
   );

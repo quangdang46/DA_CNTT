@@ -295,3 +295,8 @@ div.remove:before {
   text-indent: 0;
   text-align: center;
 }
+
+
+.react-confirm-alert-overlay.no-overlay {
+  position: unset;
+}

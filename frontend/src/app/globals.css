@@ -33472,6 +33472,8 @@ form.track_order input[type="submit"] {
   font-size: 1em;
   line-height: 0.786em;
   color: #626060;
+  outline:none;
+  background-color: transparent;
 }
 .add-to-compare-link:focus,
 .add-to-compare-link:hover {

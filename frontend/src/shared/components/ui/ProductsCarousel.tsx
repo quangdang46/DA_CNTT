@@ -7,11 +7,14 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { ProductListResType } from "@/shared/types/ProductTypes";
+import useCompare from "@/shared/hooks/useCompare";
 interface ProductsCarouselProps {
   products: ProductListResType;
 }
 
 export default function ProductsCarousel({ products }: ProductsCarouselProps) {
+  const { handleAddToCompare, CompareModal } = useCompare();
+
   //   duplicate products
   const itemsPerPage = 10; // 5 phần tử/hàng x 2 hàng
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -32,50 +35,58 @@ export default function ProductsCarousel({ products }: ProductsCarouselProps) {
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
   return (
-    <div className="tab-content">
-      <div id="tab-59f89f0881f930" className="tab-pane active" role="tabpanel">
+    <>
+      <CompareModal></CompareModal>
+      <div className="tab-content">
         <div
-          className="products-carousel"
-          data-ride="tm-slick-carousel"
-          data-wrap=".products"
+          id="tab-59f89f0881f930"
+          className="tab-pane active"
+          role="tabpanel"
         >
-          <div className="container-fluid">
-            <div className="woocommerce">
-              <div className={styles.embla}>
-                <div className={styles.embla__viewport} ref={emblaRef}>
-                  <div className={`products ${styles.embla__container}`}>
-                    {paginatedItems.map((productPerPage, pageIndex) => (
-                      <div className={styles.embla__slide} key={pageIndex}>
-                        <div
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(5, 1fr)", // 5 phần tử trên mỗi hàng
-                            gap: "10px",
-                          }}
-                        >
-                          {productPerPage &&
-                            productPerPage.length > 0 &&
-                            productPerPage.map((product, index) => (
-                              <ProductCard
-                                product={product}
-                                key={index}
-                              ></ProductCard>
-                            ))}
+          <div
+            className="products-carousel"
+            data-ride="tm-slick-carousel"
+            data-wrap=".products"
+          >
+            <div className="container-fluid">
+              <div className="woocommerce">
+                <div className={styles.embla}>
+                  <div className={styles.embla__viewport} ref={emblaRef}>
+                    <div className={`products ${styles.embla__container}`}>
+                      {paginatedItems.map((productPerPage, pageIndex) => (
+                        <div className={styles.embla__slide} key={pageIndex}>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "repeat(5, 1fr)", // 5 phần tử trên mỗi hàng
+                              gap: "10px",
+                            }}
+                          >
+                            {productPerPage &&
+                              productPerPage.length > 0 &&
+                              productPerPage.map((product, index) => (
+                                <ProductCard
+                                  product={product}
+                                  key={index}
+                                  onAddToCompare={handleAddToCompare}
+                                ></ProductCard>
+                              ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
+                  <DotCarousel
+                    scrollSnaps={scrollSnaps}
+                    selectedIndex={selectedIndex}
+                    onClick={onDotButtonClick}
+                  ></DotCarousel>
                 </div>
-                <DotCarousel
-                  scrollSnaps={scrollSnaps}
-                  selectedIndex={selectedIndex}
-                  onClick={onDotButtonClick}
-                ></DotCarousel>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
