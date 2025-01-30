@@ -9,7 +9,7 @@ interface CompareState {
 
 const initialState: CompareState = {
   selectedProducts: [],
-  maxCompare: 2,
+  maxCompare: 3,
 };
 
 const compareSlice = createSlice({

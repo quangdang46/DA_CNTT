@@ -9,11 +9,13 @@ import {
 } from "@/shared/state/compareSlice";
 import { RootState } from "@/shared/state/store";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const STORAGE_KEY = "compare_products";
 
-const useCompare = (maxCompare = 2) => {
+const useCompare = (maxCompare = 3) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const selectedProducts = useSelector(
     (state: RootState) => state.compare.selectedProducts
   );
@@ -92,7 +94,8 @@ const useCompare = (maxCompare = 2) => {
 
   const navigateToComparePage = () => {
     const productIds = selectedProducts.map((product) => product.id).join(",");
-    window.location.href = `/compare?product_ids=${productIds}`;
+    // window.location.href = `/compare?ids=${productIds}`;
+    router.push(`/compare?ids=${productIds}`);
   };
 
   const CompareModal = () => {
