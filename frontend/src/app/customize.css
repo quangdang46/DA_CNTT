@@ -297,6 +297,3 @@ div.remove:before {
 }
 
 
-.react-confirm-alert-overlay.no-overlay {
-  position: unset;
-}

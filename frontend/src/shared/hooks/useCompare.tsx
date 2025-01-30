@@ -1,15 +1,16 @@
-
 import { useState, useEffect } from "react";
 import { Product } from "@/shared/types/ProductTypes";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCompare, clearCompare, removeFromCompare } from "@/shared/state/compareSlice";
+import {
+  addToCompare,
+  clearCompare,
+  removeFromCompare,
+} from "@/shared/state/compareSlice";
 import { RootState } from "@/shared/state/store";
+import Swal from "sweetalert2";
 
 const STORAGE_KEY = "compare_products";
-
-// Sử dụng biến global để quản lý trạng thái modal
-let globalModalInstance: HTMLDivElement | null = null;
 
 const useCompare = (maxCompare = 2) => {
   const dispatch = useDispatch();
@@ -39,41 +40,54 @@ const useCompare = (maxCompare = 2) => {
     }
   }, [selectedProducts]);
 
-  // Cleanup function để xóa modal khi component unmount
-  useEffect(() => {
-    return () => {
-      if (globalModalInstance) {
-        document.body.removeChild(globalModalInstance);
-        globalModalInstance = null;
-      }
-    };
-  }, []);
-
   const handleAddToCompare = (product: Product) => {
     if (
       selectedProducts.length < maxCompare &&
       !selectedProducts.some((p) => p.id === product.id)
     ) {
       dispatch(addToCompare(product));
-      if (!globalModalInstance) {
-        setIsModalOpen(true);
-      }
+      Swal.fire({
+        icon: "success",
+        title: "Đã thêm vào so sánh",
+        text: `${product.name} đã được thêm vào danh sách so sánh.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else if (selectedProducts.length >= maxCompare) {
-      alert(`You can only compare up to ${maxCompare} products.`);
+      // Hiển thị SweetAlert2 thông báo lỗi
+      Swal.fire({
+        icon: "warning",
+        title: "Đạt giới hạn",
+        text: `Bạn chỉ có thể so sánh tối đa ${maxCompare} sản phẩm.`,
+        showConfirmButton: true,
+      });
     }
+
+    // Luôn hiển thị modal khi bấm "Compare"
+    setIsModalOpen(true);
   };
 
   const handleRemoveFromCompare = (productId: string) => {
     dispatch(removeFromCompare(productId));
+    Swal.fire({
+      icon: "success",
+      title: "Đã xóa khỏi so sánh",
+      text: "Sản phẩm đã được xóa khỏi danh sách so sánh.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   const handleClearCompare = () => {
     dispatch(clearCompare());
     setIsModalOpen(false);
-    if (globalModalInstance) {
-      document.body.removeChild(globalModalInstance);
-      globalModalInstance = null;
-    }
+    Swal.fire({
+      icon: "success",
+      title: "Đã xóa tất cả",
+      text: "Tất cả sản phẩm đã được xóa khỏi danh sách so sánh.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   const navigateToComparePage = () => {
@@ -84,58 +98,62 @@ const useCompare = (maxCompare = 2) => {
   const CompareModal = () => {
     if (!isModalOpen) return null;
 
-    // Tạo modal mới chỉ khi chưa có instance
-    if (!globalModalInstance) {
-      globalModalInstance = document.createElement("div");
-      document.body.appendChild(globalModalInstance);
-    }
-
     return (
       <div
         style={{
           position: "fixed",
           bottom: "20px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          maxHeight: "400px",
-          overflowY: "scroll",
+          right: "20px",
           backgroundColor: "white",
           padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 10px",
+          borderRadius: "12px",
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
           zIndex: 9999,
+          width: "320px",
+          maxHeight: "80vh",
+          overflowY: "auto",
         }}
       >
+        {/* Tiêu đề */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "10px",
+            marginBottom: "16px",
           }}
         >
-          <h4 style={{ margin: 0 }}>Products Selected:</h4>
+          <h4 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+            So sánh sản phẩm
+          </h4>
           <button
-            onClick={() => {
-              setIsModalOpen(false);
-              if (globalModalInstance) {
-                document.body.removeChild(globalModalInstance);
-                globalModalInstance = null;
-              }
-            }}
+            onClick={() => setIsModalOpen(false)}
             style={{
               background: "none",
               border: "none",
-              fontSize: "20px",
+              fontSize: "24px",
               cursor: "pointer",
+              color: "#666",
             }}
           >
             ×
           </button>
         </div>
-        <ul>
+
+        {/* Danh sách sản phẩm */}
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {selectedProducts.map((product, index) => (
-            <li key={index} style={{ display: "flex", alignItems: "center" }}>
+            <li
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "12px",
+                padding: "8px",
+                borderRadius: "8px",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
               <Image
                 src={product.images[0].image_url}
                 alt={product.name}
@@ -144,30 +162,76 @@ const useCompare = (maxCompare = 2) => {
                 style={{
                   width: "50px",
                   height: "50px",
-                  marginRight: "10px",
+                  borderRadius: "8px",
+                  marginRight: "12px",
                 }}
               />
-              <p>{product.name}</p>
-              <button onClick={() => handleRemoveFromCompare(product.id)}>
-                Remove
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: "14px", fontWeight: "500" }}>
+                  {product.name}
+                </p>
+              </div>
+              <button
+                onClick={() => handleRemoveFromCompare(product.id)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#ff4d4f",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                Xóa
               </button>
             </li>
           ))}
         </ul>
-        {selectedProducts.length === maxCompare ? (
-          <p>Now you can compare them!</p>
-        ) : (
-          <p>Please select another product.</p>
+
+        {/* Thông báo khi đạt giới hạn */}
+        {selectedProducts.length >= maxCompare && (
+          <p
+            style={{ color: "#ff4d4f", fontSize: "14px", textAlign: "center" }}
+          >
+            Bạn chỉ có thể so sánh tối đa {maxCompare} sản phẩm.
+          </p>
         )}
-        <div style={{ marginTop: "20px" }}>
+
+        {/* Nút hành động */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "16px",
+          }}
+        >
+          <button
+            onClick={handleClearCompare}
+            style={{
+              background: "#ff4d4f",
+              color: "white",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Xóa tất cả
+          </button>
           <button
             onClick={navigateToComparePage}
             disabled={selectedProducts.length < 2}
+            style={{
+              background: selectedProducts.length >= 2 ? "#1890ff" : "#ccc",
+              color: "white",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: "8px",
+              cursor: selectedProducts.length >= 2 ? "pointer" : "not-allowed",
+              fontSize: "14px",
+            }}
           >
-            Go to Compare Page
-          </button>
-          <button onClick={handleClearCompare} style={{ marginLeft: "10px" }}>
-            Clear All
+            So sánh ngay
           </button>
         </div>
       </div>

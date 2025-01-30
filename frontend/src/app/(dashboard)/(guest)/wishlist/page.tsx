@@ -5,36 +5,50 @@ import Pagination from "@/shared/components/ui/Component/Pagination";
 import ProductRow from "@/shared/components/ui/Wishlist/ProductRow";
 import { useWishlist } from "@/shared/hooks/useWishlist";
 import React, { useState } from "react";
-import { confirmAlert } from "react-confirm-alert"; // Import
+import Swal from "sweetalert2"; // Import SweetAlert2
 import { toast } from "react-toastify";
+
 export default function Page() {
   const { wishlist, toggleWishlist } = useWishlist();
   const [page, setPage] = useState(1);
   const { data } = wishlistApiRequest.useInfoWishlist(wishlist, page, 3);
 
   const productRows = data?.data.data || [];
+
   const onSubmit = (id: string) => {
-    confirmAlert({
+    Swal.fire({
       title: "Confirm Deletion",
-      message:
-        "Are you sure you want to delete this product? This action cannot be undone.",
-      buttons: [
-        {
-          label: "Yes, Delete",
-          onClick: () => {
-            toggleWishlist(id);
-            toast.success("Product with ID: " + id + " has been deleted.");
-          },
-        },
-        {
-          label: "No, Cancel",
-          onClick: () => {
-            toast.info("Product with ID: " + id + " has not been deleted.");
-          },
-        },
-      ],
+      text: "Are you sure you want to delete this product? This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "No, Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toggleWishlist(id);
+        toast.success("Product with ID: " + id + " has been deleted.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        toast.info("Product with ID: " + id + " has not been deleted.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     });
   };
+
   return (
     <>
       <WrapperContent className="woocommerce-wishlist">
