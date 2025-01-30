@@ -86,7 +86,6 @@ export default function MainLayout({
     enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
     retry: false,
   });
-  console.log("wishlistData", wishlistData?.data?.wishlist);
   useEffect(() => {
     // Dispatch wishlist to Redux
     if (wishlistData?.data) {

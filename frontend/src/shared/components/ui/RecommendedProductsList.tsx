@@ -5,7 +5,7 @@ import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
-import DotCarousel from "@/shared/components/ui/DotCarousel";
+import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useParams } from "next/navigation";
 import productApiRequest from "@/shared/apiRequests/product";
 import { ProductListResType } from "@/shared/types/ProductTypes";

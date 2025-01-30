@@ -14,7 +14,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 export default function MainShopList() {
-  const { setProducts } = useShopContext();
+  const { setProducts, setData } = useShopContext();
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState<ProductSearchType>({
     name: "",
@@ -67,14 +67,14 @@ export default function MainShopList() {
     page: filters.page,
     perPage: filters.perPage,
   });
-
   const products = useMemo(() => data?.data?.data || [], [data]);
 
   useEffect(() => {
     if (products.length > 0) {
       setProducts(products);
+      setData(data as any);
     }
-  }, [products, setProducts]);
+  }, [data, products, setData, setProducts]);
 
   return (
     <div id="primary-shop" className="content-area">

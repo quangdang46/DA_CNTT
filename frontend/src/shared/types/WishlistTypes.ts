@@ -11,6 +11,16 @@ export type WishlistResType = ResType<WishList>;
 
 export type InfoWishlistBodyType = {
   product_ids: string[];
+  page?: number;
+  per_page?: number;
+};
+export type InfoWishlistType = {
+  current_page: number;
+  last_page: number;
+  data: ProductListResType;
+  from: number;
+  to: number;
+  total: number;
 };
 
-export type InfoWishlistResType = ResType<ProductListResType>;
+export type InfoWishlistResType = ResType<InfoWishlistType>;

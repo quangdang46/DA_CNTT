@@ -43,11 +43,11 @@ class ProductService
         return $this->productRepository->related($slug);
     }
 
-    public function getInforWithIds($ids)
+    public function getInforWithIds($ids, $perPage = 1, $page = 1)
     {
         if (empty($ids)) {
             return [];
         }
-        return $this->productRepository->getInArray($ids);
+        return $this->productRepository->getInArray($ids, $perPage, $page);
     }
 }

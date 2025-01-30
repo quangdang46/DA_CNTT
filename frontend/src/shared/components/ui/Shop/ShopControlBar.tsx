@@ -68,7 +68,6 @@ export default function ShopControlBar() {
   // Lưu kết quả vào context khi có dữ liệu
   useEffect(() => {
     if (data) {
-      console.log(data.data.data);
       setProducts(data?.data.data);
     }
   }, [data, setProducts]);

@@ -1,18 +1,18 @@
 "use client";
 import wishlistApiRequest from "@/shared/apiRequests/wishlist";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import Pagination from "@/shared/components/ui/Component/Pagination";
 import ProductRow from "@/shared/components/ui/Wishlist/ProductRow";
 import { useWishlist } from "@/shared/hooks/useWishlist";
-import { BadgeAlert } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import { toast } from "react-toastify";
 export default function Page() {
   const { wishlist, toggleWishlist } = useWishlist();
+  const [page, setPage] = useState(1);
+  const { data } = wishlistApiRequest.useInfoWishlist(wishlist, page, 3);
 
-  const { data } = wishlistApiRequest.useInfoWishlist(wishlist || []);
-
-  const productRows = data?.data || [];
+  const productRows = data?.data.data || [];
   const onSubmit = (id: string) => {
     confirmAlert({
       title: "Confirm Deletion",
@@ -46,65 +46,50 @@ export default function Page() {
           </header>
           {/* .entry-header */}
           <div className="entry-content">
-            <form className="woocommerce" method="post" action="#">
-              <table className="shop_table cart wishlist_table">
-                <thead>
-                  <tr>
-                    <th className="product-remove" />
-                    <th className="product-thumbnail" />
-                    <th className="product-name">
-                      <span className="nobr">Product Name</span>
-                    </th>
-                    <th className="product-price">
-                      <span className="nobr"> Unit Price </span>
-                    </th>
-                    <th className="product-stock-status">
-                      <span className="nobr"> Stock Status </span>
-                    </th>
-                    <th className="product-add-to-cart" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {productRows.map((product, index) => (
-                    <ProductRow
-                      product={product}
-                      onRemove={onSubmit}
-                      key={index}
-                    ></ProductRow>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={6}>
-                      <div className="yith-wcwl-share">
-                        <h4 className="yith-wcwl-share-title">Share on:</h4>
-                        <ul>
-                          <li
-                            style={{
-                              listStyleType: "none",
-                              display: "inline-block",
-                            }}
-                          >
-                            <a
-                              title="Facebook"
-                              href="https://www.facebook.com/sharer.php?s=100&p%5Btitle%5D=My+wishlist+on+Tech+Market&p%5Burl%5D=http%3A%2F%2Flocalhost%2F%7Efarook%2Ftechmarket%2Fhome-v1.html%2Fwishlist%2Fview%2FD5ON1PW1PYO1%2F"
-                              className="facebook"
-                              target="_blank"
-                            >
-                              <BadgeAlert strokeWidth={1} />
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-              {/* .wishlist_table */}
-            </form>
-            {/* .woocommerce */}
+            <table className="shop_table cart wishlist_table">
+              <thead>
+                <tr>
+                  <th className="product-remove" />
+                  <th className="product-thumbnail" />
+                  <th className="product-name">
+                    <span className="nobr">Product Name</span>
+                  </th>
+                  <th className="product-price">
+                    <span className="nobr"> Unit Price </span>
+                  </th>
+                  <th className="product-stock-status">
+                    <span className="nobr"> Stock Status </span>
+                  </th>
+                  <th className="product-add-to-cart" />
+                </tr>
+              </thead>
+              <tbody>
+                {productRows.map((product, index) => (
+                  <ProductRow
+                    product={product}
+                    onRemove={onSubmit}
+                    key={index}
+                  ></ProductRow>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={6}>
+                    <nav className="woocommerce-pagination">
+                      {data?.data.current_page !== undefined &&
+                        data?.data.last_page !== undefined && (
+                          <Pagination
+                            currentPage={data?.data.current_page}
+                            totalPages={data?.data.last_page}
+                            onPageChange={setPage}
+                          />
+                        )}
+                    </nav>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
-          {/* .entry-content */}
         </div>
       </WrapperContent>
     </>

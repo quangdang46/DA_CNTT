@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import React from "react";
 import styles from "@/shared/style/ProductDisplay.module.css";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
-import DotCarousel from "@/shared/components/ui/DotCarousel";
+import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import productApiRequest from "@/shared/apiRequests/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,8 +25,6 @@ export default function ProductDisplay({
     onPrevButtonClick,
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi);
-
-
 
   const { data, isLoading, error } = productApiRequest.useProductList();
 

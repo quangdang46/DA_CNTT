@@ -8585,7 +8585,7 @@ article .wl-create-new.more-link:before {
 }
 .pagination .page-numbers li .page-numbers.prev:after,
 .woocommerce-pagination .page-numbers li .page-numbers.prev:after {
-  content: "\75";
+  content: "<-";
 }
 .pagination .page-numbers li a.page-numbers:hover,
 .woocommerce-pagination .page-numbers li a.page-numbers:hover {

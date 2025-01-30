@@ -132,7 +132,9 @@ class Wishlist extends Controller
                     'data' => []
                 ]);
             }
-            $products = $this->productService->getInforWithIds($productIds);
+            $perPage = $request->input('per_page', 3); // Mặc định 10 sản phẩm/trang
+            $page = $request->input('page', 1);
+            $products = $this->productService->getInforWithIds($productIds, $perPage, $page);
             return response()->json([
                 'success' => true,
                 'status' => "success ",

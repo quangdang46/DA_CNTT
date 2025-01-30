@@ -5,7 +5,7 @@ import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import ProductCard from "@/shared/components/ui/ProductCard";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import DotCarousel from "@/shared/components/ui/DotCarousel";
+import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { ProductListResType } from "@/shared/types/ProductTypes";
 interface ProductsCarouselProps {
   products: ProductListResType;

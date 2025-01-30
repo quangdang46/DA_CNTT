@@ -140,9 +140,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             // ->where('slug', '!=', $slug)
             ->get();
     }
-    public function getInArray($ids)
+    public function getInArray($ids, $perPage, $page)
     {
         return $this->model->with(['attributes', 'images'])
-            ->whereIn('id', $ids)->get();
+            ->whereIn('id', $ids)
+            ->paginate($perPage, ['*'], 'page', $page);
     }
 }

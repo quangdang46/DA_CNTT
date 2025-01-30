@@ -4,10 +4,9 @@ import React from "react";
 import styles from "@/shared/style/LandscapeFullProductCardsCarousel.module.css";
 import useEmblaCarousel from "embla-carousel-react";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
-import DotCarousel from "@/shared/components/ui/DotCarousel";
+import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import productApiRequest from "@/shared/apiRequests/product";
 export default function LandscapeFullProductCardsCarousel() {
-
   const [emblaRef, emblaApi] = useEmblaCarousel({});
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
