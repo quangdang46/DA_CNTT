@@ -42,4 +42,12 @@ class ProductService
     {
         return $this->productRepository->related($slug);
     }
+
+    public function getInforWithIds($ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+        return $this->productRepository->getInArray($ids);
+    }
 }

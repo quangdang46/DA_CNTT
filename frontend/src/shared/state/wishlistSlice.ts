@@ -1,31 +1,23 @@
+// wishlistSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Lấy wishlist từ localStorage nếu chưa đăng nhập
 const getInitialWishlist = (): string[] => {
   if (typeof window !== "undefined") {
     const storedWishlist = localStorage.getItem("wishlist");
-
-    // Kiểm tra nếu storedWishlist không phải là null
-    if (storedWishlist !== null) {
+    if (storedWishlist) {
       try {
         const parsedWishlist = JSON.parse(storedWishlist);
-
-        // Kiểm tra nếu parsedWishlist là một mảng
+        // Kiểm tra lại nếu là mảng
         if (Array.isArray(parsedWishlist)) {
           return parsedWishlist;
-        } else {
-          console.error("Wishlist không phải là mảng, trả về mảng rỗng.");
-          // Nếu không phải mảng, trả về mảng rỗng và có thể reset lại trong localStorage
-          localStorage.setItem("wishlist", JSON.stringify([]));
         }
       } catch (error) {
-        console.error("Lỗi khi phân tích wishlist từ localStorage", error);
-        // Nếu có lỗi trong khi phân tích, trả về mảng rỗng và reset trong localStorage
-        localStorage.setItem("wishlist", JSON.stringify([]));
+        console.error("Error parsing wishlist from localStorage", error);
       }
     }
   }
-
-  return []; // Trả về mảng rỗng nếu không có wishlist hợp lệ trong localStorage
+  return [];
 };
 
 const wishlistSlice = createSlice({
@@ -37,32 +29,26 @@ const wishlistSlice = createSlice({
       const index = state.indexOf(productId);
 
       if (index !== -1) {
-        state.splice(index, 1); // Xóa nếu đã có
+        state.splice(index, 1); // Xóa nếu có
       } else {
         state.push(productId); // Thêm nếu chưa có
       }
 
-      // Nếu chưa đăng nhập, lưu wishlist vào localStorage
       if (typeof window !== "undefined") {
+        // Cập nhật localStorage nếu người dùng chưa đăng nhập
         localStorage.setItem("wishlist", JSON.stringify(state));
       }
     },
     setWishlist: (state, action: PayloadAction<string[]>) => {
-      // Cập nhật wishlist vào state và localStorage
+      // Cập nhật wishlist từ server và lưu vào localStorage
       if (typeof window !== "undefined") {
         localStorage.setItem("wishlist", JSON.stringify(action.payload));
       }
       return action.payload;
     },
-    loadWishlist: (state) => {
-      // Lấy wishlist từ localStorage nếu người dùng chưa đăng nhập
-      if (typeof window !== "undefined") {
-        const storedWishlist = JSON.parse(
-          localStorage.getItem("wishlist") || "[]"
-        );
-        return storedWishlist;
-      }
-      return state;
+    loadWishlist: (state, action: PayloadAction<string[]>) => {
+      // Lấy wishlist từ server (khi người dùng đăng nhập) hoặc từ localStorage
+      return action.payload || state;
     },
   },
 });

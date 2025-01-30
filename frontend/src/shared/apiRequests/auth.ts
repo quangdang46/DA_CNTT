@@ -13,7 +13,7 @@ const authRequestApi = {
   register: (body: RegisterBodyType) =>
     apiClient.post<RegisterBodyType, RegisterResType>("/auth/register", body),
   refresh: () => apiClient.get<RefreshTokenResType>("/auth/refreshToken"),
-  logout: (signal: AbortSignal) => apiClient.post("/auth/logout", { signal }),
+  logout: (signal?: AbortSignal) => apiClient.post("/auth/logout", { signal }),
 };
 
 export default authRequestApi;

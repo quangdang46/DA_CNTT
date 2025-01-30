@@ -3,17 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/shared/types/ProductTypes";
 import { Heart } from "lucide-react";
+import { useWishlist } from "@/shared/hooks/useWishlist";
 
 interface ProductProps {
   product: Product;
 }
 export default function ProductCard({ product }: ProductProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
   return (
     <div className="product">
-
-      <div className="wish-list">
-        <div className="button_add_to_wishlist" >
-          <Heart strokeWidth={1} size={30}/>
+      <div className="wish-list" onClick={() => toggleWishlist(product.id)}>
+        <div className="button_add_to_wishlist">
+          <Heart
+            strokeWidth={1}
+            size={30}
+            fill={`${isInWishlist(product.id) ? "red" : "none"}`}
+          />
         </div>
       </div>
       <Link

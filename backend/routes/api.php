@@ -53,6 +53,7 @@ Route::group(
     function () {
         Route::get('/', [Wishlist::class, 'index']);
         Route::post('toggle', [Wishlist::class, 'toggleWishList']);
+        Route::post("/info", [Wishlist::class, 'getWishlistProducts']);
     }
 );
 

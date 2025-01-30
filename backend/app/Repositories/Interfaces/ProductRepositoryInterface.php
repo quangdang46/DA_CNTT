@@ -9,4 +9,5 @@ interface ProductRepositoryInterface
     public function findBySlug($slug);
     public function getProductByType($type);
     public function related($slug);
+    public function getInArray($ids);
 }

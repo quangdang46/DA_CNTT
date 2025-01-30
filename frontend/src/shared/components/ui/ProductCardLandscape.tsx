@@ -1,3 +1,4 @@
+import { useWishlist } from "@/shared/hooks/useWishlist";
 import { Product } from "@/shared/types/ProductTypes";
 import { Heart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
@@ -15,6 +16,9 @@ export default function ProductCardLandscape({
   
   
   */
+
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
   return version == 1 ? (
     <div className={`landscape-product product`}>
       <Link
@@ -61,9 +65,13 @@ export default function ProductCardLandscape({
   ) : (
     <div className="landscape-product-card product">
       <div className="media">
-        <div className="wish-list">
+        <div className="wish-list" onClick={() => toggleWishlist(product.id)}>
           <div className="button_add_to_wishlist">
-            <Heart strokeWidth={1} size={30} />
+            <Heart
+              strokeWidth={1}
+              size={30}
+              fill={`${isInWishlist(product.id) ? "red" : "none"}`}
+            />
           </div>
         </div>
 
