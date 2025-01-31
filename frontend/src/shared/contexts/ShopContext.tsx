@@ -1,9 +1,11 @@
+
 "use client";
 import {
   ProductListResType,
   ProductSearchResType,
 } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
+import { EmblaCarouselType } from "embla-carousel";
 import React, { createContext, useContext, useState } from "react";
 
 // Tạo interface cho dữ liệu context
@@ -14,19 +16,12 @@ interface ShopContextProps {
   setProducts: (products: ProductListResType) => void;
   data: ResType<ProductSearchResType>;
   setData: (data: ResType<ProductSearchResType>) => void;
+  emblaApi: EmblaCarouselType | null;
+  setEmblaApi: React.Dispatch<React.SetStateAction<EmblaCarouselType | null>>;
 }
 
-// Interface cho sản phẩm
-
 // Giá trị mặc định của context
-const ShopContext = createContext<ShopContextProps>({
-  activeTab: "all",
-  setActiveTab: () => {},
-  products: [],
-  setProducts: () => {},
-  data: {} as ResType<ProductSearchResType>,
-  setData: () => {},
-});
+const ShopContext = createContext<ShopContextProps | undefined>(undefined);
 
 // Provider
 export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -37,10 +32,20 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({
   const [data, setData] = useState<ResType<ProductSearchResType>>(
     {} as ResType<ProductSearchResType>
   );
+  const [emblaApi, setEmblaApi] = useState<EmblaCarouselType | null>(null);
 
   return (
     <ShopContext.Provider
-      value={{ activeTab, setActiveTab, products, setProducts, data, setData }}
+      value={{
+        activeTab,
+        setActiveTab,
+        products,
+        setProducts,
+        data,
+        setData,
+        emblaApi,
+        setEmblaApi,
+      }}
     >
       {children}
     </ShopContext.Provider>
@@ -48,4 +53,10 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 // Custom hook để sử dụng context
-export const useShopContext = () => useContext(ShopContext);
+export const useShopContext = () => {
+  const context = useContext(ShopContext);
+  if (context === undefined) {
+    throw new Error("useShopContext must be used within a ShopProvider");
+  }
+  return context;
+};

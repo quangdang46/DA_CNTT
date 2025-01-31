@@ -1,16 +1,16 @@
 "use client";
-import { useCarouselContext } from "@/shared/contexts/CarouselContext";
+import { useShopContext } from "@/shared/contexts/ShopContext";
 import usePrevNextButtons from "@/shared/hooks/EmblaCarouselArrowButtons";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 interface Props {
   title?: string;
 }
-export default function SaleCarouselHeader({
+export default function LastedHeader({
   title = "Best of ratings",
 }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { emblaApi } = useCarouselContext();
+  const { emblaApi } = useShopContext();
   const {
     prevBtnDisabled,
     nextBtnDisabled,
