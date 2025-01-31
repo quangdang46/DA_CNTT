@@ -2,11 +2,13 @@
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Cart() {
   const [showDropdown, setShowDropdown] = useState(false);
-
+  useEffect(() => {
+    setShowDropdown(false);
+  }, []);
   // Hàm toggle dropdown
   const toggleDropdown = () => setShowDropdown(!showDropdown);
   return (

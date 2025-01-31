@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Wishlist;
@@ -57,6 +58,17 @@ Route::group(
     }
 );
 
+Route::group(
+    [
+        'prefix' => 'locations'
+    ],
+    function () {
+        Route::get('provinces', [LocationController::class, 'provinces']);
+        Route::get('districts', [LocationController::class, 'getDistricts']);
+        Route::get('wards', [LocationController::class, 'getWards']);
+
+    }
+);
 
 /*
 Route::prefix('cart')->group(function () {

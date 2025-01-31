@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Product;
+use App\Repositories\Interfaces\LocationRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\WishlistRepositoryInterface;
+use App\Repositories\LocationRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WishlistRepository;
@@ -17,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
     public $serviceBindings = [
         UserRepositoryInterface::class => UserRepository::class,
         ProductRepositoryInterface::class => ProductRepository::class,
-        WishlistRepositoryInterface::class => WishlistRepository::class
+        WishlistRepositoryInterface::class => WishlistRepository::class,
+        LocationRepositoryInterface::class => LocationRepository::class
 
     ];
 
