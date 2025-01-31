@@ -1,16 +1,53 @@
 "use client";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CornerDownLeft, Star, StarHalf, X } from "lucide-react";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
 import { RootState } from "@/shared/state/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import { removeFromCompare } from "@/shared/state/compareSlice";
+
+const productAttributes = [
+  { key: "battery_capacity", label: "Battery Capacity" },
+  { key: "battery_type", label: "Battery Type" },
+  { key: "camera_resolution", label: "Camera Resolution" },
+  { key: "chip", label: "Chip" },
+  { key: "dimensions", label: "Dimensions" },
+  { key: "operating_system", label: "Operating System" },
+  { key: "ram", label: "RAM" },
+  { key: "storage", label: "Storage" },
+];
 
 export default function Page() {
   const selectedProducts = useSelector(
     (state: RootState) => state.compare.selectedProducts
+  );
+  const dispatch = useDispatch();
+  const renderProductRow = useCallback(
+    (key: string, label: string) => (
+      <tr key={key}>
+        <th>{label}</th>
+        {selectedProducts.map((product) => (
+          <td key={`${product.id}-${key}`}>
+            <span>{product.attributes[key]}</span>
+          </td>
+        ))}
+      </tr>
+    ),
+    [selectedProducts]
+  );
+
+  const renderProductAttributes = useMemo(
+    () =>
+      productAttributes.map((attr) => renderProductRow(attr.key, attr.label)),
+    [renderProductRow]
+  );
+  const handleRemove = useCallback(
+    (productId: string) => {
+      dispatch(removeFromCompare(productId));
+    },
+    [dispatch]
   );
   return (
     <WrapperContent>
@@ -39,7 +76,7 @@ export default function Page() {
                 <tbody>
                   <tr>
                     <th>Product</th>
-                    {selectedProducts.map((product, index) => (
+                    {selectedProducts.map((product) => (
                       <td key={product.id}>
                         <a className="product" href={`/product/${product.id}`}>
                           <div className="product-image">
@@ -103,6 +140,7 @@ export default function Page() {
                       </td>
                     ))}
                   </tr>
+                  {renderProductAttributes}
                   <tr>
                     <th>Add to cart</th>
                     {selectedProducts.map((product) => (
@@ -121,7 +159,10 @@ export default function Page() {
                           title="Remove"
                           className="remove-icon"
                           href="#"
-                          // onClick={() => handleRemove(product.id)}
+                          onClick={(e) => {
+                            e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+                            handleRemove(product.id);
+                          }}
                         >
                           <X />
                         </a>
