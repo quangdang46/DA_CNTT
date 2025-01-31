@@ -3,17 +3,24 @@ import DistrictSelector from "@/shared/components/ui/Account/AddressForm/Distric
 import ProvinceSelector from "@/shared/components/ui/Account/AddressForm/ProvinceSelector";
 import WardSelector from "@/shared/components/ui/Account/AddressForm/WardSelector";
 import { Province, District, Ward } from "@/shared/types/LocationTypes";
+import { RootState } from "@/shared/state/store";
+import { useSelector } from "react-redux";
+import accountApiRequest from "@/shared/apiRequests/account";
 
 interface AddressFormProps {
   onConfirm: () => void;
 }
 
 const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [province, setProvince] = useState<Province>({} as Province);
   const [district, setDistrict] = useState<District>({} as District);
   const [ward, setWard] = useState<Ward>({} as Ward);
   const [address, setAddress] = useState<string>("");
+
+  const { data } = accountApiRequest.useGetAddresses(user.id);
+  console.log("data", data);
 
   const handleProvinceSelect = (selectedProvince: Province) => {
     setProvince({ ...selectedProvince });

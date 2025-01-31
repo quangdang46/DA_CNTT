@@ -115,13 +115,13 @@ class UserController extends Controller
                 ]);
             }
             $user = User::with('addresses.province', 'addresses.district', 'addresses.ward')->find($user->id);
+
             return response()->json([
                 'success' => true,
                 'status' => 'success',
                 'message' => 'User addresses',
                 'data' => [
                     'user' => $user,
-                    'addresses' => $user->addresses
                 ]
             ]);
         } catch (\Throwable $th) {

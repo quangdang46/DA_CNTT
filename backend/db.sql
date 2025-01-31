@@ -5,7 +5,7 @@ INSERT INTO categories (id, name, created_at, updated_at) VALUES
 (4, 'Wearable Devices', NOW(), NOW()),
 (5, 'Gaming Phones', NOW(), NOW());
 
-
+NSERT INTO `user_addresses` (`id`, `user_id`, `ward_code`, `district_code`, `province_code`, `address`, `is_default`, `created_at`, `updated_at`) VALUES (NULL, '1', '00001', '001', '01', 'aaaaaaaaa', '0', NULL, NULL);
 
 INSERT INTO products (name, description, price, status, category_id, created_at, updated_at,rating,slug,review_count) VALUES
 ('iPhone 14 Pro', 'High-end Apple smartphone with A16 Bionic chip', 1099.99, 'available', 1, NOW(), NOW(),4,'iphone-14-pro',12),

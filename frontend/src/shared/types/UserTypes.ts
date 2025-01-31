@@ -1,5 +1,25 @@
+import {
+  DistrictType,
+  ProvinceType,
+  WardType,
+} from "@/shared/types/LocationTypes";
 import { ResType } from "@/shared/types/resType";
 import { z } from "zod";
+
+const AddressType = z.object({
+  id: z.number(),
+  user_id: z.number(),
+  ward_code: z.string(),
+  district_code: z.string(),
+  province_code: z.string(),
+  address: z.string(),
+  is_default: z.number(),
+  created_at: z.string().nullable(),
+  updated_at: z.string().nullable(),
+  province: ProvinceType,
+  district: DistrictType,
+  ward: WardType,
+});
 
 export const UserType = z.object({
   id: z.number(),
@@ -8,7 +28,9 @@ export const UserType = z.object({
   phone: z.string(),
   role: z.string(),
   loyalty_points: z.number(),
+  addresses: z.array(AddressType),
 });
+
 
 export type UserResType = z.infer<typeof UserType>;
 export type AccountType = {
@@ -54,3 +76,5 @@ export const UpdateMeBody = z
   });
 
 export type UpdateMeBodyType = z.infer<typeof UpdateMeBody>;
+
+//
