@@ -42,4 +42,9 @@ class LocationService
     {
         return $this->locationRepository->delete($idAddress);
     }
+
+    public function setDefault($userId, $idAddress)
+    {
+        return $this->locationRepository->setDefault($userId, $idAddress);
+    }
 }

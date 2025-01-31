@@ -26593,6 +26593,7 @@ article .woocommerce-MyAccount-downloads .more-link {
   margin-right: 0.236em;
 }
 .woocommerce-MyAccount-content h2 {
+cursor:pointer;
   font-size: 2em;
   font-weight: 600;
 }

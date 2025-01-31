@@ -69,7 +69,7 @@ Route::group(
         Route::get('wards', [LocationController::class, 'getWards']);
         Route::post('addOrUpdate', [LocationController::class, 'addOrUpdate']);
         Route::delete('delete', [LocationController::class, 'delete']);
-
+        Route::put('set-default', [LocationController::class, 'setDefault']);
     }
 );
 

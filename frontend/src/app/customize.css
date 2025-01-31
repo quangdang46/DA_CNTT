@@ -418,6 +418,9 @@ div.remove:before {
   border-bottom: 1px solid #d0d5dd;
   padding-bottom: 15px;
 }
+.address-item{
+  margin-bottom: 15px;
+}
 
 .address-item-content {
   display: flex;

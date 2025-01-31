@@ -10,4 +10,5 @@ interface LocationRepositoryInterface
     public function update($request, $id);
     public function create($request, $userId);
     public function delete($idAddress);
+    public function setDefault($userId, $idAddress);
 }

@@ -58,4 +58,14 @@ class LocationRepository implements LocationRepositoryInterface
         $userAddress->delete();
         return $userAddress;
     }
+
+    public function setDefault($userId, $idAddress){
+        $userAddress = $this->userAddress->where('user_id', $userId)->get();
+        foreach ($userAddress as $address) {
+            $address->update(['is_default' => 0]);
+        }
+        $address = $this->userAddress->find($idAddress);
+        $address->update(['is_default' => 1]);
+        return $address;
+    }
 }

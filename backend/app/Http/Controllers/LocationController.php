@@ -132,4 +132,47 @@ class LocationController extends Controller
             'data' => $result
         ]);
     }
+
+
+    public function setDefault(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+        } catch (JWTException $e) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
+
+        $idAddress = $request->input('id');
+        if (!$idAddress) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'ID address is required',
+                'data' => null
+            ]);
+        }
+
+        // Tìm địa chỉ và cập nhật địa chỉ mặc định
+        $result = $this->locationService->setDefault($user->id, $idAddress);
+        if ($result === false) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'Failed to set default address',
+                'data' => null
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'status' => "success",
+            'message' => 'Cập nhật địa chỉ mặc định thành công',
+            'data' => $result
+        ]);
+    }
 }

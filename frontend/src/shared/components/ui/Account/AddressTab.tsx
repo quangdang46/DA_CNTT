@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { useMutation } from "@tanstack/react-query";
 import { ResType } from "@/shared/types/resType";
 import apiClient from "@/shared/config/apiClient";
+import { convertAddress } from "@/shared/utils/convertAddress";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -43,7 +44,25 @@ const useDeleteAddress = () => {
         if (!response.success) {
           return response;
         }
-        return response.data;
+        return response;
+      } catch (error) {
+        console.error("API error:", error);
+        throw error;
+      }
+    },
+  });
+};
+
+const useSetDefaultAddress = () => {
+  return useMutation<ResType<AddressBodyType>, Error, string>({
+    mutationFn: async (id: string) => {
+      try {
+        const response = await apiClient.put<
+          { id: string },
+          ResType<AddressBodyType>
+        >(`/locations/set-default`, { id });
+
+        return response;
       } catch (error) {
         console.error("API error:", error);
         throw error;
@@ -63,6 +82,7 @@ export default function AddressTab() {
   const initAddress = data?.data?.user.addresses;
 
   const { mutateAsync: deleteAddress } = useDeleteAddress();
+  const { mutateAsync: setDefaultAddress } = useSetDefaultAddress();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -110,12 +130,36 @@ export default function AddressTab() {
     }
   };
 
-  const handleSetDefaultAddress = (addressId: string) => {
-    // Logic đặt địa chỉ mặc định
-    console.log(`Setting default address to id ${addressId}`);
-    // Gọi API hoặc thực hiện hành động đặt địa chỉ mặc định ở đây
-    // Sau đó, cập nhật lại danh sách địa chỉ nếu cần
-    Swal.fire("Success!", "Your default address has been updated.", "success");
+  const handleSetDefaultAddress = async (addressId: string) => {
+    const result = await Swal.fire({
+      icon: "question",
+      title: "Bạn có chắc chắn?",
+      text: "Bạn có muốn đặt địa chỉ này làm mặc định không?",
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await setDefaultAddress(addressId);
+        await refetch(); // Refetch danh sách địa chỉ sau khi cập nhật
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Địa chỉ mặc định đã được cập nhật thành công!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setIsModalOpen(false);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Cập nhật địa chỉ mặc định thất bại. Vui lòng thử lại!",
+        });
+      }
+    }
   };
   return (
     <div
@@ -137,7 +181,11 @@ export default function AddressTab() {
             className="woocommerce-Address-title title align-items-end"
             onClick={openModal}
           >
-            <h2>Billing address</h2>
+            <h2>
+              {convertAddress(
+                initAddress?.find((address: Address) => address.is_default === 1)
+              )}
+            </h2>
           </header>
           <address>You have not set up this type of address yet.</address>
         </div>
