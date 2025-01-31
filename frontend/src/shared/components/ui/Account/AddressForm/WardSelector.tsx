@@ -5,11 +5,13 @@ import locationApiRequest from "@/shared/apiRequests/locationApi";
 interface WardSelectorProps {
   districtId: string;
   onSelect: (selectedWard: Ward) => void;
+  curWardId?: string;
 }
 
 const WardSelector: React.FC<WardSelectorProps> = ({
   districtId,
   onSelect,
+  curWardId,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -41,7 +43,9 @@ const WardSelector: React.FC<WardSelectorProps> = ({
         {filteredWards?.map((ward) => (
           <div
             key={ward.code}
-            className={`location-item `}
+            className={`location-item ${
+              ward.code === curWardId ? "active" : ""
+            }`}
             onClick={() => onSelect(ward)}
           >
             {ward.name}

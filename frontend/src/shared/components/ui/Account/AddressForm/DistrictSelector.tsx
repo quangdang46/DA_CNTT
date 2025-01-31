@@ -5,11 +5,13 @@ import locationApiRequest from "@/shared/apiRequests/locationApi";
 interface DistrictSelectorProps {
   provinceId: string;
   onSelect: (selectedDistrict: District) => void;
+  curDistrictId?: string;
 }
 
 const DistrictSelector: React.FC<DistrictSelectorProps> = ({
   provinceId,
   onSelect,
+  curDistrictId,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -41,7 +43,9 @@ const DistrictSelector: React.FC<DistrictSelectorProps> = ({
         {filteredDistricts?.map((district) => (
           <div
             key={district.code}
-            className="location-item"
+            className={`location-item ${
+              district.code === curDistrictId ? "active" : ""
+            }`}
             onClick={() => onSelect(district)}
           >
             {district.name}

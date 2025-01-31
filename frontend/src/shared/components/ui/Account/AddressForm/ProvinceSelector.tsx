@@ -2,13 +2,16 @@ import { useState } from "react";
 import locationApiRequest from "@/shared/apiRequests/locationApi";
 import { Province } from "@/shared/types/LocationTypes";
 
-
-
 interface ProvinceSelectorProps {
   onSelect: (selectedProvince: Province) => void;
+  curProvinceId?: string;
 }
 
-const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({ onSelect }) => {
+const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
+  onSelect,
+  curProvinceId,
+}) => {
+  console.log("curProvinceId", curProvinceId);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data } = locationApiRequest.useProvinces();
@@ -32,7 +35,9 @@ const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({ onSelect }) => {
         {filteredProvinces?.map((province) => (
           <div
             key={province.code}
-            className={`location-item`}
+            className={`location-item ${
+              province.code === curProvinceId ? "active" : ""
+            }`}
             onClick={() => onSelect(province)}
           >
             {province.name}
