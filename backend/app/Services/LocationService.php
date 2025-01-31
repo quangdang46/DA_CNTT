@@ -29,5 +29,12 @@ class LocationService
         return $this->locationRepository->getWards($districtId);
     }
 
-
+    public function addOrUpdate($request, $userId)
+    {
+        $id = $request->id;
+        if ($id) {
+            return $this->locationRepository->update($request, $id);
+        }
+        return $this->locationRepository->create($request, $userId);
+    }
 }

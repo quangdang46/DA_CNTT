@@ -67,6 +67,7 @@ Route::group(
         Route::get('provinces', [LocationController::class, 'provinces']);
         Route::get('districts', [LocationController::class, 'getDistricts']);
         Route::get('wards', [LocationController::class, 'getWards']);
+        Route::post('addOrUpdate', [LocationController::class, 'addOrUpdate']);
 
     }
 );

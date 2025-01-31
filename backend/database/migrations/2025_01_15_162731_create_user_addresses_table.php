@@ -25,7 +25,6 @@ return new class extends Migration
             $table->foreign('ward_code')->references('code')->on('wards')->onDelete('cascade');
             $table->foreign('district_code')->references('code')->on('districts')->onDelete('cascade');
             $table->foreign('province_code')->references('code')->on('provinces')->onDelete('cascade');
-            $table->unique(['user_id', 'is_default'], 'unique_default_address');
         });
     }
 

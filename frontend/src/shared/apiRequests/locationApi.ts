@@ -82,6 +82,8 @@ const locationApiRequest = {
       },
     });
   },
+
+
 };
 
 export default locationApiRequest;

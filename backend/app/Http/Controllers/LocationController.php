@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LocationController extends Controller
 {
@@ -56,7 +58,8 @@ class LocationController extends Controller
         }
     }
 
-    public function getWards(Request $request){
+    public function getWards(Request $request)
+    {
         try {
             $wards = $this->locationService->getWards($request->districtId);
             return response()->json([
@@ -64,6 +67,39 @@ class LocationController extends Controller
                 'status' => "success",
                 'message' => 'Lấy danh sách xã phường theo quận huyện thành công',
                 'data' => $wards
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'status' => "error",
+                'message' => $th->getMessage(),
+                'data' => []
+            ]);
+        }
+    }
+
+
+    public function addOrUpdate(Request $request)
+    {
+        try {
+            try {
+                $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            } catch (JWTException $e) {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'User not authenticated',
+                    'data' => null
+                ]);
+            }
+            $userId = $user->id;
+            $result = $this->locationService->addOrUpdate($request, $userId);
+            
+            return response()->json([
+                'success' => true,
+                'status' => "success",
+                'message' => 'Thao tác thành công',
+                'data' => $result
             ]);
         } catch (\Throwable $th) {
             return response()->json([

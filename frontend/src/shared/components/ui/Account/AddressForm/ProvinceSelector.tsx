@@ -11,7 +11,6 @@ const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({
   onSelect,
   curProvinceId,
 }) => {
-  console.log("curProvinceId", curProvinceId);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const { data } = locationApiRequest.useProvinces();

@@ -38,8 +38,8 @@ export const WardType = z.object({
 });
 
 export const AddressType = z.object({
-  id: z.number(),
-  user_id: z.number(),
+  id: z.string(),
+  user_id: z.string(),
   ward_code: z.string(),
   district_code: z.string(),
   province_code: z.string(),
@@ -59,3 +59,11 @@ export type Ward = z.infer<typeof WardType>;
 export type ProvinceListResType = ResType<Province[]>;
 export type DistrictListResType = ResType<District[]>;
 export type WardListResType = ResType<Ward[]>;
+
+export type AddressBodyType = {
+  id?: string;
+  address: string;
+  province_code: string;
+  district_code: string;
+  ward_code: string;
+}

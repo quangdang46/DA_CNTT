@@ -1,183 +1,3 @@
-// import { useState } from "react";
-// import DistrictSelector from "@/shared/components/ui/Account/AddressForm/DistrictSelector";
-// import ProvinceSelector from "@/shared/components/ui/Account/AddressForm/ProvinceSelector";
-// import WardSelector from "@/shared/components/ui/Account/AddressForm/WardSelector";
-// import { Province, District, Ward } from "@/shared/types/LocationTypes";
-
-// interface AddressFormProps {
-//   onConfirm: () => void;
-//   curProvince?: Province;
-//   curDistrict?: District;
-//   curWard?: Ward;
-//   curAddress?: string;
-// }
-
-// const AddressForm: React.FC<AddressFormProps> = ({
-//   onConfirm,
-//   curProvince,
-//   curDistrict,
-//   curWard,
-//   curAddress,
-// }) => {
-//   const [activeTab, setActiveTab] = useState<number>(0);
-//   const [province, setProvince] = useState<Province>(
-//     curProvince || ({} as Province)
-//   );
-//   const [district, setDistrict] = useState<District>(
-//     curDistrict || ({} as District)
-//   );
-//   const [ward, setWard] = useState<Ward>(curWard || ({} as Ward));
-//   const [address, setAddress] = useState<string>(curAddress || "");
-
-//   const handleProvinceSelect = (selectedProvince: Province) => {
-//     setProvince({ ...selectedProvince });
-//     setActiveTab(1); // Chuyển sang tab quận
-//   };
-
-//   const handleDistrictSelect = (selectedDistrict: District) => {
-//     setDistrict({ ...selectedDistrict });
-//     setActiveTab(2); // Chuyển sang tab phường
-//   };
-
-//   const handleWardSelect = (selectedWard: Ward) => {
-//     setWard({ ...selectedWard });
-//     setActiveTab(3); // Chuyển sang tab địa chỉ chi tiết
-//   };
-
-//   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setAddress(e.target.value);
-//   };
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-//   const handleConfirmAddress = () => {
-//     console.log({ province, district, ward, address });
-//     onConfirm(); // Đóng modal sau khi xác nhận
-//   };
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-//   //////////////////////////////////////////////////
-
-//   const handleChange = (tabIndex: number) => {
-//     setActiveTab(tabIndex); // Nhảy đến tab tương ứng
-//   };
-
-//   return (
-//     <div className="address-form">
-//       <div className="top-modal-address">
-//         <b>Thêm điểm giao hàng</b>
-//         <p className="full-location">
-//           <span>Điểm giao hàng:</span>
-//           <span className="full-address">
-//             {[province.name, district.name, ward.name, address]
-//               .filter(Boolean) // Loại bỏ các giá trị falsy (null, undefined, "")
-//               .join(", ")}
-//           </span>
-//         </p>
-//       </div>
-
-//       <div className="tabs">
-//         <button
-//           className={`tab ${activeTab === 0 ? "active" : ""}`}
-//           onClick={() => setActiveTab(0)}
-//         >
-//           Tỉnh/TP
-//         </button>
-//         <button
-//           className={`tab ${activeTab === 1 ? "active" : ""}`}
-//           onClick={() => setActiveTab(1)}
-//           disabled={province.code === undefined}
-//         >
-//           Quận/Huyện
-//         </button>
-//         <button
-//           className={`tab ${activeTab === 2 ? "active" : ""}`}
-//           onClick={() => setActiveTab(2)}
-//           disabled={district.code === undefined}
-//         >
-//           Phường/Xã
-//         </button>
-//         <button
-//           className={`tab ${activeTab === 3 ? "active" : ""}`}
-//           onClick={() => setActiveTab(3)}
-//           disabled={ward.code === undefined}
-//         >
-//           Địa chỉ
-//         </button>
-//       </div>
-
-//       <div className="tab-content">
-//         {activeTab === 0 && (
-//           <ProvinceSelector onSelect={handleProvinceSelect} />
-//         )}
-//         {activeTab === 1 && (
-//           <DistrictSelector
-//             provinceId={province.code}
-//             onSelect={handleDistrictSelect}
-//           />
-//         )}
-//         {activeTab === 2 && (
-//           <WardSelector
-//             districtId={district.code}
-//             onSelect={handleWardSelect}
-//           />
-//         )}
-//         {activeTab === 3 && (
-//           <>
-//             <input
-//               type="text"
-//               placeholder="Nhập địa chỉ chi tiết"
-//               value={address}
-//               onChange={handleAddressChange}
-//             />
-//             <button onClick={handleConfirmAddress}>Xác nhận địa chỉ</button>
-//           </>
-//         )}
-//       </div>
-
-//       <div className="selected-results">
-//         <h4>Kết quả đang chọn:</h4>
-//         <p>
-//           <strong>Tỉnh/TP:</strong> {province.name || "Chưa chọn"}
-//           {province && (
-//             <button className="change-button" onClick={() => handleChange(0)}>
-//               Thay đổi
-//             </button>
-//           )}
-//         </p>
-//         <p>
-//           <strong>Quận/Huyện:</strong> {district.name || "Chưa chọn"}
-//           {district && (
-//             <button className="change-button" onClick={() => handleChange(1)}>
-//               Thay đổi
-//             </button>
-//           )}
-//         </p>
-//         <p>
-//           <strong>Phường/Xã:</strong> {ward.name || "Chưa chọn"}
-//           {ward && (
-//             <button className="change-button" onClick={() => handleChange(2)}>
-//               Thay đổi
-//             </button>
-//           )}
-//         </p>
-//         <p>
-//           <strong>Địa chỉ chi tiết:</strong> {address || "Chưa nhập"}
-//           {address && (
-//             <button className="change-button" onClick={() => handleChange(3)}>
-//               Thay đổi
-//             </button>
-//           )}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AddressForm;
-
 import { useState, useCallback } from "react";
 import DistrictSelector from "@/shared/components/ui/Account/AddressForm/DistrictSelector";
 import ProvinceSelector from "@/shared/components/ui/Account/AddressForm/ProvinceSelector";
@@ -187,15 +7,47 @@ import {
   District,
   Ward,
   Address,
+  AddressBodyType,
 } from "@/shared/types/LocationTypes";
+import Swal from "sweetalert2";
+import { useMutation } from "@tanstack/react-query";
+import { ResType } from "@/shared/types/resType";
+import apiClient from "@/shared/config/apiClient";
+import { useRouter } from "next/navigation";
 
+const useUpdateOrAddAddress = () => {
+  return useMutation<ResType<AddressBodyType>, Error, AddressBodyType>({
+    mutationFn: async (bodyData) => {
+      try {
+        const response = await apiClient.post<
+          AddressBodyType,
+          ResType<AddressBodyType>
+        >("/locations/addOrUpdate", bodyData);
+        if (!response.success) {
+          throw new Error(
+            response.message || "Failed to update or add address"
+          );
+        }
+        return response;
+      } catch (error) {
+        console.error("API error:", error);
+        throw error;
+      }
+    },
+  });
+};
 interface AddressFormProps {
   onConfirm: () => void;
   curAddress?: Address;
+  onSave: () => void; // Thêm onSave callback để lưu địa chỉ sau khi chỉnh sửa
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ onConfirm, curAddress }) => {
-  console.log("curAddress", curAddress);
+const AddressForm: React.FC<AddressFormProps> = ({
+  onConfirm,
+  curAddress,
+  onSave,
+}) => {
+  const router=useRouter();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [province, setProvince] = useState<Province>(
     curAddress?.province || ({} as Province)
@@ -205,7 +57,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm, curAddress }) => {
   );
   const [ward, setWard] = useState<Ward>(curAddress?.ward || ({} as Ward));
   const [address, setAddress] = useState<string>(curAddress?.address || "");
-
+  const { mutate, isPending } = useUpdateOrAddAddress();
   const handleProvinceSelect = useCallback((selectedProvince: Province) => {
     setProvince(selectedProvince);
     setActiveTab(1); // Chuyển sang tab quận
@@ -228,13 +80,58 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm, curAddress }) => {
     []
   );
 
-  const handleConfirmAddress = () => {
+  const handleConfirmAddress = async () => {
     if (!province.name || !district.name || !ward.name || !address) {
-      alert("Vui lòng điền đầy đủ thông tin địa chỉ.");
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: "Vui lòng điền đầy đủ thông tin địa chỉ.",
+      });
       return;
     }
-    console.log({ province, district, ward, address });
-    onConfirm(); // Đóng modal sau khi xác nhận
+
+    const bodyData = {
+      id: curAddress?.id || "",
+      address: address,
+      ward_code: ward.code,
+      district_code: district.code,
+      province_code: province.code,
+    };
+
+    try {
+      // Gọi API bằng mutate
+      await mutate(bodyData, {
+        onSuccess: (response) => {
+          console.log("response", response);
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: "Địa chỉ đã được lưu thành công!",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            router.refresh();
+            onSave(); // Gọi onSave để lưu địa chỉ
+            onConfirm(); // Đóng modal sau khi xác nhận
+          });
+        },
+        onError: (error) => {
+          console.error("Lỗi khi lưu địa chỉ:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: "Đã xảy ra lỗi khi lưu địa chỉ. Vui lòng thử lại!",
+          });
+        },
+      });
+    } catch (error) {
+      console.error("Lỗi khi lưu địa chỉ:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi",
+        text: "Đã xảy ra lỗi khi lưu địa chỉ. Vui lòng thử lại!",
+      });
+    }
   };
 
   const handleChangeTab = (tabIndex: number) => {
@@ -274,7 +171,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm, curAddress }) => {
 
       <div className="tab-content">
         {activeTab === 0 && (
-          <ProvinceSelector onSelect={handleProvinceSelect} curProvinceId={province.code} />
+          <ProvinceSelector
+            onSelect={handleProvinceSelect}
+            curProvinceId={province.code}
+          />
         )}
         {activeTab === 1 && (
           <DistrictSelector
@@ -298,7 +198,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm, curAddress }) => {
               value={address}
               onChange={handleAddressChange}
             />
-            <button onClick={handleConfirmAddress}>Xác nhận địa chỉ</button>
+            <button onClick={() => handleConfirmAddress()}>
+              Xác nhận địa chỉ
+            </button>
           </>
         )}
       </div>

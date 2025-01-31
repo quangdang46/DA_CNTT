@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/shared/state/store";
 import AddressShowForm from "@/shared/components/ui/Account/AddressForm/AddressShowForm";
 import { Address } from "@/shared/types/LocationTypes";
+import Swal from "sweetalert2";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -42,14 +43,54 @@ export default function AddressTab() {
   const closeModal = () => {
     setIsModalOpen(false);
     setShowForm(true); // Đóng form khi đóng modal
-    setSelectedAddress(null); // Reset địa chỉ được chọn
+    setSelectedAddress({} as Address); // Reset địa chỉ được chọn
   };
 
   const handleEditAddress = (address: Address) => {
     setSelectedAddress(address); // Lưu địa chỉ được chọn
-    setShowForm(true); // Hiển thị form chỉnh sửa
+    setShowForm(false); // Hiển thị form chỉnh sửa
   };
 
+  const handleDeleteAddress = async (addressId: string) => {
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Bạn có chắc chắn?",
+      text: "Bạn có muốn xóa địa chỉ này không?",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        //  await accountApiRequest.deleteAddress(addressId);
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Địa chỉ đã được xóa thành công!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        //  const response = await accountApiRequest.getAddresses(user?.id);
+        //  console.log("Address deleted successfully:", response.data);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Xóa địa chỉ thất bại. Vui lòng thử lại!",
+        });
+      }
+    }
+  };
+
+  const handleSetDefaultAddress = (addressId: string) => {
+    // Logic đặt địa chỉ mặc định
+    console.log(`Setting default address to id ${addressId}`);
+    // Gọi API hoặc thực hiện hành động đặt địa chỉ mặc định ở đây
+    // Sau đó, cập nhật lại danh sách địa chỉ nếu cần
+    Swal.fire("Success!", "Your default address has been updated.", "success");
+  };
   return (
     <div
       className="woocommerce-MyAccount-content"
@@ -80,10 +121,21 @@ export default function AddressTab() {
           <AddressShowForm
             initAddress={initAddress}
             onEditAddress={handleEditAddress}
+            onDeleteAddress={handleDeleteAddress}
+            onSetDefaultAddress={handleSetDefaultAddress}
             onSetShowForm={setShowForm}
           />
         ) : (
-          <AddressForm onConfirm={closeModal} curAddress={selectedAddress} />
+          <AddressForm
+            onConfirm={closeModal}
+            curAddress={selectedAddress}
+            onSave={() => {
+              // Logic lưu địa chỉ mới hoặc đã chỉnh sửa
+              console.log("Saving address...");
+              // Gọi API hoặc thực hiện hành động lưu địa chỉ ở đây
+              setShowForm(true); // Quay lại danh sách địa chỉ sau khi lưu
+            }}
+          />
         )}
       </Modal>
     </div>
