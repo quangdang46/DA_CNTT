@@ -10,23 +10,23 @@ interface AddressFormProps {
 
 const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [province, setProvince] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [ward, setWard] = useState<string>("");
+  const [province, setProvince] = useState<Province>({} as Province);
+  const [district, setDistrict] = useState<District>({} as District);
+  const [ward, setWard] = useState<Ward>({} as Ward);
   const [address, setAddress] = useState<string>("");
 
   const handleProvinceSelect = (selectedProvince: Province) => {
-    setProvince(selectedProvince.name);
+    setProvince({ ...selectedProvince });
     setActiveTab(1); // Chuyển sang tab quận
   };
 
   const handleDistrictSelect = (selectedDistrict: District) => {
-    setDistrict(selectedDistrict.name);
+    setDistrict({ ...selectedDistrict });
     setActiveTab(2); // Chuyển sang tab phường
   };
 
   const handleWardSelect = (selectedWard: Ward) => {
-    setWard(selectedWard.name);
+    setWard({ ...selectedWard });
     setActiveTab(3); // Chuyển sang tab địa chỉ chi tiết
   };
 
@@ -81,12 +81,15 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
         )}
         {activeTab === 1 && (
           <DistrictSelector
-            provinceId={province}
+            provinceId={province.code}
             onSelect={handleDistrictSelect}
           />
         )}
         {activeTab === 2 && (
-          <WardSelector districtId={district} onSelect={handleWardSelect} />
+          <WardSelector
+            districtId={district.code}
+            onSelect={handleWardSelect}
+          />
         )}
         {activeTab === 3 && (
           <div>
@@ -104,7 +107,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
       <div className="selected-results">
         <h3>Kết quả đang chọn:</h3>
         <p>
-          <strong>Tỉnh/TP:</strong> {province || "Chưa chọn"}
+          <strong>Tỉnh/TP:</strong> {province.name || "Chưa chọn"}
           {province && (
             <button className="change-button" onClick={() => handleChange(0)}>
               Thay đổi
@@ -112,7 +115,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
           )}
         </p>
         <p>
-          <strong>Quận/Huyện:</strong> {district || "Chưa chọn"}
+          <strong>Quận/Huyện:</strong> {district.name || "Chưa chọn"}
           {district && (
             <button className="change-button" onClick={() => handleChange(1)}>
               Thay đổi
@@ -120,7 +123,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
           )}
         </p>
         <p>
-          <strong>Phường/Xã:</strong> {ward || "Chưa chọn"}
+          <strong>Phường/Xã:</strong> {ward.name || "Chưa chọn"}
           {ward && (
             <button className="change-button" onClick={() => handleChange(2)}>
               Thay đổi

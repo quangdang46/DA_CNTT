@@ -1,15 +1,18 @@
 import apiClient from "@/shared/config/apiClient";
-import { Province, District, Ward } from "@/shared/types/LocationTypes";
-import { ResType } from "@/shared/types/resType";
+import {
+  DistrictListResType,
+  ProvinceListResType,
+  WardListResType,
+} from "@/shared/types/LocationTypes";
 import { useQuery } from "@tanstack/react-query";
 
 const locationApiRequest = {
   useProvinces: () => {
-    return useQuery<ResType<Province[]>, Error>({
+    return useQuery<ProvinceListResType, Error>({
       queryKey: ["provinces"],
       queryFn: async () => {
         try {
-          const response = await apiClient.get<ResType<Province[]>>(
+          const response = await apiClient.get<ProvinceListResType>(
             "/locations/provinces"
           );
 
@@ -27,7 +30,7 @@ const locationApiRequest = {
   },
 
   useDistricts: (provinceId: string) => {
-    return useQuery<ResType<District[]>, Error>({
+    return useQuery<DistrictListResType, Error>({
       queryKey: ["districts", provinceId],
       queryFn: async () => {
         if (!provinceId) {
@@ -35,7 +38,7 @@ const locationApiRequest = {
         }
 
         try {
-          const response = await apiClient.get<ResType<District[]>>(
+          const response = await apiClient.get<DistrictListResType>(
             `/locations/districts`,
             { params: { provinceId } }
           );
@@ -54,7 +57,7 @@ const locationApiRequest = {
   },
 
   useWards: (districtId: string) => {
-    return useQuery<ResType<Ward[]>, Error>({
+    return useQuery<WardListResType, Error>({
       queryKey: ["wards", districtId],
       queryFn: async () => {
         if (!districtId) {
@@ -62,7 +65,7 @@ const locationApiRequest = {
         }
 
         try {
-          const response = await apiClient.get<ResType<Ward[]>>(
+          const response = await apiClient.get<WardListResType>(
             `/locations/wards`,
             { params: { districtId } }
           );

@@ -28,6 +28,7 @@ Route::group([
 ], function ($router) {
     Route::get('/me', [UserController::class, 'me']);
     Route::put('/updateMe', [UserController::class, 'updateMe']);
+    Route::get('/{id}/addresses', [UserController::class, 'getUserAddresses']);
 });
 
 

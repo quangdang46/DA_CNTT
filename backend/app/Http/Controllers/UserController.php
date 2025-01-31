@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateMeRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -97,5 +98,39 @@ class UserController extends Controller
                 'user' => $updatedUser
             ]
         ]);
+    }
+
+    public function getUserAddresses()
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+
+            // Nếu người dùng không xác thực được
+            if (!$user) {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'User not authenticated',
+                    'data' => null
+                ]);
+            }
+            $user = User::with('addresses.province', 'addresses.district', 'addresses.ward')->find($user->id);
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'User addresses',
+                'data' => [
+                    'user' => $user,
+                    'addresses' => $user->addresses
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
     }
 }

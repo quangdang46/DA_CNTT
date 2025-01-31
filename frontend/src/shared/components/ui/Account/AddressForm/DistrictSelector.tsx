@@ -36,7 +36,7 @@ const DistrictSelector: React.FC<DistrictSelectorProps> = ({
       <div className="grid-container">
         {filteredDistricts?.map((district) => (
           <div
-            key={district.id}
+            key={district.code}
             className="grid-item"
             onClick={() => onSelect(district)}
           >

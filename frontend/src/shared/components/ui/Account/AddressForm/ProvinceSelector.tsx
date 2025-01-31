@@ -1,10 +1,8 @@
 import { useState } from "react";
 import locationApiRequest from "@/shared/apiRequests/locationApi";
+import { Province } from "@/shared/types/LocationTypes";
 
-interface Province {
-  id: string;
-  name: string;
-}
+
 
 interface ProvinceSelectorProps {
   onSelect: (selectedProvince: Province) => void;
@@ -30,7 +28,7 @@ const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({ onSelect }) => {
       <div className="grid-container">
         {filteredProvinces?.map((province) => (
           <div
-            key={province.id}
+            key={province.code}
             className="grid-item"
             onClick={() => onSelect(province)}
           >

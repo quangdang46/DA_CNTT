@@ -36,7 +36,7 @@ const WardSelector: React.FC<WardSelectorProps> = ({
       <div className="grid-container">
         {filteredWards?.map((ward) => (
           <div
-            key={ward.id}
+            key={ward.code}
             className="grid-item"
             onClick={() => onSelect(ward)}
           >

@@ -1,17 +1,37 @@
+import { ResType } from "@/shared/types/resType";
+
 // Định nghĩa các kiểu dữ liệu cho Tỉnh, Quận, Phường
 export interface Province {
-  id: string; // ID tỉnh
-  name: string; // Tên tỉnh
+  code: string;
+  name: string;
+  name_en: string;
+  full_name: string;
+  full_name_en: string;
+  code_name: string;
+  administrative_unit_id: number;
 }
 
 export interface District {
-  id: string; // ID quận
-  name: string; // Tên quận
-  provinceId: string; // ID tỉnh liên quan
+  code: string;
+  name: string;
+  name_en: string;
+  full_name: string;
+  full_name_en: string;
+  code_name: string;
+  province_code: string;
+  administrative_unit_id: number;
 }
 
 export interface Ward {
-  id: string; // ID phường
-  name: string; // Tên phường
-  districtId: string; // ID quận liên quan
+  code: string;
+  name: string;
+  name_en: string;
+  full_name: string;
+  full_name_en: string;
+  code_name: string;
+  district_code: string;
+  administrative_unit_id: number;
 }
+export type ProvinceListResType = ResType<Province[]>;
+export type DistrictListResType = ResType<District[]>;
+export type WardListResType = ResType<Ward[]>;

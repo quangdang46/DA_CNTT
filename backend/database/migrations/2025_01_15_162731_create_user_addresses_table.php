@@ -14,12 +14,18 @@ return new class extends Migration
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('address_line');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip_code');
+            // address ward district province
+            $table->string('ward_code');
+            $table->string('district_code');
+            $table->string('province_code');
+            $table->string('address');
             $table->boolean('is_default')->default(false);
             $table->timestamps();
+
+            $table->foreign('ward_code')->references('code')->on('wards')->onDelete('cascade');
+            $table->foreign('district_code')->references('code')->on('districts')->onDelete('cascade');
+            $table->foreign('province_code')->references('code')->on('provinces')->onDelete('cascade');
+            $table->unique(['user_id', 'is_default'], 'unique_default_address');
         });
     }
 
