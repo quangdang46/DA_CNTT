@@ -44,9 +44,6 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
           }
         }
 
-
-
-        
         // Kiểm tra quyền truy cập dành cho guest
         if (guestPages.includes(pathName) && decoded.role !== "guest") {
           return NextResponse.redirect(new URL("/403", req.url)); // Không đủ quyền truy cập
@@ -61,7 +58,12 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
       } catch (err) {
         console.error("Invalid token:", err);
         // Nếu token không hợp lệ -> Chuyển hướng đến trang đăng nhập
-        return NextResponse.redirect(new URL("/authentication", req.url));
+        console.error("Invalid token:", err);
+        const response = NextResponse.redirect(
+          new URL("/authentication", req.url)
+        );
+        response.cookies.set("auth_token", "", { maxAge: 0 }); // Xóa cookie
+        return response;
       }
     }
 
