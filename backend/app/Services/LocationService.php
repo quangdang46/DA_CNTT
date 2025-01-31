@@ -37,4 +37,9 @@ class LocationService
         }
         return $this->locationRepository->create($request, $userId);
     }
+
+    public function delete($idAddress)
+    {
+        return $this->locationRepository->delete($idAddress);
+    }
 }

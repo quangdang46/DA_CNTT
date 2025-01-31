@@ -7,8 +7,11 @@ import accountApiRequest from "@/shared/apiRequests/account";
 import { useSelector } from "react-redux";
 import { RootState } from "@/shared/state/store";
 import AddressShowForm from "@/shared/components/ui/Account/AddressForm/AddressShowForm";
-import { Address } from "@/shared/types/LocationTypes";
+import { Address, AddressBodyType } from "@/shared/types/LocationTypes";
 import Swal from "sweetalert2";
+import { useMutation } from "@tanstack/react-query";
+import { ResType } from "@/shared/types/resType";
+import apiClient from "@/shared/config/apiClient";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,6 +32,25 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   );
 };
 
+const useDeleteAddress = () => {
+  return useMutation<ResType<AddressBodyType>, Error, string>({
+    mutationFn: async (id: string) => {
+      try {
+        const response = await apiClient.delete<ResType<AddressBodyType>>(
+          `/locations/delete`,
+          { data: { id } }
+        );
+        if (!response.success) {
+          return response;
+        }
+        return response.data;
+      } catch (error) {
+        console.error("API error:", error);
+        throw error;
+      }
+    },
+  });
+};
 export default function AddressTab() {
   const { activeTab } = useTabs();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,8 +59,10 @@ export default function AddressTab() {
     {} as Address
   ); // Lưu địa chỉ được chọn
   const { user } = useSelector((state: RootState) => state.auth);
-  const { data } = accountApiRequest.useGetAddresses(user?.id);
+  const { data, refetch } = accountApiRequest.useGetAddresses(user?.id);
   const initAddress = data?.data?.user.addresses;
+
+  const { mutateAsync: deleteAddress } = useDeleteAddress();
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
@@ -63,7 +87,8 @@ export default function AddressTab() {
 
     if (result.isConfirmed) {
       try {
-        //  await accountApiRequest.deleteAddress(addressId);
+        await deleteAddress(addressId);
+        await refetch(); // Refetch danh sách địa chỉ sau khi xóa
         Swal.fire({
           icon: "success",
           title: "Thành công",
@@ -71,6 +96,7 @@ export default function AddressTab() {
           showConfirmButton: false,
           timer: 1500,
         });
+        setIsModalOpen(false);
         //  const response = await accountApiRequest.getAddresses(user?.id);
         //  console.log("Address deleted successfully:", response.data);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -129,9 +155,10 @@ export default function AddressTab() {
           <AddressForm
             onConfirm={closeModal}
             curAddress={selectedAddress}
-            onSave={() => {
+            onSave={async () => {
               // Logic lưu địa chỉ mới hoặc đã chỉnh sửa
               console.log("Saving address...");
+              await refetch();
               // Gọi API hoặc thực hiện hành động lưu địa chỉ ở đây
               setShowForm(true); // Quay lại danh sách địa chỉ sau khi lưu
             }}

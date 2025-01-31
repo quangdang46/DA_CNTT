@@ -51,4 +51,11 @@ class LocationRepository implements LocationRepositoryInterface
         $userAddress = $this->userAddress->create($data);
         return $userAddress;
     }
+
+    public function delete($idAddress)
+    {
+        $userAddress = $this->userAddress->find($idAddress);
+        $userAddress->delete();
+        return $userAddress;
+    }
 }

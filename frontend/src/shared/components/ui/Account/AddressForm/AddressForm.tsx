@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import { useMutation } from "@tanstack/react-query";
 import { ResType } from "@/shared/types/resType";
 import apiClient from "@/shared/config/apiClient";
-import { useRouter } from "next/navigation";
 
 const useUpdateOrAddAddress = () => {
   return useMutation<ResType<AddressBodyType>, Error, AddressBodyType>({
@@ -47,7 +46,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
   curAddress,
   onSave,
 }) => {
-  const router=useRouter();
   const [activeTab, setActiveTab] = useState<number>(0);
   const [province, setProvince] = useState<Province>(
     curAddress?.province || ({} as Province)
@@ -110,7 +108,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
-            router.refresh();
             onSave(); // Gọi onSave để lưu địa chỉ
             onConfirm(); // Đóng modal sau khi xác nhận
           });

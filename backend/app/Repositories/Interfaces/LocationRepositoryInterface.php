@@ -9,4 +9,5 @@ interface LocationRepositoryInterface
     public function getWards($districtId);
     public function update($request, $id);
     public function create($request, $userId);
+    public function delete($idAddress);
 }

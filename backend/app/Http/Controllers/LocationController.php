@@ -94,7 +94,7 @@ class LocationController extends Controller
             }
             $userId = $user->id;
             $result = $this->locationService->addOrUpdate($request, $userId);
-            
+
             return response()->json([
                 'success' => true,
                 'status' => "success",
@@ -109,5 +109,27 @@ class LocationController extends Controller
                 'data' => []
             ]);
         }
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+        } catch (JWTException $e) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
+        $idAddress = $request->input('id');
+        $result = $this->locationService->delete($idAddress);
+        return response()->json([
+            'success' => true,
+            'status' => "success",
+            'message' => 'Xóa điểm điểm thành công',
+            'data' => $result
+        ]);
     }
 }
