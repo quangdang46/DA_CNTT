@@ -1,5 +1,6 @@
 import { Product } from "@/shared/types/ProductTypes";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 interface Props {
   product: Product;
@@ -13,10 +14,9 @@ export default function ProductGrid({ product }: Props) {
           Add to Wishlist
         </a>
       </div>
-      {/* .yith-wcwl-add-to-wishlist */}
-      <a
+      <Link
         className="woocommerce-LoopProduct-link woocommerce-loop-product__link"
-        href="single-product-fullwidth.html"
+        href={`/details/${product.slug}`}
       >
         <Image
           width={224}
@@ -32,7 +32,7 @@ export default function ProductGrid({ product }: Props) {
           </span>
         </span>
         <h2 className="woocommerce-loop-product__title">{product.name}</h2>
-      </a>
+      </Link>
       {/* .woocommerce-LoopProduct-link */}
       <div className="hover-area">
         <a className="button" href="cart.html">

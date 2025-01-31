@@ -16,7 +16,7 @@ export default function ProductExtended({ product }: Props) {
       </div>
       <a
         className="woocommerce-LoopProduct-link woocommerce-loop-product__link"
-        href="single-product-fullwidth.html"
+        href={`/details/${product.slug}`}
       >
         <Image
           width={224}

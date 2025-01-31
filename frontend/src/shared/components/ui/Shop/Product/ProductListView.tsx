@@ -30,7 +30,7 @@ export default function ProductListView({ product }: Props) {
             </div>
             <a
               className="woocommerce-LoopProduct-link woocommerce-loop-product__link"
-              href="single-product-fullwidth.html"
+              href={`/details/${product.slug}`}
             >
               <h2 className="woocommerce-loop-product__title">
                 {product.name}

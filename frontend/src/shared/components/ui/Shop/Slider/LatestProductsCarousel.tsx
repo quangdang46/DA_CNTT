@@ -19,7 +19,7 @@ function ProductCard({ product }: ProductCardProps) {
     <div className="landscape-product-widget product">
       <Link
         className="woocommerce-LoopProduct-link"
-        href={`/product/${product.slug}`}
+        href={`/details/${product.slug}`}
       >
         <div className="media">
           <Image
