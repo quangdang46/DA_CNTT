@@ -2,6 +2,7 @@ import { useTabs } from "@/shared/contexts/TabsContext";
 import React, { useState } from "react";
 import styles from "@/shared/style/AddressTab.module.css";
 import AddressForm from "@/shared/components/ui/Account/AddressForm/AddressForm";
+import { X } from "lucide-react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,7 +15,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     <div className={styles.modal_overlay}>
       <div className={styles.modal_content}>
         <button className={styles.modal_close} onClick={onClose}>
-          &times;
+          <X />
         </button>
         {children}
       </div>

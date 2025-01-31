@@ -26,18 +26,22 @@ const WardSelector: React.FC<WardSelectorProps> = ({
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Tìm phường..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div className="grid-container">
+    <div className="location-selector">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Tìm phường..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      <div className="location-list">
         {filteredWards?.map((ward) => (
           <div
             key={ward.code}
-            className="grid-item"
+            className={`location-item `}
             onClick={() => onSelect(ward)}
           >
             {ward.name}

@@ -270,7 +270,6 @@ ins {
   background: transparent;
 }
 
-
 div.remove {
   cursor: pointer;
   display: block;
@@ -296,4 +295,117 @@ div.remove:before {
   text-align: center;
 }
 
+.top-modal-address {
+  display: block;
+  text-align: left;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d0d5dd;
+}
+.top-modal-address b {
+  display: block;
+  font-size: 18px;
+  margin: 10px 0;
+  border-bottom: 1px solid #d0d5dd;
+  padding-bottom: 10px;
+}
 
+.full-location {
+  color: #98a2b3;
+  max-width: 100%;
+  font-size: 14px;
+}
+
+.full-address {
+  color: #344054;
+}
+
+.address-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.address-form .tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.address-form .tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.address-form .tab.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.address-form .tab:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ProvinceSelector.css */
+.location-selector {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.search-container {
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.location-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Hiển thị 3 cột */
+  gap: 8px;
+  max-height: 300px; /* Giới hạn chiều cao tối đa */
+  overflow-y: auto; /* Thêm thanh cuộn dọc khi cần */
+  padding-right: 8px; /* Để tránh che thanh cuộn */
+}
+
+.location-item {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.location-item:hover {
+  background-color: #f9f9f9;
+}
+
+.location-item.active {
+  background-color: #e9e9e9;
+}
+.selected-results {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd;
+}

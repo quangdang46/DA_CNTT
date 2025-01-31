@@ -18,18 +18,21 @@ const ProvinceSelector: React.FC<ProvinceSelectorProps> = ({ onSelect }) => {
   );
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Tìm tỉnh..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div className="grid-container">
+    <div className="location-selector">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Tìm tỉnh..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      <div className="location-list">
         {filteredProvinces?.map((province) => (
           <div
             key={province.code}
-            className="grid-item"
+            className={`location-item`}
             onClick={() => onSelect(province)}
           >
             {province.name}

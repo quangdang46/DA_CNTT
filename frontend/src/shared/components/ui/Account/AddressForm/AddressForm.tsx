@@ -40,11 +40,18 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
-
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
   const handleConfirmAddress = () => {
     console.log({ province, district, ward, address });
     onConfirm(); // Đóng modal sau khi xác nhận
   };
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
 
   const handleChange = (tabIndex: number) => {
     setActiveTab(tabIndex); // Nhảy đến tab tương ứng
@@ -52,6 +59,18 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
 
   return (
     <div className="address-form">
+      <div className="top-modal-address">
+        <b>Thêm điểm giao hàng</b>
+        <p className="full-location">
+          <span>Điểm giao hàng:</span>
+          <span className="full-address">
+            {[province.name, district.name, ward.name, address]
+              .filter(Boolean) // Loại bỏ các giá trị falsy (null, undefined, "")
+              .join(", ")}
+          </span>
+        </p>
+      </div>
+
       <div className="tabs">
         <button
           className={`tab ${activeTab === 0 ? "active" : ""}`}
@@ -62,21 +81,21 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
         <button
           className={`tab ${activeTab === 1 ? "active" : ""}`}
           onClick={() => setActiveTab(1)}
-          disabled={!province}
+          disabled={province.code === undefined}
         >
           Quận/Huyện
         </button>
         <button
           className={`tab ${activeTab === 2 ? "active" : ""}`}
           onClick={() => setActiveTab(2)}
-          disabled={!district}
+          disabled={district.code === undefined}
         >
           Phường/Xã
         </button>
         <button
           className={`tab ${activeTab === 3 ? "active" : ""}`}
           onClick={() => setActiveTab(3)}
-          disabled={!ward}
+          disabled={ward.code === undefined}
         >
           Địa chỉ
         </button>
@@ -99,7 +118,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
           />
         )}
         {activeTab === 3 && (
-          <div>
+          <>
             <input
               type="text"
               placeholder="Nhập địa chỉ chi tiết"
@@ -107,12 +126,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ onConfirm }) => {
               onChange={handleAddressChange}
             />
             <button onClick={handleConfirmAddress}>Xác nhận địa chỉ</button>
-          </div>
+          </>
         )}
       </div>
 
       <div className="selected-results">
-        <h3>Kết quả đang chọn:</h3>
+        <h4>Kết quả đang chọn:</h4>
         <p>
           <strong>Tỉnh/TP:</strong> {province.name || "Chưa chọn"}
           {province && (

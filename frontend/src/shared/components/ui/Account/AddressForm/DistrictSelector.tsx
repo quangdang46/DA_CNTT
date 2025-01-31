@@ -26,18 +26,22 @@ const DistrictSelector: React.FC<DistrictSelectorProps> = ({
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Tìm quận..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div className="grid-container">
+    <div className="location-selector">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Tìm quận..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      <div className="location-list">
         {filteredDistricts?.map((district) => (
           <div
             key={district.code}
-            className="grid-item"
+            className="location-item"
             onClick={() => onSelect(district)}
           >
             {district.name}
