@@ -3,12 +3,15 @@ interface DotCarousel {
   onClick: (index: number) => void;
   scrollSnaps: number[];
   selectedIndex: number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function DotCarousel({
   onClick,
   scrollSnaps,
   selectedIndex,
+  style,
 }: DotCarousel) {
   return (
     // <div className={`embla__dots`}>
@@ -23,7 +26,7 @@ export default function DotCarousel({
     //   ))}
     // </div>
 
-    <ul className="embla__dots">
+    <ul className="embla__dots" style={style}>
       {scrollSnaps.map((_, index) => (
         <li
           key={index}

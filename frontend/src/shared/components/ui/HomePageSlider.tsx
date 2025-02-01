@@ -5,15 +5,17 @@ import Image from "next/image";
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import productApiRequest from "@/shared/apiRequests/product";
+import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
+import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 
 export default function HomePageSlider() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
- 
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
 
   const { data, isLoading, error } = productApiRequest.useProducts("new");
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,7 +26,7 @@ export default function HomePageSlider() {
   }
 
   const products = data?.data || [];
-  const slides = products.map((product) => ({
+  const slides = products.slice(0, 3).map((product) => ({
     backgroundImage: "/static/images/slider/background.jpg",
     image: product.images[0].image_url,
     caption: {
@@ -39,9 +41,8 @@ export default function HomePageSlider() {
 
   return (
     <div className="home-v1-slider home-slider" role="toolbar">
-      <div className="slick-list draggable" ref={emblaRef}>
+      <div ref={emblaRef}>
         <div
-          className="slick-track"
           style={{
             display: "flex",
             transition: "transform 300ms ease",
@@ -94,6 +95,14 @@ export default function HomePageSlider() {
           </>
         </div>
       </div>
+      <DotCarousel
+        style={{
+          position: "absolute",
+        }}
+        scrollSnaps={scrollSnaps}
+        selectedIndex={selectedIndex}
+        onClick={onDotButtonClick}
+      ></DotCarousel>
     </div>
   );
 }
