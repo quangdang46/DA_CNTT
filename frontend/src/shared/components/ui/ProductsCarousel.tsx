@@ -8,13 +8,14 @@ import Autoplay from "embla-carousel-autoplay";
 import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { ProductListResType } from "@/shared/types/ProductTypes";
 import useCompare from "@/shared/hooks/useCompare";
+import { useCart } from "@/shared/hooks/useCart";
 interface ProductsCarouselProps {
   products: ProductListResType;
 }
 
 export default function ProductsCarousel({ products }: ProductsCarouselProps) {
   const { handleAddToCompare, CompareModal } = useCompare();
-
+  const { handleAddToCart } = useCart();
   //   duplicate products
   const itemsPerPage = 10; // 5 phần tử/hàng x 2 hàng
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -69,6 +70,7 @@ export default function ProductsCarousel({ products }: ProductsCarouselProps) {
                                   product={product}
                                   key={index}
                                   onAddToCompare={handleAddToCompare}
+                                  onAddToCart={handleAddToCart}
                                 ></ProductCard>
                               ))}
                           </div>

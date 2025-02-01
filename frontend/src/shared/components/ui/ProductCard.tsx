@@ -8,8 +8,13 @@ import { useWishlist } from "@/shared/hooks/useWishlist";
 interface ProductProps {
   product: Product;
   onAddToCompare: (product: Product) => void;
+  onAddToCart: (product: Product) => void;
 }
-export default function ProductCard({ product, onAddToCompare }: ProductProps) {
+export default function ProductCard({
+  product,
+  onAddToCompare,
+  onAddToCart,
+}: ProductProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   return (
     <div className="product">
@@ -42,13 +47,12 @@ export default function ProductCard({ product, onAddToCompare }: ProductProps) {
         <h2 className="woocommerce-loop-product__title">{product.name}</h2>
       </Link>
       <div className="hover-area">
-        <Link
-          href="cart.html"
+        <button
           className="button add_to_cart_button"
-          rel="nofollow"
+          onClick={() => onAddToCart(product)}
         >
           Add to Cart
-        </Link>
+        </button>
         <button
           className="add-to-compare-link"
           onClick={() => onAddToCompare(product)}

@@ -28342,6 +28342,7 @@ article .products .product .more-link,
   margin-bottom: 0.8em;
   padding: 0.74em 1.41575em;
   transition: all 0.25s ease 0s;
+  width:100%;
 }
 .products .product .button:hover,
 .products .product article .more-link:hover,

@@ -30,10 +30,7 @@ ul {
   display: flex;
   gap: 5px;
 }
-.no-scroll {
-  overflow: hidden;
-  height: 100%;
-}
+
 
 .embla__dots {
   padding: 0.625em 0 0.938em 0;
@@ -541,7 +538,7 @@ div.remove:before {
   --tw-content: "";
   content: var(--tw-content);
 }
-.product-suggest h5{
+.product-suggest h5 {
   font-size: 25px;
 }
 @media (min-width: 768px) {
@@ -552,7 +549,7 @@ div.remove:before {
   }
 }
 
-.product-suggest-item{
+.product-suggest-item {
   margin-bottom: 10px;
 }
 
@@ -560,7 +557,6 @@ div.remove:before {
   display: flex;
   align-items: center;
   gap: 10px;
-
 }
 
 .product-suggest-link img {

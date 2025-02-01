@@ -1,11 +1,28 @@
 "use client";
-import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/shared/hooks/useCart";
+import useClickOutside from "@/shared/hooks/useClickOutside";
+import { ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Cart() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { cartItems, totalPrice, handleRemoveFromCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
+  const containerRef = useRef<HTMLUListElement>(null); // Tham chiếu đến vùng gợi ý
+
+  useClickOutside(containerRef, () => {
+    setShowDropdown(false);
+  });
+
+  useEffect(() => {
+    // Khi URL thay đổi, đóng gợi ý và xóa danh sách gợi ý
+    setShowDropdown(false);
+  }, [pathname, searchParams]); // Trigger when pathname or searchParams change
+
   useEffect(() => {
     setShowDropdown(false);
   }, []);
@@ -16,87 +33,100 @@ export default function Cart() {
       <li className="animate-dropdown dropdown">
         <div
           className="cart-contents"
+          style={{ cursor: "pointer" }}
           title="View your shopping cart"
           onClick={toggleDropdown}
         >
           <ShoppingCart strokeWidth={1} />
-          <span className="count">2</span>
+          <span className="count">{cartItems.length}</span>
           <span className="amount">
-            <span className="price-label">Your Cart</span> $136.99
+            <span className="price-label">Your Cart</span> $
+            {totalPrice.toFixed(2)}
           </span>
         </div>
+        {/* Dropdown chứa danh sách sản phẩm */}
         <ul
+          ref={containerRef}
           className="dropdown-menu dropdown-menu-mini-cart"
           style={{ display: showDropdown ? "block" : "none" }}
         >
           <li>
             <div className="widget woocommerce widget_shopping_cart">
               <div className="widget_shopping_cart_content">
-                <ul className="woocommerce-mini-cart cart_list product_list_widget">
-                  <li className="woocommerce-mini-cart-item mini_cart_item">
-                    <a
-                      href="#"
-                      className="remove"
-                      aria-label="Remove this item"
-                      data-product_id="65"
-                      data-product_sku=""
-                    >
-                      ×
-                    </a>
-                    <Link href="/product/xone-wireless-controller">
-                      <Image
-                        src="https://images.unsplash.com/photo-1720048171209-71f6fc3d7ea4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt=""
-                        width={100}
-                        height={100}
-                      />
-                      XONE Wireless Controller
-                    </Link>
-                    <span className="quantity">
-                      1 ×{" "}
-                      <span className="woocommerce-Price-amount amount">
-                        $64.99
-                      </span>
-                    </span>
-                  </li>
-                  <li className="woocommerce-mini-cart-item mini_cart_item">
-                    <a
-                      href="#"
-                      className="remove"
-                      aria-label="Remove this item"
-                      data-product_id="27"
-                      data-product_sku=""
-                    >
-                      ×
-                    </a>
-                    <Link href="/product/gear-virtual-reality">
-                      <Image
-                        src="https://images.unsplash.com/photo-1720048171209-71f6fc3d7ea4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt=""
-                        width={100}
-                        height={100}
-                      />
-                      Gear Virtual Reality 3D with Bluetooth Glasses
-                    </Link>
-                    <span className="quantity">
-                      1 ×{" "}
-                      <span className="woocommerce-Price-amount amount">
-                        $72.00
-                      </span>
-                    </span>
-                  </li>
-                </ul>
-                <p className="woocommerce-mini-cart__total total">
-                  <strong>Subtotal:</strong> $136.99
-                </p>
-                <p className="woocommerce-mini-cart__buttons buttons">
-                  <Link href="/cart" className="button wc-forward">
-                    View cart
-                  </Link>
-                  <Link href="/checkout" className="button checkout wc-forward">
-                    Checkout
-                  </Link>
-                </p>
+                {/* Hiển thị danh sách sản phẩm */}
+                {cartItems.length > 0 ? (
+                  <>
+                    <ul className="woocommerce-mini-cart cart_list product_list_widget">
+                      {cartItems.map((item) => (
+                        <li
+                          key={item.id}
+                          className="woocommerce-mini-cart-item mini_cart_item"
+                        >
+                          <button
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            className="remove"
+                            aria-label="Remove this item"
+                            onClick={() => handleRemoveFromCart(item.id)}
+                          >
+                            <X />
+                          </button>
+
+                          <Link href={`/details/${item.slug}`}>
+                            <Image
+                              src={
+                                item.images[0]?.image_url ||
+                                "https://placehold.co/100x100"
+                              } // Lấy URL hình ảnh đầu tiên
+                              alt={item.name}
+                              width={100}
+                              height={100}
+                            />
+                            {item.name}
+                          </Link>
+
+                          {/* Số lượng và giá tiền */}
+                          <span className="quantity">
+                            {item.quantity} ×{" "}
+                            <span className="woocommerce-Price-amount amount">
+                              $
+                              {typeof item.price === "string"
+                                ? isNaN(parseFloat(item.price))
+                                  ? "0.00"
+                                  : parseFloat(item.price).toFixed(2).toString()
+                                : item.price.toFixed(2).toString()}
+                            </span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Tổng tiền */}
+                    <p className="woocommerce-mini-cart__total total">
+                      <strong>Subtotal:</strong> ${totalPrice.toFixed(2)}
+                    </p>
+
+                    {/* Nút View Cart và Checkout */}
+                    <p className="woocommerce-mini-cart__buttons buttons">
+                      <Link href="/cart" className="button wc-forward">
+                        View cart
+                      </Link>
+                      <Link
+                        href="/checkout"
+                        className="button checkout wc-forward"
+                      >
+                        Checkout
+                      </Link>
+                    </p>
+                  </>
+                ) : (
+                  // Hiển thị khi giỏ hàng trống
+                  <p className="woocommerce-mini-cart__empty-message">
+                    No products in the cart.
+                  </p>
+                )}
               </div>
             </div>
           </li>

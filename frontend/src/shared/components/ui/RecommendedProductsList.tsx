@@ -10,9 +10,11 @@ import { useParams } from "next/navigation";
 import productApiRequest from "@/shared/apiRequests/product";
 import { ProductListResType } from "@/shared/types/ProductTypes";
 import useCompare from "@/shared/hooks/useCompare";
+import { useCart } from "@/shared/hooks/useCart";
 
 export default function RecommendedProductsList() {
   const { slug } = useParams(); // Lấy slug từ URL
+  const { handleAddToCart }=useCart();
   const { handleAddToCompare, CompareModal } = useCompare();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, slidesToScroll: 3 },
@@ -43,6 +45,7 @@ export default function RecommendedProductsList() {
                   <ProductCard
                     product={product}
                     onAddToCompare={handleAddToCompare}
+                    onAddToCart={handleAddToCart}
                   />
                 </div>
               ))}

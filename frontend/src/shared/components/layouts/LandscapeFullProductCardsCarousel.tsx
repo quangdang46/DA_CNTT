@@ -7,8 +7,10 @@ import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import productApiRequest from "@/shared/apiRequests/product";
 import useCompare from "@/shared/hooks/useCompare";
+import { useCart } from "@/shared/hooks/useCart";
 export default function LandscapeFullProductCardsCarousel() {
   const { handleAddToCompare, CompareModal } = useCompare();
+  const { handleAddToCart }=useCart();
   const [emblaRef, emblaApi] = useEmblaCarousel({});
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
@@ -73,6 +75,7 @@ export default function LandscapeFullProductCardsCarousel() {
                                     version={2}
                                     key={index}
                                     onAddToCompare={handleAddToCompare}
+                                    onAddToCart={handleAddToCart}
                                   ></ProductCardLandscape>
                                 ))}
                               </div>

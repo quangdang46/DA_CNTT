@@ -9,9 +9,11 @@ export default function ProductCardLandscape({
   product,
   version = 1,
   onAddToCompare = () => {},
+  onAddToCart = () => {},
 }: {
   product: Product;
   version?: number;
+  onAddToCart?: (product: Product) => void;
   onAddToCompare?: (product: Product) => void;
 }) {
   /*
@@ -120,9 +122,12 @@ export default function ProductCardLandscape({
           </Link>
 
           <div className="hover-area">
-            <Link href="/cart" className="button add_to_cart_button">
+            <button
+              className="button add_to_cart_button"
+              onClick={() => onAddToCart(product)}
+            >
               Add to cart
-            </Link>
+            </button>
             <button
               className="add-to-compare-link"
               onClick={() => onAddToCompare(product)}

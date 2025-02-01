@@ -27,7 +27,8 @@ class CartController extends Controller
                 $userId = $user->id;
                 $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
+                // $guestId = $request->cookie('guest_id') ?? Str::uuid();
+                $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
                 $userId = null; // Khách chưa đăng nhập
             }
 
@@ -61,7 +62,8 @@ class CartController extends Controller
                 $userId = $user->id;
                 $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
+                // $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
+                $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
                 $userId = null; // Khách chưa đăng nhập
             }
             // Lấy thông tin sản phẩm
@@ -97,7 +99,8 @@ class CartController extends Controller
                 $userId = $user->id;
                 $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                // $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                $guestId = $request->header('X-Guest-ID');
                 $userId = null; // Khách chưa đăng nhập
             }
 
@@ -133,7 +136,8 @@ class CartController extends Controller
                 $userId = $user->id;
                 $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                // $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                $guestId = $request->header('X-Guest-ID');
                 $userId = null; // Khách chưa đăng nhập
             }
 

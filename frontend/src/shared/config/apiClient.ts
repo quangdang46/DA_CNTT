@@ -16,8 +16,12 @@ class ApiClient {
     this.instance.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem("auth_token");
+        const guestId = localStorage.getItem("guest_id");
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
+        } else if (guestId) {
+          // Nếu không có token nhưng có guest_id, thêm vào header
+          config.headers["X-Guest-ID"] = guestId;
         }
         return config;
       },

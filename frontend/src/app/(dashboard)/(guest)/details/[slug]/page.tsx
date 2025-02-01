@@ -6,6 +6,7 @@ import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { GalleryProvider } from "@/shared/contexts/GalleryContext";
+import { useCart } from "@/shared/hooks/useCart";
 import useCompare from "@/shared/hooks/useCompare";
 import { Product } from "@/shared/types/ProductTypes";
 import { Star, StarHalf } from "lucide-react";
@@ -15,7 +16,7 @@ import React from "react";
 
 export default function Page() {
   const { handleAddToCompare, CompareModal } = useCompare();
-
+  const { handleAddToCart } = useCart();
   const { slug } = useParams(); // Lấy slug từ URL
 
   const { data, isLoading, error } = productApiRequest.useProductDetail(
@@ -164,12 +165,9 @@ export default function Page() {
                           id="quantity-input"
                         />
                       </div>
-                      {/* .quantity */}
                       <button
                         className="single_add_to_cart_button button alt"
-                        value="185"
-                        name="add-to-cart"
-                        type="submit"
+                        onClick={() => handleAddToCart(product)}
                       >
                         Add to cart
                       </button>
