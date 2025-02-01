@@ -27,7 +27,6 @@ class CartRepository implements CartRepositoryInterface
         } elseif ($guestId) {
             $query->where('guest_id', $guestId);
         }
-
         return $query->first();
     }
 

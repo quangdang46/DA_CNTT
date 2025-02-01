@@ -11,6 +11,7 @@ class Cart extends Model
 
     protected $fillable = [
         'user_id',
+        'guest_id',
     ];
 
     // Quan hệ: Cart thuộc về User

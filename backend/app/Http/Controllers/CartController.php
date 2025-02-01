@@ -64,14 +64,12 @@ class CartController extends Controller
                 $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
                 $userId = null; // Khách chưa đăng nhập
             }
-
             // Lấy thông tin sản phẩm
             $productId = $request->input('product_id');
             $quantity = $request->input('quantity', 1);
 
             // Thêm sản phẩm vào giỏ hàng
             $cart = $this->cartService->addItemToCart($userId, $guestId, $productId, $quantity);
-
             // Trả về response kèm cookie guest_id nếu cần
             return response()->json([
                 "success" => true,

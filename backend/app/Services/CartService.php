@@ -17,7 +17,6 @@ class CartService
     public function getCart($userId = null, $guestId = null)
     {
         $cart = $this->cartRepository->getCart($userId, $guestId);
-
         // Nếu không tìm thấy giỏ hàng, tạo mới
         if (!$cart) {
             $cart = $this->cartRepository->createCart($userId, $guestId);
@@ -31,7 +30,10 @@ class CartService
     {
         // Lấy hoặc tạo giỏ hàng
         $cart = $this->getCart($userId, $guestId);
-
+        if (!$cart) {
+            $cart = $this->cartRepository->createCart($userId, $guestId);
+            return ['id' => $cart->id,'user'=>$userId,'guest'=>$guestId];
+        }
         // Thêm sản phẩm vào giỏ hàng
         return $this->cartRepository->addItem($cart->id, $productId, $quantity);
     }
