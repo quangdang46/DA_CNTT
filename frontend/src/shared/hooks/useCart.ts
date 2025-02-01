@@ -1,104 +1,139 @@
-import {
-  addToCart,
-  clearCart,
-  removeFromCart,
-  selectTotalPrice,
-  updateQuantity,
-} from "@/shared/state/cartSlice";
-import { AppDispatch, RootState } from "@/shared/state/store";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2"; // Import SweetAlert2
-
-// Hook để sử dụng dispatch
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-
-// Hook để sử dụng selector
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+import { addToCart, clearCart, removeFromCart } from "@/shared/state/cartSlice"; // Import Redux actions
+import apiClient from "@/shared/config/apiClient";
+import {
+  AddToCartRequest,
+  AddToCartResponse,
+  ClearCartResponse,
+  GetCartResponse,
+  RemoveFromCartRequest,
+  RemoveFromCartResponse,
+} from "@/shared/types/CartTypes";
+import { Product } from "@/shared/types/ProductTypes";
 
 // Custom hook cho giỏ hàng
 export const useCart = () => {
-  const dispatch = useAppDispatch();
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const totalPrice = useAppSelector(selectTotalPrice); // Lấy tổng tiền
+  const dispatch = useDispatch();
 
-  // Hàm thêm sản phẩm vào giỏ hàng
-  const handleAddToCart = (product: any) => {
-    dispatch(addToCart(product));
-    Swal.fire({
-      icon: "success",
-      title: "Thêm vào giỏ hàng thành công!",
-      text: `${product.name} đã được thêm vào giỏ hàng.`,
-      timer: 2000, // Tự động đóng sau 2 giây
-      showConfirmButton: false,
-    });
-  };
+  // Sử dụng React Query để lấy dữ liệu giỏ hàng từ backend
+  const {
+    data: cartData,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["cart"], // Key của query
+    queryFn: async (): Promise<GetCartResponse> => {
+      const response = await apiClient.get<GetCartResponse>("/cart");
+      return response;
+    },
+  });
 
-  // Hàm xóa sản phẩm khỏi giỏ hàng
-  const handleRemoveFromCart = (id: string) => {
-    Swal.fire({
-      icon: "warning",
-      title: "Bạn có chắc chắn muốn xóa sản phẩm này?",
-      text: "Hành động này không thể hoàn tác!",
-      showCancelButton: true,
-      confirmButtonText: "Xóa",
-      cancelButtonText: "Hủy",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(removeFromCart(id));
-        Swal.fire({
-          icon: "success",
-          title: "Xóa sản phẩm thành công!",
-          text: "Sản phẩm đã được xóa khỏi giỏ hàng.",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      }
-    });
-  };
+  const handleAddToCart = useMutation<
+    AddToCartResponse,
+    Error,
+    AddToCartRequest
+  >({
+    mutationFn: async (product: Product) => {
+      const response = await apiClient.post<
+        AddToCartRequest,
+        AddToCartResponse
+      >("/cart/add", {
+        product_id: product.id,
+        quantity: 1,
+      });
+      return response;
+    },
+    onSuccess: (data) => {
+      dispatch(addToCart(data.data));
+      refetch();
+      Swal.fire({
+        icon: "success",
+        title: "Thêm vào giỏ hàng thành công!",
+        text: `${data.data.name} đã được thêm vào giỏ hàng.`,
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi khi thêm sản phẩm!",
+        text: error?.response?.data?.message || "Đã xảy ra lỗi.",
+      });
+    },
+  });
 
-  // Hàm cập nhật số lượng sản phẩm
-  const handleUpdateQuantity = (id: string, quantity: number) => {
-    dispatch(updateQuantity({ id, quantity }));
-    Swal.fire({
-      icon: "info",
-      title: "Cập nhật số lượng thành công!",
-      text: `Số lượng sản phẩm đã được cập nhật.`,
-      timer: 2000,
-      showConfirmButton: false,
-    });
-  };
+  const handleRemoveFromCart = useMutation<
+    RemoveFromCartResponse,
+    Error,
+    string
+  >({
+    mutationFn: async (productId: string) => {
+      const response = await apiClient.post<
+        RemoveFromCartRequest,
+        RemoveFromCartResponse
+      >("/cart/remove", {
+        product_id: productId,
+      });
+      return response;
+    },
+    onSuccess: (_, productId) => {
+      // Dispatch action Redux để cập nhật state
+      dispatch(removeFromCart(productId));
+      refetch(); // Refetch dữ liệu giỏ hàng
+      Swal.fire({
+        icon: "success",
+        title: "Xóa sản phẩm thành công!",
+        text: "Sản phẩm đã được xóa khỏi giỏ hàng.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi khi xóa sản phẩm!",
+        text: error?.response?.data?.message || "Đã xảy ra lỗi.",
+      });
+    },
+  });
 
-  // Hàm xóa toàn bộ giỏ hàng
-  const handleClearCart = () => {
-    Swal.fire({
-      icon: "warning",
-      title: "Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?",
-      text: "Hành động này không thể hoàn tác!",
-      showCancelButton: true,
-      confirmButtonText: "Xóa tất cả",
-      cancelButtonText: "Hủy",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(clearCart());
-        Swal.fire({
-          icon: "success",
-          title: "Xóa toàn bộ giỏ hàng thành công!",
-          text: "Giỏ hàng của bạn đã được làm sạch.",
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      }
-    });
-  };
+  const handleClearCart = useMutation<ClearCartResponse, Error>({
+    mutationFn: async () => {
+      const response = await apiClient.post<null, ClearCartResponse>(
+        "/cart/clear"
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      // Dispatch action Redux để cập nhật state
+      dispatch(clearCart());
+      refetch(); // Refetch dữ liệu giỏ hàng
+      Swal.fire({
+        icon: "success",
+        title: "Xóa toàn bộ giỏ hàng thành công!",
+        text: "Giỏ hàng của bạn đã được làm sạch.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi khi xóa toàn bộ giỏ hàng!",
+        text: error?.response?.data?.message || "Đã xảy ra lỗi.",
+      });
+    },
+  });
 
   return {
-    cartItems,
-    totalPrice,
-    handleAddToCart,
-    handleRemoveFromCart,
-    handleUpdateQuantity,
-    handleClearCart,
+    cartItems: cartData?.items || [], // Danh sách sản phẩm trong giỏ hàng
+    totalPrice: cartData?.total || 0, // Tổng tiền
+    isLoading, // Trạng thái loading
+    handleAddToCart: handleAddToCart.mutate, // Hàm thêm sản phẩm
+    handleRemoveFromCart: handleRemoveFromCart.mutate, // Hàm xóa sản phẩm
+    handleClearCart: handleClearCart.mutate, // Hàm xóa toàn bộ giỏ hàng
   };
 };
