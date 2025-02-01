@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProductController;
@@ -84,15 +85,23 @@ Route::group(
     }
 );
 
+Route::group(
+    [
+        'middleware' => 'api',
+        'prefix' => 'cart'
+    ],
+    function () {
+        Route::get('/', [CartController::class, 'getCart']);
+        Route::post('add', [CartController::class, 'addItem']);
+        // Route::post('update', [CartController::class, 'update']);
+        Route::post('remove', [CartController::class, 'removeItem']);
+        Route::post('clear', [CartController::class, 'clearCart']);
+    }
+);
+
 
 /*
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index']); // Xem giỏ hàng
-    Route::post('add', [CartController::class, 'add']); // Thêm sản phẩm vào giỏ hàng
-    Route::post('remove', [CartController::class, 'remove']); // Xóa sản phẩm khỏi giỏ hàng
-    Route::post('update', [CartController::class, 'update']); // Cập nhật số lượng sản phẩm trong giỏ
-    Route::post('clear', [CartController::class, 'clear']); // Xóa tất cả sản phẩm trong giỏ hàng
-});
+
 
 Route::prefix('orders')->group(function () {
     Route::post('create', [OrderController::class, 'create']); // Tạo đơn hàng mới

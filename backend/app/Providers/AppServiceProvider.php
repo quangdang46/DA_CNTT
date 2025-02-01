@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Repositories\CartRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\CartRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\LocationRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
@@ -23,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
         ProductRepositoryInterface::class => ProductRepository::class,
         WishlistRepositoryInterface::class => WishlistRepository::class,
         LocationRepositoryInterface::class => LocationRepository::class,
-        CategoryRepositoryInterface::class => CategoryRepository::class
+        CategoryRepositoryInterface::class => CategoryRepository::class,
+        CartRepositoryInterface::class => CartRepository::class
 
     ];
 
