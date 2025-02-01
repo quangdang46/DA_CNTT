@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();  // Tạo khóa chính id
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');  // Liên kết đến bảng orders
-            $table->string('payment_method');  // Phương thức thanh toán (QR, tiền mặt)
-            $table->decimal('amount', 10, 2);  // Số tiền thanh toán
-            $table->enum('payment_status', ['success', 'failed', 'pending']);  // Trạng thái thanh toán
-            $table->string('transaction_id')->nullable();  // Mã giao dịch (nếu có)
-            $table->timestamps();  // Thời gian tạo và cập nhật thanh toán
+            $table->id();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->enum('payment_method', ['QR', 'cash']); // Đồng bộ kiểu dữ liệu với orders
+            $table->decimal('amount', 10, 2);
+            $table->enum('payment_status', ['success', 'failed', 'pending'])->default('pending');
+            $table->string('transaction_id')->nullable();
+            $table->timestamp('paid_at')->nullable(); // Ghi nhận thời gian thanh toán
+            $table->timestamps();
         });
     }
 

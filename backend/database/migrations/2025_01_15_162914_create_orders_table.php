@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Cho phép null cho khách vãng lai
+            $table->string('session_id')->nullable(); // Lưu session của khách chưa đăng nhập
             $table->string('customer_name')->nullable();
-            $table->decimal('total_price', 8, 2);
-            $table->enum('status', ['processing', 'delivered', 'canceled']);
+            $table->decimal('total_price', 10, 2);
+            $table->enum('status', ['processing', 'delivered', 'canceled'])->default('processing');
             $table->enum('payment_method', ['QR', 'cash']);
             $table->timestamps();
+            $table->timestamp('order_time')->default(now()); // Mặc định là thời gian hiện tại
             $table->timestamp('delivery_time')->nullable();
-            $table->timestamp('order_time')->nullable();
             $table->timestamp('cancel_time')->nullable();
         });
     }

@@ -18,7 +18,6 @@ class ProductAttributeFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::inRandomOrder()->first()->id, // Lấy product_id ngẫu nhiên từ bảng products
             'operating_system' => $this->faker->randomElement(['Android', 'iOS', 'Windows']),
             'chip' => $this->faker->randomElement(['Snapdragon 888', 'Exynos 2100', 'A15 Bionic']),
             'ram' => $this->faker->randomElement(['4GB', '6GB', '8GB', '12GB']),

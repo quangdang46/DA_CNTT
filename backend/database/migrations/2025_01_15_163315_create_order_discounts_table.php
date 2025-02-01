@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('order_discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders');
-            $table->foreignId('discount_id')->constrained('discounts');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('discount_id')->constrained('discounts')->onDelete('cascade');
+            $table->decimal('discount_amount', 8, 2); // Lưu số tiền giảm giá
+            $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage'); // Xác định giảm giá theo tỷ lệ hay theo số tiền cố định
             $table->timestamps();
         });
     }

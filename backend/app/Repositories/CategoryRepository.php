@@ -3,10 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Category;
-use App\Models\District;
-use App\Models\Province;
-use App\Models\UserAddress;
-use App\Models\Ward;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface

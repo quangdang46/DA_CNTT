@@ -184,7 +184,7 @@ export default function AddressTab() {
             <h2>
               {convertAddress(
                 initAddress?.find((address: Address) => address.is_default === 1)
-              )}
+              ) || "Set Default Address"}
             </h2>
           </header>
           <address>You have not set up this type of address yet.</address>

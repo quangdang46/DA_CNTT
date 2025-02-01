@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('product_discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('discount_id')->constrained('discounts');
-            $table->decimal('amount', 10, 2);
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Đảm bảo nếu sản phẩm bị xóa thì giảm giá cũng xóa
+            $table->foreignId('discount_id')->constrained('discounts')->onDelete('cascade'); // Đảm bảo nếu mã giảm giá bị xóa thì quan hệ cũng xóa
+            $table->decimal('amount', 10, 2); // Số tiền giảm (hoặc tỷ lệ giảm)
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['active', 'expired', 'inactive']);
+            $table->enum('status', ['active', 'expired', 'inactive'])->default('inactive');
             $table->timestamps();
         });
     }

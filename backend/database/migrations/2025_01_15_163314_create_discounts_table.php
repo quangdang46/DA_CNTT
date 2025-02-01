@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();  // Tạo khóa chính id
-            $table->string('code');  // Mã giảm giá
+            $table->string('code')->unique();  // Mã giảm giá, đảm bảo không trùng lặp
             $table->decimal('amount', 8, 2);  // Số tiền hoặc tỷ lệ giảm giá
+            $table->boolean('is_percentage')->default(false);  // Xác định giảm giá là theo số tiền hay tỷ lệ phần trăm
             $table->date('start_date');  // Ngày bắt đầu giảm giá
             $table->date('end_date');  // Ngày kết thúc giảm giá
-            $table->enum('status', ['active', 'expired', 'inactive']);  // Trạng thái giảm giá
+            $table->enum('status', ['active', 'expired', 'inactive'])->default('inactive');  // Trạng thái giảm giá
             $table->timestamps();  // Thêm thời gian tạo và cập nhật
         });
     }

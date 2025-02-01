@@ -20,7 +20,7 @@ class Cart extends Model
     }
 
     // Quan hệ: Cart có nhiều CartItem
-    public function cartItems()
+    public function items()
     {
         return $this->hasMany(CartItem::class);
     }
