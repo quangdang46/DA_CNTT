@@ -81,6 +81,7 @@ export default function ProductDisplay({
               </div>
             </div>
             <DotCarousel
+              style={{ marginTop: "10px" }}
               scrollSnaps={scrollSnaps}
               selectedIndex={selectedIndex}
               onClick={onDotButtonClick}

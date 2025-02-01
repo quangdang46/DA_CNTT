@@ -8,9 +8,11 @@ import React from "react";
 export default function ProductCardLandscape({
   product,
   version = 1,
+  onAddToCompare = () => {},
 }: {
   product: Product;
   version?: number;
+  onAddToCompare?: (product: Product) => void;
 }) {
   /*
   
@@ -121,9 +123,12 @@ export default function ProductCardLandscape({
             <Link href="/cart" className="button add_to_cart_button">
               Add to cart
             </Link>
-            <Link href="/compare" className="add-to-compare-link">
-              Add to compare
-            </Link>
+            <button
+              className="add-to-compare-link"
+              onClick={() => onAddToCompare(product)}
+            >
+              Add to Compare
+            </button>
           </div>
         </div>
       </div>
