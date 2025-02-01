@@ -16,7 +16,6 @@ export default function BrandsCarousel() {
   } = usePrevNextButtons(emblaApi);
   return (
     <section className="brands-carousel">
-      <h2 className="sr-only">Brands Carousel</h2>
       <div className="col-full d-flex">
         <div
           className={styles.embla__prev}

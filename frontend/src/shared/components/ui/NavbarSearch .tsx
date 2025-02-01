@@ -2,7 +2,7 @@
 import CategorySelect from "@/shared/components/ui/CategorySelect";
 import SearchButton from "@/shared/components/ui/SearchButton";
 import SearchField from "@/shared/components/ui/SearchField";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { debounce } from "lodash";
@@ -14,11 +14,35 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import productApiRequest from "@/shared/apiRequests/product";
+import useClickOutside from "@/shared/hooks/useClickOutside";
+import { usePathname, useSearchParams } from "next/navigation";
+
 type LinkSuggestions = {
   link: string;
   name: string;
 }[];
 export default function NavbarSearch() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const containerRef = useRef<HTMLDivElement>(null); // Tham chiếu đến vùng gợi ý
+  const [isOpen, setIsOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState<ProductListResType>(
+    [] as ProductListResType
+  ); // State to store suggestions
+  const [suggestionsLinks, setSuggestionsLinks] = useState<LinkSuggestions>(
+    {} as LinkSuggestions
+  );
+  useClickOutside(containerRef, () => {
+    setSuggestions([]); // Xóa gợi ý
+    setIsOpen(false);
+  });
+
+  useEffect(() => {
+    // Khi URL thay đổi, đóng gợi ý và xóa danh sách gợi ý
+    setIsOpen(false);
+    setSuggestions([]);
+  }, [pathname, searchParams]); // Trigger when pathname or searchParams change
+
   const { register, handleSubmit, watch } = useForm<ProductSearchV2Type>({
     resolver: zodResolver(ProductSearchV2),
     defaultValues: {
@@ -27,12 +51,6 @@ export default function NavbarSearch() {
     },
   });
 
-  const [suggestions, setSuggestions] = useState<ProductListResType>(
-    [] as ProductListResType
-  ); // State to store suggestions
-  const [suggestionsLinks, setSuggestionsLinks] = useState<LinkSuggestions>(
-    {} as LinkSuggestions
-  );
   const searchQuery = watch("name", ""); // Watch the "name" field
   const selectedCategory = watch("categories", ""); // Watch the "categories" field
 
@@ -49,12 +67,15 @@ export default function NavbarSearch() {
           console.log("Fetched Suggestions:", fetchedData);
 
           setSuggestions(fetchedData);
+          setIsOpen(true); // Chỉ mở khi có tìm kiếm
         } catch (error) {
           console.error("Error fetching suggestions:", error);
           setSuggestions([]); // Xóa dữ liệu nếu lỗi
+          setIsOpen(true);
         }
       } else {
         setSuggestions([]); // Nếu input không hợp lệ, không gọi API
+        setIsOpen(false);
       }
     }, 300); // Debounce 300ms
 
@@ -92,47 +113,49 @@ export default function NavbarSearch() {
           <SearchButton></SearchButton>
         </div>
 
-        {suggestions.length > 0 ? (
-          <div className="suggest-result">
-            <ul className="suggest-link-list">
-              {suggestionsLinks.map((link, index) => (
-                <li key={index} className="suggest-link">
-                  <Link href={link.link} className="suggest-link-item">
-                    <span>{link.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="product-suggest">
-              <h5>Suggested products</h5>
-              <ul className="product-suggest-list">
-                {suggestions.map((product) => (
-                  <li key={product.id} className="product-suggest-item">
-                    <Link
-                      href={`/details/${product.slug}`}
-                      className="product-suggest-link"
-                    >
-                      <Image
-                        src={product.images?.[0]?.image_url || "/default.jpg"}
-                        alt={product.name}
-                        width={100}
-                        height={50}
-                      />
-                      <div>
-                        <h6>{product.name}</h6>
-                        <span>{product.price} VND</span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {isOpen && (
+          <div ref={containerRef} className="suggest-result">
+            {suggestions.length > 0 ? (
+              <>
+                <ul className="suggest-link-list">
+                  {suggestionsLinks.map((link, index) => (
+                    <li key={index} className="suggest-link">
+                      <Link href={link.link} className="suggest-link-item">
+                        <span>{link.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <div className="product-suggest">
+                  <h5>Suggested products</h5>
+                  <ul className="product-suggest-list">
+                    {suggestions.map((product) => (
+                      <li key={product.id} className="product-suggest-item">
+                        <Link
+                          href={`/details/${product.slug}`}
+                          className="product-suggest-link"
+                        >
+                          <Image
+                            src={product.images[0].image_url}
+                            alt={product.name}
+                            width={100}
+                            height={50}
+                          />
+                          <div>
+                            <h6>{product.name}</h6>
+                            <span>{product.price} VND</span>
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <h1>Không tìm thấy sản phẩm</h1>
+            )}
           </div>
-        ) : searchQuery && searchQuery.length >= 2 ? (
-          <div className="suggest-result">
-            <h1>Không tìm thấy sản phẩm</h1>
-          </div>
-        ) : null}
+        )}
       </form>
     </>
   );
