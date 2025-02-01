@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->string('session_id')->nullable()->index(); // Giỏ hàng cho khách vãng lai
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Người dùng đã đăng nhập
+            $table->string('guest_id')->nullable()->index(); // Khách vãng lai (chưa đăng nhập)
             $table->timestamps();
         });
     }

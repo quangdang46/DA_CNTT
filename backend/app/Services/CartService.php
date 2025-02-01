@@ -13,58 +13,52 @@ class CartService
         $this->cartRepository = $cartRepository;
     }
 
-
-    // Lấy giỏ hàng của người dùng
-    public function getCart($userId)
+    // Lấy giỏ hàng
+    public function getCart($userId = null, $guestId = null)
     {
-        if (!$userId) {
-            // Khi không có userId (khách chưa đăng nhập), lấy cart qua session_id
-            $sessionId = session()->getId(); // Hoặc có thể dùng IP
-            return $this->cartRepository->getCartBySessionId($sessionId);
+        $cart = $this->cartRepository->getCart($userId, $guestId);
+
+        // Nếu không tìm thấy giỏ hàng, tạo mới
+        if (!$cart) {
+            $cart = $this->cartRepository->createCart($userId, $guestId);
         }
 
-        // Nếu có userId (người dùng đã đăng nhập), lấy cart qua userId
-        return $this->cartRepository->getCart($userId);
+        return $cart;
     }
 
     // Thêm sản phẩm vào giỏ hàng
-    public function addItemToCart($userId, $productId, $quantity)
+    public function addItemToCart($userId = null, $guestId = null, $productId, $quantity)
     {
-        // Nếu không có userId (đối với khách hàng chưa đăng nhập)
-        if (!$userId) {
-            $sessionId = session()->getId(); // Hoặc dùng IP
-            $cart = $this->cartRepository->getCartBySessionId($sessionId);
-        } else {
-            // Nếu có userId (đối với người dùng đã đăng nhập)
-            $cart = $this->cartRepository->getCart($userId);
-        }
+        // Lấy hoặc tạo giỏ hàng
+        $cart = $this->getCart($userId, $guestId);
 
-        if (!$cart) {
-            $cart = $this->cartRepository->createCart($userId, $sessionId);
-        }
-
+        // Thêm sản phẩm vào giỏ hàng
         return $this->cartRepository->addItem($cart->id, $productId, $quantity);
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
-    public function removeItemFromCart($userId, $productId)
+    public function removeItemFromCart($userId = null, $guestId = null, $productId)
     {
-        $cart = $this->cartRepository->getCart($userId);
+        // Lấy giỏ hàng
+        $cart = $this->getCart($userId, $guestId);
+
         if ($cart) {
             return $this->cartRepository->removeItem($cart->id, $productId);
         }
 
-        return null;
+        return false; // Không tìm thấy giỏ hàng
     }
 
-    // Xóa tất cả sản phẩm trong giỏ hàng
-    public function clearCart($userId)
+    // Xóa toàn bộ giỏ hàng
+    public function clearCart($userId = null, $guestId = null)
     {
-        $cart = $this->cartRepository->getCart($userId);
+        // Lấy giỏ hàng
+        $cart = $this->getCart($userId, $guestId);
+
         if ($cart) {
             return $this->cartRepository->clearCart($cart->id);
         }
 
-        return null;
+        return false; // Không tìm thấy giỏ hàng
     }
 }

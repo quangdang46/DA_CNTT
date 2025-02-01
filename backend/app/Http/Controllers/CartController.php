@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CartService;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class CartController extends Controller
 {
@@ -16,152 +17,143 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    /**
-     * Lấy giỏ hàng của người dùng
-     */
+    // Lấy giỏ hàng
     public function getCart(Request $request)
     {
         try {
+            // Kiểm tra người dùng đã đăng nhập chưa
             try {
-                $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                // Dùng session_id (hoặc IP) khi người dùng chưa đăng nhập
-                $sessionId = $request->session()->getId(); // Hoặc có thể dùng $request->ip()
-                if (!$sessionId) {
-                    $sessionId = $request->ip(); // Dùng IP nếu không có session_id
-                }
-                $cart = $this->cartService->getCart($sessionId);
-                return response()->json([
-                    "success" => true,
-                    'status' => 'success',
-                    'message' => 'Get cart successfully',
-                    'data' => $cart
-                ]);
+                $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
+                $userId = null; // Khách chưa đăng nhập
             }
 
-            $userId = $user->id;
-            $cart = $this->cartService->getCart($userId);
+            // Lấy giỏ hàng
+            $cart = $this->cartService->getCart($userId, $guestId);
+
+            // Trả về response kèm cookie guest_id nếu cần
             return response()->json([
                 "success" => true,
-                'status' => 'success',
-                'message' => 'Get cart successfully',
-                'data' => $cart
-            ]);
+                "status" => "success",
+                "message" => "Get cart successfully",
+                "data" => $cart,
+            ])->withCookie(cookie('guest_id', $guestId, 60 * 24)); // Lưu UUID trong 1 ngày
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => null
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
             ]);
         }
     }
 
-    /**
-     * Thêm sản phẩm vào giỏ hàng
-     */
+    // Thêm sản phẩm vào giỏ hàng
     public function addItem(Request $request)
     {
         try {
-            // Kiểm tra nếu người dùng đã đăng nhập thông qua JWT
+            // Kiểm tra người dùng đã đăng nhập chưa
             try {
                 $user = JWTAuth::parseToken()->authenticate();
-                $userId = $user->id; // Nếu có user, lấy user_id
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                // Nếu không thể xác thực, coi là khách chưa đăng nhập và dùng IP làm user_id tạm
-                $userId = $request->ip(); // Dùng IP để phân biệt giỏ hàng cho khách
+                $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
+                $userId = null; // Khách chưa đăng nhập
             }
 
-            // Lấy thông tin sản phẩm và số lượng từ request
+            // Lấy thông tin sản phẩm
             $productId = $request->input('product_id');
-            $quantity = $request->input('quantity');
+            $quantity = $request->input('quantity', 1);
 
             // Thêm sản phẩm vào giỏ hàng
-            $cart = $this->cartService->addItemToCart($userId, $productId, $quantity);
+            $cart = $this->cartService->addItemToCart($userId, $guestId, $productId, $quantity);
 
+            // Trả về response kèm cookie guest_id nếu cần
             return response()->json([
                 "success" => true,
-                'status' => 'success',
-                'message' => 'Thêm sản phẩm vào giỏ hàng thành công',
-                'data' => $cart
-            ]);
+                "status" => "success",
+                "message" => "Thêm sản phẩm vào giỏ hàng thành công",
+                "data" => $cart,
+            ])->withCookie(cookie('guest_id', $guestId, 60 * 24)); // Lưu UUID trong 1 ngày
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => null
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
             ]);
         }
     }
 
-    /**
-     * Xóa sản phẩm khỏi giỏ hàng
-     */
+    // Xóa sản phẩm khỏi giỏ hàng
     public function removeItem(Request $request)
     {
         try {
-            // Kiểm tra nếu người dùng đã đăng nhập thông qua JWT
+            // Kiểm tra người dùng đã đăng nhập chưa
             try {
                 $user = JWTAuth::parseToken()->authenticate();
-                $userId = $user->id; // Nếu có user, lấy user_id
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                // Nếu không thể xác thực, coi là khách chưa đăng nhập và dùng IP làm user_id tạm
-                $userId = $request->ip(); // Dùng IP để phân biệt giỏ hàng cho khách
+                $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                $userId = null; // Khách chưa đăng nhập
             }
 
-            // Lấy thông tin sản phẩm cần xóa
+            // Lấy sản phẩm cần xóa
             $productId = $request->input('product_id');
 
             // Xóa sản phẩm khỏi giỏ hàng
-            $cart = $this->cartService->removeItemFromCart($userId, $productId);
+            $result = $this->cartService->removeItemFromCart($userId, $guestId, $productId);
 
             return response()->json([
-                "success" => true,
-                'status' => 'success',
-                'message' => 'Xóa sản phẩm khỏi giỏ hàng thành công',
-                'data' => $cart
+                "success" => $result,
+                "status" => $result ? "success" : "error",
+                "message" => $result ? "Xóa sản phẩm khỏi giỏ hàng thành công" : "Không tìm thấy sản phẩm",
+                "data" => null,
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => null
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
             ]);
         }
     }
 
-    /**
-     * Xóa toàn bộ sản phẩm trong giỏ hàng
-     */
+    // Xóa toàn bộ giỏ hàng
     public function clearCart(Request $request)
     {
         try {
-            // Kiểm tra nếu người dùng đã đăng nhập thông qua JWT
+            // Kiểm tra người dùng đã đăng nhập chưa
             try {
                 $user = JWTAuth::parseToken()->authenticate();
-                $userId = $user->id; // Nếu có user, lấy user_id
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                // Nếu không thể xác thực, coi là khách chưa đăng nhập và dùng IP làm user_id tạm
-                $userId = $request->ip(); // Dùng IP để phân biệt giỏ hàng cho khách
+                $guestId = $request->cookie('guest_id'); // Lấy UUID từ cookie
+                $userId = null; // Khách chưa đăng nhập
             }
 
             // Xóa toàn bộ giỏ hàng
-            $this->cartService->clearCart($userId);
+            $result = $this->cartService->clearCart($userId, $guestId);
 
             return response()->json([
-                "success" => true,
-                'status' => 'success',
-                'message' => 'Giỏ hàng đã được làm sạch',
-                'data' => null
+                "success" => $result,
+                "status" => $result ? "success" : "error",
+                "message" => $result ? "Giỏ hàng đã được làm sạch" : "Không tìm thấy giỏ hàng",
+                "data" => null,
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => null
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
             ]);
         }
     }

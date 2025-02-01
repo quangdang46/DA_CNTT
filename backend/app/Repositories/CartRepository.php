@@ -6,39 +6,58 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 
-class CartRepository  implements CartRepositoryInterface
+class CartRepository implements CartRepositoryInterface
 {
     protected $cart;
     protected $cartItem;
+
     public function __construct(Cart $cart, CartItem $cartItem)
     {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
     }
-    public function getCartBySessionId($sessionId)
+
+    // Lấy giỏ hàng theo guest_id hoặc user_id
+    public function getCart($userId = null, $guestId = null)
     {
-        return $this->cart->where('session_id', $sessionId)->first();
-    }
-    // Lấy giỏ hàng của người dùng
-    public function getCart($userId)
-    {
-        return $this->cart->with('items.product')->where('user_id', $userId)->first();
+        $query = $this->cart->with('items.product');
+
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } elseif ($guestId) {
+            $query->where('guest_id', $guestId);
+        }
+
+        return $query->first();
     }
 
     // Tạo giỏ hàng mới
-    public function createCart($userId = null)
+    public function createCart($userId = null, $guestId = null)
     {
-        $cart = $this->cart->create(['user_id' => $userId]);
-        return $cart;
+        return $this->cart->create([
+            'user_id' => $userId,
+            'guest_id' => $guestId,
+        ]);
     }
 
     // Thêm sản phẩm vào giỏ hàng
     public function addItem($cartId, $productId, $quantity)
     {
-        $cartItem = $this->cartItem->updateOrCreate(
-            ['cart_id' => $cartId, 'product_id' => $productId],
-            ['quantity' => $quantity]
-        );
+        $cartItem = $this->cartItem->where([
+            'cart_id' => $cartId,
+            'product_id' => $productId,
+        ])->first();
+
+        if ($cartItem) {
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+        } else {
+            $cartItem = $this->cartItem->create([
+                'cart_id' => $cartId,
+                'product_id' => $productId,
+                'quantity' => $quantity,
+            ]);
+        }
 
         return $cartItem;
     }
@@ -46,7 +65,9 @@ class CartRepository  implements CartRepositoryInterface
     // Xóa sản phẩm khỏi giỏ hàng
     public function removeItem($cartId, $productId)
     {
-        return $this->cartItem->where('cart_id', $cartId)->where('product_id', $productId)->delete();
+        return $this->cartItem->where('cart_id', $cartId)
+            ->where('product_id', $productId)
+            ->delete();
     }
 
     // Xóa tất cả sản phẩm trong giỏ hàng
