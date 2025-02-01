@@ -1,24 +1,24 @@
 "use client";
 
+import { ProductSearchV2Type } from "@/shared/types/ProductTypes";
 import React from "react";
-import { FormControl } from "react-bootstrap";
 import { UseFormRegister } from "react-hook-form";
 
 type SearchFieldProps = {
-  register: UseFormRegister<{ s: string; product_cat: string }>;
+  register: UseFormRegister<ProductSearchV2Type>;
   error?: string;
 };
 export default function SearchField({ register, error }: SearchFieldProps) {
   return (
     <>
-      <FormControl
+      <input
         type="text"
         id="search"
-        className="search-field product-search-field"
+        className="form-control search-field product-search-field"
         dir="ltr"
+        defaultValue=""
+        {...register("name")}
         placeholder="Search for products"
-        {...register("s")}
-        isInvalid={!!error}
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </>

@@ -163,6 +163,34 @@ const productApiRequest = {
       },
     });
   },
+
+  getSearchProducts: async ({
+    name,
+    categories,
+    page,
+    perPage,
+  }: ProductSearchType) => {
+    try {
+      const params = new URLSearchParams();
+
+      if (name?.trim()) params.append("name", name.trim());
+      if (categories?.length) params.append("categories", categories.join(","));
+      if (page && page > 1) params.append("page", page.toString());
+      if (perPage && perPage > 0) params.append("perPage", perPage.toString());
+
+      const baseUrl = "/products/search";
+      const url = params.toString()
+        ? `${baseUrl}?${params.toString()}`
+        : baseUrl;
+
+      const response = await apiClient.get<ResType<ProductSearchResType>>(url);
+
+      return response.success ? response : null;
+    } catch (error) {
+      console.error("API error:", error);
+      return null;
+    }
+  },
 };
 
 export default productApiRequest;

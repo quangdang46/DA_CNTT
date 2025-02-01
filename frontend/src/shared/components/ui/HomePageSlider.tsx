@@ -7,6 +7,7 @@ import Autoplay from "embla-carousel-autoplay";
 import productApiRequest from "@/shared/apiRequests/product";
 import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
+import { MoveRight } from "lucide-react";
 
 export default function HomePageSlider() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,8 +84,7 @@ export default function HomePageSlider() {
                     className="button hidden"
                     href={`/details/${slide.caption.slugProduct}`}
                   >
-                    {slide.caption.button}{" "}
-                    <i className="tm tm-long-arrow-right"></i>
+                    {slide.caption.button} <MoveRight />
                   </a>
                   <div className="bottom-caption hidden">
                     {slide.caption.bottomCaption}

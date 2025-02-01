@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\LocationRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -19,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
         UserRepositoryInterface::class => UserRepository::class,
         ProductRepositoryInterface::class => ProductRepository::class,
         WishlistRepositoryInterface::class => WishlistRepository::class,
-        LocationRepositoryInterface::class => LocationRepository::class
+        LocationRepositoryInterface::class => LocationRepository::class,
+        CategoryRepositoryInterface::class => CategoryRepository::class
 
     ];
 

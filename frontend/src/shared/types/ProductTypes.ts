@@ -1,4 +1,5 @@
 // src/types/Product.ts
+import { z } from "zod";
 
 export type ProductAttributes = {
   battery_capacity: string;
@@ -14,7 +15,6 @@ export type ProductAttributes = {
   storage: string;
   [key: string]: string | number;
 };
-
 
 export type ProductImage = {
   id: number;
@@ -46,15 +46,27 @@ export type Product = {
 
 export type ProductListResType = Product[];
 
-export type ProductSearchType = {
-  name?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  categories?: string[];
-  page?: number;
-  sortBy?: string;
-  perPage?: number;
-};
+export const ProductSearch = z.object({
+  name: z.string().optional(),
+  minPrice: z.number().optional(),
+  maxPrice: z.number().optional(),
+  categories: z.array(z.string()).optional(),
+  page: z.number().optional(),
+  sortBy: z.string().optional(),
+  perPage: z.number().optional(),
+});
+
+export const ProductSearchV2 = z.object({
+  name: z.string().optional(),
+  minPrice: z.number().optional(),
+  maxPrice: z.number().optional(),
+  categories: z.string().optional(),
+  page: z.number().optional(),
+  sortBy: z.string().optional(),
+  perPage: z.number().optional(),
+});
+export type ProductSearchV2Type = z.infer<typeof ProductSearchV2>;
+export type ProductSearchType = z.infer<typeof ProductSearch>;
 
 export type ProductSearchResType = {
   data: ProductListResType;

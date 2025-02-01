@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Wishlist;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +74,16 @@ Route::group(
         Route::put('set-default', [LocationController::class, 'setDefault']);
     }
 );
+
+Route::group(
+    [
+        'prefix' => 'categories'
+    ],
+    function () {
+        Route::get('/', [CategoryController::class, 'index']);
+    }
+);
+
 
 /*
 Route::prefix('cart')->group(function () {

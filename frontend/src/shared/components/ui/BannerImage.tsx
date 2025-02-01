@@ -1,3 +1,4 @@
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -24,7 +25,7 @@ export default function BannerImage() {
             </div>
             <span className="banner-action button">
               Browse now
-              <i className="feature-icon d-flex ml-4 tm tm-long-arrow-right"></i>
+              <MoveRight />
             </span>
           </div>
         </div>

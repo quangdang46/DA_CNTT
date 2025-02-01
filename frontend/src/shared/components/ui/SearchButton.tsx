@@ -1,20 +1,19 @@
 import { Search } from "lucide-react";
 import React from "react";
-import { Button, FormControl } from "react-bootstrap";
 
 export default function SearchButton() {
   return (
     <div className="input-group-btn">
-      <FormControl
+      <input
         type="hidden"
         id="search-param"
         name="post_type"
-        value="product"
+        defaultValue="product"
       />
-      <Button type="submit" variant="primary">
+      <button type="submit" className="btn btn-primary">
         <Search strokeWidth={1} />
         <span className="search-btn">Search</span>
-      </Button>
+      </button>
     </div>
   );
 }
