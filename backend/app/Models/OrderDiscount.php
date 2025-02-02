@@ -9,20 +9,23 @@ class OrderDiscount extends Model
 {
     use HasFactory;
 
+    // Các trường có thể gán hàng loạt (mass assignment)
     protected $fillable = [
         'order_id',
         'discount_id',
+        'discount_amount',
+        'discount_type',
     ];
 
-    // Quan hệ: OrderDiscount thuộc về Order
+    // Định nghĩa mối quan hệ với model Order
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
-    // Quan hệ: OrderDiscount thuộc về Discount
+    // Định nghĩa mối quan hệ với model Discount
     public function discount()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsTo(Discount::class, 'discount_id');
     }
 }

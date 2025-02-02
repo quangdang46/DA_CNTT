@@ -12,20 +12,23 @@ class Discount extends Model
     protected $fillable = [
         'code',
         'amount',
+        'is_percentage',
         'start_date',
         'end_date',
         'status',
     ];
 
-    // Quan hệ: Discount có nhiều ProductDiscount
-    public function productDiscounts()
+    // Định nghĩa mối quan hệ với bảng product_discounts
+    public function products()
     {
-        return $this->hasMany(ProductDiscount::class);
+        return $this->belongsToMany(Product::class, 'product_discounts')
+        ->withPivot('amount', 'start_date', 'end_date', 'status');
     }
 
-    // Quan hệ: Discount có nhiều OrderDiscount
-    public function orderDiscounts()
+    // Định nghĩa mối quan hệ với bảng order_discounts
+    public function orders()
     {
-        return $this->hasMany(OrderDiscount::class);
+        return $this->belongsToMany(Order::class, 'order_discounts')
+        ->withPivot('discount_amount', 'discount_type');
     }
 }

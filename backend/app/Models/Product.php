@@ -15,6 +15,7 @@ class Product extends Model
         'price',
         'status',
         'category_id',
+        'slug',
     ];
 
     protected $casts = [
@@ -34,5 +35,8 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
+    public function discounts()
+    {
+        return $this->hasMany(ProductDiscount::class, 'product_id');
+    }
 }

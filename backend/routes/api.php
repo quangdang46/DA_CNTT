@@ -1,14 +1,16 @@
 <?php
 
+use App\Http\Controllers\ApplyDiscountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OrderDiscountController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductDiscountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Wishlist;
-use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -101,7 +103,45 @@ Route::group(
     }
 );
 
+Route::group(
+    [
+        'prefix' => 'discounts'
+    ],
+    function () {
+        Route::get('/', [DiscountController::class, 'index']); // Lấy danh sách tất cả mã giảm giá
+        Route::post('/', [DiscountController::class, 'store']); // Tạo mã giảm giá mới
+        Route::get('/{id}', [DiscountController::class, 'show']); // Lấy chi tiết một mã giảm giá
+        Route::put('/{id}', [DiscountController::class, 'update']); // Cập nhật mã giảm giá
+        Route::delete('/{id}', [DiscountController::class, 'destroy']); // Xóa mã giảm giá
+    }
+);
 
+
+// Route::group(
+//     [
+//         'prefix' => 'order-discounts'
+//     ],
+//     function () {
+//         Route::get('/', [OrderDiscountController::class, 'index']); // Lấy danh sách tất cả mã giảm giá
+//         Route::post('/', [OrderDiscountController::class, 'store']); // Tạo mã giảm giá mới
+//         Route::get('/{order_id}', [OrderDiscountController::class, 'show']); // Lấy chi tiết một mã giảm giá
+//         Route::delete('/{id}', [OrderDiscountController::class, 'destroy']); // Xóa mã giảm giá
+//     }
+// );
+// Route::group(
+//     [
+//         'prefix' => 'product-discounts'
+//     ],
+//     function () {
+//         Route::get('/', [ProductDiscountController::class, 'index']); // Lấy danh sách tất cả mã giảm giá
+//         Route::post('/', [ProductDiscountController::class, 'store']); // Tạo mã giảm giá mới
+//         Route::get('/{product_id}', [ProductDiscountController::class, 'show']); // Lấy chi tiết một mã giảm giá
+//         Route::delete('/{id}', [ProductDiscountController::class, 'destroy']); // Xóa mã giảm giá
+//     }
+// );
+
+
+Route::post('/apply-discount', [ApplyDiscountController::class, 'applyDiscount']);
 /*
 
 

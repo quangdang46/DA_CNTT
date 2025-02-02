@@ -9,6 +9,8 @@ class ProductDiscount extends Model
 {
     use HasFactory;
 
+
+    // Các trường có thể gán hàng loạt (mass assignment)
     protected $fillable = [
         'product_id',
         'discount_id',
@@ -18,15 +20,15 @@ class ProductDiscount extends Model
         'status',
     ];
 
-    // Quan hệ: ProductDiscount thuộc về Product
+    // Định nghĩa mối quan hệ với model Product
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
-    // Quan hệ: ProductDiscount thuộc về Discount
+    // Định nghĩa mối quan hệ với model Discount
     public function discount()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->belongsTo(Discount::class, 'discount_id');
     }
 }
