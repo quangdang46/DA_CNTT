@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import { useCart } from "@/shared/hooks/useCart";
@@ -5,11 +6,45 @@ import { Undo2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Swal from "sweetalert2";
 
 export default function Page() {
   const { cartItems, handleRemoveFromCart, handleUpdateQuantity, totalPrice } =
     useCart();
+  const handleQuantity = (e: any, productId: string, action: string) => {
+    const currentItem = cartItems.find((item) => item.product_id === productId);
+    if (!currentItem) return;
 
+    let newQuantity = currentItem.quantity;
+
+    if (action === "increase") {
+      newQuantity += 1;
+    } else if (action === "decrease") {
+      newQuantity = Math.max(0, newQuantity - 1);
+      if (newQuantity === 0) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You want to remove the item from cart",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, remove it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleRemoveFromCart(productId);
+          }
+        });
+        return;
+      }
+    } else if (action === "input") {
+      newQuantity = parseInt(e.target.value) || 0;
+    }
+    handleUpdateQuantity({
+      product_id: productId,
+      quantity: newQuantity,
+    });
+  };
   return (
     <WrapperContent>
       {/* empty */}
@@ -116,10 +151,11 @@ export default function Page() {
                                 defaultValue="-"
                                 className="minus"
                                 onClick={() =>
-                                  handleUpdateQuantity({
-                                    product_id: item.product_id,
-                                    quantity: item.quantity - 1,
-                                  })
+                                  handleQuantity(
+                                    null,
+                                    item.product_id,
+                                    "decrease"
+                                  )
                                 }
                               />
                               <label htmlFor={`quantity-input-${item.id}`}>
@@ -134,10 +170,7 @@ export default function Page() {
                                 name={`cart[${item.id}][qty]`}
                                 value={item.quantity}
                                 onChange={(e) =>
-                                  handleUpdateQuantity({
-                                    product_id: item.product_id,
-                                    quantity: parseInt(e.target.value),
-                                  })
+                                  handleQuantity(e, item.product_id, "input")
                                 }
                                 title="Qty"
                                 className="input-text qty text"
@@ -150,10 +183,11 @@ export default function Page() {
                                 defaultValue="+"
                                 className="plus"
                                 onClick={() =>
-                                  handleUpdateQuantity({
-                                    product_id: item.product_id,
-                                    quantity: item.quantity + 1,
-                                  })
+                                  handleQuantity(
+                                    null,
+                                    item.product_id,
+                                    "increase"
+                                  )
                                 }
                               />
                             </div>
@@ -171,7 +205,9 @@ export default function Page() {
                               </bdi>
                             </span>
                             <div
-                              onClick={() => handleRemoveFromCart(item.product_id)}
+                              onClick={() =>
+                                handleRemoveFromCart(item.product_id)
+                              }
                               className="remove"
                               title="Remove this item"
                             >
@@ -181,6 +217,7 @@ export default function Page() {
                         </tr>
                       ))}
 
+                      {/* coupon */}
                       <tr>
                         <td colSpan={6} className="actions">
                           <div className="coupon">
@@ -207,25 +244,6 @@ export default function Page() {
                               Apply coupon
                             </button>
                           </div>
-                          <button
-                            type="submit"
-                            className="button"
-                            name="update_cart"
-                            value="Update cart"
-                          >
-                            Update cart
-                          </button>
-                          <input
-                            type="hidden"
-                            id="woocommerce-cart-nonce"
-                            name="woocommerce-cart-nonce"
-                            defaultValue="528b4262a8"
-                          />
-                          <input
-                            type="hidden"
-                            name="_wp_http_referer"
-                            defaultValue="/cart/"
-                          />{" "}
                         </td>
                       </tr>
                     </tbody>
@@ -247,7 +265,7 @@ export default function Page() {
                                 <span className="woocommerce-Price-currencySymbol">
                                   $
                                 </span>
-                                1,179.80
+                                {totalPrice}
                               </bdi>
                             </span>
                           </td>
