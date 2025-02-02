@@ -81,4 +81,19 @@ class CartRepository implements CartRepositoryInterface
     {
         return $this->cartItem->where('cart_id', $cartId)->delete();
     }
+    // Cập nhật thông tin giỏ hàng
+    public function updateCart($cartId, array $data)
+    {
+        return $this->cart->where('id', $cartId)->update($data);
+    }
+
+    // Xóa giỏ hàng
+    public function deleteCart($cartId)
+    {
+        // Xóa tất cả các mục trong giỏ hàng
+        $this->cartItem->where('cart_id', $cartId)->delete();
+
+        // Xóa giỏ hàng
+        return $this->cart->where('id', $cartId)->delete();
+    }
 }

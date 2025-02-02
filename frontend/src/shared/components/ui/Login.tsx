@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import authRequestApi from "@/shared/apiRequests/auth";
+import apiClient from "@/shared/config/apiClient";
 import { setError, setUser } from "@/shared/state/authSlice";
 import { LoginBodyType } from "@/shared/types/AuthenTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,12 @@ const useLogin = () => {
       const response = await authRequestApi.login(data);
       if (!response.success) {
         throw new Error(response.message); // Throw error nếu login thất bại
+      }
+      const guestId = localStorage.getItem("guest_id"); // Lấy guest_id từ localStorage
+      if (guestId) {
+        // Gọi API để gộp giỏ hàng
+        await apiClient.post("/cart/merge", { guest_id: guestId });
+        localStorage.removeItem("guest_id"); // Xóa guest_id sau khi gộp
       }
       return response;
     },
@@ -46,16 +53,18 @@ export default function Login() {
     try {
       const response = await loginMutation.mutateAsync(data); // Call API thông qua useMutation
       toast.success(response.message);
+      if (response.success) {
+        setCookie("auth_token", response.data.token, {
+          maxAge: response.data.expiresAt,
+          path: "/",
+          domain: "localhost",
+        });
 
-      setCookie("auth_token", response.data.token, {
-        maxAge: response.data.expiresAt,
-        path: "/",
-        domain: "localhost",
-      });
+        dispatch(setUser(response.data));
 
-      dispatch(setUser(response.data));
-      router.refresh();
-      router.push("/");
+        router.refresh();
+        router.push("/");
+      }
     } catch (error: any) {
       // Handle error
       dispatch(setError(error.message));

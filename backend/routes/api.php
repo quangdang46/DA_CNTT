@@ -96,6 +96,8 @@ Route::group(
         // Route::post('update', [CartController::class, 'update']);
         Route::post('remove', [CartController::class, 'removeItem']);
         Route::post('clear', [CartController::class, 'clearCart']);
+        Route::post('transfer-to-guest', [CartController::class, 'transferCartToGuest']);
+        Route::post('merge', [CartController::class, 'mergeCart']);
     }
 );
 

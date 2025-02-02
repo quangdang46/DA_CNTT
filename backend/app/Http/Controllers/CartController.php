@@ -163,4 +163,89 @@ class CartController extends Controller
             ]);
         }
     }
+
+    // Chuyển giỏ hàng từ guest sang user (khi đăng nhập)
+    public function mergeCart(Request $request)
+    {
+        try {
+            // Lấy thông tin người dùng đã đăng nhập
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+            } catch (\Throwable $th) {
+                $userId = null;
+            }
+
+
+            // Lấy guest_id từ header
+            $guestId = $request->header('X-Guest-ID');
+
+            if (!$guestId) {
+                return response()->json([
+                    "success" => false,
+                    "status" => "error",
+                    "message" => "Không tìm thấy guest_id.",
+                    "data" => null,
+                ]);
+            }
+            // Gộp giỏ hàng
+            $result = $this->cartService->mergeCart($userId, $guestId);
+
+            return response()->json([
+                "success" => true,
+                "status" => "success",
+                "message" => "Success merge cart",
+                "data" => $result,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
+            ]);
+        }
+    }
+
+    // Chuyển giỏ hàng từ user sang guest (khi đăng xuất)
+    public function transferCartToGuest(Request $request)
+    {
+        try {
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+            } catch (\Throwable $th) {
+                return response()->json([
+                    "success" => false,
+                    "status" => "error",
+                    "message" => $th->getMessage(),
+                    "data" => null,
+                ]);
+            }
+
+
+            // Lấy hoặc tạo guest_id
+            $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
+
+            // Chuyển giỏ hàng
+            $result = $this->cartService->transferCartToGuest($userId, $guestId);
+
+            return response()->json([
+                "success" => true,
+                "status" => "success",
+                "message" => "Chuyển giỏ hàng sang chế độ khách thành công.",
+                "data" => [
+                    "guest_id" => $guestId,
+                    "result" => $result,
+                ],
+            ])->header('X-Guest-ID', $guestId);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
+            ]);
+        }
+    }
 }

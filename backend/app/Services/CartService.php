@@ -32,7 +32,7 @@ class CartService
         $cart = $this->getCart($userId, $guestId);
         if (!$cart) {
             $cart = $this->cartRepository->createCart($userId, $guestId);
-            return ['id' => $cart->id,'user'=>$userId,'guest'=>$guestId];
+            return ['id' => $cart->id, 'user' => $userId, 'guest' => $guestId];
         }
         // Thêm sản phẩm vào giỏ hàng
         return $this->cartRepository->addItem($cart->id, $productId, $quantity);
@@ -62,5 +62,98 @@ class CartService
         }
 
         return false; // Không tìm thấy giỏ hàng
+    }
+
+
+    // Gộp giỏ hàng từ guest sang user
+    public function mergeCart($userId, $guestId)
+    {
+        // Lấy giỏ hàng của guest
+        $guestCart = $this->cartRepository->getCart(null, $guestId);
+        if (!$guestCart) {
+            return [
+                "success" => false,
+                "message" => "Không tìm thấy giỏ hàng của khách.",
+                "data" => null,
+            ];
+        }
+
+        // Lấy giỏ hàng của user
+        $userCart = $this->cartRepository->getCart($userId, null);
+        if (!$userCart) {
+            // Nếu user chưa có giỏ hàng, chuyển giỏ hàng của guest sang user
+            $this->cartRepository->updateCart($guestCart->id, ['user_id' => $userId, 'guest_id' => null]);
+            return [
+                "success" => true,
+                "message" => "Giỏ hàng của khách đã được chuyển sang người dùng.",
+                "data" => [
+                    "merged_items" => count($guestCart->items),
+                ],
+            ];
+        }
+
+        // Gộp sản phẩm từ giỏ hàng của guest vào giỏ hàng của user
+        $mergedItemsCount = 0;
+        foreach ($guestCart->items as $item) {
+            if ($item->quantity <= 0) {
+                continue; // Bỏ qua sản phẩm có số lượng không hợp lệ
+            }
+
+            $existingItem = $userCart->items->firstWhere('product_id', $item->product_id);
+            if ($existingItem) {
+                // Nếu sản phẩm đã tồn tại, cộng dồn số lượng
+                $existingItem->quantity += $item->quantity;
+                $existingItem->save();
+            } else {
+                // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng của user
+                $this->cartRepository->addItem($userCart->id, $item->product_id, $item->quantity);
+            }
+            $mergedItemsCount++;
+        }
+
+        // Xóa giỏ hàng của guest
+        $this->cartRepository->deleteCart($guestCart->id);
+
+        return [
+            "success" => true,
+            "message" => "Gộp giỏ hàng thành công.",
+            "data" => [
+                "merged_items" => $mergedItemsCount,
+            ],
+        ];
+    }
+
+    // Chuyển giỏ hàng từ user sang guest
+    public function transferCartToGuest($userId, $guestId)
+    {
+        // Lấy giỏ hàng của user
+        $userCart = $this->cartRepository->getCart($userId, null);
+        if (!$userCart) {
+            return; // Không có giỏ hàng của user
+        }
+
+        // Lấy giỏ hàng của guest
+        $guestCart = $this->cartRepository->getCart(null, $guestId);
+        if (!$guestCart) {
+            // Nếu guest chưa có giỏ hàng, chuyển giỏ hàng của user sang guest
+            $this->cartRepository->updateCart($userCart->id, ['user_id' => null, 'guest_id' => $guestId]);
+            return;
+        }
+
+        // Gộp sản phẩm từ giỏ hàng của user vào giỏ hàng của guest
+        foreach ($userCart->items as $item) {
+            $existingItem = $guestCart->items->firstWhere('product_id', $item->product_id);
+            if ($existingItem) {
+                // Nếu sản phẩm đã tồn tại, cộng dồn số lượng
+                $existingItem->quantity += $item->quantity;
+                $existingItem->save();
+            } else {
+                // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng của guest
+                $this->cartRepository->addItem($guestCart->id, $item->product_id, $item->quantity);
+            }
+        }
+
+        // Xóa giỏ hàng của user
+        $this->cartRepository->deleteCart($userCart->id);
     }
 }
