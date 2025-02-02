@@ -27,6 +27,9 @@ const useLogin = () => {
       }
       return response;
     },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
   });
 };
 export default function Login() {

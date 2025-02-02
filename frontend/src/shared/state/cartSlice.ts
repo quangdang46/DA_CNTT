@@ -1,6 +1,11 @@
-
-import { CartItem } from "@/shared/types/CartTypes";
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import apiClient from "@/shared/config/apiClient";
+import { CartItem, GetCartResType } from "@/shared/types/CartTypes";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 interface CartState {
   cartItems: CartItem[];
@@ -11,7 +16,17 @@ const initialState: CartState = {
   cartItems: [],
   totalPrice: 0,
 };
-
+export const refetchCart = createAsyncThunk(
+  "cart/refetch",
+  async (_, thunkAPI) => {
+    try {
+      const response = await apiClient.get<GetCartResType>("/cart");
+      return response.data.items; // Lấy danh sách sản phẩm trong giỏ hàng
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Không thể tải giỏ hàng.");
+    }
+  }
+);
 // Tạo slice
 const cartSlice = createSlice({
   name: "cart",
@@ -64,14 +79,25 @@ const cartSlice = createSlice({
       state.totalPrice = 0; // Reset tổng tiền về 0
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(refetchCart.fulfilled, (state, action) => {
+        state.cartItems = action.payload; // Cập nhật danh sách sản phẩm
+        state.totalPrice = calculateTotalPrice(action.payload); // Tính lại tổng tiền
+      })
+      .addCase(refetchCart.rejected, (state, action) => {
+        console.error("Lỗi khi tải giỏ hàng:", action.payload);
+      });
+  },
 });
 
 // Export actions
 export const { addToCart, removeFromCart, updateQuantity, clearCart } =
   cartSlice.actions;
 
-// Hàm tính tổng tiền
 function calculateTotalPrice(cartItems: CartItem[]): number {
+  if (!Array.isArray(cartItems)) return 0;
+
   return cartItems.reduce((total, item) => {
     const price =
       typeof item.product.price === "string"
@@ -80,10 +106,22 @@ function calculateTotalPrice(cartItems: CartItem[]): number {
     return total + (isNaN(price) ? 0 : price * item.quantity);
   }, 0);
 }
-// Selector để lấy tổng tiền
+// Input Selector: Trích xuất danh sách cartItems từ state
+const selectCartItems = (state: { cart: CartState }) => state.cart.cartItems;
+
+// Result Function: Tính tổng tiền từ cartItems
 export const selectTotalPrice = createSelector(
-  (state: { cart: CartState }) => state.cart.totalPrice,
-  (totalPrice) => totalPrice
+  [selectCartItems],
+  (cartItems) => {
+    if (!Array.isArray(cartItems)) return 0;
+
+    return cartItems.reduce((total, item) => {
+      const price =
+        typeof item.product.price === "string"
+          ? parseFloat(item.product.price)
+          : item.product.price;
+      return total + (isNaN(price) ? 0 : price * item.quantity);
+    }, 0);
+  }
 );
-// Export reducer
 export default cartSlice.reducer;

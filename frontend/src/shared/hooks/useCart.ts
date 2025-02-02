@@ -1,13 +1,11 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import {
   addToCart,
   clearCart,
   removeFromCart,
-  selectTotalPrice,
 } from "@/shared/state/cartSlice"; // Import Redux actions
 import apiClient from "@/shared/config/apiClient";
 import {
@@ -24,7 +22,6 @@ import { Product } from "@/shared/types/ProductTypes";
 // Custom hook cho giỏ hàng
 export const useCart = () => {
   const dispatch = useDispatch();
-  const totalPrice = useSelector(selectTotalPrice);
 
   // Query để lấy dữ liệu giỏ hàng
   const {
@@ -36,7 +33,7 @@ export const useCart = () => {
     queryFn: async (): Promise<GetCartResType> => {
       const response = await apiClient.get<GetCartResType>("/cart");
       return response;
-    }
+    },
   });
 
   // Mutation để thêm sản phẩm vào giỏ hàng
@@ -149,7 +146,6 @@ export const useCart = () => {
   return {
     cartItems: cartData?.data.items || [], // Danh sách sản phẩm trong giỏ hàng
     isLoading, // Trạng thái loading
-    totalPrice, // Tổng tiền trong giỏ hàng
     handleAddToCart: handleAddToCart.mutate, // Hàm thêm sản phẩm
     handleRemoveFromCart: handleRemoveFromCart.mutate, // Hàm xóa sản phẩm
     handleClearCart: handleClearCart.mutate, // Hàm xóa toàn bộ giỏ hàng
