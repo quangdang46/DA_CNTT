@@ -1,20 +1,16 @@
 "use client";
 import { useCart } from "@/shared/hooks/useCart";
 import useClickOutside from "@/shared/hooks/useClickOutside";
-import { selectTotalPrice } from "@/shared/state/cartSlice";
 import { ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 
 export default function Cart() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { cartItems, handleRemoveFromCart } = useCart();
-
-  const totalPrice = useSelector(selectTotalPrice);
+  const { cartItems, handleRemoveFromCart, totalPrice } = useCart();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLUListElement>(null); // Tham chiếu đến vùng gợi ý

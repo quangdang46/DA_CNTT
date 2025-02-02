@@ -100,6 +100,7 @@ class CartService
             }
 
             $existingItem = $userCart->items->firstWhere('product_id', $item->product_id);
+
             if ($existingItem) {
                 // Nếu sản phẩm đã tồn tại, cộng dồn số lượng
                 $existingItem->quantity += $item->quantity;
@@ -111,15 +112,13 @@ class CartService
             $mergedItemsCount++;
         }
 
+
+
         // Xóa giỏ hàng của guest
         $this->cartRepository->deleteCart($guestCart->id);
 
         return [
-            "success" => true,
-            "message" => "Gộp giỏ hàng thành công.",
-            "data" => [
-                "merged_items" => $mergedItemsCount,
-            ],
+            "merged_items" => $mergedItemsCount,
         ];
     }
 

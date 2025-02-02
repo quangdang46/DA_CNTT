@@ -2,6 +2,7 @@
 import authRequestApi from "@/shared/apiRequests/auth";
 import apiClient from "@/shared/config/apiClient";
 import { setLogout } from "@/shared/state/authSlice";
+import { clearCart } from "@/shared/state/cartSlice";
 import { loadWishlist } from "@/shared/state/wishlistSlice";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCookie } from "cookies-next/client";
@@ -111,6 +112,7 @@ export default function Page() {
           deleteCookie("auth_token");
           localStorage.removeItem("auth_token");
           dispatch(setLogout());
+          dispatch(clearCart());
           toast.success(response.message);
           router.push("/");
         }

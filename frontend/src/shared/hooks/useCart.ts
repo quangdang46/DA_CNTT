@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import {
   addToCart,
   clearCart,
   removeFromCart,
+  setCartItems,
 } from "@/shared/state/cartSlice"; // Import Redux actions
 import apiClient from "@/shared/config/apiClient";
 import {
@@ -18,11 +19,13 @@ import {
   RemoveFromCartResType,
 } from "@/shared/types/CartTypes";
 import { Product } from "@/shared/types/ProductTypes";
+import { useEffect } from "react";
+import { RootState } from "@/shared/state/store";
 
 // Custom hook cho giỏ hàng
 export const useCart = () => {
   const dispatch = useDispatch();
-
+  const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
   // Query để lấy dữ liệu giỏ hàng
   const {
     data: cartData,
@@ -35,6 +38,12 @@ export const useCart = () => {
       return response;
     },
   });
+
+  useEffect(() => {
+    if (cartData?.data?.items) {
+      dispatch(setCartItems(cartData.data.items));
+    }
+  }, [cartData, dispatch]);
 
   // Mutation để thêm sản phẩm vào giỏ hàng
   const handleAddToCart = useMutation<AddToCartResType, Error, Product>({
@@ -144,6 +153,7 @@ export const useCart = () => {
   });
 
   return {
+    totalPrice,
     cartItems: cartData?.data.items || [], // Danh sách sản phẩm trong giỏ hàng
     isLoading, // Trạng thái loading
     handleAddToCart: handleAddToCart.mutate, // Hàm thêm sản phẩm
