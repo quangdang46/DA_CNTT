@@ -4,15 +4,18 @@ namespace App\Repositories;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 use App\Repositories\Interfaces\CartRepositoryInterface;
 
 class CartRepository implements CartRepositoryInterface
 {
     protected $cart;
     protected $cartItem;
+    protected $product;
 
-    public function __construct(Cart $cart, CartItem $cartItem)
+    public function __construct(Cart $cart, CartItem $cartItem, Product $product)
     {
+        $this->product = $product;
         $this->cart = $cart;
         $this->cartItem = $cartItem;
     }
@@ -20,7 +23,7 @@ class CartRepository implements CartRepositoryInterface
     // Lấy giỏ hàng theo guest_id hoặc user_id
     public function getCart($userId = null, $guestId = null)
     {
-        $query = $this->cart->with('items.product');
+        $query = $this->cart->with(['items.product.attributes', 'items.product.images']);
 
         if ($userId) {
             $query->where('user_id', $userId);
@@ -57,7 +60,11 @@ class CartRepository implements CartRepositoryInterface
                 'quantity' => $quantity,
             ]);
         }
+        // Lấy product kèm attributes và images
+        $product = $this->product->with(['attributes', 'images'])->find($productId);
 
+        // Gán product đã load quan hệ vào cartItem
+        $cartItem->setRelation('product', $product);
         return $cartItem;
     }
 

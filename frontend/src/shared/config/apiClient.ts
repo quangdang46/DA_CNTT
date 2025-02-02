@@ -8,7 +8,7 @@ class ApiClient {
       headers: {
         "Content-Type": "application/json",
       },
-      // withCredentials: true,
+      withCredentials: true,
     });
     this.instance.interceptors.response.use(
       (response) => response,
@@ -31,12 +31,7 @@ class ApiClient {
     // Interceptor response
     this.instance.interceptors.response.use(
       (response) => {
-        console.log(response.headers["set-cookie"]);
-        // Kiểm tra nếu backend trả về guest_id mới
-        const guestIdFromCookie = response.headers["set-cookie"]
-          ?.find((cookie: string) => cookie.startsWith("guest_id"))
-          ?.split(";")[0]
-          ?.split("=")[1];
+        const guestIdFromCookie = response.headers["x-guest-id"];
 
         if (guestIdFromCookie) {
           localStorage.setItem("guest_id", guestIdFromCookie); // Lưu guest_id vào localStorage

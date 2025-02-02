@@ -17,11 +17,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         // Nếu không có tham số $perPage, trả về tất cả sản phẩm kèm theo các mối quan hệ
         if (!$perPage) {
-            return $this->model->with(['images', 'attributes'])->get();
+            return $this->model->with(['images', 'attributes'])->where('status', 'available')->get();
         }
 
         // Nếu có tham số $perPage, trả về sản phẩm phân trang kèm theo các mối quan hệ
-        return $this->model->with(['images', 'attributes'])->paginate($perPage);
+        return $this->model->with(['images', 'attributes'])->where('status', 'available')->paginate($perPage);
     }
 
     public function search($params)
@@ -32,6 +32,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         // Eager load các mối quan hệ như images và attributes
         $query->with(['images', 'attributes']);
+        $query->where('status', 'available');
         // Lọc theo tên sản phẩm
         if (!empty($params['name'])) {
             $query->where('name', 'like', '%' . $params['name'] . '%');
@@ -92,6 +93,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function findBySlug($slug)
     {
         return $this->model->with(['attributes', 'images', 'category'])
+            ->where('status', 'available')
             ->where('slug', $slug)
             ->first();
     }
@@ -102,6 +104,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         switch ($type) {
             case "new":
                 return $this->model->with(['attributes', 'images'])
+                    ->where('status', 'available')
                     ->where('created_at', '>=', now()->subDays(30))
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -109,6 +112,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
             case "high-rated":
                 return $this->model->with(['attributes', 'images'])
+                    ->where("status", "available")
                     ->where('rating', '>=', 4) // Rating từ 4 trở lên
                     ->where('review_count', '>=', 10) // Ít nhất 10 đánh giá
                     ->orderBy('rating', 'desc') // Sắp xếp theo rating cao nhất
@@ -136,6 +140,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         // get related products by slug
         return $this->model->with(['attributes', 'images'])
+            ->where('status', 'available')
             ->where('category_id', $this->findBySlug($slug)->category_id)
             // ->where('slug', '!=', $slug)
             ->get();
@@ -143,6 +148,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getInArray($ids, $perPage, $page)
     {
         return $this->model->with(['attributes', 'images'])
+            ->where('status', 'available')
             ->whereIn('id', $ids)
             ->paginate($perPage, ['*'], 'page', $page);
     }

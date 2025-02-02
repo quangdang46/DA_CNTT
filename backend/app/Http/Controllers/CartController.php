@@ -41,7 +41,7 @@ class CartController extends Controller
                 "status" => "success",
                 "message" => "Get cart successfully",
                 "data" => $cart,
-            ])->withCookie(cookie('guest_id', $guestId, 60 * 24)); // Lưu UUID trong 1 ngày
+            ])->header('X-Guest-ID', $guestId);
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
@@ -62,8 +62,7 @@ class CartController extends Controller
                 $userId = $user->id;
                 $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                // $guestId = $request->cookie('guest_id') ?? Str::uuid(); // Lấy hoặc tạo UUID
-                $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
+                $guestId = $request->header('X-Guest-ID');
                 $userId = null; // Khách chưa đăng nhập
             }
             // Lấy thông tin sản phẩm
@@ -72,13 +71,12 @@ class CartController extends Controller
 
             // Thêm sản phẩm vào giỏ hàng
             $cart = $this->cartService->addItemToCart($userId, $guestId, $productId, $quantity);
-            // Trả về response kèm cookie guest_id nếu cần
             return response()->json([
                 "success" => true,
                 "status" => "success",
                 "message" => "Thêm sản phẩm vào giỏ hàng thành công",
                 "data" => $cart,
-            ])->withCookie(cookie('guest_id', $guestId, 60 * 24)); // Lưu UUID trong 1 ngày
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
@@ -114,7 +112,10 @@ class CartController extends Controller
                 "success" => $result,
                 "status" => $result ? "success" : "error",
                 "message" => $result ? "Xóa sản phẩm khỏi giỏ hàng thành công" : "Không tìm thấy sản phẩm",
-                "data" => null,
+                "data" => [
+                    "message" => $result ? "Xóa sản phẩm khỏi giỏ hàng thanh cong" : "Không tìm thấy sản phẩm",
+                    "success" => $result,
+                ],
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -148,7 +149,10 @@ class CartController extends Controller
                 "success" => $result,
                 "status" => $result ? "success" : "error",
                 "message" => $result ? "Giỏ hàng đã được làm sạch" : "Không tìm thấy giỏ hàng",
-                "data" => null,
+                "data" => [
+                    "message" => $result ? "Giỏ hàng được làm sạch" : "Không tìm thấy giỏ hàng",
+                    "success" => $result,
+                ],
             ]);
         } catch (\Throwable $th) {
             return response()->json([

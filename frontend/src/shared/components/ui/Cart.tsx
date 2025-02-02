@@ -13,7 +13,6 @@ export default function Cart() {
   const { cartItems, totalPrice, handleRemoveFromCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLUListElement>(null); // Tham chiếu đến vùng gợi ý
-
   useClickOutside(containerRef, () => {
     setShowDropdown(false);
   });
@@ -53,11 +52,11 @@ export default function Cart() {
           <li>
             <div className="widget woocommerce widget_shopping_cart">
               <div className="widget_shopping_cart_content">
-                {/* Hiển thị danh sách sản phẩm */}
                 {cartItems.length > 0 ? (
                   <>
                     <ul className="woocommerce-mini-cart cart_list product_list_widget">
                       {cartItems.map((item) => (
+                        console.log(item),
                         <li
                           key={item.id}
                           className="woocommerce-mini-cart-item mini_cart_item"
@@ -69,46 +68,45 @@ export default function Cart() {
                             }}
                             className="remove"
                             aria-label="Remove this item"
-                            onClick={() => handleRemoveFromCart(item.id)}
+                            onClick={() => handleRemoveFromCart(item.product_id)}
                           >
                             <X />
                           </button>
 
-                          <Link href={`/details/${item.slug}`}>
+                          <Link href={`/details/${item.product.slug}`}>
                             <Image
                               src={
-                                item.images[0]?.image_url ||
+                                item.product.images[0]?.image_url ||
                                 "https://placehold.co/100x100"
-                              } // Lấy URL hình ảnh đầu tiên
-                              alt={item.name}
+                              }
+                              alt={item.product.name}
                               width={100}
                               height={100}
                             />
-                            {item.name}
+                            {item.product.name}
                           </Link>
 
-                          {/* Số lượng và giá tiền */}
                           <span className="quantity">
                             {item.quantity} ×{" "}
                             <span className="woocommerce-Price-amount amount">
                               $
-                              {typeof item.price === "string"
-                                ? isNaN(parseFloat(item.price))
+                              {typeof item.product.price === "string"
+                                ? isNaN(parseFloat(item.product.price))
                                   ? "0.00"
-                                  : parseFloat(item.price).toFixed(2).toString()
-                                : item.price.toFixed(2).toString()}
+                                  : parseFloat(item.product.price)
+                                      .toFixed(2)
+                                      .toString()
+                                : item.product.price.toFixed(2).toString()}
                             </span>
                           </span>
                         </li>
                       ))}
                     </ul>
 
-                    {/* Tổng tiền */}
                     <p className="woocommerce-mini-cart__total total">
                       <strong>Subtotal:</strong> ${totalPrice.toFixed(2)}
                     </p>
 
-                    {/* Nút View Cart và Checkout */}
                     <p className="woocommerce-mini-cart__buttons buttons">
                       <Link href="/cart" className="button wc-forward">
                         View cart
@@ -122,7 +120,6 @@ export default function Cart() {
                     </p>
                   </>
                 ) : (
-                  // Hiển thị khi giỏ hàng trống
                   <p className="woocommerce-mini-cart__empty-message">
                     No products in the cart.
                   </p>

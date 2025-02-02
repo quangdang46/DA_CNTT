@@ -1,47 +1,55 @@
+
 import { Product } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
 
+// Base response for all API responses
 
-// Định nghĩa kiểu CartItem (một sản phẩm trong giỏ hàng)
-export interface CartItem extends Product {
-
-  quantity: number; // Số lượng sản phẩm
+// Cart item base
+export interface CartItemBase {
+  id: string;
+  cart_id: string;
+  product_id: string;
+  quantity: number;
 }
 
-// Định nghĩa kiểu Cart (giỏ hàng)
+// Cart item with product details
+export interface CartItem extends CartItemBase {
+  product: Product;
+}
+
+// Cart item response
+export interface CartItemRes extends CartItemBase {
+  product: Product;
+}
+
+// Cart structure
 export interface Cart {
-  items: CartItem[]; // Danh sách sản phẩm trong giỏ hàng
-  total: number; // Tổng tiền của giỏ hàng
+  id: string;
+  user_id: string;
+  guest_id: string;
+  items: CartItem[];
 }
 
-// Định nghĩa kiểu AddToCartRequest (request thêm sản phẩm vào giỏ hàng)
-export interface AddToCartRequest {
-  product_id: string; // ID sản phẩm
-  quantity: number; // Số lượng sản phẩm
+// Response types
+export type GetCartResType = ResType<Cart>;
+export type AddToCartResType = ResType<CartItemRes>;
+
+export interface RemoveFromCartData {
+  message: string;
+  success: boolean;
 }
 
-// Định nghĩa kiểu RemoveFromCartRequest (request xóa sản phẩm khỏi giỏ hàng)
-export interface RemoveFromCartRequest {
-  product_id: string; // ID sản phẩm cần xóa
+export type RemoveFromCartResType = ResType<RemoveFromCartData>;
+export type ClearCartResType = ResType<RemoveFromCartData>;
+
+// Request bodies
+export interface AddToCartBody {
+  product_id: string;
+  quantity: number;
 }
 
-// Định nghĩa kiểu UpdateQuantityRequest (request cập nhật số lượng sản phẩm)
-export interface UpdateQuantityRequest {
-  product_id: string; // ID sản phẩm
-  quantity: number; // Số lượng mới
+export interface CartRemoveBody {
+  product_id?: string;
 }
 
-// Định nghĩa kiểu response cho API lấy giỏ hàng
-export type GetCartResponse = ResType<Cart>;
-
-// Định nghĩa kiểu response cho API thêm sản phẩm vào giỏ hàng
-export type AddToCartResponse = ResType<Cart>;
-
-// Định nghĩa kiểu response cho API xóa sản phẩm khỏi giỏ hàng
-export type RemoveFromCartResponse = ResType<Cart>;
-
-// Định nghĩa kiểu response cho API cập nhật số lượng sản phẩm
-export type UpdateQuantityResponse = ResType<Cart>;
-
-// Định nghĩa kiểu response cho API xóa toàn bộ giỏ hàng
-export type ClearCartResponse = ResType<Cart>;
+export type ClearCartBody = CartRemoveBody;
