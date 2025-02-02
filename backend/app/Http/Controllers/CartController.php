@@ -164,6 +164,56 @@ class CartController extends Controller
         }
     }
 
+
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    public function updateQuantity(Request $request)
+    {
+        try {
+            // Kiểm tra người dùng đã đăng nhập chưa
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
+            } catch (JWTException $e) {
+                $guestId = $request->header('X-Guest-ID');
+                $userId = null; // Khách chưa đăng nhập
+            }
+
+            // Lấy thông tin sản phẩm và số lượng
+            $productId = $request->input('product_id');
+            $quantity = $request->input('quantity');
+
+            if ($quantity <= 0) {
+                return response()->json([
+                    "success" => false,
+                    "status" => "error",
+                    "message" => "Số lượng sản phẩm phải lớn hơn 0",
+                    "data" => null,
+                ]);
+            }
+
+            // Cập nhật số lượng sản phẩm trong giỏ hàng
+            $cart = $this->cartService->updateItemQuantity($userId, $guestId, $productId, $quantity);
+
+            return response()->json([
+                "success" => true,
+                "status" => "success",
+                "message" => "Cập nhật số lượng sản phẩm thành công",
+                "data" => [
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                ],
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => $th->getMessage(),
+                "data" => null,
+            ]);
+        }
+    }
+
     // Chuyển giỏ hàng từ guest sang user (khi đăng nhập)
     public function mergeCart(Request $request)
     {

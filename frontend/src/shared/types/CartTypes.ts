@@ -1,4 +1,3 @@
-
 import { Product } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
 
@@ -53,3 +52,7 @@ export interface CartRemoveBody {
 }
 
 export type ClearCartBody = CartRemoveBody;
+
+export type CartUpdateQuantityBody = AddToCartBody;
+
+export type CartUpdateQuantityResType = ResType<AddToCartBody>;

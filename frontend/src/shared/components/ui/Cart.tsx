@@ -58,7 +58,6 @@ export default function Cart() {
                     <ul className="woocommerce-mini-cart cart_list product_list_widget">
                       {cartItems.map(
                         (item) => (
-                          console.log(item),
                           (
                             <li
                               key={item.id}

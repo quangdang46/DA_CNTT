@@ -155,4 +155,30 @@ class CartService
         // Xóa giỏ hàng của user
         $this->cartRepository->deleteCart($userCart->id);
     }
+
+
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    public function updateItemQuantity($userId = null, $guestId = null, $productId, $quantity)
+    {
+        // Lấy giỏ hàng
+        $cart = $this->getCart($userId, $guestId);
+
+        if ($cart) {
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            $existingItem = $cart->items->firstWhere('product_id', $productId);
+
+            if ($existingItem) {
+                // Cập nhật số lượng sản phẩm
+                $existingItem->quantity = $quantity;
+                $existingItem->save();
+            } else {
+                // Nếu không có sản phẩm trong giỏ, có thể thêm sản phẩm mới vào giỏ hàng
+                $this->cartRepository->addItem($cart->id, $productId, $quantity);
+            }
+
+            return $cart;
+        }
+
+        return null; // Không tìm thấy giỏ hàng
+    }
 }

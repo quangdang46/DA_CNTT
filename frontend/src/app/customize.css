@@ -291,7 +291,9 @@ div.remove:before {
   text-indent: 0;
   text-align: center;
 }
-
+table.cart div.remove {
+  float: right;
+}
 .top-modal-address {
   display: block;
   text-align: left;

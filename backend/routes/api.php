@@ -93,7 +93,7 @@ Route::group(
     function () {
         Route::get('/', [CartController::class, 'getCart']);
         Route::post('add', [CartController::class, 'addItem']);
-        // Route::post('update', [CartController::class, 'update']);
+        Route::post('update', [CartController::class, 'updateQuantity']);
         Route::post('remove', [CartController::class, 'removeItem']);
         Route::post('clear', [CartController::class, 'clearCart']);
         Route::post('transfer-to-guest', [CartController::class, 'transferCartToGuest']);

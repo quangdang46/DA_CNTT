@@ -7,12 +7,15 @@ import {
   clearCart,
   removeFromCart,
   setCartItems,
+  updateQuantity,
 } from "@/shared/state/cartSlice"; // Import Redux actions
 import apiClient from "@/shared/config/apiClient";
 import {
   AddToCartBody,
   AddToCartResType,
   CartRemoveBody,
+  CartUpdateQuantityBody,
+  CartUpdateQuantityResType,
   ClearCartBody,
   ClearCartResType,
   GetCartResType,
@@ -152,6 +155,39 @@ export const useCart = () => {
     },
   });
 
+  const handleUpdateQuantity = useMutation<
+    CartUpdateQuantityResType,
+    Error,
+    CartUpdateQuantityBody
+  >({
+    mutationFn: async (body: CartUpdateQuantityBody) => {
+      const response = await apiClient.post<
+        CartUpdateQuantityBody,
+        CartUpdateQuantityResType
+      >("/cart/update", body);
+      return response;
+    },
+    onSuccess: ({ data }) => {
+      dispatch(updateQuantity(data));
+      refetch(); // Refetch dữ liệu giỏ hàng
+
+      Swal.fire({
+        icon: "success",
+        title: "Cart updated successfully!",
+        text: "The cart has been updated successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    },
+    onError: (error: any) => {
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi khi thêm sản phẩm!",
+        text: error?.response?.data?.message || "Đã xảy ra lỗi.",
+      });
+    },
+  });
+
   return {
     totalPrice,
     cartItems: cartData?.data.items || [], // Danh sách sản phẩm trong giỏ hàng
@@ -159,5 +195,6 @@ export const useCart = () => {
     handleAddToCart: handleAddToCart.mutate, // Hàm thêm sản phẩm
     handleRemoveFromCart: handleRemoveFromCart.mutate, // Hàm xóa sản phẩm
     handleClearCart: handleClearCart.mutate, // Hàm xóa toàn bộ giỏ hàng
+    handleUpdateQuantity: handleUpdateQuantity.mutate,
   };
 };

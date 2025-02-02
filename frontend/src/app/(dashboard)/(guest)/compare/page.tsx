@@ -1,5 +1,5 @@
 "use client";
-import { CornerDownLeft, Star, StarHalf, X } from "lucide-react";
+import {  Star, StarHalf, Undo2, X } from "lucide-react";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
@@ -63,7 +63,7 @@ export default function Page() {
               </h1>
               <p className="return-to-shop">
                 <Link className="button" href="/">
-                  <CornerDownLeft></CornerDownLeft>
+                  <Undo2 />
                   Return To Shop{" "}
                 </Link>
               </p>
