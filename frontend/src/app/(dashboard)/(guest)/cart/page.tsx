@@ -171,7 +171,7 @@ export default function Page() {
                               </bdi>
                             </span>
                             <div
-                              onClick={() => handleRemoveFromCart(item.id)}
+                              onClick={() => handleRemoveFromCart(item.product_id)}
                               className="remove"
                               title="Remove this item"
                             >

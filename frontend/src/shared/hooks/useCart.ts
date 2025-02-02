@@ -161,6 +161,8 @@ export const useCart = () => {
     CartUpdateQuantityBody
   >({
     mutationFn: async (body: CartUpdateQuantityBody) => {
+      // check quantity
+     
       const response = await apiClient.post<
         CartUpdateQuantityBody,
         CartUpdateQuantityResType
