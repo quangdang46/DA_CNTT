@@ -22,7 +22,7 @@ class ApplyDiscountController extends Controller
         $data = $request->validate([
             'discount_code' => 'required|string',
             'target_type' => 'required|in:order,product', // Loại mục tiêu: đơn hàng hoặc sản phẩm
-            'target_id' => 'required|integer', // ID của mục tiêu
+            'target_id' => 'required', // ID của mục tiêu string hoặc int
         ]);
 
         try {

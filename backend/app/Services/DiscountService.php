@@ -92,9 +92,37 @@ class DiscountService
 
     /**
      * Áp dụng mã giảm giá cho đơn hàng.
+     *
      */
+
+
+//      {
+//     "discount_code": "DISCOUNT10",
+//     "target_type": "order",
+//     "target_id": "temp_order_123", // ID tạm thời của đơn hàng
+//     "total_amount": 500 // Tổng giá trị đơn hàng tạm thời
+// }
     private function applyToOrder($discount, $orderId)
     {
+        // Kiểm tra nếu đơn hàng là tạm thời (chưa có trong DB)
+        if (strpos($orderId, 'temp_order_') === 0) {
+            // Giả sử total_amount được truyền từ request
+            $totalAmount = request()->input('total_amount');
+
+            if (!$totalAmount || !is_numeric($totalAmount)) {
+                throw new \Exception('Tổng giá trị đơn hàng không hợp lệ');
+            }
+
+            // Tính toán số tiền giảm
+            $discountAmount = $this->calculateDiscountAmount($discount, $totalAmount);
+
+            // Trả về kết quả mà không lưu vào DB
+            return [
+                'message' => 'Mã giảm giá đã được áp dụng thành công cho đơn hàng tạm thời',
+                'discount_amount' => $discountAmount,
+                'new_total_amount' => $totalAmount - $discountAmount,
+            ];
+        }
         $order = Order::find($orderId);
         if (!$order) {
             throw new \Exception('Đơn hàng không tồn tại');
