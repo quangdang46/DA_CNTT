@@ -79,14 +79,14 @@
   color: white;
 }
 
-.pending {
-  background-color: #f7cb7375;
+.creditCard {
+  background-color: #fc6e3b75;
 }
 
-.done {
-  background-color: #afd6ee75;
+.eWallet {
+  background-color: #5dabdb75;
 }
 
-.cancelled {
-  background-color: #f7737375;
+.gateways {
+  background-color: #b05dfd75;
 }

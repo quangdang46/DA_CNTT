@@ -52,6 +52,34 @@
   cursor: pointer;
 }
 
+.status {
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+.silver {
+  background-color: #a2a2a2;
+}
+
+.gold {
+  background-color: #debd02;
+}
+
+.bronze {
+  background-color: #e34f2d;
+}
+
+.active {
+  background-color: #00de1e75;
+}
+
+.inActive {
+  background-color: #6e6e6e75;
+}
+
 .view {
   background-color: teal;
 }
