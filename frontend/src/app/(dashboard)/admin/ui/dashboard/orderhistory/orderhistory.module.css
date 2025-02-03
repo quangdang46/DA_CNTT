@@ -2,7 +2,34 @@
   background-color: var(--bgSoft);
   padding: 20px;
   border-radius: 10px;
+}
+
+.containerPage {
+  background-color: var(--bgSoft);
+  padding: 20px;
+  border-radius: 10px;
   margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+}
+
+.view {
+  background-color: teal;
+}
+
+.delete {
+  background-color: crimson;
 }
 
 .top {
@@ -20,6 +47,12 @@
   cursor: pointer;
 }
 
+.title {
+  margin-bottom: 20px;
+  font-weight: 300;
+  color: var(--textSoft);
+}
+
 .table {
   width: 100%;
 }
@@ -30,41 +63,13 @@
 
 .user {
   display: flex;
-  align-items: center;
   gap: 10px;
-}
-
-.userName,
-.userEmail {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.userName {
-  max-width: 100px;
-}
-
-.userEmail {
-  max-width: 190px;
+  align-items: center;
 }
 
 .userImage {
-  border-radius: 50%;
   object-fit: cover;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.button {
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--text);
-  border: none;
-  cursor: pointer;
+  border-radius: 50%;
 }
 
 .status {
@@ -72,49 +77,18 @@
   padding: 5px;
   font-size: 14px;
   color: white;
-  text-align: center;
 }
 
-.platinum {
-  background-color: #9f609e;
+.Credit_Card {
+  background-color: #fc6e3b75;
 }
 
-.silver {
-  background-color: #a2a2a2;
+.PayPal {
+  background-color: #5dabdb75;
 }
 
-.gold {
-  background-color: #debd02;
-}
-
-.bronze {
-  background-color: #e34f2d;
-}
-
-.active {
-  background-color: #00de1e75;
-}
-
-.inactive {
-  background-color: #6e6e6e75;
-}
-
-.view {
-  background-color: teal;
-}
-
-.delete {
-  background-color: crimson;
-}
-
-@media (max-width: 1024px) {
-  .userName {
-    max-width: 100px;
-  }
-
-  .userEmail {
-    max-width: 150px;
-  }
+.Bank_Transfer {
+  background-color: #b05dfd75;
 }
 
 @media (max-width: 768px) {

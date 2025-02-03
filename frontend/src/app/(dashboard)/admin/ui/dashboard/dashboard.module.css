@@ -36,3 +36,64 @@
 .side {
   flex: 1;
 }
+
+@media (max-width: 1024px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+  }
+
+  .main {
+    flex: none;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .side {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .menu {
+    flex: none;
+    width: 100%;
+  }
+
+  .content {
+    flex: none;
+    width: 100%;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .main {
+    flex: none;
+    width: 100%;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .side {
+    display: none;
+  }
+}

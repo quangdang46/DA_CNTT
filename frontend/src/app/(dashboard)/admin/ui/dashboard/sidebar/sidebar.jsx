@@ -13,6 +13,7 @@ import {
   MdHelpCenter,
   MdLogout,
 } from "react-icons/md";
+import { AiOutlineHistory } from "react-icons/ai";
 
 const menuItems = [
   {
@@ -38,6 +39,11 @@ const menuItems = [
         path: "/dashboard/transactions",
         icon: <MdAttachMoney />,
       },
+      {
+        title: "History",
+        path: "/dashboard/orderhistory",
+        icon: <AiOutlineHistory />,
+      },
     ],
   },
   {
@@ -49,8 +55,8 @@ const menuItems = [
         icon: <MdWork />,
       },
       {
-        title: "Reports",
-        path: "/dashboard/reports",
+        title: "Warehouse",
+        path: "/dashboard/warehouses",
         icon: <MdAnalytics />,
       },
       {

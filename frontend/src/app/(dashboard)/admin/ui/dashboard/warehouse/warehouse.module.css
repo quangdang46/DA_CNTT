@@ -5,6 +5,13 @@
   margin-top: 20px;
 }
 
+.title {
+  font-weight: 300;
+  color: var(--textSoft);
+  margin-bottom: 20px;
+  margin-left: 10px;
+}
+
 .top {
   display: flex;
   align-items: center;
@@ -22,36 +29,37 @@
 
 .table {
   width: 100%;
+  margin-top: 15px;
 }
 
 .table td {
   padding: 10px;
 }
 
-.user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.userName,
-.userEmail {
+.productName,
+.supplier {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.userName {
-  max-width: 100px;
+.product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.userEmail {
-  max-width: 190px;
+.productName {
+  max-width: 150px;
 }
 
-.userImage {
-  border-radius: 50%;
+.productImage {
+  border-radius: 8px;
   object-fit: cover;
+}
+
+.supplier {
+  max-width: 150px;
 }
 
 .buttons {
@@ -67,38 +75,6 @@
   cursor: pointer;
 }
 
-.status {
-  border-radius: 5px;
-  padding: 5px;
-  font-size: 14px;
-  color: white;
-  text-align: center;
-}
-
-.platinum {
-  background-color: #9f609e;
-}
-
-.silver {
-  background-color: #a2a2a2;
-}
-
-.gold {
-  background-color: #debd02;
-}
-
-.bronze {
-  background-color: #e34f2d;
-}
-
-.active {
-  background-color: #00de1e75;
-}
-
-.inactive {
-  background-color: #6e6e6e75;
-}
-
 .view {
   background-color: teal;
 }
@@ -108,12 +84,18 @@
 }
 
 @media (max-width: 1024px) {
-  .userName {
+  .productName {
     max-width: 100px;
   }
 
-  .userEmail {
-    max-width: 150px;
+  .supplier {
+    max-width: 100px;
+  }
+
+  .table td,
+  .table th {
+    padding: 8px;
+    font-size: 12px; /* Giảm font-size */
   }
 }
 

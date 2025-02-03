@@ -34,21 +34,6 @@
   gap: 10px;
 }
 
-.userName,
-.userEmail {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.userName {
-  max-width: 100px;
-}
-
-.userEmail {
-  max-width: 190px;
-}
-
 .userImage {
   border-radius: 50%;
   object-fit: cover;
@@ -72,23 +57,6 @@
   padding: 5px;
   font-size: 14px;
   color: white;
-  text-align: center;
-}
-
-.platinum {
-  background-color: #9f609e;
-}
-
-.silver {
-  background-color: #a2a2a2;
-}
-
-.gold {
-  background-color: #debd02;
-}
-
-.bronze {
-  background-color: #e34f2d;
 }
 
 .active {
@@ -108,12 +76,10 @@
 }
 
 @media (max-width: 1024px) {
-  .userName {
-    max-width: 100px;
-  }
-
-  .userEmail {
-    max-width: 150px;
+  .table td,
+  .table th {
+    padding: 10px;
+    font-size: 13px; /* Giảm font-size */
   }
 }
 
