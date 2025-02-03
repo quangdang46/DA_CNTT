@@ -118,6 +118,7 @@ class DiscountService
 
             // Trả về kết quả mà không lưu vào DB
             return [
+                'success' => true,
                 'message' => 'Mã giảm giá đã được áp dụng thành công cho đơn hàng tạm thời',
                 'discount_amount' => $discountAmount,
                 'new_total_amount' => $totalAmount - $discountAmount,
@@ -145,6 +146,7 @@ class DiscountService
         $order->update(['total_amount' => $newTotalAmount]);
 
         return [
+            'success' => true,
             'message' => 'Mã giảm giá đã được áp dụng thành công cho đơn hàng',
             'order' => $order,
             'discount' => $orderDiscount,

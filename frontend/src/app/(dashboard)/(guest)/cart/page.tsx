@@ -1,50 +1,140 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import apiClient from "@/shared/config/apiClient";
 import { useCart } from "@/shared/hooks/useCart";
+import { DiscountResType, DiscountType } from "@/shared/types/DiscountTypes";
+import { useMutation } from "@tanstack/react-query";
 import { Undo2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { debounce } from "lodash"; // Import lodash để sử dụng debounce
+
+const useApplyCoupon = () => {
+  return useMutation<DiscountResType, Error, DiscountType>({
+    mutationFn: (body: DiscountType) =>
+      apiClient.post<DiscountType, DiscountResType>("/apply-discount", body),
+  });
+};
 
 export default function Page() {
   const { cartItems, handleRemoveFromCart, handleUpdateQuantity, totalPrice } =
     useCart();
-  const handleQuantity = (e: any, productId: string, action: string) => {
-    const currentItem = cartItems.find((item) => item.product_id === productId);
-    if (!currentItem) return;
 
-    let newQuantity = currentItem.quantity;
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
+  const [shouldNotify, setShouldNotify] = useState<boolean>(false); // Trạng thái kiểm soát thông báo
+  const { mutate, isPending } = useApplyCoupon();
 
-    if (action === "increase") {
-      newQuantity += 1;
-    } else if (action === "decrease") {
-      newQuantity = Math.max(0, newQuantity - 1);
-      if (newQuantity === 0) {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You want to remove the item from cart",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, remove it!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleRemoveFromCart(productId);
-          }
-        });
-        return;
-      }
-    } else if (action === "input") {
-      newQuantity = parseInt(e.target.value) || 0;
+
+  // Hàm áp dụng mã giảm giá (khi nhấn nút "Apply coupon")
+  const handleApplyCoupon = (): void => {
+    if (!couponCode.trim()) {
+      Swal.fire({
+        title: "Error",
+        text: "Please enter a valid coupon code",
+        icon: "error",
+      });
+      return;
     }
-    handleUpdateQuantity({
-      product_id: productId,
-      quantity: newQuantity,
-    });
+
+    setShouldNotify(true); // Bật thông báo
+    mutate(
+      {
+        discount_code: couponCode,
+        target_type: "order",
+        target_id: "temp_order_123", // ID tạm thời của đơn hàng
+        total_amount: totalPrice, // Tổng giá trị đơn hàng
+      },
+      {
+        onSuccess: (data) => {
+          if (!data.success) {
+            Swal.fire({
+              title: "Error",
+              text: data.message,
+              icon: "error",
+            });
+            return;
+          }
+          setDiscountAmount(data.discount_amount); // Cập nhật số tiền giảm
+        },
+      }
+    );
   };
+
+  // Tự động áp dụng lại mã giảm giá khi tổng giá trị đơn hàng thay đổi
+  useEffect(() => {
+    if (couponCode.trim()) {
+      mutate(
+        {
+          discount_code: couponCode,
+          target_type: "order",
+          target_id: "temp_order_123", // ID tạm thời của đơn hàng
+          total_amount: totalPrice, // Tổng giá trị đơn hàng
+        },
+        {
+          onSuccess: (data) => {
+            if (!data.success) {
+              return; // Không hiển thị thông báo nếu thất bại
+            }
+            setDiscountAmount(data.discount_amount); // Cập nhật số tiền giảm
+
+            // Hiển thị thông báo nếu shouldNotify === true
+            if (shouldNotify) {
+              Swal.fire({
+                title: "Success",
+                text: "Coupon applied successfully!",
+                icon: "success",
+              });
+              setShouldNotify(false); // Tắt thông báo sau khi hiển thị
+            }
+          },
+        }
+      );
+    }
+  }, [totalPrice, couponCode]);
+
+
+
+    const handleQuantity = (e: any, productId: string, action: string) => {
+      const currentItem = cartItems.find(
+        (item) => item.product_id === productId
+      );
+      if (!currentItem) return;
+
+      let newQuantity = currentItem.quantity;
+
+      if (action === "increase") {
+        newQuantity += 1;
+      } else if (action === "decrease") {
+        newQuantity = Math.max(0, newQuantity - 1);
+        if (newQuantity === 0) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You want to remove the item from cart",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, remove it!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              handleRemoveFromCart(productId);
+            }
+          });
+          return;
+        }
+      } else if (action === "input") {
+        newQuantity = parseInt(e.target.value) || 0;
+      }
+      handleUpdateQuantity({
+        product_id: productId,
+        quantity: newQuantity,
+      });
+    };
   return (
     <WrapperContent>
       {/* empty */}
@@ -86,11 +176,7 @@ export default function Page() {
             </div>
             {cartItems.length > 0 && (
               <div className="cart-wrapper">
-                <form
-                  className="woocommerce-cart-form"
-                  action="https://techmarket.madrasthemes.com/cart/"
-                  method="post"
-                >
+                <div className="woocommerce-cart-form">
                   <table
                     className="shop_table shop_table_responsive cart woocommerce-cart-form__contents"
                     cellSpacing={0}
@@ -232,23 +318,25 @@ export default function Page() {
                               name="coupon_code"
                               className="input-text"
                               id="coupon_code"
-                              defaultValue=""
                               placeholder="Coupon code"
+                              value={couponCode}
+                              onChange={(e) => setCouponCode(e.target.value)}
                             />{" "}
                             <button
-                              type="submit"
                               className="button"
                               name="apply_coupon"
                               value="Apply coupon"
+                              onClick={handleApplyCoupon}
+                              disabled={isPending}
                             >
-                              Apply coupon
+                              {isPending ? "Applying..." : "Apply coupon"}
                             </button>
                           </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                </form>
+                </div>
                 <div className="cart-collaterals">
                   <div className="cart_totals">
                     <h2>Cart totals</h2>
@@ -265,10 +353,27 @@ export default function Page() {
                                 <span className="woocommerce-Price-currencySymbol">
                                   $
                                 </span>
-                                {totalPrice}
+                                {totalPrice.toFixed(2)}
                               </bdi>
                             </span>
                           </td>
+                        </tr>
+                        <tr className="order-total">
+                          {discountAmount !== 0 && (
+                            <>
+                              <th>Discount</th>
+                              <td data-title="Discount">
+                                <span className="woocommerce-Price-amount amount">
+                                  <bdi>
+                                    <span className="woocommerce-Price-currencySymbol">
+                                      $
+                                    </span>
+                                    {discountAmount.toFixed(2)}
+                                  </bdi>
+                                </span>
+                              </td>
+                            </>
+                          )}
                         </tr>
                         <tr className="woocommerce-shipping-totals shipping">
                           <th>Shipping</th>
@@ -325,7 +430,6 @@ export default function Page() {
                             </p>
                             <form
                               className="woocommerce-shipping-calculator"
-                              action="https://techmarket.madrasthemes.com/cart/"
                               method="post"
                             >
                               <a
@@ -411,7 +515,6 @@ export default function Page() {
                                 </p>
                                 <p>
                                   <button
-                                    type="submit"
                                     name="calc_shipping"
                                     value={1}
                                     className="button"
@@ -443,7 +546,7 @@ export default function Page() {
                                   <span className="woocommerce-Price-currencySymbol">
                                     $
                                   </span>
-                                  1,279.80
+                                  {(totalPrice - discountAmount).toFixed(2)}
                                 </bdi>
                               </span>
                             </strong>{" "}
@@ -454,7 +557,6 @@ export default function Page() {
                     <div className="wc-proceed-to-checkout">
                       <form
                         className="woocommerce-shipping-calculator"
-                        action="https://techmarket.madrasthemes.com/cart/"
                         method="post"
                       >
                         <a href="#" className="shipping-calculator-button">
@@ -537,7 +639,6 @@ export default function Page() {
                           </p>
                           <p>
                             <button
-                              type="submit"
                               name="calc_shipping"
                               value={1}
                               className="button"
