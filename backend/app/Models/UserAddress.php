@@ -11,6 +11,7 @@ class UserAddress extends Model
 
     protected $fillable = [
         'user_id',
+        'guest_id',
         'ward_code',
         'district_code',
         'province_code',

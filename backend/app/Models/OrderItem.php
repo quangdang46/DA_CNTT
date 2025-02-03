@@ -17,15 +17,15 @@ class OrderItem extends Model
         'rating',
     ];
 
-    // Quan hệ: OrderItem thuộc về Order
+    // Relationship: Một order item thuộc về một đơn hàng
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
-    // Quan hệ: OrderItem thuộc về Product
+    // Relationship: Một order item thuộc về một sản phẩm
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class); // Giả sử bạn có model Product
     }
 }

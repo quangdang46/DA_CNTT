@@ -14,18 +14,20 @@ class Payment extends Model
         'payment_method',
         'amount',
         'payment_status',
-        'transaction_id',
+        'failure_reason',
+        'refund_status',
+        'refund_at',
+        'vnpay_data',
+        'paid_at',
+        'payment_gateway',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
     ];
 
-    // Quan hệ: Payment thuộc về Order
+    // Relationship: Một thanh toán thuộc về một đơn hàng
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    // Quan hệ: Payment có nhiều PaymentLogs
-    public function paymentLogs()
-    {
-        return $this->hasMany(PaymentLog::class);
     }
 }

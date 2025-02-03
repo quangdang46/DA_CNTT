@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Người dùng đã đăng nhập
+            $table->string('guest_id')->nullable()->unique();
             // address ward district province
             $table->string('ward_code');
             $table->string('district_code');

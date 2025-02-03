@@ -39,4 +39,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductDiscount::class, 'product_id');
     }
+    // Relationship: Một sản phẩm có thể xuất hiện trong nhiều order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

@@ -14,11 +14,25 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->enum('payment_method', ['QR', 'cash']); // Đồng bộ kiểu dữ liệu với orders
+            $table->enum('payment_method', ['QR', 'cash']);
             $table->decimal('amount', 10, 2);
+
+            // Trạng thái thanh toán
             $table->enum('payment_status', ['success', 'failed', 'pending'])->default('pending');
-            $table->string('transaction_id')->nullable();
-            $table->timestamp('paid_at')->nullable(); // Ghi nhận thời gian thanh toán
+            $table->string('failure_reason')->nullable(); // Lưu lý do thất bại nếu có
+
+            // Hoàn tiền
+            $table->enum('refund_status', ['none', 'requested', 'processing', 'refunded'])->default('none');
+            $table->timestamp('refund_at')->nullable(); // Ngày hoàn tiền
+
+            // Thông tin VNPay (gom nhóm vào JSON để dễ quản lý)
+            $table->json('vnpay_data')->nullable(); // Lưu tất cả dữ liệu VNPay trong một cột
+
+            $table->timestamp('paid_at')->nullable();
+            $table->string('payment_gateway')->nullable();
+            $table->string('customer_name')->nullable();
+            $table->string('customer_email')->nullable();
+            $table->string('customer_phone')->nullable();
             $table->timestamps();
         });
     }
