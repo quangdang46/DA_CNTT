@@ -1,52 +1,54 @@
+import Pagination from "@/app/ui/dashboard/pagination/pagination";
+import Search from "@/app/ui/dashboard/search/search";
+import styles from "@/app/ui/dashboard/teams/teams.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "@/app/ui/dashboard/products/product.module.css";
-import Search from "@/app/ui/dashboard/search/search";
-import Pagination from "@/app/ui/dashboard/pagination/pagination";
 
-const ProductsPage = () => {
+const UsersPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a product..." />
-        <Link href="/dashboard/products/add">
+        <Search placeholder="Search for an employee..." />
+        <Link href="/dashboard/teams/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>ID</td>
-            <td>Title</td>
-            <td>Description</td>
-            <td>Price</td>
-            <td>Created At</td>
-            <td>Stock</td>
+            <td>Employee Name</td>
+            <td>Email</td>
+            <td>Worked At</td>
+            <td>Role</td>
+            <td>Status</td>
             <td>Action</td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>#111</td>
             <td>
-              <div className={styles.product}>
+              <div className={styles.user}>
                 <Image
-                  src="/noproduct.jpg"
+                  src="/noavatar.png"
                   alt=""
                   width={40}
                   height={40}
-                  className={styles.productImage}
+                  className={styles.userImage}
                 />
-                iPhone 16 Pro Max 256GB
+                Ngoc Linh
               </div>
             </td>
-            <td>100% new server, genuine Apple Vietnam</td>
-            <td>$999</td>
-            <td>13.01.2025</td>
-            <td>72</td>
+            <td>ngoclinh@gmail.com</td>
+            <td>12.12.2002</td>
+            <td>IT Support</td>
+            <td>
+              <span className={`${styles.status} ${styles.active}`}>
+                active
+              </span>
+            </td>
             <td>
               <div className={styles.buttons}>
-                <Link href="/dashboard/products/test">
+                <Link href="/dashboard/teams/test">
                   <button className={`${styles.button} ${styles.view}`}>
                     View
                   </button>
@@ -59,26 +61,29 @@ const ProductsPage = () => {
           </tr>
 
           <tr>
-            <td>#111</td>
             <td>
-              <div className={styles.product}>
+              <div className={styles.user}>
                 <Image
-                  src="/noproduct.jpg"
+                  src="/noavatar.png"
                   alt=""
                   width={40}
                   height={40}
-                  className={styles.productImage}
+                  className={styles.userImage}
                 />
-                iPhone 16 Pro Max 256GB
+                Ngoc Linh
               </div>
             </td>
-            <td>100% new server, genuine Apple Vietnam</td>
-            <td>$999</td>
-            <td>13.01.2025</td>
-            <td>72</td>
+            <td>ngoclinh@gmail.com</td>
+            <td>12.12.2002</td>
+            <td>Shipper</td>
+            <td>
+              <span className={`${styles.status} ${styles.inActive}`}>
+                inactive
+              </span>
+            </td>
             <td>
               <div className={styles.buttons}>
-                <Link href="/dashboard/products/test">
+                <Link href="/dashboard/teams/test">
                   <button className={`${styles.button} ${styles.view}`}>
                     View
                   </button>
@@ -96,4 +101,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default UsersPage;

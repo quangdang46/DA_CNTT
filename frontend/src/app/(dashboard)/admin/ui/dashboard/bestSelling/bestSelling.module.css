@@ -1,28 +1,19 @@
 .container {
+  height: max-content;
   background-color: var(--bgSoft);
-  padding: 20px;
+  padding: 20px 15px 20px 15px;
   border-radius: 10px;
-  margin-top: 20px;
 }
 
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.addButton {
-  padding: 10px;
-  background-color: #5d57c9;
-  color: var(--text);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.title {
+  font-weight: 300;
+  color: var(--textSoft);
+  margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .table {
   width: 100%;
-  margin-top: 15px;
 }
 
 .table td {

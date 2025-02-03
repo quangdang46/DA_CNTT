@@ -22,21 +22,20 @@
 
 .table {
   width: 100%;
-  margin-top: 15px;
 }
 
 .table td {
   padding: 10px;
 }
 
-.product {
+.user {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.productImage {
-  border-radius: 8px;
+.userImage {
+  border-radius: 50%;
   object-fit: cover;
 }
 
@@ -51,6 +50,21 @@
   color: var(--text);
   border: none;
   cursor: pointer;
+}
+
+.status {
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 14px;
+  color: white;
+}
+
+.active {
+  background-color: #00de1e75;
+}
+
+.inActive {
+  background-color: #6e6e6e75;
 }
 
 .view {
