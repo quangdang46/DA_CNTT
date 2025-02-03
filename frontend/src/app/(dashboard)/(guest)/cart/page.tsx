@@ -73,7 +73,28 @@ export default function Page() {
       }
     );
   };
+  // Hàm debounce để gọi API tự động
+  const debouncedApplyCoupon = debounce((body: DiscountType) => {
+    mutate(body, {
+      onSuccess: (data) => {
+        if (!data.success) {
+          return; // Không hiển thị thông báo nếu thất bại
+        }
+        setDiscountAmount(data.discount_amount); // Cập nhật số tiền giảm
+      },
+    });
+  }, 500);
 
+  useEffect(() => {
+    if (isCouponApplied && couponCode.trim()) {
+      debouncedApplyCoupon({
+        discount_code: couponCode,
+        target_type: "order",
+        target_id: "temp_order_123", // ID tạm thời của đơn hàng
+        total_amount: totalPrice, // Tổng giá trị đơn hàng
+      });
+    }
+  }, [totalPrice, isCouponApplied, couponCode]);
   const handleQuantity = (e: any, productId: string, action: string) => {
     const currentItem = cartItems.find((item) => item.product_id === productId);
     if (!currentItem) return;
@@ -520,7 +541,10 @@ export default function Page() {
                                   <span className="woocommerce-Price-currencySymbol">
                                     $
                                   </span>
-                                  {(totalPrice - discountAmount).toFixed(2)}
+                                  {Math.max(
+                                    totalPrice - discountAmount,
+                                    0
+                                  ).toFixed(2)}
                                 </bdi>
                               </span>
                             </strong>{" "}
