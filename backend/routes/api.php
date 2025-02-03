@@ -4,9 +4,12 @@ use App\Http\Controllers\ApplyDiscountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDiscountController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDiscountController;
 use App\Http\Controllers\UserController;
@@ -142,6 +145,36 @@ Route::group(
 
 
 Route::post('/apply-discount', [ApplyDiscountController::class, 'applyDiscount']);
+
+Route::group(
+    [
+        'middleware' => 'api',
+        'prefix' => 'checkout'
+    ],
+    function () {
+        // Tạo đơn hàng (Checkout)
+        Route::post('/create', [CheckoutController::class, 'checkout'])
+            ->name('checkout.create');
+
+        // Cập nhật trạng thái thanh toán
+        Route::post('/payment/update/{orderId}', [PaymentController::class, 'updatePaymentStatus'])
+            ->name('checkout.payment.update');
+
+        // Lấy thông tin đơn hàng theo ID hoặc tracking code
+        Route::get('/order/{idOrTrackingCode}', [OrderController::class, 'getOrderDetails'])
+            ->name('checkout.order.details');
+
+        // Hủy đơn hàng
+        Route::post('/order/cancel/{orderId}', [OrderController::class, 'cancelOrder'])
+            ->name('checkout.order.cancel');
+
+        // Theo dõi trạng thái vận chuyển
+        Route::get('/tracking/{trackingCode}', [OrderController::class, 'trackOrder'])
+            ->name('checkout.order.track');
+    }
+
+);
+
 /*
 
 

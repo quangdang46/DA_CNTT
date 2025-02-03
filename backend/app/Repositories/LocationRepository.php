@@ -59,7 +59,8 @@ class LocationRepository implements LocationRepositoryInterface
         return $userAddress;
     }
 
-    public function setDefault($userId, $idAddress){
+    public function setDefault($userId, $idAddress)
+    {
         $userAddress = $this->userAddress->where('user_id', $userId)->get();
         foreach ($userAddress as $address) {
             $address->update(['is_default' => 0]);
@@ -67,5 +68,18 @@ class LocationRepository implements LocationRepositoryInterface
         $address = $this->userAddress->find($idAddress);
         $address->update(['is_default' => 1]);
         return $address;
+    }
+
+    public function getAddressById(int $addressId)
+    {
+        return $this->userAddress->find($addressId);
+    }
+    public function getDefaultAddressByUserId($userId, $guestId = null)
+    {
+        if ($guestId) {
+            return $this->userAddress->where('user_id', $userId)->where('is_default', 1)->first();
+        } else {
+            return $this->userAddress->where('guest_id', $guestId)->where('is_default', 1)->first();
+        }
     }
 }
