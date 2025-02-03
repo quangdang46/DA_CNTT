@@ -26,11 +26,8 @@ export default function Page() {
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [discountAmount, setDiscountAmount] = useState<number>(0);
-  const [shouldNotify, setShouldNotify] = useState<boolean>(false); // Trạng thái kiểm soát thông báo
+  const [isCouponApplied, setIsCouponApplied] = useState<boolean>(false); // Trạng thái kiểm soát việc tắt input và nút
   const { mutate, isPending } = useApplyCoupon();
-
-
-  // Hàm áp dụng mã giảm giá (khi nhấn nút "Apply coupon")
   const handleApplyCoupon = (): void => {
     if (!couponCode.trim()) {
       Swal.fire({
@@ -41,7 +38,6 @@ export default function Page() {
       return;
     }
 
-    setShouldNotify(true); // Bật thông báo
     mutate(
       {
         discount_code: couponCode,
@@ -60,81 +56,58 @@ export default function Page() {
             return;
           }
           setDiscountAmount(data.discount_amount); // Cập nhật số tiền giảm
+          setIsCouponApplied(true); // Tắt input và nút "Apply coupon"
+          Swal.fire({
+            title: "Success",
+            text: "Coupon applied successfully!",
+            icon: "success",
+          });
+        },
+        onError: (error: Error) => {
+          Swal.fire({
+            title: "Error",
+            text: error.message || "An unexpected error occurred",
+            icon: "error",
+          });
         },
       }
     );
   };
 
-  // Tự động áp dụng lại mã giảm giá khi tổng giá trị đơn hàng thay đổi
-  useEffect(() => {
-    if (couponCode.trim()) {
-      mutate(
-        {
-          discount_code: couponCode,
-          target_type: "order",
-          target_id: "temp_order_123", // ID tạm thời của đơn hàng
-          total_amount: totalPrice, // Tổng giá trị đơn hàng
-        },
-        {
-          onSuccess: (data) => {
-            if (!data.success) {
-              return; // Không hiển thị thông báo nếu thất bại
-            }
-            setDiscountAmount(data.discount_amount); // Cập nhật số tiền giảm
+  const handleQuantity = (e: any, productId: string, action: string) => {
+    const currentItem = cartItems.find((item) => item.product_id === productId);
+    if (!currentItem) return;
 
-            // Hiển thị thông báo nếu shouldNotify === true
-            if (shouldNotify) {
-              Swal.fire({
-                title: "Success",
-                text: "Coupon applied successfully!",
-                icon: "success",
-              });
-              setShouldNotify(false); // Tắt thông báo sau khi hiển thị
-            }
-          },
-        }
-      );
-    }
-  }, [totalPrice, couponCode]);
+    let newQuantity = currentItem.quantity;
 
-
-
-    const handleQuantity = (e: any, productId: string, action: string) => {
-      const currentItem = cartItems.find(
-        (item) => item.product_id === productId
-      );
-      if (!currentItem) return;
-
-      let newQuantity = currentItem.quantity;
-
-      if (action === "increase") {
-        newQuantity += 1;
-      } else if (action === "decrease") {
-        newQuantity = Math.max(0, newQuantity - 1);
-        if (newQuantity === 0) {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You want to remove the item from cart",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, remove it!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              handleRemoveFromCart(productId);
-            }
-          });
-          return;
-        }
-      } else if (action === "input") {
-        newQuantity = parseInt(e.target.value) || 0;
+    if (action === "increase") {
+      newQuantity += 1;
+    } else if (action === "decrease") {
+      newQuantity = Math.max(0, newQuantity - 1);
+      if (newQuantity === 0) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You want to remove the item from cart",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, remove it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleRemoveFromCart(productId);
+          }
+        });
+        return;
       }
-      handleUpdateQuantity({
-        product_id: productId,
-        quantity: newQuantity,
-      });
-    };
+    } else if (action === "input") {
+      newQuantity = parseInt(e.target.value) || 0;
+    }
+    handleUpdateQuantity({
+      product_id: productId,
+      quantity: newQuantity,
+    });
+  };
   return (
     <WrapperContent>
       {/* empty */}
@@ -321,13 +294,14 @@ export default function Page() {
                               placeholder="Coupon code"
                               value={couponCode}
                               onChange={(e) => setCouponCode(e.target.value)}
+                              disabled={isCouponApplied}
                             />{" "}
                             <button
                               className="button"
                               name="apply_coupon"
                               value="Apply coupon"
                               onClick={handleApplyCoupon}
-                              disabled={isPending}
+                              disabled={isPending || isCouponApplied}
                             >
                               {isPending ? "Applying..." : "Apply coupon"}
                             </button>
