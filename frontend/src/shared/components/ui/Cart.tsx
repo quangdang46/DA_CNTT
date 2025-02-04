@@ -42,8 +42,9 @@ export default function Cart() {
           <ShoppingCart strokeWidth={1} />
           <span className="count">{cartItems.length}</span>
           <span className="amount">
-            <span className="price-label">Your Cart</span> $
-            {(totalPrice - deliveryPrice).toFixed(2)}
+            <span className="price-label">Your Cart</span>
+            {totalPrice > deliveryPrice &&
+              ` $ ${(totalPrice - deliveryPrice).toFixed(2)}`}
           </span>
         </div>
         {/* Dropdown chứa danh sách sản phẩm */}
@@ -109,7 +110,8 @@ export default function Cart() {
 
                     <p className="woocommerce-mini-cart__total total">
                       <strong>Subtotal:</strong> $
-                      {(totalPrice - deliveryPrice).toFixed(2)}
+                      {totalPrice > deliveryPrice &&
+                        (totalPrice - deliveryPrice).toFixed(2)}
                     </p>
 
                     <p className="woocommerce-mini-cart__buttons buttons">

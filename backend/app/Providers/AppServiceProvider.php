@@ -24,6 +24,7 @@ use App\Repositories\ProductDiscountRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WishlistRepository;
+use App\Services\GHTKService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -49,12 +50,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
-        // $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        //
         foreach ($this->serviceBindings as $key => $val) {
             $this->app->bind($key, $val);
         }
+        // Đăng ký GHTKService
+        $this->app->singleton(GHTKService::class, function ($app) {
+            return new GHTKService();
+        });
     }
 
     /**
