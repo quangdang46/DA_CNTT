@@ -1,21 +1,21 @@
 "use client";
 import apiClient from "@/shared/config/apiClient";
+import { useCheckout } from "@/shared/contexts/CheckoutContext";
 import { useCart } from "@/shared/hooks/useCart";
 import { DiscountResType, DiscountType } from "@/shared/types/DiscountTypes";
 import { useMutation } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-interface Props {
-  setDiscountAmount: React.Dispatch<React.SetStateAction<number>>;
-}
+
 const useApplyCoupon = () => {
   return useMutation<DiscountResType, Error, DiscountType>({
     mutationFn: (body: DiscountType) =>
       apiClient.post<DiscountType, DiscountResType>("/apply-discount", body),
   });
 };
-export default function MiniCoupon({ setDiscountAmount }: Props) {
+export default function MiniCoupon() {
+  const { setDiscountAmount } = useCheckout();
   const { totalPrice } = useCart();
   const [show, setShow] = useState(false);
   const [couponCode, setCouponCode] = useState<string>("");

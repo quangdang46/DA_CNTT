@@ -26,7 +26,7 @@ export default function OrderForm() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const { control, handleSubmit, setValue } = useForm<OrderFormValues>({
+  const { control, handleSubmit } = useForm<OrderFormValues>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
       name: user?.name || "",
@@ -50,10 +50,10 @@ export default function OrderForm() {
         setIsModalOpen={setIsModalOpen}
       ></AddressModal>
       <form
-        action="#"
         className="checkout woocommerce-checkout"
         method="post"
         name="checkout"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div id="customer_details" className="col2-set">
           <div className="col-1">
@@ -61,22 +61,6 @@ export default function OrderForm() {
               <h3>Billing Details</h3>
               <div className="woocommerce-billing-fields__field-wrapper-outer">
                 <div className="woocommerce-billing-fields__field-wrapper">
-                  {/* <label className="" htmlFor="name">
-                      First Name
-                      <abbr title="required" className="required">
-                        *
-                      </abbr>
-                    </label>
-                    <input
-                      type="text"
-                      value={user.name || ""}
-                      disabled={!isLoggedIn}
-                      placeholder=""
-                      id="name"
-                      name="name"
-                      className="input-text"
-                    /> */}
-
                   <Controller
                     name="name"
                     control={control}

@@ -1,6 +1,12 @@
+"use client";
+import CheckoutItem from "@/shared/components/ui/Checkout/CheckoutItem";
+import { useCheckout } from "@/shared/contexts/CheckoutContext";
+import { useCart } from "@/shared/hooks/useCart";
 import React from "react";
 
 export default function SummaryCheckout() {
+  const { cartItems, totalPrice } = useCart();
+  const { discountAmount } = useCheckout();
   return (
     <>
       <h3 id="order_review_heading">Your order</h3>
@@ -15,76 +21,52 @@ export default function SummaryCheckout() {
               </tr>
             </thead>
             <tbody>
-              <tr className="cart_item">
-                <td className="product-name">
-                  <strong className="product-quantity">1 ×</strong>
-                  KU6470 6 Series UHD Crystal Colour HDR Smart TV&nbsp;
-                </td>
-                <td className="product-total">
-                  <span className="woocommerce-Price-amount amount">
-                    <span className="woocommerce-Price-currencySymbol">£</span>
-                    627.99
-                  </span>
-                </td>
-              </tr>
-              <tr className="cart_item">
-                <td className="product-name">
-                  <strong className="product-quantity">1 ×</strong>
-                  4K Action Cam GPS&nbsp;
-                </td>
-                <td className="product-total">
-                  <span className="woocommerce-Price-amount amount">
-                    <span className="woocommerce-Price-currencySymbol">£</span>
-                    219.00
-                  </span>
-                </td>
-              </tr>
-              <tr className="cart_item">
-                <td className="product-name">
-                  <strong className="product-quantity">1 ×</strong>
-                  Bluetooth on-ear PureBass Headphones&nbsp;
-                </td>
-                <td className="product-total">
-                  <span className="woocommerce-Price-amount amount">
-                    <span className="woocommerce-Price-currencySymbol">£</span>
-                    99.95
-                  </span>
-                </td>
-              </tr>
-              <tr className="cart_item">
-                <td className="product-name">
-                  <strong className="product-quantity">1 ×</strong>
-                  Band Fitbit Flex&nbsp;
-                </td>
-                <td className="product-total">
-                  <span className="woocommerce-Price-amount amount">
-                    <span className="woocommerce-Price-currencySymbol">£</span>
-                    17.00
-                  </span>
-                </td>
-              </tr>
+              {cartItems.map((item) => (
+                <CheckoutItem key={item.id} item={item} />
+              ))}
             </tbody>
             <tfoot>
               <tr className="cart-subtotal">
                 <th>Subtotal</th>
-                <td>
+                <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
-                    <span className="woocommerce-Price-currencySymbol">£</span>
-                    963.94
+                    <bdi>
+                      <span className="woocommerce-Price-currencySymbol">
+                        $
+                      </span>
+                      {totalPrice.toFixed(2)}
+                    </bdi>
                   </span>
                 </td>
               </tr>
-              <tr className="order-total">
-                <th>Total</th>
-                <td>
-                  <strong>
-                    <span className="woocommerce-Price-amount amount">
-                      <span className="woocommerce-Price-currencySymbol">
-                        £
+              <tr className="cart-subtotal">
+                {discountAmount !== 0 && (
+                  <>
+                    <th>Discount</th>
+                    <td data-title="Discount">
+                      <span className="woocommerce-Price-amount amount">
+                        <bdi>
+                          <span className="woocommerce-Price-currencySymbol">
+                            $
+                          </span>
+                          {discountAmount.toFixed(2)}
+                        </bdi>
                       </span>
-                      963.94
-                    </span>
-                  </strong>
+                    </td>
+                  </>
+                )}
+              </tr>
+              <tr className="cart-subtotal">
+                <th>Total</th>
+                <td data-title="Subtotal">
+                  <span className="woocommerce-Price-amount amount">
+                    <bdi>
+                      <span className="woocommerce-Price-currencySymbol">
+                        $
+                      </span>
+                      {Math.max(totalPrice - discountAmount, 0).toFixed(2)}
+                    </bdi>
+                  </span>
                 </td>
               </tr>
             </tfoot>
@@ -145,12 +127,12 @@ export default function SummaryCheckout() {
                   <span className="required">*</span>
                 </label>
               </p>
-              <a
-                href="order-received.html"
+              <button
+                type="submit"
                 className="button wc-forward text-center"
               >
                 Place order
-              </a>
+              </button>
             </div>
           </div>
         </div>
