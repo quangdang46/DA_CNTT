@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDiscountController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VNPayController;
 use App\Http\Controllers\Wishlist;
 use Illuminate\Support\Facades\Route;
 
@@ -174,7 +175,8 @@ Route::group(
     }
 
 );
-
+Route::get('/vnpay/payment', [VNPayController::class, 'createPayment']);
+Route::get('/vnpay/paymentReturn', [VnpayController::class, 'paymentReturn']);
 /*
 
 
