@@ -7,7 +7,7 @@ import locationApiRequest from "@/shared/apiRequests/locationApi";
 import AddressModal from "@/shared/components/ui/Account/AddressForm/AddressModal";
 
 export default function AddressTab() {
-  const { data ,refetch} = locationApiRequest.useGetAddress();
+  const { data } = locationApiRequest.useGetAddress();
   const initAddress = data?.data;
   const { activeTab } = useTabs();
 

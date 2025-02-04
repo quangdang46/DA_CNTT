@@ -2,18 +2,19 @@
 import locationApiRequest from "@/shared/apiRequests/locationApi";
 import AddressModal from "@/shared/components/ui/Account/AddressForm/AddressModal";
 import ShippingForm from "@/shared/components/ui/Cart/ShippingForm";
+import { selectTotalPrice } from "@/shared/state/cartSlice";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 interface Props {
   discountAmount: number;
-  totalPrice: number;
 }
-export default function CartSummary({ discountAmount, totalPrice }: Props) {
+export default function CartSummary({ discountAmount }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data ,refetch} = locationApiRequest.useGetAddress();
+  const { data } = locationApiRequest.useGetAddress();
   const initAddress = data?.data;
   const openModal = () => setIsModalOpen(true);
-
+  const totalPrice = useSelector(selectTotalPrice);
   return (
     <>
       <AddressModal

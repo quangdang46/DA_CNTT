@@ -2,7 +2,11 @@ import { Product } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
 
 // Base response for all API responses
-
+export enum DeliveryType {
+  Normal = "normal",
+  Express = "express",
+  Free = "free",
+}
 // Cart item base
 export interface CartItemBase {
   id: string;

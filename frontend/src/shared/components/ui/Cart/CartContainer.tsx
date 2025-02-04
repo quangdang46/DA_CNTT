@@ -169,7 +169,6 @@ export default function CartContainer() {
       </div>
       <CartSummary
         discountAmount={discountAmount}
-        totalPrice={totalPrice}
       ></CartSummary>
     </div>
   );
