@@ -33,8 +33,8 @@ class ApiClient {
       (response) => {
         const guestIdFromCookie = response.headers["x-guest-id"];
 
-        if (guestIdFromCookie) {
-          localStorage.setItem("guest_id", guestIdFromCookie); // Lưu guest_id vào localStorage
+        if (guestIdFromCookie && !localStorage.getItem("guest_id")) {
+          localStorage.setItem("guest_id", guestIdFromCookie);
         }
 
         return response;

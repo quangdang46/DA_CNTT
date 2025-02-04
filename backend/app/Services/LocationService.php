@@ -29,22 +29,31 @@ class LocationService
         return $this->locationRepository->getWards($districtId);
     }
 
-    public function addOrUpdate($request, $userId)
+    public function addOrUpdate($request, $userId, $guestId)
     {
         $id = $request->id;
         if ($id) {
             return $this->locationRepository->update($request, $id);
         }
-        return $this->locationRepository->create($request, $userId);
+        // return $this->locationRepository->create($request, $userId);
+        if ($userId) {
+            return $this->locationRepository->create($request, $userId, null);
+        }
+        return $this->locationRepository->create($request, null, $guestId);
     }
 
-    public function delete($idAddress)
+    public function delete($idAddress, $userId, $guestId)
     {
-        return $this->locationRepository->delete($idAddress);
+        return $this->locationRepository->delete($idAddress, $userId, $guestId);
     }
 
-    public function setDefault($userId, $idAddress)
+    public function setDefault($userId, $guestId, $idAddress)
     {
-        return $this->locationRepository->setDefault($userId, $idAddress);
+        return $this->locationRepository->setDefault($userId, $guestId, $idAddress);
+    }
+
+    public function getAddresses($userId, $guestId)
+    {
+        return $this->locationRepository->getAddresses($userId, $guestId);
     }
 }

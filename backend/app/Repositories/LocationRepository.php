@@ -44,10 +44,11 @@ class LocationRepository implements LocationRepositoryInterface
         return $userAddress;
     }
 
-    public function create($request, $userId)
+    public function create($request, $userId = null, $guestId = null)
     {
         $data = $request->all();
         $data['user_id'] = $userId;
+        $data['guest_id'] = $guestId;
         $userAddress = $this->userAddress->create($data);
         return $userAddress;
     }
@@ -59,9 +60,13 @@ class LocationRepository implements LocationRepositoryInterface
         return $userAddress;
     }
 
-    public function setDefault($userId, $idAddress)
+    public function setDefault($userId = null, $guestId = null, $idAddress)
     {
-        $userAddress = $this->userAddress->where('user_id', $userId)->get();
+        if ($userId) {
+            $userAddress = $this->userAddress->where('user_id', $userId)->get();
+        } else {
+            $userAddress = $this->userAddress->where('guest_id', $guestId)->get();
+        }
         foreach ($userAddress as $address) {
             $address->update(['is_default' => 0]);
         }
@@ -74,12 +79,12 @@ class LocationRepository implements LocationRepositoryInterface
     {
         return $this->userAddress->find($addressId);
     }
-    public function getDefaultAddressByUserId($userId, $guestId = null)
+    public function getAddresses($userId = null, $guestId = null)
     {
-        if ($guestId) {
-            return $this->userAddress->where('user_id', $userId)->where('is_default', 1)->first();
-        } else {
-            return $this->userAddress->where('guest_id', $guestId)->where('is_default', 1)->first();
+        $query = $this->userAddress->with(['province', 'district', 'ward']);
+        if ($userId) {
+            return $query->where('user_id', $userId)->get();
         }
+        return $query->where('guest_id', $guestId)->get();
     }
 }

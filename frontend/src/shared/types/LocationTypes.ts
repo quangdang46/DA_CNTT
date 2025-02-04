@@ -40,6 +40,7 @@ export const WardType = z.object({
 export const AddressType = z.object({
   id: z.string(),
   user_id: z.string(),
+  guest_id: z.string(),
   ward_code: z.string(),
   district_code: z.string(),
   province_code: z.string(),

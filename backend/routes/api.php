@@ -79,6 +79,7 @@ Route::group(
         Route::post('addOrUpdate', [LocationController::class, 'addOrUpdate']);
         Route::delete('delete', [LocationController::class, 'delete']);
         Route::put('set-default', [LocationController::class, 'setDefault']);
+        Route::get('getAddresses', [LocationController::class, 'getAddresses']);
     }
 );
 

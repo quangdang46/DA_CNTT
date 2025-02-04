@@ -31,7 +31,6 @@ ul {
   gap: 5px;
 }
 
-
 .embla__dots {
   padding: 0.625em 0 0.938em 0;
   position: relative;
@@ -576,3 +575,4 @@ table.cart div.remove {
   font-size: 20px;
   font-weight: bold;
 }
+

@@ -22,6 +22,7 @@ const useUpdateOrAddAddress = () => {
           AddressBodyType,
           ResType<AddressBodyType>
         >("/locations/addOrUpdate", bodyData);
+        console.log("response", response);
         if (!response.success) {
           throw new Error(
             response.message || "Failed to update or add address"
@@ -37,7 +38,7 @@ const useUpdateOrAddAddress = () => {
 };
 interface AddressFormProps {
   onConfirm: () => void;
-  curAddress?: Address;
+  curAddress?: Address | null;
   onSave: () => void; // Thêm onSave callback để lưu địa chỉ sau khi chỉnh sửa
 }
 
@@ -55,7 +56,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
   );
   const [ward, setWard] = useState<Ward>(curAddress?.ward || ({} as Ward));
   const [address, setAddress] = useState<string>(curAddress?.address || "");
-  const { mutate, isPending } = useUpdateOrAddAddress();
+  const { mutate } = useUpdateOrAddAddress();
   const handleProvinceSelect = useCallback((selectedProvince: Province) => {
     setProvince(selectedProvince);
     setActiveTab(1); // Chuyển sang tab quận

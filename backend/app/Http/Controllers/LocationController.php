@@ -6,6 +6,7 @@ use App\Services\LocationService;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
 class LocationController extends Controller
 {
@@ -83,17 +84,14 @@ class LocationController extends Controller
     {
         try {
             try {
-                $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
             } catch (JWTException $e) {
-                return response()->json([
-                    "success" => false,
-                    'status' => 'error',
-                    'message' => 'User not authenticated',
-                    'data' => null
-                ]);
+                $guestId = $request->header('X-Guest-ID');
+                $userId = null; // Khách chưa đăng nhập
             }
-            $userId = $user->id;
-            $result = $this->locationService->addOrUpdate($request, $userId);
+            $result = $this->locationService->addOrUpdate($request, $userId, $guestId);
 
             return response()->json([
                 'success' => true,
@@ -114,17 +112,15 @@ class LocationController extends Controller
     public function delete(Request $request)
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $user = JWTAuth::parseToken()->authenticate();
+            $userId = $user->id;
+            $guestId = null; // Không cần UUID nếu đã đăng nhập
         } catch (JWTException $e) {
-            return response()->json([
-                "success" => false,
-                'status' => 'error',
-                'message' => 'User not authenticated',
-                'data' => null
-            ]);
+            $guestId = $request->header('X-Guest-ID');
+            $userId = null; // Khách chưa đăng nhập
         }
         $idAddress = $request->input('id');
-        $result = $this->locationService->delete($idAddress);
+        $result = $this->locationService->delete($idAddress, $userId, $guestId);
         return response()->json([
             'success' => true,
             'status' => "success",
@@ -137,14 +133,12 @@ class LocationController extends Controller
     public function setDefault(Request $request)
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $user = JWTAuth::parseToken()->authenticate();
+            $userId = $user->id;
+            $guestId = null; // Không cần UUID nếu đã đăng nhập
         } catch (JWTException $e) {
-            return response()->json([
-                "success" => false,
-                'status' => 'error',
-                'message' => 'User not authenticated',
-                'data' => null
-            ]);
+            $guestId = $request->header('X-Guest-ID');
+            $userId = null; // Khách chưa đăng nhập
         }
 
         $idAddress = $request->input('id');
@@ -158,7 +152,7 @@ class LocationController extends Controller
         }
 
         // Tìm địa chỉ và cập nhật địa chỉ mặc định
-        $result = $this->locationService->setDefault($user->id, $idAddress);
+        $result = $this->locationService->setDefault($userId, $guestId, $idAddress);
         if ($result === false) {
             return response()->json([
                 "success" => false,
@@ -174,5 +168,34 @@ class LocationController extends Controller
             'message' => 'Cập nhật địa chỉ mặc định thành công',
             'data' => $result
         ]);
+    }
+
+    public function getAddresses(Request $request)
+    {
+        try {
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
+            } catch (JWTException $e) {
+                $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
+                $userId = null; // Khách chưa đăng nhập
+            }
+
+            $addresses = $this->locationService->getAddresses($userId, $guestId);
+            return response()->json([
+                'success' => true,
+                'status' => "success",
+                'message' => 'Lấy danh sách điểm thành công',
+                'data' => $addresses
+            ])->header('X-Guest-ID', $guestId);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'status' => "error",
+                'message' => $th->getMessage(),
+                'data' => []
+            ]);
+        }
     }
 }

@@ -5,7 +5,7 @@ import { convertAddress } from "@/shared/utils/convertAddress";
 import { PencilOff, Plus, Trash2 } from "lucide-react";
 import React from "react";
 interface AddressShowFormProps {
-  initAddress: Address[];
+  initAddress: Address[] | null;
   onEditAddress: (address: Address) => void;
   onDeleteAddress: (addressId: string) => void;
   onSetDefaultAddress: (addressId: string) => void;
@@ -23,7 +23,7 @@ const AddressShowForm = ({
     <div className="address-form">
       <b className="title">Danh sách địa chỉ</b>
       <ul>
-        {initAddress.map((address) => (
+        {initAddress && initAddress.map((address) => (
           <li key={address.id} className="address-item">
             <div className="address-item-content">
               <CheckBox

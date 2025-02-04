@@ -8,7 +8,8 @@ interface LocationRepositoryInterface
     public function getDistricts($provinceId);
     public function getWards($districtId);
     public function update($request, $id);
-    public function create($request, $userId);
+    public function create($request, $userId, $guestId);
     public function delete($idAddress);
-    public function setDefault($userId, $idAddress);
+    public function setDefault($userId, $guestId, $idAddress);
+    public function getAddresses($userId, $guestId);
 }

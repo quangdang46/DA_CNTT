@@ -1,9 +1,11 @@
 import apiClient from "@/shared/config/apiClient";
 import {
+  Address,
   DistrictListResType,
   ProvinceListResType,
   WardListResType,
 } from "@/shared/types/LocationTypes";
+import { ResType } from "@/shared/types/resType";
 import { useQuery } from "@tanstack/react-query";
 
 const locationApiRequest = {
@@ -83,7 +85,25 @@ const locationApiRequest = {
     });
   },
 
-
+  useGetAddress: () => {
+    return useQuery<ResType<Address[]>, Error>({
+      queryKey: ["address"],
+      queryFn: async () => {
+        try {
+          const response = await apiClient.get<ResType<Address[]>>(
+            `/locations/getAddresses`
+          );
+          if (!response.success) {
+            return response;
+          }
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default locationApiRequest;

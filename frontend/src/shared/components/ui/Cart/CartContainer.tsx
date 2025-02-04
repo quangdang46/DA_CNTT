@@ -21,6 +21,7 @@ const useApplyCoupon = () => {
 export default function CartContainer() {
   const { cartItems, handleRemoveFromCart, handleUpdateQuantity, totalPrice } =
     useCart();
+    console.log("cartItems", cartItems);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [couponCode, setCouponCode] = useState<string>("");
 

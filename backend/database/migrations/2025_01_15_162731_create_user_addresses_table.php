@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             // $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Người dùng đã đăng nhập
-            $table->string('guest_id')->nullable()->unique();
+            $table->string('guest_id')->nullable();
             // address ward district province
             $table->string('ward_code');
             $table->string('district_code');

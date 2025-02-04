@@ -1,6 +1,13 @@
+import { Address } from "@/shared/types/LocationTypes";
+import { convertAddress } from "@/shared/utils/convertAddress";
 import React from "react";
-
-export default function ShippingForm() {
+interface Props {
+  address: Address[] | null;
+}
+export default function ShippingForm({ address }: Props) {
+  const defaultAddress = address?.find(
+    (item: Address) => item.is_default === 1
+  );
   return (
     <tr className="woocommerce-shipping-totals shipping">
       <th>Shipping</th>
@@ -46,100 +53,10 @@ export default function ShippingForm() {
           </li>
         </ul>
         <p className="woocommerce-shipping-destination">
-          Shipping to <strong>Vietnam</strong>.{" "}
+          {defaultAddress
+            ? `Shipping to: ${convertAddress(defaultAddress)}`
+            : "Your shipping address will be used for your order."}
         </p>
-        <form className="woocommerce-shipping-calculator" method="post">
-          <a href="#" className="shipping-calculator-button">
-            Change address
-          </a>
-          <section
-            className="shipping-calculator-form"
-            style={{ display: "none" }}
-          >
-            <p
-              className="form-row form-row-wide"
-              id="calc_shipping_country_field"
-            >
-              <label
-                htmlFor="calc_shipping_country"
-                className="screen-reader-text"
-              >
-                Country / region:
-              </label>
-              <select
-                name="calc_shipping_country"
-                id="calc_shipping_country"
-                className="country_to_state country_select"
-                rel="calc_shipping_state"
-              >
-                <option value="default">Select a country / region…</option>
-                <option value="AF">Afghanistan</option>
-              </select>
-            </p>
-            <p
-              className="form-row form-row-wide"
-              id="calc_shipping_state_field"
-            >
-              <input
-                type="hidden"
-                name="calc_shipping_state"
-                id="calc_shipping_state"
-                placeholder="State / County"
-              />
-            </p>
-            <p className="form-row form-row-wide" id="calc_shipping_city_field">
-              <label
-                htmlFor="calc_shipping_city"
-                className="screen-reader-text"
-              >
-                City:
-              </label>
-              <input
-                type="text"
-                className="input-text"
-                defaultValue=""
-                placeholder="City"
-                name="calc_shipping_city"
-                id="calc_shipping_city"
-              />
-            </p>
-            <p
-              className="form-row form-row-wide"
-              id="calc_shipping_postcode_field"
-            >
-              <label
-                htmlFor="calc_shipping_postcode"
-                className="screen-reader-text"
-              >
-                Postcode / ZIP:
-              </label>
-              <input
-                type="text"
-                className="input-text"
-                defaultValue=""
-                placeholder="Postcode / ZIP"
-                name="calc_shipping_postcode"
-                id="calc_shipping_postcode"
-              />
-            </p>
-            <p>
-              <button name="calc_shipping" value={1} className="button">
-                Update
-              </button>
-            </p>
-            <input
-              type="hidden"
-              id="woocommerce-shipping-calculator-nonce"
-              name="woocommerce-shipping-calculator-nonce"
-              defaultValue="76f1bbae94"
-            />
-            <input
-              type="hidden"
-              name="_wp_http_referer"
-              defaultValue="/cart/"
-            />{" "}
-          </section>
-        </form>
       </td>
     </tr>
   );
