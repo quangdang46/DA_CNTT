@@ -5,6 +5,7 @@ import { DiscountResType, DiscountType } from "@/shared/types/DiscountTypes";
 import { useMutation } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 interface Props {
   setDiscountAmount: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -104,7 +105,7 @@ export default function MiniCoupon({ setDiscountAmount }: Props) {
         className={show ? "collapse show" : "collapse"}
         id="checkoutCouponForm"
       >
-        <form method="post" className="checkout_coupon">
+        <div className="checkout_coupon">
           <p className="form-row form-row-first">
             <input
               type="text"
@@ -119,7 +120,7 @@ export default function MiniCoupon({ setDiscountAmount }: Props) {
           </p>
           <p className="form-row form-row-last">
             <button
-              type="submit"
+              type="button"
               name="apply_coupon"
               className="button"
               onClick={handleApplyCoupon}
@@ -129,7 +130,7 @@ export default function MiniCoupon({ setDiscountAmount }: Props) {
             </button>
           </p>
           <div className="clear" />
-        </form>
+        </div>
       </div>
     </>
   );

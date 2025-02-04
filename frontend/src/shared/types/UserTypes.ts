@@ -63,3 +63,12 @@ export const UpdateMeBody = z
 export type UpdateMeBodyType = z.infer<typeof UpdateMeBody>;
 
 //
+export const orderFormSchema = z.object({
+  name: z.string().min(1, "First Name is required"),
+  phone: z.string().min(1, "Phone is required"),
+  email: z.string().email("Invalid email address"),
+  address: z.string().min(1, "Address is required"),
+  note: z.string().optional(),
+});
+
+export type OrderFormValues = z.infer<typeof orderFormSchema>;

@@ -44,7 +44,7 @@ export default function Cart() {
           <span className="amount">
             <span className="price-label">Your Cart</span>
             {totalPrice > deliveryPrice &&
-              ` $ ${(totalPrice - deliveryPrice).toFixed(2)}`}
+              `$${(totalPrice - deliveryPrice).toFixed(2)}`}
           </span>
         </div>
         {/* Dropdown chứa danh sách sản phẩm */}
