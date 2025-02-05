@@ -15,7 +15,7 @@ export default function FeaturesList() {
         <Feature
           icon={<Truck strokeWidth={1} size={48} />}
           title="Free Delivery"
-          subtitle="from $50"
+          subtitle="from 50VNĐ"
         />
         <Feature
           icon={<MessageCircleQuestion strokeWidth={1} size={48} />}

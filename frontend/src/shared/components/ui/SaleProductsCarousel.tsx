@@ -57,7 +57,7 @@ export default function SaleProductsCarousel() {
                                   <ins>
                                     <span className="woocommerce-Price-amount amount">
                                       <span className="woocommerce-Price-currencySymbol">
-                                        $
+                                        VNĐ
                                       </span>
                                       {product.price}
                                     </span>
@@ -65,7 +65,7 @@ export default function SaleProductsCarousel() {
                                   <del>
                                     <span className="woocommerce-Price-amount amount">
                                       <span className="woocommerce-Price-currencySymbol">
-                                        $
+                                        VNĐ
                                       </span>
                                       {product.price * 1.1}
                                     </span>
@@ -81,7 +81,7 @@ export default function SaleProductsCarousel() {
                                   <span className="saved-label-amount">
                                     <span className="woocommerce-Price-amount amount">
                                       <span className="woocommerce-Price-currencySymbol">
-                                        $
+                                        VNĐ
                                       </span>
                                       {(product.price * 0.1).toFixed(2)}
                                     </span>

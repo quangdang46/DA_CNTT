@@ -1,4 +1,5 @@
 "use client";
+
 import locationApiRequest from "@/shared/apiRequests/locationApi";
 import {
   setSelectedShippingFee,
@@ -7,13 +8,12 @@ import {
 import { RootState } from "@/shared/state/store";
 import { DeliveryType } from "@/shared/types/CartTypes";
 import { Address } from "@/shared/types/LocationTypes";
-import { convertAddress } from "@/shared/utils/convertAddress";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 interface Props {
   address: Address[] | null;
 }
-export default function ShippingForm({ address }: Props) {
+export default function CheckoutShip({ address }: Props) {
   const dispatch = useDispatch();
   const selectedDelivery = useSelector(
     (state: RootState) => state.cart.selectedShippingFee
@@ -51,60 +51,55 @@ export default function ShippingForm({ address }: Props) {
             <input
               type="radio"
               name="shipping_method[0]"
+              data-index="0"
               id="shipping_method_0_flat_rate1"
               className="shipping_method"
               value={DeliveryType.Normal}
               checked={selectedDelivery === DeliveryType.Normal}
               onChange={() => handleDeliveryChange(DeliveryType.Normal)}
             />
-            <label htmlFor="shipping_method_0_flat_rate1">
-              Normal Delivery:{" "}
-              {shippingFee?.normal?.fee ? (
-                <span className="woocommerce-Price-amount amount">
-                  <bdi>
-                    <span className="woocommerce-Price-currencySymbol">
-                      VNĐ
-                    </span>
-                    {shippingFee?.normal?.fee}
-                  </bdi>
-                </span>
-              ) : (
-                "Select default address to calculate shipping fee"
-              )}
-            </label>{" "}
+            <label
+              htmlFor="shipping_method_0_flat_rate1"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <span style={{ textWrap: "nowrap", marginRight: "10px" }}>
+                Normal Delivery:{" "}
+              </span>
+              <span className="woocommerce-Price-amount amount">
+                <bdi>
+                  <span className="woocommerce-Price-currencySymbol">VNĐ</span>
+                  {shippingFee?.normal?.fee}
+                </bdi>
+              </span>
+            </label>
           </li>
           <li>
             <input
               type="radio"
               name="shipping_method[0]"
+              data-index="0"
               id="shipping_method_0_flat_rate2"
               className="shipping_method"
               value={DeliveryType.Express}
               checked={selectedDelivery === DeliveryType.Express}
               onChange={() => handleDeliveryChange(DeliveryType.Express)}
             />
-            <label htmlFor="shipping_method_0_flat_rate2">
-              Express Delivery:{" "}
-              {shippingFee?.express?.fee ? (
-                <span className="woocommerce-Price-amount amount">
-                  <bdi>
-                    <span className="woocommerce-Price-currencySymbol">
-                      VNĐ
-                    </span>
-                    {shippingFee?.express?.fee}
-                  </bdi>
-                </span>
-              ) : (
-                "Select default address to calculate shipping fee"
-              )}
-            </label>{" "}
+            <label
+              htmlFor="shipping_method_0_flat_rate2"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <span style={{ textWrap: "nowrap", marginRight: "10px" }}>
+                Express Delivery:
+              </span>
+              <span className="woocommerce-Price-amount amount">
+                <bdi>
+                  <span className="woocommerce-Price-currencySymbol">VNĐ</span>
+                  {shippingFee?.express?.fee}
+                </bdi>
+              </span>
+            </label>
           </li>
         </ul>
-        <p className="woocommerce-shipping-destination">
-          {defaultAddress
-            ? `Shipping to: ${convertAddress(defaultAddress)}`
-            : "Your shipping address will be used for your order."}
-        </p>
       </td>
     </tr>
   );

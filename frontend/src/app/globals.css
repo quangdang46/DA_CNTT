@@ -8138,35 +8138,8 @@ a.remove:before {
   margin-left: -15px;
   margin-top: -15px;
 }
-#payment .payment_methods > .wc_payment_method > label:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f10c";
-  margin-right: 0.5407911001em;
-  transition: color, ease, 0.2s;
-  line-height: 24px;
-}
-#payment
-  .payment_methods
-  li.wc_payment_method
-  > input[type="radio"]:first-child {
-  clip: rect(1px 1px 1px 1px);
-  /* IE6, IE7 */
 
-  clip: rect(1px, 1px, 1px, 1px);
-  position: absolute !important;
-}
-#payment
-  .payment_methods
-  li.wc_payment_method
-  > input[type="radio"]:first-child:checked
-  + label:before {
-  content: "\f192";
-}
+
 .woocommerce-password-strength:after {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -26009,7 +25982,6 @@ form.checkout label {
   line-height: 1.5em;
   letter-spacing: -0.01em;
   color: #626060;
-  margin-bottom: 0.5em;
 }
 form.checkout label .required {
   text-decoration: none;

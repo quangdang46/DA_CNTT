@@ -212,7 +212,7 @@ class LocationController extends Controller
                 'district'        => $request->input('district'),
                 'ward'            => $request->input('ward'),
                 'address'         => $request->input('address'),
-                'weight'          => 500,
+                'weight'          => 0.25,
                 // 'transport'       => 'road',
                 // 'deliver_option'  => 'xteam',
             ];

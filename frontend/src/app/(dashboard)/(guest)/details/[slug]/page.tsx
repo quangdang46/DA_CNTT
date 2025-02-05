@@ -138,7 +138,7 @@ export default function Page() {
                       <del>
                         <span className="woocommerce-Price-amount amount">
                           <span className="woocommerce-Price-currencySymbol">
-                            $
+                            VNĐ
                           </span>
                           1,239.99
                         </span>
@@ -146,7 +146,7 @@ export default function Page() {
                       <ins>
                         <span className="woocommerce-Price-amount amount">
                           <span className="woocommerce-Price-currencySymbol">
-                            $
+                            VNĐ
                           </span>
                           997.00
                         </span>

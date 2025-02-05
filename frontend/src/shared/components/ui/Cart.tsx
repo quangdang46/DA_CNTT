@@ -13,7 +13,6 @@ export default function Cart() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { cartItems, handleRemoveFromCart, totalPrice } = useCart();
-  console.log("cartItems", cartItems);
   const shippingFee = useSelector(shippingFees);
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLUListElement>(null); // Tham chiếu đến vùng gợi ý
@@ -45,7 +44,7 @@ export default function Cart() {
           <span className="amount">
             <span className="price-label">Your Cart</span>
             {totalPrice > shippingFee &&
-              `$${(totalPrice - shippingFee).toFixed(2)}`}
+              `${(totalPrice - shippingFee).toFixed(2)} VNĐ`}
           </span>
         </div>
         {/* Dropdown chứa danh sách sản phẩm */}
@@ -95,7 +94,6 @@ export default function Cart() {
                           <span className="quantity">
                             {item.quantity} ×{" "}
                             <span className="woocommerce-Price-amount amount">
-                              $
                               {typeof item.product.price === "string"
                                 ? isNaN(parseFloat(item.product.price))
                                   ? "0.00"
@@ -103,6 +101,7 @@ export default function Cart() {
                                       .toFixed(2)
                                       .toString()
                                 : item.product.price.toFixed(2).toString()}
+                              VNĐ
                             </span>
                           </span>
                         </li>

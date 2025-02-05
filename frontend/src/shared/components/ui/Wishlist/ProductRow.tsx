@@ -15,7 +15,7 @@ export default function ProductRow({ product, onRemove }: Props) {
             title="Remove this product"
             className="remove remove_from_wishlist"
             onClick={() => onRemove(product.id)}
->
+          >
             ×
           </div>
         </div>
@@ -37,13 +37,13 @@ export default function ProductRow({ product, onRemove }: Props) {
       <td className="product-price">
         <ins>
           <span className="woocommerce-Price-amount amount">
-            <span className="woocommerce-Price-currencySymbol">£</span>
+            <span className="woocommerce-Price-currencySymbol">VNĐ </span>
             {product.price}
           </span>
         </ins>
         <del>
           <span className="woocommerce-Price-amount amount">
-            <span className="woocommerce-Price-currencySymbol">£</span>
+            <span className="woocommerce-Price-currencySymbol">VNĐ </span>
             {product.price * 0.8}
           </span>
         </del>

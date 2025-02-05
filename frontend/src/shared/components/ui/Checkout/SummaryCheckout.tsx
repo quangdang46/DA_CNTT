@@ -1,5 +1,8 @@
 "use client";
+import locationApiRequest from "@/shared/apiRequests/locationApi";
 import CheckoutItem from "@/shared/components/ui/Checkout/CheckoutItem";
+import CheckoutShip from "@/shared/components/ui/Checkout/CheckoutShip";
+import Payment from "@/shared/components/ui/Checkout/Payment";
 import { useCheckout } from "@/shared/contexts/CheckoutContext";
 import { useCart } from "@/shared/hooks/useCart";
 import React from "react";
@@ -7,6 +10,8 @@ import React from "react";
 export default function SummaryCheckout() {
   const { cartItems, totalPrice } = useCart();
   const { discountAmount } = useCheckout();
+  const { data } = locationApiRequest.useGetAddress();
+  const initAddress = data?.data;
   return (
     <>
       <h3 id="order_review_heading">Your order</h3>
@@ -26,13 +31,15 @@ export default function SummaryCheckout() {
               ))}
             </tbody>
             <tfoot>
+              <CheckoutShip address={initAddress || []}></CheckoutShip>
+
               <tr className="cart-subtotal">
                 <th>Subtotal</th>
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
                       <span className="woocommerce-Price-currencySymbol">
-                        $
+                        VNĐ
                       </span>
                       {totalPrice.toFixed(2)}
                     </bdi>
@@ -47,7 +54,7 @@ export default function SummaryCheckout() {
                       <span className="woocommerce-Price-amount amount">
                         <bdi>
                           <span className="woocommerce-Price-currencySymbol">
-                            $
+                            VNĐ
                           </span>
                           {discountAmount.toFixed(2)}
                         </bdi>
@@ -56,13 +63,13 @@ export default function SummaryCheckout() {
                   </>
                 )}
               </tr>
-              <tr className="cart-subtotal">
+              <tr className="order-total">
                 <th>Total</th>
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
                       <span className="woocommerce-Price-currencySymbol">
-                        $
+                        VNĐ
                       </span>
                       {Math.max(totalPrice - discountAmount, 0).toFixed(2)}
                     </bdi>
@@ -71,70 +78,7 @@ export default function SummaryCheckout() {
               </tr>
             </tfoot>
           </table>
-          <div className="woocommerce-checkout-payment" id="payment">
-            <ul className="wc_payment_methods payment_methods methods">
-              <li className="wc_payment_method payment_method_bacs">
-                <input
-                  type="radio"
-                  data-order_button_text=""
-                  name="payment_method"
-                  className="input-radio"
-                  id="payment_method_bacs"
-                />
-                <label htmlFor="payment_method_bacs">
-                  Direct bank transfer
-                </label>
-              </li>
-              <li className="wc_payment_method payment_method_cheque">
-                <input
-                  type="radio"
-                  data-order_button_text=""
-                  name="payment_method"
-                  className="input-radio"
-                  id="payment_method_cheque"
-                />
-                <label htmlFor="payment_method_cheque">Check payments</label>
-              </li>
-              <li className="wc_payment_method payment_method_cod">
-                <input
-                  type="radio"
-                  data-order_button_text=""
-                  name="payment_method"
-                  className="input-radio"
-                  id="payment_method_cod"
-                />
-                <label htmlFor="payment_method_cod">Cash on delivery</label>
-              </li>
-            </ul>
-            <div className="form-row place-order">
-              <p className="form-row terms wc-terms-and-conditions woocommerce-validated">
-                <label className="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    name="terms"
-                    className="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
-                  />
-                  <span>
-                    I’ve read and accept the
-                    <a
-                      className="woocommerce-terms-and-conditions-link"
-                      href="terms-and-conditions.html"
-                    >
-                      terms &amp; conditions
-                    </a>
-                  </span>
-                  <span className="required">*</span>
-                </label>
-              </p>
-              <button
-                type="submit"
-                className="button wc-forward text-center"
-              >
-                Place order
-              </button>
-            </div>
-          </div>
+          <Payment></Payment>
         </div>
       </div>
     </>

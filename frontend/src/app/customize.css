@@ -573,3 +573,8 @@ table.cart div.remove {
   font-weight: bold;
 }
 
+.payment_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

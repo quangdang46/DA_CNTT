@@ -12,7 +12,7 @@ export default function CheckoutItem({ item }: Props) {
       </td>
       <td className="product-total">
         <span className="woocommerce-Price-amount amount">
-          <span className="woocommerce-Price-currencySymbol">£</span>
+          <span className="woocommerce-Price-currencySymbol">VNĐ</span>
           {item.product.price * item.quantity}
         </span>
       </td>
