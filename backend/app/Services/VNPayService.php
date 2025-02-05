@@ -28,29 +28,66 @@ class VNPayService
     {
 
         $vnp_TxnRef = time(); // Mã đơn hàng
-        $vnp_OrderInfo = $orderInfo;
+        $vnp_OrderInfo = "Thanh toán đơn hàng " . $orderInfo;
         $vnp_Amount = $amount * 100; // Số tiền VNPay tính theo VND * 100
         $vnp_Locale = "vn";
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-
+        $vnp_OrderType = "billpayment";
+        $vnp_BankCode = "NCB";
         $inputData = [
             "vnp_Version" => "2.1.0",
-            "vnp_Command" => "pay",
             "vnp_TmnCode" => $this->vnp_TmnCode,
             "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
             "vnp_CurrCode" => "VND",
-            "vnp_TxnRef" => $vnp_TxnRef,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_ReturnUrl" => $this->vnp_ReturnUrl,
             "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $this->vnp_ReturnUrl,
+            "vnp_TxnRef" => $vnp_TxnRef
+
         ];
 
-        ksort($inputData);
-        $query = http_build_query($inputData);
-        $vnpSecureHash = hash_hmac('sha512', $query, $this->vnpHashSecret);
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
 
-        return $this->vnp_Url . "?" . $query . "&vnp_SecureHash=" . $vnpSecureHash;
+        // Thêm các tham số tùy chọn nếu có
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        // Sắp xếp theo thứ tự và tạo query string
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        // Tạo URL thanh toán
+        $vnp_Url = $this->vnp_Url . "?" . $query;
+
+        // Tính toán mã bảo mật (SecureHash)
+        $vnpSecureHash = hash_hmac('sha512', $hashdata, $this->vnpHashSecret);
+        $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+
+        return $vnp_Url;
     }
 
     public function verifyPayment($data)

@@ -151,11 +151,10 @@ Route::post('/apply-discount', [ApplyDiscountController::class, 'applyDiscount']
 
 Route::group(
     [
-        'middleware' => 'api',
-        'prefix' => 'checkout'
+        'prefix' => 'orders'
     ],
     function () {
-        Route::post('/', [CheckoutController::class, 'checkout']);
+        Route::post('/', [OrderController::class, 'checkout']);
     }
 
 );
@@ -164,12 +163,6 @@ Route::get('/vnpay/paymentReturn', [VnpayController::class, 'paymentReturn']);
 /*
 
 
-Route::prefix('orders')->group(function () {
-    Route::post('create', [OrderController::class, 'create']); // Tạo đơn hàng mới
-    Route::get('{id}', [OrderController::class, 'show']); // Xem chi tiết đơn hàng
-    Route::get('/', [OrderController::class, 'index']); // Xem tất cả đơn hàng của khách
-    Route::post('payment', [OrderController::class, 'payment']); // Thanh toán đơn hàng
-});
 
 Route::prefix('account')->group(function () {
     Route::get('profile', [AccountController::class, 'profile']); // Xem và cập nhật thông tin tài khoản

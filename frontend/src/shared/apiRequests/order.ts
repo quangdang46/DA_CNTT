@@ -9,7 +9,7 @@ const orderApiRequest = {
       mutationFn: async (payload: OrderType) => {
         try {
           const response = await apiClient.post<OrderType, any>(
-            "/checkout",
+            "/orders",
             payload
           );
           console.log("response", response);

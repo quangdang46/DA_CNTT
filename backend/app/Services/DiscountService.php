@@ -75,7 +75,7 @@ class DiscountService
     /**
      * Kiểm tra tính hợp lệ của mã giảm giá.
      */
-    private function validateDiscountCode($code)
+    public function validateDiscountCode($code)
     {
         $discount = Discount::where('code', $code)
             ->where('status', 'active')

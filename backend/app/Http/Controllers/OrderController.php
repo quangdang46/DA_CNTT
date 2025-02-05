@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\GHTKService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -17,96 +20,50 @@ class OrderController extends Controller
         $this->ghtkService = $ghtkService;
     }
 
-    public function getOrderDetails($idOrTrackingCode)
+    public function checkout(Request $request)
     {
         try {
-            $order = $this->orderService->getOrderDetails($idOrTrackingCode);
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+                $guestId = null; // Không cần UUID nếu đã đăng nhập
+            } catch (JWTException $e) {
+                // $guestId = $request->cookie('guest_id') ?? Str::uuid();
+                $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
+                $userId = null; // Khách chưa đăng nhập
+            }
 
-            return response()->json([
-                'message' => 'Order details retrieved successfully',
-                'order' => $order,
-            ], 200);
+            // Bước 1: Validate dữ liệu đầu vào
+            $validated = $request->validate([
+                'user_id' => 'nullable|exists:users,id',
+                'guest_id' => 'nullable|string',
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'nullable|email|max:255',
+                'customer_phone' => 'required|string|max:20',
+                'address_id' => 'nullable|exists:user_addresses,id',
+                'shipping_address' => 'required_if:address_id,null|array',
+                'shipping_address.province' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.district' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.ward' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.address' => 'required_if:address_id,null|string|max:255',
+                'order_items' => 'required|array|min:1',
+                'order_items.*.product_id' => 'required|exists:products,id',
+                'order_items.*.quantity' => 'required|integer|min:1',
+                'order_items.*.price' => 'required|numeric|min:0',
+                'total_price' => 'required|numeric|min:0',
+                'shipping_partner' => 'required|string|in:GHN,GHTK',
+                'shipping_fee' => 'required|numeric|min:0',
+                'payment_method' => 'required|string|in:QR,cash',
+                'payment_gateway' => 'nullable|string|in:VNPay,Momo',
+                'coupon_code' => 'nullable|string|max:255',
+            ]);
+            $result = $this->orderService->checkout($validated);
+            return $result;
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve order details',
+                'message' => 'Checkout failed',
                 'error' => $e->getMessage(),
-            ], 500);
+            ]);
         }
-    }
-
-    public function cancelOrder($orderId)
-    {
-        try {
-            $this->orderService->cancelOrder($orderId);
-
-            return response()->json([
-                'message' => 'Order canceled successfully',
-                'order_id' => $orderId,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to cancel order',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function trackOrder($trackingCode)
-    {
-        try {
-            $trackingInfo = $this->orderService->trackOrder($trackingCode);
-
-            return response()->json([
-                'message' => 'Tracking information retrieved successfully',
-                'tracking_info' => $trackingInfo,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to retrieve tracking information',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function calculateShippingFee(Request $request)
-    {
-        $data = [
-            "pick_province" => $request->pick_province,
-            "pick_district" => $request->pick_district,
-            "province" => $request->province,
-            "district" => $request->district,
-            "weight" => $request->weight,
-        ];
-
-        $result = $this->ghtkService->calculateShippingFee($data);
-        return response()->json($result);
-    }
-
-    public function createOrder(Request $request)
-    {
-        $data = [
-            "products" => $request->products,
-            "order" => [
-                "id" => $request->order_id,
-                "pick_name" => $request->pick_name,
-                "pick_address" => $request->pick_address,
-                "pick_province" => $request->pick_province,
-                "pick_district" => $request->pick_district,
-                "pick_ward" => $request->pick_ward,
-                "pick_tel" => $request->pick_tel,
-                "tel" => $request->tel,
-                "name" => $request->name,
-                "address" => $request->address,
-                "province" => $request->province,
-                "district" => $request->district,
-                "ward" => $request->ward,
-                "hamlet" => "Khác",
-                "is_freeship" => "0",
-                "weight" => $request->weight,
-            ],
-        ];
-
-        $result = $this->ghtkService->createOrder($data);
-        return response()->json($result);
     }
 }

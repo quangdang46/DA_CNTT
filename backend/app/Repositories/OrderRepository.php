@@ -3,19 +3,26 @@
 namespace App\Repositories;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 
 class OrderRepository implements OrderRepositoryInterface
 {
     protected $order;
-
-    public function __construct(Order $order)
+    protected $orderItem;
+    public function __construct(Order $order,OrderItem $orderItem)
     {
         $this->order = $order;
+        $this->orderItem = $orderItem;
     }
     public function createOrder(array $data)
     {
         return $this->order->create($data);
+    }
+
+    public function createOrderItem(array $data)
+    {
+        return $this->orderItem->create($data);
     }
 
     public function updateOrder(Order $order, array $data)

@@ -25,6 +25,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WishlistRepository;
 use App\Services\GHTKService;
+use App\Services\VNPayService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -56,6 +57,9 @@ class AppServiceProvider extends ServiceProvider
         // Đăng ký GHTKService
         $this->app->singleton(GHTKService::class, function ($app) {
             return new GHTKService();
+        });
+        $this->app->singleton(VNPayService::class, function ($app) {
+            return new VNPayService();
         });
     }
 
