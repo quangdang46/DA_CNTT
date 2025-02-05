@@ -31,9 +31,7 @@ export default function CartSummary({ discountAmount }: Props) {
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
-                      <span className="woocommerce-Price-currencySymbol">
-                        VNĐ
-                      </span>
+                      <span className="woocommerce-Price-currencySymbol"></span>
                       {totalPrice.toFixed(2)}
                     </bdi>
                   </span>
@@ -46,9 +44,7 @@ export default function CartSummary({ discountAmount }: Props) {
                     <td data-title="Discount">
                       <span className="woocommerce-Price-amount amount">
                         <bdi>
-                          <span className="woocommerce-Price-currencySymbol">
-                            VNĐ
-                          </span>
+                          <span className="woocommerce-Price-currencySymbol"></span>
                           {discountAmount.toFixed(2)}
                         </bdi>
                       </span>
@@ -63,9 +59,7 @@ export default function CartSummary({ discountAmount }: Props) {
                   <strong>
                     <span className="woocommerce-Price-amount amount">
                       <bdi>
-                        <span className="woocommerce-Price-currencySymbol">
-                          VNĐ
-                        </span>
+                        <span className="woocommerce-Price-currencySymbol"></span>
                         {Math.max(totalPrice - discountAmount, 0).toFixed(2)}
                       </bdi>
                     </span>

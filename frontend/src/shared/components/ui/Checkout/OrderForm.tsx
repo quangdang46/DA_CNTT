@@ -3,6 +3,8 @@
 import locationApiRequest from "@/shared/apiRequests/locationApi";
 import AddressModal from "@/shared/components/ui/Account/AddressForm/AddressModal";
 import SummaryCheckout from "@/shared/components/ui/Checkout/SummaryCheckout";
+import { useCheckout } from "@/shared/contexts/CheckoutContext";
+import { useCart } from "@/shared/hooks/useCart";
 import { RootState } from "@/shared/state/store";
 import { Address } from "@/shared/types/LocationTypes";
 import { orderFormSchema, OrderFormValues } from "@/shared/types/UserTypes";
@@ -35,8 +37,34 @@ export default function OrderForm() {
       note: "",
     },
   });
+  const { paymentMethod, shippingFee, couponCode } = useCheckout();
+  const { cartItems, totalPrice } = useCart();
+
   const onSubmit = (data: OrderFormValues) => {
-    console.log("Form data submitted:", data);
+    const payload = {
+      customer_details: data.name,
+      customer_email: data.email,
+      customer_phone: data.phone,
+      address_id: defaultAddress?.id,
+      note: data.note,
+      shipping_address: {
+        address: defaultAddress?.address,
+        province: defaultAddress?.province.name,
+        district: defaultAddress?.district.name,
+        ward: defaultAddress?.ward.name,
+      },
+      total_price: totalPrice,
+      payment_method: paymentMethod,
+      shipping_fee: shippingFee,
+      coupon_code: couponCode,
+      payment_gateway: "VNPay",
+      shipping_partner: "GHTK",
+      order_items: cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.product.price,
+      })),
+    };
   };
 
   if (!isClient) {

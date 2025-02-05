@@ -1,10 +1,6 @@
-import {
-  AddressType,
-} from "@/shared/types/LocationTypes";
+import { AddressType } from "@/shared/types/LocationTypes";
 import { ResType } from "@/shared/types/resType";
 import { z } from "zod";
-
-
 
 export const UserType = z.object({
   id: z.number(),
@@ -15,7 +11,6 @@ export const UserType = z.object({
   loyalty_points: z.number(),
   addresses: z.array(AddressType),
 });
-
 
 export type UserResType = z.infer<typeof UserType>;
 export type AccountType = {
@@ -67,8 +62,8 @@ export const orderFormSchema = z.object({
   name: z.string().min(1, "First Name is required"),
   phone: z.string().min(1, "Phone is required"),
   email: z.string().email("Invalid email address"),
-  address: z.string().min(1, "Address is required"),
   note: z.string().optional(),
+  address: z.string().optional(),
 });
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;

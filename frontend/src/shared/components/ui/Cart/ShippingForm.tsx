@@ -62,9 +62,7 @@ export default function ShippingForm({ address }: Props) {
               {shippingFee?.normal?.fee ? (
                 <span className="woocommerce-Price-amount amount">
                   <bdi>
-                    <span className="woocommerce-Price-currencySymbol">
-                      VNĐ
-                    </span>
+                    <span className="woocommerce-Price-currencySymbol"></span>
                     {shippingFee?.normal?.fee}
                   </bdi>
                 </span>
@@ -88,9 +86,7 @@ export default function ShippingForm({ address }: Props) {
               {shippingFee?.express?.fee ? (
                 <span className="woocommerce-Price-amount amount">
                   <bdi>
-                    <span className="woocommerce-Price-currencySymbol">
-                      VNĐ
-                    </span>
+                    <span className="woocommerce-Price-currencySymbol"></span>
                     {shippingFee?.express?.fee}
                   </bdi>
                 </span>

@@ -34,7 +34,6 @@ return new class extends Migration
             $table->timestamp('returned_at')->nullable(); // Ngày hàng bị trả lại
             $table->decimal('shipping_fee', 10, 2)->nullable();
             $table->timestamp('estimated_delivery_time')->nullable();
-            $table->string('shipping_service')->nullable();
 
             // Trạng thái thanh toán
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');

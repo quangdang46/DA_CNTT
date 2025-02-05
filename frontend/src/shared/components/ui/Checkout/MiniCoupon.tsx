@@ -15,11 +15,9 @@ const useApplyCoupon = () => {
   });
 };
 export default function MiniCoupon() {
-  const { setDiscountAmount } = useCheckout();
   const { totalPrice } = useCart();
   const [show, setShow] = useState(false);
-  const [couponCode, setCouponCode] = useState<string>("");
-
+  const { couponCode, setCouponCode, setDiscountAmount } = useCheckout();
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const { mutate, isPending } = useApplyCoupon();
   const handleApplyCoupon = (): void => {

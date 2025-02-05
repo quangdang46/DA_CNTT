@@ -5,6 +5,12 @@ import React, { createContext, useContext, useState, useMemo } from "react";
 type CheckoutContextType = {
   discountAmount: number;
   setDiscountAmount: (amount: number) => void;
+  paymentMethod: string | null;
+  setPaymentMethod: (method: string) => void;
+  shippingFee: number | null;
+  setShippingFee: (fee: number) => void;
+  couponCode: string;
+  setCouponCode: (code: string) => void;
 };
 
 // Tạo context
@@ -17,11 +23,21 @@ export const CheckoutProvider = ({
   children: React.ReactNode;
 }) => {
   const [discountAmount, setDiscountAmount] = useState(0);
-
-  // Dùng useMemo để tránh re-render không cần thiết
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [shippingFee, setShippingFee] = useState<number | null>(0);
+  const [couponCode, setCouponCode] = useState("");
   const value = useMemo(
-    () => ({ discountAmount, setDiscountAmount }),
-    [discountAmount]
+    () => ({
+      discountAmount,
+      setDiscountAmount,
+      paymentMethod,
+      setPaymentMethod,
+      shippingFee,
+      setShippingFee,
+      couponCode,
+      setCouponCode,
+    }),
+    [discountAmount, paymentMethod, shippingFee, couponCode]
   );
 
   return (

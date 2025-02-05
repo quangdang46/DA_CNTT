@@ -1,6 +1,7 @@
 "use client";
 
 import locationApiRequest from "@/shared/apiRequests/locationApi";
+import { useCheckout } from "@/shared/contexts/CheckoutContext";
 import {
   setSelectedShippingFee,
   setShippingFees,
@@ -15,8 +16,13 @@ interface Props {
 }
 export default function CheckoutShip({ address }: Props) {
   const dispatch = useDispatch();
+  const { setShippingFee } = useCheckout();
   const selectedDelivery = useSelector(
     (state: RootState) => state.cart.selectedShippingFee
+  );
+
+  const shippingFees = useSelector(
+    (state: RootState) => state.cart.shippingFees
   );
 
   const defaultAddress = address?.find(
@@ -41,6 +47,7 @@ export default function CheckoutShip({ address }: Props) {
 
   const handleDeliveryChange = (deliveryType: DeliveryType) => {
     dispatch(setSelectedShippingFee(deliveryType));
+    setShippingFee(shippingFees[deliveryType]);
   };
   return (
     <tr className="woocommerce-shipping-totals shipping">
@@ -67,7 +74,7 @@ export default function CheckoutShip({ address }: Props) {
               </span>
               <span className="woocommerce-Price-amount amount">
                 <bdi>
-                  <span className="woocommerce-Price-currencySymbol">VNĐ</span>
+                  <span className="woocommerce-Price-currencySymbol"></span>
                   {shippingFee?.normal?.fee}
                 </bdi>
               </span>
@@ -93,7 +100,7 @@ export default function CheckoutShip({ address }: Props) {
               </span>
               <span className="woocommerce-Price-amount amount">
                 <bdi>
-                  <span className="woocommerce-Price-currencySymbol">VNĐ</span>
+                  <span className="woocommerce-Price-currencySymbol"></span>
                   {shippingFee?.express?.fee}
                 </bdi>
               </span>
