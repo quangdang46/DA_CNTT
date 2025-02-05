@@ -1,6 +1,7 @@
 "use client";
 
 import locationApiRequest from "@/shared/apiRequests/locationApi";
+import orderApiRequest from "@/shared/apiRequests/order";
 import AddressModal from "@/shared/components/ui/Account/AddressForm/AddressModal";
 import SummaryCheckout from "@/shared/components/ui/Checkout/SummaryCheckout";
 import { useCheckout } from "@/shared/contexts/CheckoutContext";
@@ -13,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function OrderForm() {
   const { user, isLoggedIn } = useSelector((state: RootState) => state.auth);
@@ -39,12 +41,46 @@ export default function OrderForm() {
   });
   const { paymentMethod, shippingFee, couponCode } = useCheckout();
   const { cartItems, totalPrice } = useCart();
-
+  const { mutate: checkout } = orderApiRequest.useCheckout();
   const onSubmit = (data: OrderFormValues) => {
+    if (!cartItems.length) {
+      Swal.fire({
+        icon: "error",
+        title: "Thiếu thông tin đơn hàng",
+        text: "Vui là chọn đơn hàng!",
+      });
+      return;
+    }
+
+    if (!defaultAddress) {
+      Swal.fire({
+        icon: "error",
+        title: "Thiếu thống tin điểm giao hàng",
+        text: "Vui là chọn điện giao hãng!",
+      });
+      return;
+    }
+
+    if (shippingFee === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Thiếu phương thức giao hàng",
+        text: "Vui là chọn phí giao hàng!",
+      });
+      return;
+    }
+    if (!paymentMethod) {
+      Swal.fire({
+        icon: "error",
+        title: "Thiếu thống tin thanh toán",
+        text: "Vui lòng điền đầy đủ thông tin thanh toán!",
+      });
+      return;
+    }
     const payload = {
-      customer_details: data.name,
-      customer_email: data.email,
-      customer_phone: data.phone,
+      customer_name: data?.name,
+      customer_email: data?.email,
+      customer_phone: data?.phone,
       address_id: defaultAddress?.id,
       note: data.note,
       shipping_address: {
@@ -53,18 +89,36 @@ export default function OrderForm() {
         district: defaultAddress?.district.name,
         ward: defaultAddress?.ward.name,
       },
-      total_price: totalPrice,
-      payment_method: paymentMethod,
-      shipping_fee: shippingFee,
+      total_price: totalPrice ?? 0,
+      payment_method: paymentMethod ?? "",
+      shipping_fee: shippingFee ?? 0,
       coupon_code: couponCode,
       payment_gateway: "VNPay",
       shipping_partner: "GHTK",
       order_items: cartItems.map((item) => ({
-        product_id: item.id,
-        quantity: item.quantity,
-        price: item.product.price,
+        product_id: item?.id,
+        quantity: item?.quantity,
+        price: item?.product.price,
       })),
     };
+    checkout(payload, {
+      onSuccess: (data) => {
+        console.log("Checkout success:", data);
+        Swal.fire({
+          icon: "success",
+          title: "Đặt hàng thành công!",
+          text: "Cảm ơn bạn đã đặt hàng.",
+        });
+      },
+      onError: (error) => {
+        console.error("Checkout error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi khi đặt hàng",
+          text: "Vui lòng thử lại sau.",
+        });
+      },
+    });
   };
 
   if (!isClient) {

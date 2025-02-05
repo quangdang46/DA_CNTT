@@ -29,28 +29,36 @@ class CheckoutController extends Controller
                 $userId = null; // Khách chưa đăng nhập
             }
 
-            $data = $request->only([
-                'customer_name',
-                'customer_email',
-                'customer_phone',
-                'total_price',
-                'shipping_fee',
-                'address_id',
-                'note',
-                'payment_method',
+            // Bước 1: Validate dữ liệu đầu vào
+            $validated = $request->validate([
+                'user_id' => 'nullable|exists:users,id',
+                'guest_id' => 'nullable|string|unique:orders,guest_id',
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'nullable|email|max:255',
+                'customer_phone' => 'required|string|max:20',
+                'address_id' => 'nullable|exists:user_addresses,id',
+                'shipping_address' => 'required_if:address_id,null|array',
+                'shipping_address.city' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.district' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.ward' => 'required_if:address_id,null|string|max:255',
+                'shipping_address.address' => 'required_if:address_id,null|string|max:255',
+                'order_items' => 'required|array|min:1',
+                'order_items.*.product_id' => 'required|exists:products,id',
+                'order_items.*.quantity' => 'required|integer|min:1',
+                'order_items.*.price' => 'required|numeric|min:0',
+                'total_price' => 'required|numeric|min:0',
+                'shipping_partner' => 'required|string|in:GHN,GHTK',
+                'shipping_fee' => 'required|numeric|min:0',
+                'payment_method' => 'required|string|in:QR,cash',
+                'payment_gateway' => 'nullable|string|in:VNPay,Momo',
+                'coupon_code' => 'nullable|string|max:255',
             ]);
-
-            $order = $this->checkoutService->processCheckout($data, $userId, $guestId);
-
-            return response()->json([
-                'message' => 'Checkout successful',
-                'order' => $order,
-            ], 200);
+            return $validated;
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Checkout failed',
                 'error' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
 }

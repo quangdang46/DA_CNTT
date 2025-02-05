@@ -217,10 +217,9 @@ class LocationController extends Controller
                 // 'deliver_option'  => 'xteam',
             ];
             $normalData = array_merge($commonData, ['deliver_option' => 'xteam', 'transport' => 'road']);
-            $expressData = array_merge($commonData, ['deliver_option' => 'none', 'transport' => 'air']);
+            $expressData = array_merge($commonData, ['deliver_option' => 'none', 'transport' => 'fly']);
             $normalFee = $this->ghtkService->calculateShippingFee($normalData);
             $expressFee = $this->ghtkService->calculateShippingFee($expressData);
-
             return response()->json([
                 'success' => true,
                 'normal' => [

@@ -155,25 +155,7 @@ Route::group(
         'prefix' => 'checkout'
     ],
     function () {
-        // Tạo đơn hàng (Checkout)
-        Route::post('/create', [CheckoutController::class, 'checkout'])
-            ->name('checkout.create');
-
-        // Cập nhật trạng thái thanh toán
-        Route::post('/payment/update/{orderId}', [PaymentController::class, 'updatePaymentStatus'])
-            ->name('checkout.payment.update');
-
-        // Lấy thông tin đơn hàng theo ID hoặc tracking code
-        Route::get('/order/{idOrTrackingCode}', [OrderController::class, 'getOrderDetails'])
-            ->name('checkout.order.details');
-
-        // Hủy đơn hàng
-        Route::post('/order/cancel/{orderId}', [OrderController::class, 'cancelOrder'])
-            ->name('checkout.order.cancel');
-
-        // Theo dõi trạng thái vận chuyển
-        Route::get('/tracking/{trackingCode}', [OrderController::class, 'trackOrder'])
-            ->name('checkout.order.track');
+        Route::post('/', [CheckoutController::class, 'checkout']);
     }
 
 );
