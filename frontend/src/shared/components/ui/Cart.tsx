@@ -1,7 +1,7 @@
 "use client";
 import { useCart } from "@/shared/hooks/useCart";
 import useClickOutside from "@/shared/hooks/useClickOutside";
-import { priceDelivery } from "@/shared/state/cartSlice";
+import { shippingFees } from "@/shared/state/cartSlice";
 import { ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +13,8 @@ export default function Cart() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { cartItems, handleRemoveFromCart, totalPrice } = useCart();
-  const deliveryPrice = useSelector(priceDelivery);
+  console.log("cartItems", cartItems);
+  const shippingFee = useSelector(shippingFees);
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLUListElement>(null); // Tham chiếu đến vùng gợi ý
   useClickOutside(containerRef, () => {
@@ -43,8 +44,8 @@ export default function Cart() {
           <span className="count">{cartItems.length}</span>
           <span className="amount">
             <span className="price-label">Your Cart</span>
-            {totalPrice > deliveryPrice &&
-              `$${(totalPrice - deliveryPrice).toFixed(2)}`}
+            {totalPrice > shippingFee &&
+              `$${(totalPrice - shippingFee).toFixed(2)}`}
           </span>
         </div>
         {/* Dropdown chứa danh sách sản phẩm */}
@@ -110,8 +111,8 @@ export default function Cart() {
 
                     <p className="woocommerce-mini-cart__total total">
                       <strong>Subtotal:</strong> $
-                      {totalPrice > deliveryPrice &&
-                        (totalPrice - deliveryPrice).toFixed(2)}
+                      {totalPrice > shippingFee &&
+                        (totalPrice - shippingFee).toFixed(2)}
                     </p>
 
                     <p className="woocommerce-mini-cart__buttons buttons">

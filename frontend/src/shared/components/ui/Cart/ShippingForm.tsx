@@ -1,10 +1,14 @@
 "use client";
-import { setDeliveryType } from "@/shared/state/cartSlice";
+import locationApiRequest from "@/shared/apiRequests/locationApi";
+import {
+  setSelectedShippingFee,
+  setShippingFees,
+} from "@/shared/state/cartSlice";
 import { RootState } from "@/shared/state/store";
 import { DeliveryType } from "@/shared/types/CartTypes";
 import { Address } from "@/shared/types/LocationTypes";
 import { convertAddress } from "@/shared/utils/convertAddress";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 interface Props {
   address: Address[] | null;
@@ -12,16 +16,32 @@ interface Props {
 export default function ShippingForm({ address }: Props) {
   const dispatch = useDispatch();
   const selectedDelivery = useSelector(
-    (state: RootState) => state.cart.deliveryType
+    (state: RootState) => state.cart.selectedShippingFee
   );
 
-  const handleDeliveryChange = (deliveryType: DeliveryType) => {
-    dispatch(setDeliveryType(deliveryType));
-  };
   const defaultAddress = address?.find(
     (item: Address) => item.is_default === 1
   );
 
+  const { data: shippingFee } = locationApiRequest.useShippingFee(
+    defaultAddress as Address
+  );
+
+  useEffect(() => {
+    if (shippingFee) {
+      dispatch(
+        setShippingFees({
+          normal: shippingFee?.normal?.fee || 0,
+          express: shippingFee?.express?.fee || 0,
+          free: 0, // Mặc định free khi chưa chọn địa chỉ
+        })
+      );
+    }
+  }, [shippingFee, dispatch]);
+
+  const handleDeliveryChange = (deliveryType: DeliveryType) => {
+    dispatch(setSelectedShippingFee(deliveryType));
+  };
   return (
     <tr className="woocommerce-shipping-totals shipping">
       <th>Shipping</th>
@@ -39,12 +59,16 @@ export default function ShippingForm({ address }: Props) {
             />
             <label htmlFor="shipping_method_0_flat_rate1">
               Normal Delivery:{" "}
-              <span className="woocommerce-Price-amount amount">
-                <bdi>
-                  <span className="woocommerce-Price-currencySymbol">$</span>
-                  100.00
-                </bdi>
-              </span>
+              {shippingFee?.normal?.fee ? (
+                <span className="woocommerce-Price-amount amount">
+                  <bdi>
+                    <span className="woocommerce-Price-currencySymbol">$</span>
+                    {shippingFee?.normal?.fee}
+                  </bdi>
+                </span>
+              ) : (
+                "Select default address to calculate shipping fee"
+              )}
             </label>{" "}
           </li>
           <li>
@@ -59,12 +83,16 @@ export default function ShippingForm({ address }: Props) {
             />
             <label htmlFor="shipping_method_0_flat_rate2">
               Express Delivery:{" "}
-              <span className="woocommerce-Price-amount amount">
-                <bdi>
-                  <span className="woocommerce-Price-currencySymbol">$</span>
-                  500.00
-                </bdi>
-              </span>
+              {shippingFee?.express?.fee ? (
+                <span className="woocommerce-Price-amount amount">
+                  <bdi>
+                    <span className="woocommerce-Price-currencySymbol">$</span>
+                    {shippingFee?.express?.fee}
+                  </bdi>
+                </span>
+              ) : (
+                "Select default address to calculate shipping fee"
+              )}
             </label>{" "}
           </li>
         </ul>

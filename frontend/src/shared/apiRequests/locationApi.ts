@@ -3,6 +3,8 @@ import {
   Address,
   DistrictListResType,
   ProvinceListResType,
+  ShippingFee,
+  ShippingFeeRes,
   WardListResType,
 } from "@/shared/types/LocationTypes";
 import { ResType } from "@/shared/types/resType";
@@ -102,6 +104,33 @@ const locationApiRequest = {
           throw error;
         }
       },
+    });
+  },
+  useShippingFee: (addr: Address) => {
+    return useQuery<ShippingFeeRes, Error>({
+      queryKey: ["shipping-fee", addr],
+      queryFn: async () => {
+        try {
+          const response = await apiClient.post<ShippingFee, ShippingFeeRes>(
+            `/locations/shipping-fee`,
+            {
+              province: addr.province.name,
+              district: addr.district.name,
+              ward: addr.ward.name,
+              address: addr.address,
+            }
+          );
+          if (!response.success) {
+            return response;
+          }
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+      enabled: !!addr,
+      staleTime: 1000 * 60 * 5,
     });
   },
 };

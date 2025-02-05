@@ -16,7 +16,6 @@ export default function OrderForm() {
   const { user, isLoggedIn } = useSelector((state: RootState) => state.auth);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const openModal = () => setIsModalOpen(true);
   const { data } = locationApiRequest.useGetAddress();
   const initAddress = data?.data;
@@ -78,10 +77,11 @@ export default function OrderForm() {
                         <input
                           {...field}
                           type="text"
-                          disabled={!isLoggedIn}
+                          disabled={isLoggedIn}
                           placeholder=""
                           id="name"
                           className="input-text"
+                          value={user?.name || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">
@@ -109,10 +109,11 @@ export default function OrderForm() {
                         <input
                           {...field}
                           type="text"
-                          disabled={!isLoggedIn}
+                          disabled={isLoggedIn}
                           placeholder=""
                           id="phone"
                           className="input-text"
+                          value={user?.phone || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">
@@ -140,10 +141,11 @@ export default function OrderForm() {
                         <input
                           {...field}
                           type="email"
-                          disabled={!isLoggedIn}
+                          disabled={isLoggedIn}
                           placeholder=""
                           id="email"
                           className="input-text"
+                          value={user?.email || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">

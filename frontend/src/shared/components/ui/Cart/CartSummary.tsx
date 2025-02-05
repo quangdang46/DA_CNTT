@@ -82,6 +82,12 @@ export default function CartSummary({ discountAmount }: Props) {
                 onClick={openModal}
               >
                 Select Address
+                <p>
+                  <strong>
+                    If address not found, click here to add address and select
+                    default
+                  </strong>
+                </p>
               </div>
             </form>
             <Link

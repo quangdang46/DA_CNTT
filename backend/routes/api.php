@@ -80,6 +80,7 @@ Route::group(
         Route::delete('delete', [LocationController::class, 'delete']);
         Route::put('set-default', [LocationController::class, 'setDefault']);
         Route::get('getAddresses', [LocationController::class, 'getAddresses']);
+        Route::post('shipping-fee', [LocationController::class, 'shippingFee']);
     }
 );
 

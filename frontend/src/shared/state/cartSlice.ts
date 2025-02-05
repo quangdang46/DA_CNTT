@@ -1,21 +1,35 @@
-import { CartItem, DeliveryType } from "@/shared/types/CartTypes";
+import { CartItem } from "@/shared/types/CartTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartState {
   cartItems: CartItem[];
   totalPrice: number;
-  deliveryType: DeliveryType;
+  shippingFees: {
+    normal: number;
+    express: number;
+    free: number;
+  };
+  selectedShippingFee: "normal" | "express" | "free";
 }
 
 // Trạng thái ban đầu
 const initialState: CartState = {
   cartItems: [],
   totalPrice: 0,
-  deliveryType: DeliveryType.Free,
+  shippingFees: {
+    normal: 0,
+    express: 0,
+    free: 0,
+  },
+  selectedShippingFee: "free",
 };
 
 // Hàm tính tổng tiền trực tiếp trong reducer
-const calculateTotal = (cartItems: CartItem[], deliveryType: DeliveryType) => {
+const calculateTotal = (
+  cartItems: CartItem[],
+  shippingFees: { normal: number; express: number; free: number },
+  selectedShippingFee: "normal" | "express" | "free"
+) => {
   const total = cartItems.reduce((total, item) => {
     const price =
       typeof item.product.price === "string"
@@ -24,16 +38,7 @@ const calculateTotal = (cartItems: CartItem[], deliveryType: DeliveryType) => {
     return total + (isNaN(price) ? 0 : price * item.quantity);
   }, 0);
 
-  // Sử dụng deliveryType từ tham số, không phải từ initialState
-  switch (deliveryType) {
-    case DeliveryType.Normal:
-      return total + 100;
-    case DeliveryType.Express:
-      return total + 500;
-    case DeliveryType.Free:
-    default:
-      return total;
-  }
+  return total + shippingFees[selectedShippingFee];
 };
 
 // Tạo slice
@@ -43,7 +48,11 @@ const cartSlice = createSlice({
   reducers: {
     setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.cartItems = action.payload;
-      state.totalPrice = calculateTotal(action.payload, state.deliveryType);
+      state.totalPrice = calculateTotal(
+        action.payload,
+        state.shippingFees,
+        state.selectedShippingFee
+      );
     },
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const product = action.payload;
@@ -58,7 +67,11 @@ const cartSlice = createSlice({
       }
 
       // Cập nhật tổng tiền ngay trong reducer
-      state.totalPrice = calculateTotal(state.cartItems, state.deliveryType);
+      state.totalPrice = calculateTotal(
+        state.cartItems,
+        state.shippingFees,
+        state.selectedShippingFee
+      );
     },
 
     removeFromCart: (state, action: PayloadAction<string>) => {
@@ -66,7 +79,11 @@ const cartSlice = createSlice({
         (item) => item.product_id !== action.payload
       );
 
-      state.totalPrice = calculateTotal(state.cartItems, state.deliveryType);
+      state.totalPrice = calculateTotal(
+        state.cartItems,
+        state.shippingFees,
+        state.selectedShippingFee
+      );
     },
 
     updateQuantity: (
@@ -82,13 +99,34 @@ const cartSlice = createSlice({
         product.quantity = quantity;
       }
 
-      state.totalPrice = calculateTotal(state.cartItems, state.deliveryType);
+      state.totalPrice = calculateTotal(
+        state.cartItems,
+        state.shippingFees,
+        state.selectedShippingFee
+      );
     },
-    setDeliveryType: (state, action: PayloadAction<DeliveryType>) => {
-      state.deliveryType = action.payload;
-      state.totalPrice = calculateTotal(state.cartItems, action.payload);
+    setShippingFees: (
+      state,
+      action: PayloadAction<{ normal: number; express: number; free: number }>
+    ) => {
+      state.shippingFees = action.payload;
+      state.totalPrice = calculateTotal(
+        state.cartItems,
+        action.payload,
+        state.selectedShippingFee
+      );
     },
-
+    setSelectedShippingFee: (
+      state,
+      action: PayloadAction<"normal" | "express" | "free">
+    ) => {
+      state.selectedShippingFee = action.payload;
+      state.totalPrice = calculateTotal(
+        state.cartItems,
+        state.shippingFees,
+        action.payload
+      );
+    },
     clearCart: (state) => {
       state.cartItems = [];
       state.totalPrice = 0;
@@ -96,17 +134,13 @@ const cartSlice = createSlice({
   },
 });
 export const selectTotalPrice = (state: { cart: CartState }) =>
-  calculateTotal(state.cart.cartItems, state.cart.deliveryType);
-export const priceDelivery = (state: { cart: CartState }) => {
-  switch (state.cart.deliveryType) {
-    case DeliveryType.Normal:
-      return 100;
-    case DeliveryType.Express:
-      return 500;
-    case DeliveryType.Free:
-    default:
-      return 0;
-  }
+  calculateTotal(
+    state.cart.cartItems,
+    state.cart.shippingFees,
+    state.cart.selectedShippingFee
+  );
+export const shippingFees = (state: { cart: CartState }) => {
+  return state.cart.shippingFees[state.cart.selectedShippingFee];
 };
 // Export actions
 export const {
@@ -115,7 +149,8 @@ export const {
   updateQuantity,
   clearCart,
   setCartItems,
-  setDeliveryType,
+  setShippingFees,
+  setSelectedShippingFee,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

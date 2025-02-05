@@ -67,4 +67,25 @@ export type AddressBodyType = {
   province_code: string;
   district_code: string;
   ward_code: string;
-}
+};
+
+export const shippingFeeType = z.object({
+  province: z.string().optional(),
+  district: z.string().optional(),
+  ward: z.string().optional(),
+  address: z.string().optional(),
+});
+
+export type ShippingFee = z.infer<typeof shippingFeeType>;
+
+export const shippingFeeResType = z.object({
+  success: z.boolean(),
+  normal: z.object({
+    fee: z.number(),
+  }),
+  express: z.object({
+    fee: z.number(),
+  }),
+});
+
+export type ShippingFeeRes = z.infer<typeof shippingFeeResType>;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GHTKService;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -11,10 +12,12 @@ use Illuminate\Support\Str;
 class LocationController extends Controller
 {
     protected $locationService;
+    protected $ghtkService;
 
-    public function __construct(LocationService $locationService)
+    public function __construct(LocationService $locationService, GHTKService $ghtkService)
     {
         $this->locationService = $locationService;
+        $this->ghtkService = $ghtkService;
     }
 
     public function provinces()
@@ -189,6 +192,44 @@ class LocationController extends Controller
                 'message' => 'Lấy danh sách điểm thành công',
                 'data' => $addresses
             ])->header('X-Guest-ID', $guestId);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'status' => "error",
+                'message' => $th->getMessage(),
+                'data' => []
+            ]);
+        }
+    }
+
+    public function shippingFee(Request $request)
+    {
+        try {
+            $commonData = [
+                'pick_province'   => 'Hà Nội',
+                'pick_district'   => 'Cầu Giấy',
+                'province'        => $request->input('province'),
+                'district'        => $request->input('district'),
+                'ward'            => $request->input('ward'),
+                'address'         => $request->input('address'),
+                'weight'          => 500,
+                // 'transport'       => 'road',
+                // 'deliver_option'  => 'xteam',
+            ];
+            $normalData = array_merge($commonData, ['deliver_option' => 'xteam', 'transport' => 'road']);
+            $expressData = array_merge($commonData, ['deliver_option' => 'none', 'transport' => 'air']);
+            $normalFee = $this->ghtkService->calculateShippingFee($normalData);
+            $expressFee = $this->ghtkService->calculateShippingFee($expressData);
+
+            return response()->json([
+                'success' => true,
+                'normal' => [
+                    'fee' => $normalFee['fee']['fee'],
+                ],
+                'express' => [
+                    'fee' => $expressFee['fee']['fee'],
+                ],
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
