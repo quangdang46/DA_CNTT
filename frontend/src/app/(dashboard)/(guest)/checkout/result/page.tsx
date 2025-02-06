@@ -46,7 +46,6 @@ export default function Page() {
           router.push("/checkout/result/order-success");
           return;
         }
-        alert("Thanh toán không thành công. Vui lòng thử lại!");
         router.push("/checkout/result/order-fail");
       },
       onError: (error) => {

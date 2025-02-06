@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 /**
  * Class VNPayService
@@ -87,7 +88,7 @@ class VNPayService
         return $vnp_Url;
     }
 
-    public function verifyPayment($data)
+    public function verifyPayment($userId, $guestId, $data)
     {
         if (!isset($data['vnp_TxnRef']) || !isset($data['vnp_SecureHash'])) {
             return response()->json(['success' => false, 'message' => 'không hợp lệ']);
@@ -95,7 +96,17 @@ class VNPayService
         $txnParts = explode('_', $data['vnp_TxnRef']);
         $orderId = $txnParts[0] ?? null; // Lấy ID đơn hàng
         try {
-            $order = \App\Models\Order::where('id', $orderId)->first();
+            // $order = \App\Models\Order::where('id', $orderId)->first();
+            $order = \App\Models\Order::with(['items.product', 'address.province', 'address.district', 'address.ward'])
+                ->where('id', $orderId)
+                ->where(function ($query) use (
+                    $userId,
+                    $guestId
+                ) {
+                    $query->where('user_id', $userId)
+                        ->orWhere('guest_id', $guestId);
+                })
+                ->first();
             if (!$order) {
                 return response()->json(['success' => false, 'message' => 'Không tìm thấy đơn hàng'], 404);
             }
@@ -104,24 +115,66 @@ class VNPayService
             }
 
             if ($data['vnp_ResponseCode'] === '00' && $data['vnp_TransactionStatus'] === '00') {
-                $orderUpdate = $order->update([
-                    'status' => 'paid',
-                    'payment_status' => 'completed',
+                $this->orderRepository->updateOrder($order, [
+                    'status' => 'delivered',
+                    'payment_status' => 'paid',
                     'transaction_id' => $data['vnp_TransactionNo'],
                 ]);
-                // data for ghtk service
-                // $shippingInfo = $this->ghtkService->createOrder($validated);
-                // $this->orderRepository->updateOrder($order, [
-                //     'shipping_status' => 'pending',
-                //     'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
-                //     'tracking_url' => $shippingInfo['tracking_url'],
-                //     'tracking_code' => $shippingInfo['tracking_code'],
-                // ]);
+                // Chuẩn bị dữ liệu tạo đơn hàng giao vận
+                $dataForShipping = [
+                    "products" => $order->items->map(function ($item) {
+                        return [
+                            "product_id" => $item->product_id,
+                            "name" => $item->name,
+                            "quantity" => $item->quantity,
+                            "price" => $item->price,
+                            'weight' => $item->product->weight ?? 0
+                        ];
+                    }),
+                    "order" => [
+                        "id" => Str::uuid(),
+                        "pick_name" => "DA_CNTT_15",
+                        "pick_address" => "Thành phố Hà Nội",
+                        "pick_province" => "Hà Nội",
+                        "pick_district" => "Ba Đình",
+                        "pick_tel" => "0999999999",
+                        "name" => $order->customer_name,
+                        "address" => $order->address->address ?? '',
+                        "province" => $order->address->province->name ?? '',
+                        "district" => $order->address->district->name ?? '',
+                        "ward" => $order->address->ward->name ?? '',
+                        "tel" => $order->customer_phone,
+                        "email" => $order->customer_email,
+                        "is_freeship" => "0",
+                        "hamlet" => "Khác",
+                        "value" => 3000000,
+                        "pick_money" => $order->total_price + $order->shipping_fee,
+                        "note" => $order->note ?? "",
+                        "order_type" => 'standard'
+                    ],
+                ];
 
-                // return response()->json(['success' => true, 'message' => 'Thanh toán thành công']);
+                try {
+                    $shippingInfo = $this->ghtkService->createOrderWithPay($dataForShipping);
+                    $this->orderRepository->updateOrder($order, [
+                        'shipping_status' => 'pending',
+                        'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
+                        'tracking_url' => $shippingInfo['tracking_url'],
+                        'tracking_code' => $shippingInfo['tracking_code'],
+                    ]);
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Payment success',
+                        'tracking_code' => $shippingInfo['tracking_code'] ?? '',
+                        'tracking_url' => $shippingInfo['tracking_url'] ?? '',
+                    ]);
+                } catch (\Throwable $th) {
+                    return response()->json(['success' => false, 'message' => 'Error ship failed']);
+                }
+
             } else {
-                // Cập nhật đơn hàng thất bại
-                $order->update([
+
+                $this->orderRepository->updateOrder($order, [
                     'status' => 'canceled',
                     'payment_status' => 'failed',
                 ]);

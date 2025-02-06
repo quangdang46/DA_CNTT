@@ -113,7 +113,7 @@ export default function OrderForm() {
               router.push(data.payment_url);
               break;
             case "cash":
-              console.log("cash");
+              router.push("/checkout/result/order-success");
               break;
           }
         }

@@ -39,7 +39,7 @@ return new class extends Migration
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
             $table->enum('payment_method', ['QR', 'cash']);
             $table->string('payment_gateway')->nullable();
-            $table->string('transaction_id')->nullable();
+            $table->string('transaction_id', 50)->nullable();
 
             $table->timestamps();
             $table->timestamp('order_time')->default(now()); // Mặc định là thời gian hiện tại

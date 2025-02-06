@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\VNPayService;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
 class VNPayController extends Controller
 {
@@ -24,7 +27,17 @@ class VNPayController extends Controller
     }
     public function paymentReturn(Request $request)
     {
-        $isValid = $this->vnPayService->verifyPayment($request->all());
+        // Kiểm tra người dùng đã đăng nhập chưa
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $userId = $user->id;
+            $guestId = null; // Không cần UUID nếu đã đăng nhập
+        } catch (JWTException $e) {
+            // $guestId = $request->cookie('guest_id') ?? Str::uuid();
+            $guestId = $request->header('X-Guest-ID') ?? Str::uuid();
+            $userId = null; // Khách chưa đăng nhập
+        }
+        $isValid = $this->vnPayService->verifyPayment($userId,$guestId,$request->all());
         return $isValid;
         if ($isValid) {
             // Xử lý đơn hàng thành công

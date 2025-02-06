@@ -84,6 +84,26 @@ class GHTKService
         }
     }
 
+    public function createOrderWithPay($data)
+    {
+
+        $response = Http::withHeaders([
+            'Token' => $this->apiToken,
+        ])->post("{$this->apiUrl}/services/shipment/order", $data);
+        // Kiểm tra phản hồi từ GHTK
+        if ($response['success']) {
+            return [
+                'estimated_deliver_time' => $response['order']['estimated_deliver_time'],
+                'tracking_code' => $response['order']['label'],
+                'tracking_url' => "https://example.com/tracking/{$response['order']['label']}", // Đường dẫn theo dõi
+            ];
+        } else {
+            throw new \Exception("Không thể tạo đơn hàng vận chuyển với GHTK: {$response->body()}");
+        }
+    }
+
+
+
     // 3. Tra cứu trạng thái đơn hàng
     public function getOrderStatus($orderId)
     {
