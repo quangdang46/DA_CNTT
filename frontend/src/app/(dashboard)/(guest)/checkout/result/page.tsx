@@ -2,6 +2,7 @@
 
 import orderApiRequest from "@/shared/apiRequests/order";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import { useCart } from "@/shared/hooks/useCart";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -20,7 +21,6 @@ export default function Page() {
   const vnp_TransactionStatus = searchParams.get("vnp_TransactionStatus");
   const vnp_TransactionNo = searchParams.get("vnp_TransactionNo");
   const vnp_ResponseCode = searchParams.get("vnp_ResponseCode");
-
   useEffect(() => {
     if (!vnp_TxnRef || !vnp_TransactionStatus || !vnp_SecureHash) {
       router.push("/");

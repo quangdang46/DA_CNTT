@@ -138,13 +138,13 @@ export const useCart = () => {
       // Dispatch action Redux để xóa toàn bộ giỏ hàng
       dispatch(clearCart());
       refetch(); // Refetch dữ liệu giỏ hàng
-      Swal.fire({
-        icon: "success",
-        title: "Xóa toàn bộ giỏ hàng thành công!",
-        text: "Giỏ hàng của bạn đã được làm sạch.",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Xóa toàn bộ giỏ hàng thành công!",
+      //   text: "Giỏ hàng của bạn đã được làm sạch.",
+      //   timer: 2000,
+      //   showConfirmButton: false,
+      // });
     },
     onError: (error: any) => {
       Swal.fire({

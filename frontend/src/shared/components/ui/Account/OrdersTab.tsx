@@ -13,7 +13,10 @@ export default function OrdersTab() {
       }
     >
       <div className="woocommerce-notices-wrapper"></div>
-      order
+      {/* 
+      <div class="woocommerce-info">
+		No order has been made yet. <a class="woocommerce-Button wc-forward button" href="https://techmarket.madrasthemes.com/shop/">Browse products</a>	</div>
+      */}
     </div>
   );
 }

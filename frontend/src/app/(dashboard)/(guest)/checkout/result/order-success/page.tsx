@@ -1,5 +1,6 @@
 "use client";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
+import { useCart } from "@/shared/hooks/useCart";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ export default function Page() {
   const trackingUrl = searchParams.get("tracking_url");
 
   const [isLoading, setIsLoading] = useState(true);
+  const { handleClearCart } = useCart();
 
   useEffect(() => {
     // Kiểm tra nếu thiếu tham số
@@ -19,6 +21,7 @@ export default function Page() {
       setIsLoading(false);
       router.push("/");
     } else {
+      handleClearCart();
       setIsLoading(false);
     }
   }, [router, trackingCode, trackingUrl]);
