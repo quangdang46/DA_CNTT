@@ -15,6 +15,7 @@ class OrderItem extends Model
         'quantity',
         'price',
         'rating',
+        'name',
     ];
 
     // Relationship: Một order item thuộc về một đơn hàng

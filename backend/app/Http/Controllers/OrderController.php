@@ -35,8 +35,6 @@ class OrderController extends Controller
 
             // Bước 1: Validate dữ liệu đầu vào
             $validated = $request->validate([
-                'user_id' => 'nullable|exists:users,id',
-                'guest_id' => 'nullable|string',
                 'customer_name' => 'required|string|max:255',
                 'customer_email' => 'nullable|email|max:255',
                 'customer_phone' => 'required|string|max:20',
@@ -59,6 +57,8 @@ class OrderController extends Controller
                 'payment_gateway' => 'nullable|string|in:VNPay,Momo',
                 'coupon_code' => 'nullable|string|max:255',
             ]);
+            $validated['user_id'] = $userId;
+            $validated['guest_id'] = $guestId;
             $result = $this->orderService->checkout($validated);
             return $result;
         } catch (\Exception $e) {

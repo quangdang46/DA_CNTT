@@ -92,10 +92,43 @@ class VNPayService
         if (!isset($data['vnp_TxnRef']) || !isset($data['vnp_SecureHash'])) {
             return response()->json(['success' => false, 'message' => 'không hợp lệ']);
         }
-        $txnParts = explode('_', $data['vnp_TxnRef']);
-        $orderId = $txnParts[0] ?? null; // Lấy ID đơn hàng
+
+
+        // $data['vnp_Version'] = '2.1.0';
+        // $data['vnp_Command'] = 'pay';
+        // $data['vnp_CurrCode'] = 'VND';
+        // $data['vnp_IpAddr'] = $_SERVER['REMOTE_ADDR'];
+        // $data['vnp_Locale'] = 'vn';
+        // $data['vnp_ReturnUrl'] = $this->vnp_ReturnUrl;
+        // $data['vnp_OrderType'] = 'billpayment';
+
+
+
+        // $vnp_SecureHash = $data['vnp_SecureHash'];
+        // unset($data['vnp_SecureHash']);
+        // ksort($data);
+
+
+
+        // $i = 0;
+        // $hashData = "";
+        // foreach ($data as $key => $value) {
+        //     if ($i == 1) {
+        //         $hashData = $hashData . '&' . urlencode($key) . "=" . urlencode($value);
+        //     } else {
+        //         $hashData = $hashData . urlencode($key) . "=" . urlencode($value);
+        //         $i = 1;
+        //     }
+        // }
+        // $secureHash = hash_hmac('sha512', $hashData, $this->vnpHashSecret);
+
+
         try {
-            $order = \App\Models\Order::where('id', $orderId)->first();
+            // if ($vnp_SecureHash != $secureHash) {
+            //     return response()->json(['status' => 'fail', 'message' => 'Dữ liệu không hợp lệ'], 400);
+            // }
+
+            $order = \App\Models\Order::where('id', $data['vnp_TxnRef'])->first();
             if (!$order) {
                 return response()->json(['success' => false, 'message' => 'Không tìm thấy đơn hàng'], 404);
             }
@@ -108,8 +141,10 @@ class VNPayService
                     'status' => 'paid',
                     'payment_status' => 'completed',
                     'transaction_id' => $data['vnp_TransactionNo'],
+                    'paid_at' => now(),
                 ]);
                 // data for ghtk service
+                return $orderUpdate;
                 // $shippingInfo = $this->ghtkService->createOrder($validated);
                 // $this->orderRepository->updateOrder($order, [
                 //     'shipping_status' => 'pending',

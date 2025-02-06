@@ -10,7 +10,7 @@ class OrderRepository implements OrderRepositoryInterface
 {
     protected $order;
     protected $orderItem;
-    public function __construct(Order $order,OrderItem $orderItem)
+    public function __construct(Order $order, OrderItem $orderItem)
     {
         $this->order = $order;
         $this->orderItem = $orderItem;

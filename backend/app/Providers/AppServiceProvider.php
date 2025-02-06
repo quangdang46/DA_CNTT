@@ -59,7 +59,10 @@ class AppServiceProvider extends ServiceProvider
             return new GHTKService();
         });
         $this->app->singleton(VNPayService::class, function ($app) {
-            return new VNPayService();
+            return new VNPayService(
+                $app->make(OrderRepositoryInterface::class),
+                $app->make(GHTKService::class)
+            );
         });
     }
 

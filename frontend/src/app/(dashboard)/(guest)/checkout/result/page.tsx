@@ -36,6 +36,9 @@ export default function Page() {
       vnp_TxnRef,
       vnp_BankCode,
       vnp_SecureHash,
+      vnp_ResponseCode,
+      vnp_TransactionStatus,
+      vnp_TransactionNo,
     };
     mutate(payload, {
       onSuccess: () => {

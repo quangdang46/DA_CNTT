@@ -107,18 +107,19 @@ class OrderService
         DB::beginTransaction();
         try {
             $order = $this->orderRepository->createOrder($validated);
-
             foreach ($validated['order_items'] as $item) {
                 \App\Models\OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
+                    'name' => $item['name'],
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
                 ]);
             }
             // Xử lý thanh toán (nếu phương thức là QR)
             if ($validated['payment_method'] === 'QR') {
-                $paymentUrl = $this->vnpayService->createPaymentUrl($order->id, $validated['total_price']);
+                $txnRef = $order->id . '_' . time();
+                $paymentUrl = $this->vnpayService->createPaymentUrl($txnRef, $validated['total_price']);
 
                 // Lưu thông tin thanh toán
                 $payment = $this->paymentRepository->createPayment([
