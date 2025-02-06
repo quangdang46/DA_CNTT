@@ -131,6 +131,7 @@ class OrderService
                 DB::commit();
                 return response()->json([
                     'success' => true,
+                    'method' => $validated['payment_method'],
                     'payment_url' => $paymentUrl
                 ]);
             }
@@ -145,6 +146,7 @@ class OrderService
 
             return response()->json([
                 'success' => true,
+                'method' => $validated['payment_method'],
                 'tracking_code' => $shippingInfo['tracking_code'],
                 'tracking_url' => $shippingInfo['tracking_url'],
             ]);

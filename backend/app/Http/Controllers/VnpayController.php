@@ -25,7 +25,7 @@ class VNPayController extends Controller
     public function paymentReturn(Request $request)
     {
         $isValid = $this->vnPayService->verifyPayment($request->all());
-
+        return $isValid;
         if ($isValid) {
             // Xử lý đơn hàng thành công
             return response()->json(['message' => 'Payment successful']);

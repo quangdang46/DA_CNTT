@@ -11,12 +11,14 @@ import { Address } from "@/shared/types/LocationTypes";
 import { orderFormSchema, OrderFormValues } from "@/shared/types/UserTypes";
 import { convertAddress } from "@/shared/utils/convertAddress";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 export default function OrderForm() {
+  const router = useRouter();
   const { user, isLoggedIn } = useSelector((state: RootState) => state.auth);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -105,10 +107,13 @@ export default function OrderForm() {
     };
     checkout(payload, {
       onSuccess: (data) => {
-        if(data.success){
-          switch (paymentMethod) {
+        if (data.success) {
+          switch (data.method) {
             case "QR":
-              window.location.href = data.payment_url;
+              router.push(data.payment_url);
+              break;
+            case "cash":
+              console.log("cash");
               break;
           }
         }

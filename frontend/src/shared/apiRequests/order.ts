@@ -21,6 +21,23 @@ const orderApiRequest = {
       },
     });
   },
+  useReturnPayment: () => {
+    return useMutation({
+      mutationFn: async (payload: any) => {
+        try {
+          const response = await apiClient.post<any, any>(
+            "/vnpay/paymentReturn",
+            payload
+          );
+          console.log("response", response);
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default orderApiRequest;

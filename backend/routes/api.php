@@ -158,8 +158,8 @@ Route::group(
     }
 
 );
-Route::get('/vnpay/payment', [VNPayController::class, 'createPayment']);
-Route::get('/vnpay/paymentReturn', [VnpayController::class, 'paymentReturn']);
+
+Route::post('/vnpay/paymentReturn', [VnpayController::class, 'paymentReturn']);
 /*
 
 
