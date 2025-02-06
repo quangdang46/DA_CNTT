@@ -1,7 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
-import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+const formSchema = z.object({
+  orderid: z.string().min(1, "Order ID is required"),
+});
 
-export default function page() {
+export default function Page() {
+  const searchParams = useSearchParams();
+  const [initialOrderId, setInitialOrderId] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      orderid: initialOrderId || "",
+    },
+  });
+
+  useEffect(() => {
+    const orderIdFromSearch = searchParams.get("orderid");
+    if (orderIdFromSearch) {
+      setInitialOrderId(orderIdFromSearch);
+      setValue("orderid", orderIdFromSearch); // Cập nhật giá trị vào form
+    } else {
+      setValue("orderid", ""); // Đặt giá trị về rỗng nếu không có order ID
+    }
+  }, [searchParams, setValue]);
+
+  const onSubmit = (data: any) => {
+    // Xử lý khi form được submit
+    console.log("Submitted Order ID: ", data.orderid);
+    // Gửi yêu cầu hoặc xử lý thêm ở đây
+  };
   return (
     <WrapperContent>
       <div className="type-page hentry">
@@ -13,7 +52,12 @@ export default function page() {
         {/* .entry-header */}
         <div className="entry-content">
           <div className="woocommerce">
-            <form className="track_order" method="post" action="#">
+            <form
+              className="track_order"
+              method="post"
+              style={{ justifyContent: "center" }}
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <p>
                 To track your order please enter your Order ID in the box below
                 and press the Track button. This was given to you on your
@@ -23,29 +67,22 @@ export default function page() {
                 <label htmlFor="orderid">Order ID</label>
                 <input
                   type="text"
-                  placeholder="Found in your order confirmation email."
-                  id="orderid"
-                  name="orderid"
+                  placeholder="Track order by name or order number"
+                  {...register("orderid")}
                   className="input-text"
                 />
+                {errors.orderid && (
+                  <p style={{ color: "red" }}>{errors?.orderid?.message}</p>
+                )}
               </p>
-              <p className="form-row form-row-last">
-                <label htmlFor="order_email">Billing email</label>
-                <input
-                  type="text"
-                  placeholder="Email you used during checkout."
-                  id="order_email"
-                  name="order_email"
-                  className="input-text"
-                />
-              </p>
+
               <div className="clear" />
               <p className="form-row">
                 <input
                   type="submit"
                   className="button"
                   name="track"
-                  defaultValue="Track"
+                  value="Track"
                 />
               </p>
             </form>

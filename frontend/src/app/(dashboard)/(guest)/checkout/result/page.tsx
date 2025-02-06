@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import orderApiRequest from "@/shared/apiRequests/order";
+import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -23,9 +23,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!vnp_TxnRef || !vnp_TransactionStatus || !vnp_SecureHash) {
-      console.error("Thiếu thông tin cần thiết để xác thực thanh toán!");
-      alert("Lỗi: Dữ liệu thanh toán không hợp lệ.");
-      router.push("/checkout/result/order-fail");
+      router.push("/");
       return;
     }
     const payload = {
@@ -41,33 +39,43 @@ export default function Page() {
       vnp_TransactionNo,
     };
     mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         if (vnp_ResponseCode === "00" && vnp_TransactionStatus === "00") {
-          router.push("/checkout/result/order-success");
+          router.push(
+            `/checkout/result/order-success?tracking_code=${
+              data.tracking_code
+            }&tracking_url=${encodeURIComponent(data.tracking_url)}`
+          );
           return;
         }
         router.push("/checkout/result/order-fail");
       },
-      onError: (error) => {
-        console.error("Lỗi khi cập nhật trạng thái thanh toán:", error);
-        alert("Có lỗi khi cập nhật trạng thái thanh toán!");
+      onError: () => {
         router.push("/checkout/result/order-fail");
       },
     });
   }, [vnp_ResponseCode, vnp_TransactionStatus, vnp_TxnRef, mutate, router]);
 
   return (
-    <div>
+    <WrapperContent>
       <h1>Đang xử lý kết quả thanh toán...</h1>
       <p>
-        Số tiền:{" "}
+        <strong>Số tiền: </strong>
         {vnp_Amount ? `${Number(vnp_Amount) / 100} VND` : "Không xác định"}
       </p>
-      <p>Ngân hàng: {vnp_BankCode || "Không rõ"}</p>
-      <p>Mã giao dịch: {vnp_TransactionNo || "Không có"}</p>
       <p>
-        Trạng thái: {vnp_TransactionStatus === "00" ? "Thành công" : "Thất bại"}
+        <strong>Ngân hàng: </strong>
+        {vnp_BankCode || "Không rõ"}
       </p>
-    </div>
+      <p>
+        <strong>Mã giao dịch: </strong>
+
+        {vnp_TransactionNo || "Không có"}
+      </p>
+      <p>
+        <strong>Trạng thái: </strong>
+        {vnp_TransactionStatus === "00" ? "Thành công" : "Thất bại"}
+      </p>
+    </WrapperContent>
   );
 }

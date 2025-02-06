@@ -77,7 +77,7 @@ class GHTKService
             return [
                 'estimated_deliver_time' => $response['order']['estimated_deliver_time'],
                 'tracking_code' => $response['order']['label'],
-                'tracking_url' => "https://example.com/tracking/{$response['order']['label']}", // Đường dẫn theo dõi
+                'tracking_url' => "http://localhost:3000/track-order?orderid={$response['order']['label']}", // Đường dẫn theo dõi
             ];
         } else {
             throw new \Exception("Không thể tạo đơn hàng vận chuyển với GHTK: {$response->body()}");
@@ -95,7 +95,7 @@ class GHTKService
             return [
                 'estimated_deliver_time' => $response['order']['estimated_deliver_time'],
                 'tracking_code' => $response['order']['label'],
-                'tracking_url' => "https://example.com/tracking/{$response['order']['label']}", // Đường dẫn theo dõi
+                'tracking_url' => "http://localhost:3000/track-order?orderid={$response['order']['label']}", // Đường dẫn theo dõi
             ];
         } else {
             throw new \Exception("Không thể tạo đơn hàng vận chuyển với GHTK: {$response->body()}");

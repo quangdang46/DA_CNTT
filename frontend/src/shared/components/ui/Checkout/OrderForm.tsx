@@ -113,7 +113,11 @@ export default function OrderForm() {
               router.push(data.payment_url);
               break;
             case "cash":
-              router.push("/checkout/result/order-success");
+              router.push(
+                `/checkout/result/order-success?tracking_code=${
+                  data.tracking_code
+                }&tracking_url=${encodeURIComponent(data.tracking_url)}`
+              );
               break;
           }
         }
