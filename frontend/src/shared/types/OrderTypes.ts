@@ -1,3 +1,4 @@
+import { ResType } from "@/shared/types/resType";
 import { z } from "zod";
 
 const addressSchema = z.object({
@@ -38,4 +39,35 @@ export const orderSchema = z.object({
     .nonempty("At least one item is required"),
 });
 
+export const orderGetItemSchema = z.object({
+  id: z.number(),
+  tracking_code: z.string().nullable(),
+  tracking_url: z.string().url().nullable(),
+  user_id: z.number().nullable(),
+  guest_id: z.number().nullable(),
+  customer_name: z.string(),
+  customer_email: z.string().email(),
+  customer_phone: z.string(),
+  total_price: z.string(),
+  status: z.string().nullable(),
+  shipping_status: z.string().nullable(),
+  shipping_partner: z.string().nullable(),
+  shipped_at: z.string().nullable().nullable(),
+  delivered_at: z.string().nullable().nullable(),
+  returned_at: z.string().nullable().nullable(),
+  shipping_fee: z.string().nullable(),
+  estimated_deliver_time: z.string().nullable().nullable(),
+  payment_status: z.string().nullable(),
+  payment_method: z.string().nullable(),
+  payment_gateway: z.string().nullable(),
+  transaction_id: z.string().nullable(),
+  order_time: z.string(),
+  delivery_time: z.string().nullable(),
+  cancel_time: z.string().nullable(),
+  address_id: z.number().nullable(),
+  note: z.string().nullable(),
+});
+
+export type OrderItemType = z.infer<typeof orderGetItemSchema>;
+export type OrderGetResType = ResType<OrderItemType[]>;
 export type OrderType = z.infer<typeof orderSchema>;

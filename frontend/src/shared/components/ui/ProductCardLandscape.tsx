@@ -30,13 +30,23 @@ export default function ProductCardLandscape({
         href={`/details/${product.slug}`}
       >
         <div className="media">
-          <Image
+          {/* <Image
             className="wp-post-image"
             src={product.images[1].image_url}
             alt={""}
             width={0}
             height={0}
             style={{ width: "200px", height: "130px" }} // optional
+          /> */}
+          <Image
+            className="wp-post-image"
+            src={product.images[1].image_url}
+            alt={""}
+            width={200}
+            height={130}
+            style={{
+              objectFit: "cover", // Giữ tỷ lệ khung hình
+            }}
           />
           <div className="media-body">
             <span className="price">
@@ -84,13 +94,23 @@ export default function ProductCardLandscape({
           href={product.images[1].image_url}
           className="woocommerce-LoopProduct-link"
         >
-          <Image
+          {/* <Image
             className="wp-post-image"
             src={product.images[1].image_url}
             alt={" "}
             width={0}
             height={0}
             style={{ width: "200px", height: "200px" }}
+          /> */}
+          <Image
+            className="wp-post-image"
+            src={product.images[1].image_url}
+            alt={""}
+            width={200}
+            height={200}
+            style={{
+              objectFit: "cover", // Giữ tỷ lệ khung hình
+            }}
           />
         </Link>
 

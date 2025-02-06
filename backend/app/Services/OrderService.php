@@ -158,4 +158,9 @@ class OrderService
             return response()->json(['success' => false, 'error' => 'Có lỗi xảy ra khi tạo đơn hàng.']);
         }
     }
+
+    public function getOrders($userId)
+    {
+        return $this->orderRepository->getOrders($userId);
+    }
 }

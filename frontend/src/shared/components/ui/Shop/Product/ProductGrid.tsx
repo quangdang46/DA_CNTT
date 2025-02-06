@@ -4,8 +4,14 @@ import Link from "next/link";
 import React from "react";
 interface Props {
   product: Product;
+  onAddToCart?: (product: Product) => void;
+  onAddToCompare?: (product: Product) => void;
 }
-export default function ProductGrid({ product }: Props) {
+export default function ProductGrid({
+  product,
+  onAddToCompare = () => {},
+  onAddToCart = () => {},
+}: Props) {
   return (
     <div className="product">
       <div className="yith-wcwl-add-to-wishlist">
@@ -35,12 +41,15 @@ export default function ProductGrid({ product }: Props) {
       </Link>
       {/* .woocommerce-LoopProduct-link */}
       <div className="hover-area">
-        <a className="button" href="cart.html">
+        <button className="button" onClick={() => onAddToCart(product)}>
           Add to cart
-        </a>
-        <a className="add-to-compare-link" href="compare.html">
+        </button>
+        <button
+          className="add-to-compare-link"
+          onClick={() => onAddToCompare(product)}
+        >
           Add to compare
-        </a>
+        </button>
       </div>
       {/* .hover-area */}
     </div>

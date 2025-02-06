@@ -4,8 +4,14 @@ import Image from "next/image";
 import React from "react";
 interface Props {
   product: Product;
+  onAddToCart?: (product: Product) => void;
+  onAddToCompare?: (product: Product) => void;
 }
-export default function ProductListView({ product }: Props) {
+export default function ProductListView({
+  product,
+  onAddToCompare = () => {},
+  onAddToCart = () => {},
+}: Props) {
   return (
     <div className="product list-view ">
       <div className="media">
@@ -76,12 +82,18 @@ export default function ProductListView({ product }: Props) {
               </span>
             </span>
             {/* .price */}
-            <a className="button add_to_cart_button" href="cart.html">
+            <button
+              className="button add_to_cart_button"
+              onClick={() => onAddToCart(product)}
+            >
               Add to Cart
-            </a>
-            <a className="add-to-compare-link" href="compare.html">
+            </button>
+            <button
+              className="add-to-compare-link"
+              onClick={() => onAddToCompare(product)}
+            >
               Add to compare
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -85,4 +85,35 @@ class OrderController extends Controller
             ]);
         }
     }
+
+    public function getOrders()
+    {
+        try {
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
+                $userId = $user->id;
+            } catch (JWTException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Get orders failed as user not logged in',
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+            $result = $this->orderService->getOrders($userId);
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Get orders successfully',
+                    'data' => $result
+                ]
+            );
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Get orders failed',
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
 }

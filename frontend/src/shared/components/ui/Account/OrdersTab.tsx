@@ -1,8 +1,13 @@
+import orderApiRequest from "@/shared/apiRequests/order";
 import { useTabs } from "@/shared/contexts/TabsContext";
+import Link from "next/link";
 import React from "react";
 
 export default function OrdersTab() {
   const { activeTab } = useTabs();
+  const { data, isLoading } = orderApiRequest.useGetOrder();
+  const orders = data?.data;
+
   return (
     <div
       className="woocommerce-MyAccount-content"
@@ -13,10 +18,16 @@ export default function OrdersTab() {
       }
     >
       <div className="woocommerce-notices-wrapper"></div>
-      {/* 
-      <div class="woocommerce-info">
-		No order has been made yet. <a class="woocommerce-Button wc-forward button" href="https://techmarket.madrasthemes.com/shop/">Browse products</a>	</div>
-      */}
+      {orders?.length == 0 && (
+        <div className="woocommerce-info">
+          No order has been made yet.{" "}
+          <Link className="woocommerce-Button wc-forward button" href="/shop">
+            Browse products
+          </Link>{" "}
+        </div>
+      )}
+      {isLoading && <p>Loading...</p>}
+    
     </div>
   );
 }

@@ -40,7 +40,7 @@ const GalleryImages = () => {
                   className={`woocommerce-product-gallery__image ${styles.embla__slide}`}
                 >
                   <div tabIndex={index === 0 ? 0 : -1}>
-                    <Image
+                    {/* <Image
                       width={0}
                       height={0}
                       style={{
@@ -51,6 +51,16 @@ const GalleryImages = () => {
                       src={image_url}
                       className="attachment-shop_single size-shop_single wp-post-image"
                       alt=""
+                    /> */}
+                    <Image
+                      src={image_url}
+                      alt=""
+                      width={600} // Độ rộng thực tế của ảnh
+                      height={600} // Chiều cao thực tế của ảnh
+                      style={{
+                        objectFit: "cover",
+                      }}
+                      className="attachment-shop_single size-shop_single wp-post-image"
                     />
                   </div>
                 </div>

@@ -30,15 +30,9 @@ class OrderRepository implements OrderRepositoryInterface
         return $order->update($data);
     }
 
-    public function findOrderByGuestId(string $guestId)
-    {
-        return $this->order->where('guest_id', $guestId)->first();
-    }
 
-    public function findOrderByUserId(int $userId)
-    {
-        return $this->order->where('user_id', $userId)->first();
-    }
+
+
     public function findOrderById($orderId)
     {
         return $this->order->find($orderId);
@@ -47,5 +41,10 @@ class OrderRepository implements OrderRepositoryInterface
     public function findOrderByTrackingCode($trackingCode)
     {
         return $this->order->where('tracking_code', $trackingCode)->first();
+    }
+
+    public function getOrders($userId)
+    {
+        return $this->order->where('user_id', $userId)->get();
     }
 }

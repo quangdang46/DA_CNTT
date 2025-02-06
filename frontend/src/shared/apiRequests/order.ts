@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiClient from "@/shared/config/apiClient";
-import { OrderType } from "@/shared/types/OrderTypes";
-import { useMutation } from "@tanstack/react-query";
+import { OrderGetResType, OrderType } from "@/shared/types/OrderTypes";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const orderApiRequest = {
   useCheckout: () => {
@@ -51,7 +51,21 @@ const orderApiRequest = {
         }
       },
     });
-  }
+  },
+  useGetOrder: () => {
+    return useQuery({
+      queryKey: ["orders"],
+      queryFn: async () => {
+        try {
+          const response = await apiClient.get<OrderGetResType>("/orders");
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default orderApiRequest;

@@ -11,65 +11,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-// export default function Page() {
-//   const router = useRouter();
-//   const dispatch = useDispatch();
-//   const searchParams = useSearchParams();
-//   const sessionToken = searchParams.get("auth_token");
-//   const [hasLoggedOut, setHasLoggedOut] = useState(false);
-
-//   const logoutMutation = useMutation({
-//     mutationFn: async () => {
-//       const localToken = localStorage.getItem("auth_token");
-
-//       if (sessionToken === localToken) {
-//         const response = await authRequestApi.logout();
-
-//         if (response.success) {
-//           toast.success(response.message);
-//           dispatch(setLogout());
-//           // Lấy wishlist từ localStorage
-//           const storedWishlist = localStorage.getItem("wishlist");
-//           const guestId = localStorage.getItem("guest_id") || uuidv4();
-//           localStorage.setItem("guest_id", guestId); // Lưu guest_id
-//           if (storedWishlist) {
-//             try {
-//               const parsedWishlist = JSON.parse(storedWishlist);
-//               if (Array.isArray(parsedWishlist)) {
-//                 dispatch(loadWishlist(parsedWishlist));
-//               }
-//             } catch (error) {
-//               console.error("Error parsing wishlist", error);
-//             }
-//           }
-
-//           // Gọi API để chuyển giỏ hàng từ user sang guest
-//           await apiClient.post("/cart/transfer-to-guest", {
-//             guest_id: guestId,
-//           });
-//           deleteCookie("auth_token");
-//           localStorage.removeItem("auth_token");
-//           router.push("/");
-//         }
-
-//         return response;
-//       }
-//     },
-//     onError: (error) => {
-//       toast.error("Logout failed");
-//       console.error(error);
-//     },
-//   });
-
-//   useEffect(() => {
-//     if (sessionToken && !hasLoggedOut) {
-//       logoutMutation.mutate();
-//       setHasLoggedOut(true);
-//     }
-//   }, [hasLoggedOut, logoutMutation, sessionToken]);
-
-//   return null;
-// }
 
 export default function Page() {
   const router = useRouter();

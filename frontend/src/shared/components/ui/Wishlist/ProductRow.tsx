@@ -5,8 +5,13 @@ import React from "react";
 interface Props {
   product: Product;
   onRemove: (id: string) => void;
+  onAddToCart?: (product: Product) => void;
 }
-export default function ProductRow({ product, onRemove }: Props) {
+export default function ProductRow({
+  product,
+  onRemove,
+  onAddToCart = () => {},
+}: Props) {
   return (
     <tr>
       <td className="product-remove">
@@ -52,9 +57,12 @@ export default function ProductRow({ product, onRemove }: Props) {
         <span className="wishlist-in-stock">{product.status}</span>
       </td>
       <td className="product-add-to-cart">
-        <a className="button add_to_cart_button button alt" href="cart.html">
+        <button
+          className="button add_to_cart_button button alt"
+          onClick={() => onAddToCart(product)}
+        >
           Add to Cart
-        </a>
+        </button>
       </td>
     </tr>
   );

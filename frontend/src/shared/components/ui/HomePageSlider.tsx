@@ -60,7 +60,7 @@ export default function HomePageSlider() {
                   position: "relative",
                 }}
               >
-                <Image
+                {/* <Image
                   src={slide.image}
                   alt=""
                   width={0}
@@ -74,7 +74,25 @@ export default function HomePageSlider() {
                     right: 0,
                     bottom: 0,
                   }}
+                /> */}
+
+                <Image
+                  src={slide.image}
+                  alt=""
+                  width={500} // Đặt giá trị cụ thể
+                  height={300} // Đặt giá trị cụ thể
+                  quality={100} // Tăng chất lượng ảnh
+                  style={{
+                    objectFit: "cover",
+                    position: "absolute",
+                    height: "100%",
+                    width: "30%",
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                  }}
                 />
+
                 <div className="caption">
                   <div className="title hidden">{slide.caption.title}</div>
                   <div className="sub-title hidden">

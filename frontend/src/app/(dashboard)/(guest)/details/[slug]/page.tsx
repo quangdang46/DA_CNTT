@@ -8,8 +8,9 @@ import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { GalleryProvider } from "@/shared/contexts/GalleryContext";
 import { useCart } from "@/shared/hooks/useCart";
 import useCompare from "@/shared/hooks/useCompare";
+import { useWishlist } from "@/shared/hooks/useWishlist";
 import { Product } from "@/shared/types/ProductTypes";
-import { Star, StarHalf } from "lucide-react";
+import { Heart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -18,6 +19,7 @@ export default function Page() {
   const { handleAddToCompare, CompareModal } = useCompare();
   const { handleAddToCart } = useCart();
   const { slug } = useParams(); // Lấy slug từ URL
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const { data, isLoading, error } = productApiRequest.useProductDetail(
     slug as string
@@ -57,9 +59,16 @@ export default function Page() {
               <div className="summary entry-summary">
                 <div className="single-product-header">
                   <h1 className="product_title entry-title">{product.name}</h1>
-                  <a className="add-to-wishlist" href="wishlist.html">
-                    Add to Wishlist
-                  </a>
+                  <button
+                    className="add-to-wishlist"
+                    onClick={() => toggleWishlist(product.id)}
+                  >
+                    <Heart
+                      strokeWidth={1}
+                      size={30}
+                      fill={`${isInWishlist(product.id) ? "red" : "none"}`}
+                    />
+                  </button>
                 </div>
                 <div className="single-product-meta">
                   <div className="brand">
@@ -153,7 +162,7 @@ export default function Page() {
                       </ins>
                     </p>
                     <form method="post" className="cart" autoComplete="off">
-                      <div className="quantity">
+                      {/* <div className="quantity">
                         <label htmlFor="quantity-input">Quantity</label>
                         <input
                           type="number"
@@ -164,7 +173,7 @@ export default function Page() {
                           name="quantity"
                           id="quantity-input"
                         />
-                      </div>
+                      </div> */}
                       <button
                         className="single_add_to_cart_button button alt"
                         onClick={() => handleAddToCart(product)}

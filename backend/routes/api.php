@@ -154,6 +154,7 @@ Route::group(
         'prefix' => 'orders'
     ],
     function () {
+        Route::get('/', [OrderController::class, 'getOrders']);
         Route::post('/', [OrderController::class, 'checkout']);
         Route::post("/track-order", [OrderController::class, 'trackOrder']);
     }

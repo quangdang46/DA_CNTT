@@ -1,5 +1,5 @@
 "use client";
-import {  Star, StarHalf, Undo2, X } from "lucide-react";
+import { Star, StarHalf, Undo2, X } from "lucide-react";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import { RootState } from "@/shared/state/store";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { removeFromCompare } from "@/shared/state/compareSlice";
+import { useCart } from "@/shared/hooks/useCart";
 
 const productAttributes = [
   { key: "battery_capacity", label: "Battery Capacity" },
@@ -20,6 +21,8 @@ const productAttributes = [
 ];
 
 export default function Page() {
+  const { handleAddToCart } = useCart();
+
   const selectedProducts = useSelector(
     (state: RootState) => state.compare.selectedProducts
   );
@@ -145,7 +148,13 @@ export default function Page() {
                     <th>Add to cart</th>
                     {selectedProducts.map((product) => (
                       <td key={product.id}>
-                        <a className="button" href={`/cart/add/${product.id}`}>
+                        <a
+                          className="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleAddToCart(product);
+                          }}
+                        >
                           Add to cart
                         </a>
                       </td>
