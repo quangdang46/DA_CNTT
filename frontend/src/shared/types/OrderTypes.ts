@@ -17,6 +17,7 @@ const orderItemSchema = z.object({
   product_id: z.number().int().positive("Invalid product ID"),
   quantity: z.number().int().positive("Quantity must be greater than 0"),
   price: z.number().nonnegative("Price must be >= 0"),
+  name: z.string().min(1, "Product name is required"),
 });
 
 export const orderSchema = z.object({

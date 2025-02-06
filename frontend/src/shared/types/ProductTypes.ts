@@ -37,6 +37,7 @@ export type Product = {
   status: string;
   rating: number;
   slug: string;
+  weight: number;
   review_count: number;
   attributes: ProductAttributes;
   images: ProductImageList;

@@ -83,7 +83,7 @@ export default function SaleProductsCarousel() {
                                       <span className="woocommerce-Price-currencySymbol">
                                         VNĐ
                                       </span>
-                                      {(product.price * 0.1).toFixed(2)}
+                                      {(product.price * 0.1).toFixed(0)}
                                     </span>
                                   </span>
                                 </div>

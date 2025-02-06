@@ -33,7 +33,7 @@ return new class extends Migration
             $table->timestamp('delivered_at')->nullable(); // Ngày giao thành công
             $table->timestamp('returned_at')->nullable(); // Ngày hàng bị trả lại
             $table->decimal('shipping_fee', 10, 2)->nullable();
-            $table->timestamp('estimated_delivery_time')->nullable();
+            $table->timestamp('estimated_deliver_time')->nullable();
 
             // Trạng thái thanh toán
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');

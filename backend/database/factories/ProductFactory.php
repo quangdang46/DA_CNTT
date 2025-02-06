@@ -20,10 +20,11 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->word(),  // Tên sản phẩm ngẫu nhiên
             'description' => $this->faker->text(),  // Mô tả sản phẩm ngẫu nhiên
-            'price' => $this->faker->randomFloat(2, 10, 1000),  // Giá sản phẩm ngẫu nhiên từ 10 đến 1000
+            'price' => $this->faker->numberBetween(1000000, 15000000),  // Giá sản phẩm ngẫu nhiên từ 10 đến 1000
             'status' => $this->faker->randomElement(['available', 'out_of_stock', 'discontinued']),  // Trạng thái sản phẩm
             'rating' => $this->faker->randomFloat(1, 0, 5),  // Đánh giá sản phẩm ngẫu nhiên từ 0 đến 5
             'slug' => $this->faker->slug(),  // Slug cho tên sản phẩm
+            'weight' => $this->faker->randomFloat(2, 0.1, 1),  // Trọng lượng sản phẩm ngẫu nhiên từ 0.1 đến 10\
             'review_count' => $this->faker->numberBetween(0, 100),  // Số lượng đánh giá ngẫu nhiên
             'category_id' => Category::inRandomOrder()->first()->id,  // Lấy category_id ngẫu nhiên từ bảng categories
         ];

@@ -44,7 +44,7 @@ export default function Cart() {
           <span className="amount">
             <span className="price-label">Your Cart</span>
             {totalPrice > shippingFee &&
-              `${(totalPrice - shippingFee).toFixed(2)}`}
+              `${(totalPrice - shippingFee).toFixed(0)}`}
           </span>
         </div>
         {/* Dropdown chứa danh sách sản phẩm */}
@@ -98,9 +98,9 @@ export default function Cart() {
                                 ? isNaN(parseFloat(item.product.price))
                                   ? "0.00"
                                   : parseFloat(item.product.price)
-                                      .toFixed(2)
+                                      .toFixed(0)
                                       .toString()
-                                : item.product.price.toFixed(2).toString()}
+                                : item.product.price.toFixed(0).toString()}
                             </span>
                           </span>
                         </li>
@@ -110,7 +110,7 @@ export default function Cart() {
                     <p className="woocommerce-mini-cart__total total">
                       <strong>Subtotal:</strong>
                       {totalPrice > shippingFee &&
-                        (totalPrice - shippingFee).toFixed(2)}
+                        (totalPrice - shippingFee).toFixed(0)}
                     </p>
 
                     <p className="woocommerce-mini-cart__buttons buttons">

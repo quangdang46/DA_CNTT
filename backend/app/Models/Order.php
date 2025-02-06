@@ -25,7 +25,7 @@ class Order extends Model
         'delivered_at',
         'returned_at',
         'shipping_fee',
-        'estimated_delivery_time',
+        'estimated_deliver_time',
         'payment_status',
         'payment_method',
         'payment_gateway',

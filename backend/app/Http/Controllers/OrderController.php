@@ -50,6 +50,8 @@ class OrderController extends Controller
                 'order_items.*.product_id' => 'required|exists:products,id',
                 'order_items.*.quantity' => 'required|integer|min:1',
                 'order_items.*.price' => 'required|numeric|min:0',
+                'order_items.*.name' => 'required|string|max:255',
+                "order_items.*.weight" => 'required|numeric|min:0',
                 'total_price' => 'required|numeric|min:0',
                 'shipping_partner' => 'required|string|in:GHN,GHTK',
                 'shipping_fee' => 'required|numeric|min:0',

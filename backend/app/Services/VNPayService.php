@@ -27,7 +27,7 @@ class VNPayService
     public function createPaymentUrl($orderInfo, $amount)
     {
 
-        $vnp_TxnRef = time(); // Mã đơn hàng
+        $vnp_TxnRef = $orderInfo; // Mã đơn hàng
         $vnp_OrderInfo = "Thanh toán đơn hàng " . $orderInfo;
         $vnp_Amount = $amount * 100; // Số tiền VNPay tính theo VND * 100
         $vnp_Locale = "vn";

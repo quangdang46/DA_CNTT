@@ -39,7 +39,7 @@ export default function SummaryCheckout() {
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
                       <span className="woocommerce-Price-currencySymbol"></span>
-                      {totalPrice.toFixed(2)}
+                      {totalPrice.toFixed(0)}
                     </bdi>
                   </span>
                 </td>
@@ -52,7 +52,7 @@ export default function SummaryCheckout() {
                       <span className="woocommerce-Price-amount amount">
                         <bdi>
                           <span className="woocommerce-Price-currencySymbol"></span>
-                          {discountAmount.toFixed(2)}
+                          {discountAmount.toFixed(0)}
                         </bdi>
                       </span>
                     </td>
@@ -65,7 +65,7 @@ export default function SummaryCheckout() {
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
                       <span className="woocommerce-Price-currencySymbol"></span>
-                      {Math.max(totalPrice - discountAmount, 0).toFixed(2)}
+                      {Math.max(totalPrice - discountAmount, 0).toFixed(0)}
                     </bdi>
                   </span>
                 </td>

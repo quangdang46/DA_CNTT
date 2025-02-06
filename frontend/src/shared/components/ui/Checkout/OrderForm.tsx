@@ -96,6 +96,8 @@ export default function OrderForm() {
       payment_gateway: "VNPay",
       shipping_partner: "GHTK",
       order_items: cartItems.map((item) => ({
+        weight: item?.product.weight,
+        name: item?.product.name,
         product_id: item?.id,
         quantity: item?.quantity,
         price: item?.product.price,
@@ -103,7 +105,13 @@ export default function OrderForm() {
     };
     checkout(payload, {
       onSuccess: (data) => {
-        console.log("Checkout success:", data);
+        if(data.success){
+          switch (paymentMethod) {
+            case "QR":
+              window.location.href = data.payment_url;
+              break;
+          }
+        }
         Swal.fire({
           icon: "success",
           title: "Đặt hàng thành công!",

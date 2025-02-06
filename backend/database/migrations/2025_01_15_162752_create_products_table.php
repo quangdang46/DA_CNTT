@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 10, 0);
             $table->enum('status', ['available', 'out_of_stock', 'discontinued']);
             $table->float('rating', 2, 1)->default(0);
             $table->string('slug', 255)->unique();
             $table->integer('review_count')->default(0);
+            $table->float('weight', 8, 2)->default(0);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

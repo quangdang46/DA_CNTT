@@ -106,25 +106,6 @@ class OrderService
         }
         DB::beginTransaction();
         try {
-            $data = [
-                'user_id' => $validated['user_id'] ?? null,
-                'guest_id' => $validated['guest_id'] ?? null,
-                'customer_name' => $validated['customer_name'],
-                'customer_email' => $validated['customer_email'],
-                'customer_phone' => $validated['customer_phone'],
-                'address_id' => $validated['address_id'],
-                'shipping_address' => $validated['shipping_address'] ?? null,
-                'total_price' => $validated['total_price'],
-                'status' => 'processing',
-                'shipping_status' => 'pending',
-                'payment_status' => 'pending',
-                'shipping_partner' => $validated['shipping_partner'],
-                'shipping_fee' => $validated['shipping_fee'],
-                'estimated_delivery_time' => $validated['estimated_delivery_time'] ?? null,
-                'payment_method' => $validated['payment_method'],
-                'payment_gateway' => $validated['payment_gateway'],
-                'note' => $validated['note'] ?? null,
-            ];
             $order = $this->orderRepository->createOrder($validated);
 
             foreach ($validated['order_items'] as $item) {
@@ -147,23 +128,26 @@ class OrderService
                     'payment_status' => 'pending',
                     'payment_gateway' => $validated['payment_gateway'],
                 ]);
-                // DB::commit();
-                // return response()->json(['payment_url' => $paymentUrl]);
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'payment_url' => $paymentUrl
+                ]);
             }
             $shippingInfo = $this->ghtkService->createOrder($validated);
-            return $shippingInfo;
-            // $order->update([
-            //     'tracking_code' => $shippingInfo['tracking_code'],
-            //     'tracking_url' => $shippingInfo['tracking_url'],
-            // ]);
-            // DB::commit();
+            $this->orderRepository->updateOrder($order, [
+                'shipping_status' => 'pending',
+                'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
+                'tracking_url' => $shippingInfo['tracking_url'],
+                'tracking_code' => $shippingInfo['tracking_code'],
+            ]);
+            DB::commit();
 
-            // return response()->json([
-            //     'success' => true,
-            //     'payment_url' => $paymentUrl ?? null,
-            //     'tracking_code' => $shippingInfo['tracking_code'],
-            //     'tracking_url' => $shippingInfo['tracking_url'],
-            // ]);
+            return response()->json([
+                'success' => true,
+                'tracking_code' => $shippingInfo['tracking_code'],
+                'tracking_url' => $shippingInfo['tracking_url'],
+            ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['success' => false, 'error' => 'Có lỗi xảy ra khi tạo đơn hàng.']);

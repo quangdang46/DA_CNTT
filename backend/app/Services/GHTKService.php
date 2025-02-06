@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class GHTKService
 {
@@ -24,15 +25,17 @@ class GHTKService
 
         return $response->json();
     }
+
+
     private function getProductsData($order)
     {
         $products = [];
-        foreach ($order->items as $item) {
+        foreach ($order as $item) {
             $products[] = [
-                "name" => $item->product->name, // Tên sản phẩm
-                "weight" => $item->product->weight ?? 100, // Trọng lượng (gram)
-                "quantity" => $item->quantity, // Số lượng
-                "price" => $item->price, // Giá sản phẩm
+                "name" => $item['name'] ?? "Sản phẩm",
+                "weight" => $item['weight'] ?? 1, // Trọng lượng (gram)
+                "quantity" => $item['quantity'], // Số lượng
+                "product_code" => $item['product_id'], // Sửa lại dấu "->" thành "['']"
             ];
         }
         return $products;
@@ -40,40 +43,41 @@ class GHTKService
     // 2. Tạo đơn hàng
     public function createOrder($order)
     {
-
         // Chuẩn bị dữ liệu để gửi đến GHTK
+        // return $this->getProductsData($order['order_items']);
         $data = [
-            "products" => $this->getProductsData($order),
+            "products" => $this->getProductsData($order['order_items']),
             "order" => [
-                "id" => $order->id,
+                "id" => Str::uuid(),
                 "pick_name" => "DA_CNTT_15", // Tên người gửi
                 "pick_address" => "Thành phố Hà Nội", // Địa chỉ người gửi
                 "pick_province" => "Hà Nội", // Tỉnh/Thành phố người gửi
                 "pick_district" => "Ba Đình", // Quận/Huyện người gửi
-                "tel" => "0123456789", // Số điện thoại người gửi
-                "name" => $order->customer_name, // Tên người nhận
-                "address" => $order->shipping_address['address'], // Địa chỉ người nhận
-                "province" => $order->shipping_address['province'], // Tỉnh/Thành phố người nhận
-                "district" => $order->shipping_address['district'], // Quận/Huyện người nhận
-                'war' => $order->shipping_address['ward'],
-                "phone" => $order->customer_phone, // Số điện thoại người nhận
+                "pick_tel" => "0999999999", // Số điện thoại người gửi
+                "name" => $order['customer_name'], // Tên người nhận
+                "address" => $order['shipping_address']['address'], // Địa chỉ người nhận
+                "province" => $order['shipping_address']['province'], // Tỉnh/Thành phố người nhận
+                "district" => $order['shipping_address']['district'], // Quận/Huyện người nhận
+                'ward' => $order['shipping_address']['ward'],
+                "tel" => $order['customer_phone'], // Số điện thoại người nhận
+                "email" => $order['customer_email'], // Email người nhận
                 "is_freeship" => "0", // Không miễn phí vận chuyển
-                "pick_money" => $order->total_price - $order->shipping_fee, // Tiền thu hộ (COD)
-                "note" => $order->note ?? "", // Ghi chú đơn hàng
+                "hamlet" => "Khác",
+                'value' => 3000000, //gia tri bao hiem
+                "pick_money" => $order['total_price'] + $order['shipping_fee'], // Tính phi ván chuyen + phi bao hiem
+                "note" => $order['note'] ?? "", // Ghi chú đơn hàng
+                'order_type' => 'standard'
             ],
         ];
-        return $data;
-
         $response = Http::withHeaders([
             'Token' => $this->apiToken,
         ])->post("{$this->apiUrl}/services/shipment/order", $data);
-
         // Kiểm tra phản hồi từ GHTK
-        if ($response->successful()) {
-            $responseData = $response->json();
+        if ($response['success']) {
             return [
-                'tracking_code' => $responseData['order']['label'],
-                'tracking_url' => "https://example.com/tracking/{$responseData['order']['label']}", // Đường dẫn theo dõi
+                'estimated_deliver_time' => $response['order']['estimated_deliver_time'],
+                'tracking_code' => $response['order']['label'],
+                'tracking_url' => "https://example.com/tracking/{$response['order']['label']}", // Đường dẫn theo dõi
             ];
         } else {
             throw new \Exception("Không thể tạo đơn hàng vận chuyển với GHTK: {$response->body()}");
