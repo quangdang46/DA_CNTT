@@ -105,7 +105,7 @@ class GHTKService
 
 
     // 3. Tra cứu trạng thái đơn hàng
-    public function getOrderStatus($orderId)
+    public function trackOrder($orderId)
     {
         $response = Http::withHeaders([
             'Token' => $this->apiToken,

@@ -155,6 +155,7 @@ Route::group(
     ],
     function () {
         Route::post('/', [OrderController::class, 'checkout']);
+        Route::post("/track-order", [OrderController::class, 'trackOrder']);
     }
 
 );

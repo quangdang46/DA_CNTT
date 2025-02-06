@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import orderApiRequest from "@/shared/apiRequests/order";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { z } from "zod";
 const formSchema = z.object({
   orderid: z.string().min(1, "Order ID is required"),
@@ -13,7 +15,8 @@ const formSchema = z.object({
 export default function Page() {
   const searchParams = useSearchParams();
   const [initialOrderId, setInitialOrderId] = useState("");
-
+  const [trackingData, setTrackingData] = useState<any>(null);
+  const { mutate } = orderApiRequest.useTrackOrder();
   const {
     register,
     handleSubmit,
@@ -37,9 +40,26 @@ export default function Page() {
   }, [searchParams, setValue]);
 
   const onSubmit = (data: any) => {
-    // Xử lý khi form được submit
-    console.log("Submitted Order ID: ", data.orderid);
-    // Gửi yêu cầu hoặc xử lý thêm ở đây
+    mutate(
+      { tracking_code: data.orderid },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            setTrackingData(data.order);
+          }
+        },
+        onError: () => {
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi khi Track Order",
+            text: "Vui lòng thử lại sau.",
+          });
+        },
+      }
+    );
+  };
+  const renderValue = (value: any) => {
+    return value ? value : "Chưa có";
   };
   return (
     <WrapperContent>
@@ -86,7 +106,88 @@ export default function Page() {
                 />
               </p>
             </form>
-            {/* .track_order */}
+            {trackingData && (
+              <div className="tracking-result">
+                <h3>Order Tracking Details</h3>
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  <div style={{ width: "50%" }}>
+                    <strong>Label ID:</strong>{" "}
+                    {renderValue(trackingData.label_id)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Partner ID:</strong>{" "}
+                    {renderValue(trackingData.partner_id)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Status:</strong> {renderValue(trackingData.status)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Status Text:</strong>{" "}
+                    {renderValue(trackingData.status_text)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Created:</strong>{" "}
+                    {renderValue(trackingData.created)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Modified:</strong>{" "}
+                    {renderValue(trackingData.modified)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Message:</strong>{" "}
+                    {renderValue(trackingData.message)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Pick Date:</strong>{" "}
+                    {renderValue(trackingData.pick_date)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Deliver Date:</strong>{" "}
+                    {renderValue(trackingData.deliver_date)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Customer Fullname:</strong>{" "}
+                    {renderValue(trackingData.customer_fullname)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Customer Tel:</strong>{" "}
+                    {renderValue(trackingData.customer_tel)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Address:</strong>{" "}
+                    {renderValue(trackingData.address)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Storage Day:</strong>{" "}
+                    {renderValue(trackingData.storage_day)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Ship Money:</strong>{" "}
+                    {renderValue(trackingData.ship_money)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Insurance:</strong>{" "}
+                    {renderValue(trackingData.insurance)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Value:</strong> {renderValue(trackingData.value)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Weight:</strong> {renderValue(trackingData.weight)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Pick Money:</strong>{" "}
+                    {renderValue(trackingData.pick_money)}
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <strong>Is Free Ship:</strong>{" "}
+                    {renderValue(
+                      trackingData.is_freeship === "1" ? "Yes" : "No"
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           {/* .woocommerce */}
         </div>

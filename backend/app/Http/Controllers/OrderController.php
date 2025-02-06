@@ -68,4 +68,21 @@ class OrderController extends Controller
             ]);
         }
     }
+
+
+
+    public function trackOrder(Request $request)
+    {
+        try {
+            $trackingCode = $request->input('tracking_code');
+            $result = $this->ghtkService->trackOrder($trackingCode);
+            return $result;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Track order failed',
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
 }

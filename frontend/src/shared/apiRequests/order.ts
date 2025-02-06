@@ -12,7 +12,6 @@ const orderApiRequest = {
             "/orders",
             payload
           );
-          console.log("response", response);
           return response;
         } catch (error) {
           console.error("API error:", error);
@@ -29,7 +28,6 @@ const orderApiRequest = {
             "/vnpay/paymentReturn",
             payload
           );
-          console.log("response", response);
           return response;
         } catch (error) {
           console.error("API error:", error);
@@ -38,6 +36,22 @@ const orderApiRequest = {
       },
     });
   },
+  useTrackOrder: () => {
+    return useMutation({
+      mutationFn: async (payload: any) => {
+        try {
+          const response = await apiClient.post<any, any>(
+            "/orders/track-order",
+            payload
+          );
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  }
 };
 
 export default orderApiRequest;
