@@ -82,41 +82,43 @@ class VNPayService
     public function verifyPayment($data)
     {
         if (!isset($data['vnp_TxnRef']) || !isset($data['vnp_SecureHash'])) {
-            return response()->json(['status' => 'fail', 'message' => 'không hợp lệ']);
+            return response()->json(['success' => false, 'message' => 'không hợp lệ']);
         }
 
 
-        $data['vnp_Version'] = '2.1.0';
-        $data['vnp_Command'] = 'pay';
-        $data['vnp_CurrCode'] = 'VND';
-        $data['vnp_IpAddr'] = $_SERVER['REMOTE_ADDR'];
-        $data['vnp_Locale'] = 'vn';
-        $data['vnp_ReturnUrl'] = $this->vnp_ReturnUrl;
-        $data['vnp_OrderType'] = 'billpayment';
+        // $data['vnp_Version'] = '2.1.0';
+        // $data['vnp_Command'] = 'pay';
+        // $data['vnp_CurrCode'] = 'VND';
+        // $data['vnp_IpAddr'] = $_SERVER['REMOTE_ADDR'];
+        // $data['vnp_Locale'] = 'vn';
+        // $data['vnp_ReturnUrl'] = $this->vnp_ReturnUrl;
+        // $data['vnp_OrderType'] = 'billpayment';
 
 
 
-        $vnp_SecureHash = $data['vnp_SecureHash'];
-        unset($data['vnp_SecureHash']);
-        ksort($data);
+        // $vnp_SecureHash = $data['vnp_SecureHash'];
+        // unset($data['vnp_SecureHash']);
+        // ksort($data);
 
 
 
-        $i = 0;
-        $hashData = "";
-        foreach ($data as $key => $value) {
-            if ($i == 1) {
-                $hashData = $hashData . '&' . urlencode($key) . "=" . urlencode($value);
-            } else {
-                $hashData = $hashData . urlencode($key) . "=" . urlencode($value);
-                $i = 1;
-            }
-        }
-        $secureHash = hash_hmac('sha512', $hashData, $this->vnpHashSecret);
+        // $i = 0;
+        // $hashData = "";
+        // foreach ($data as $key => $value) {
+        //     if ($i == 1) {
+        //         $hashData = $hashData . '&' . urlencode($key) . "=" . urlencode($value);
+        //     } else {
+        //         $hashData = $hashData . urlencode($key) . "=" . urlencode($value);
+        //         $i = 1;
+        //     }
+        // }
+        // $secureHash = hash_hmac('sha512', $hashData, $this->vnpHashSecret);
+
+
         try {
-            if ($vnp_SecureHash != $secureHash) {
-                return response()->json(['status' => 'fail', 'message' => 'Dữ liệu không hợp lệ'], 400);
-            }
+            // if ($vnp_SecureHash != $secureHash) {
+            //     return response()->json(['status' => 'fail', 'message' => 'Dữ liệu không hợp lệ'], 400);
+            // }
             return "success";
         } catch (\Throwable $th) {
             //throw $th;

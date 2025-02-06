@@ -17,7 +17,6 @@ export default function Page() {
   const vnp_BankCode = searchParams.get("vnp_BankCode");
   const vnp_SecureHash = searchParams.get("vnp_SecureHash");
 
-
   const vnp_TransactionStatus = searchParams.get("vnp_TransactionStatus");
   const vnp_TransactionNo = searchParams.get("vnp_TransactionNo");
   const vnp_ResponseCode = searchParams.get("vnp_ResponseCode");
@@ -30,20 +29,12 @@ export default function Page() {
       return;
     }
     const payload = {
-      //   const vnp_Version = "2.1.0";
       vnp_TmnCode,
       vnp_Amount,
-      //   const vnp_Command = "pay";
       vnp_CreateDate,
-      //   const vnp_CurrCode = "VND";
-      //   const vnp_IpAddr = "aaa";
-      //   const vnp_Locale = "vn";
       vnp_OrderInfo,
-      //vnp_OrderType,
-      //   const vnp_ReturnUrl = $this->vnp_ReturnUrl;
       vnp_TxnRef,
       vnp_BankCode,
-
       vnp_SecureHash,
     };
     mutate(payload, {
