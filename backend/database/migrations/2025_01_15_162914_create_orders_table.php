@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tracking_code')->nullable(); // Mã tracking vận chuyển
             $table->string('tracking_url')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Hỗ trợ khách vãng lai
-            $table->string('guest_id')->nullable()->unique(); // UUID cho khách vãng lai
+            $table->string('guest_id')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_email')->nullable();
             $table->string('customer_phone')->nullable();

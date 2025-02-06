@@ -176,7 +176,6 @@ export default function OrderForm() {
                           placeholder=""
                           id="name"
                           className="input-text"
-                          value={user?.name || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">
@@ -208,7 +207,6 @@ export default function OrderForm() {
                           placeholder=""
                           id="phone"
                           className="input-text"
-                          value={user?.phone || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">
@@ -240,7 +238,6 @@ export default function OrderForm() {
                           placeholder=""
                           id="email"
                           className="input-text"
-                          value={user?.email || ""}
                         />
                         {fieldState.error && (
                           <p className="error-message">

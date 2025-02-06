@@ -120,7 +120,6 @@ class OrderService
             if ($validated['payment_method'] === 'QR') {
                 $txnRef = $order->id . '_' . time();
                 $paymentUrl = $this->vnpayService->createPaymentUrl($txnRef, $validated['total_price']);
-
                 // Lưu thông tin thanh toán
                 $payment = $this->paymentRepository->createPayment([
                     'order_id' => $order->id,
@@ -128,6 +127,9 @@ class OrderService
                     'amount' => $validated['total_price'],
                     'payment_status' => 'pending',
                     'payment_gateway' => $validated['payment_gateway'],
+                    'customer_name' => $validated['customer_name'],
+                    'customer_email' => $validated['customer_email'],
+                    'customer_phone' => $validated['customer_phone'],
                 ]);
                 DB::commit();
                 return response()->json([
