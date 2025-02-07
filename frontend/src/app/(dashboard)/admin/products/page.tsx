@@ -1,8 +1,12 @@
-import Link from "next/link";
-import styles from "../bestSelling/bestSelling.module.css";
+"use client";
 import Image from "next/image";
+import Link from "next/link";
+import styles from "@/shared/components/ui/Admin/Products/product.module.css";
+import { useState } from "react";
+import Search from "@/shared/components/ui/Admin/Search/Search";
+import Pagination from "@/shared/components/ui/Admin/Pagination/Pagination";
 
-const bestproducts = [
+const products = [
   {
     id: 101,
     title: "iPhone 16 Pro Max 256GB",
@@ -44,12 +48,72 @@ const bestproducts = [
     createdAt: "01.12.24",
     stock: 70,
   },
+  {
+    id: 106,
+    title: "Sony Xperia 1 VI",
+    description: "High-quality 4K display and cinematic camera features",
+    price: 1299,
+    createdAt: "10.01.25",
+    stock: 20,
+  },
+  {
+    id: 107,
+    title: "Oppo Find X6 Pro",
+    description: "Innovative design and Hasselblad camera technology",
+    price: 1099,
+    createdAt: "25.11.24",
+    stock: 40,
+  },
+  {
+    id: 108,
+    title: "Huawei Mate 60 Pro",
+    description: "Top performance with HarmonyOS and satellite communication",
+    price: 1199,
+    createdAt: "20.12.24",
+    stock: 35,
+  },
+  {
+    id: 109,
+    title: "Asus ROG Phone 8 Ultimate",
+    description: "Best gaming phone with high refresh rate and RGB lights",
+    price: 1399,
+    createdAt: "15.11.24",
+    stock: 15,
+  },
+  {
+    id: 110,
+    title: "Vivo X100 Pro+",
+    description: "Advanced imaging capabilities with Zeiss optics",
+    price: 1099,
+    createdAt: "05.12.24",
+    stock: 45,
+  },
 ];
 
-const BestSellingPage = () => {
+const ProductsPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
+
+  // Tính toán dữ liệu phân trang
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Top 5 Selling Products</h2>
+      <div className={styles.top}>
+        <Search placeholder="Search for a product..." />
+        <Link href="/admin/products/add">
+          <button className={styles.addButton}>Add New</button>
+        </Link>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -63,14 +127,13 @@ const BestSellingPage = () => {
           </tr>
         </thead>
         <tbody>
-          {bestproducts.map((product) => (
+          {currentProducts.map((product) => (
             <tr key={product.id}>
               <td>#{product.id}</td>
               <td>
                 <div className={styles.product}>
                   <Image
                     src={
-                      product.image ||
                       "https://plus.unsplash.com/premium_photo-1671209879721-40e4f468bee1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     }
                     alt=""
@@ -103,8 +166,15 @@ const BestSellingPage = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Component */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(products.length / productsPerPage)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
 
-export default BestSellingPage;
+export default ProductsPage;

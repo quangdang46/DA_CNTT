@@ -21,7 +21,7 @@ const menuItems = [
     list: [
       {
         title: "Dashboard",
-        path: "/",
+        path: "/admin",
         icon: <LayoutDashboard />,
       },
       {

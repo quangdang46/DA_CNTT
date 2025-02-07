@@ -7,7 +7,23 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
     const pathName = req.nextUrl.pathname;
 
     const publicPages = ["/", "/details", "/about", "/contact"];
-    const adminPages = ["/admin", "/admin/dashboard"]; // Trang chỉ admin truy cập
+    const adminPages = [
+      "/admin",
+      "/admin/users",
+      "/admin/users/add",
+      "/admin/products",
+      "/admin/products/add",
+      "/admin/transactions",
+      "/admin/transactions/add",
+      "/admin/orderhistory",
+      "/admin/revenue",
+      "/admin/warehouses",
+      "/admin/warehouses/add",
+      "/admin/teams",
+      "/admin/teams/add",
+      "/admin/settings",
+      "/admin/help",
+    ]; // Trang chỉ admin truy cập
     const guestPages = ["/my-account"]; // Trang dành cho khách khong vao
 
     if (!token) {
