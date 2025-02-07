@@ -23,6 +23,7 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
       "/admin/teams/add",
       "/admin/settings",
       "/admin/help",
+      "/admin/logout",
     ]; // Trang chỉ admin truy cập
     const guestPages = ["/my-account"]; // Trang dành cho khách khong vao
 

@@ -1,89 +1,25 @@
+"use client";
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
-import {
-  BadgeHelp,
-  Banknote,
-  Bolt,
-  BookMarked,
-  ChartArea,
-  CircleUser,
-  Handshake,
-  History,
-  LayoutDashboard,
-  LogOut,
-  ShoppingBag,
-} from "lucide-react";
-
-const menuItems = [
-  {
-    title: "Pages",
-    list: [
-      {
-        title: "Dashboard",
-        path: "/admin",
-        icon: <LayoutDashboard />,
-      },
-      {
-        title: "Users",
-        path: "/admin/users",
-        icon: <CircleUser />,
-      },
-      {
-        title: "Products",
-        path: "/admin/products",
-        icon: <ShoppingBag />,
-      },
-      {
-        title: "Transactions",
-        path: "/admin/transactions",
-        icon: <Banknote />,
-      },
-      {
-        title: "History",
-        path: "/admin/orderhistory",
-        icon: <History />,
-      },
-    ],
-  },
-  {
-    title: "Analytics",
-    list: [
-      {
-        title: "Revenue",
-        path: "/admin/revenue",
-        icon: <BookMarked />,
-      },
-      {
-        title: "Warehouse",
-        path: "/admin/warehouses",
-        icon: <ChartArea />,
-      },
-      {
-        title: "Teams",
-        path: "/admin/teams",
-        icon: <Handshake />,
-      },
-    ],
-  },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/admin/settings",
-        icon: <Bolt />,
-      },
-      {
-        title: "Help",
-        path: "/admin/help",
-        icon: <BadgeHelp />,
-      },
-    ],
-  },
-];
+import { LogOut } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/shared/state/store";
+import { useEffect, useState } from "react";
+import { menuItems } from "@/shared/constants/menuTabAdmin";
+import Link from "next/link";
 
 const Sidebar = () => {
+  const { token } = useSelector((state: RootState) => state.auth);
+  const [isClient, setIsClient] = useState(false);
+  // Đảm bảo rằng chỉ thực hiện trên client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Không render nội dung này trong SSR
+  }
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -109,10 +45,13 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.logout}>
+      <Link
+        className={styles.logout}
+        href={`/admin/logout?auth_token=${token}`}
+      >
         <LogOut />
         Logout
-      </button>
+      </Link>
     </div>
   );
 };

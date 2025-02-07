@@ -42,6 +42,8 @@ export const useWishlist = () => {
     if (isLoggedIn) {
       // Nếu đăng nhập, gọi API
       toggleWishlistMutation.mutate(id);
+    }else{
+      toast.success("Added to wishlist");
     }
   };
 

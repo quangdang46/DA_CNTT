@@ -15,7 +15,7 @@ export default function DepartmentsMenu() {
         aria-expanded="false"
         onClick={() => setShow(!show)}
       >
-        <Menu strokeWidth={1} /> <span>All Departments</span>{" "}
+        <Menu strokeWidth={1} /> <span>All Function</span>{" "}
         <ChevronDown strokeWidth={1} />
       </button>
       {show && (
@@ -24,23 +24,23 @@ export default function DepartmentsMenu() {
           className="dropdown-menu yamm departments-menu-dropdown"
         >
           <li className="highlight menu-item animate-dropdown">
-            <Link href="/home-v2" title="Value of the Day">
-              Value of the Day
+            <Link href="/wishlist" title="Value of the Day">
+              Wish List
             </Link>
           </li>
           <li className="highlight menu-item animate-dropdown">
-            <Link href="/home-v3" title="Top 100 Offers">
-              Value of the Day
+            <Link href="/compare" title="Top 100 Offers">
+              Compare
             </Link>
           </li>
           <li className="highlight menu-item animate-dropdown">
-            <Link href="/home-v3" title="Top 100 Offers">
-              Value of the Day
+            <Link href="/track-order" title="Top 100 Offers">
+              Track Order
             </Link>
           </li>
           <li className="highlight menu-item animate-dropdown">
-            <Link href="/home-v3" title="Top 100 Offers">
-              Value of the Day
+            <Link href="/cart" title="Top 100 Offers">
+              Cart
             </Link>
           </li>
         </ul>

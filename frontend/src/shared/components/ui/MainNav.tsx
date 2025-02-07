@@ -14,8 +14,8 @@ export default function MainNav() {
     >
       <ul id="menu-primary-menu" className="nav yamm">
         <li className="sale-clr yamm-fw menu-item animate-dropdown">
-          <Link href="/product-category" title="Super deals">
-            Super deals
+          <Link href="/shop" title="Shop">
+            SHOP
           </Link>
         </li>
         <li className="menu-item menu-item-has-children animate-dropdown dropdown">
@@ -56,8 +56,8 @@ export default function MainNav() {
           </Link>
         </li>
         <li className="menu-item animate-dropdown">
-          <Link href="/shop" title="Shop">
-            Shop
+          <Link href="/track-order" title="Shop">
+            Track Order
           </Link>
         </li>
       </ul>
