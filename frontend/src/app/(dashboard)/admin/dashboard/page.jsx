@@ -1,10 +1,9 @@
 import React from "react";
-import styles from "@/shared/style/Admin/dashboard.module.css";
-import Card from "@/shared/components/ui/Admin/Card/Card";
-import Transactions from "@/shared/components/ui/Admin/Transactions/Transactions";
-import Chart from "@/shared/components/ui/Admin/Chart/Chart";
-import Rightbar from "@/shared/components/ui/Admin/RightBar/RightBar";
-
+import styles from "../ui/dashboard/dashboard.module.css";
+import Card from "../ui/dashboard/card/card";
+import Rightbar from "../ui/dashboard/rightbar/rightbar";
+import Transactions from "../ui/dashboard/transactions/transactions";
+import Chart from "../ui/dashboard/chart/chart";
 const Dashboard = () => {
   return (
     <div className={styles.wrapper}>
