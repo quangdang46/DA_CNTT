@@ -16,9 +16,9 @@ const Navbar = () => {
           <input type="text" placeholder="Search..." className={styles.input} />
         </div>
         <div className={styles.icons}>
-          <MessageCircle size={24} />
-          <Bell size={24} />
-          <BookKey size={24} />
+          <MessageCircle size={20} />
+          <Bell size={20} />
+          <BookKey size={20} />
         </div>
       </div>
     </div>

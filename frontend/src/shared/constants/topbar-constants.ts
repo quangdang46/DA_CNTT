@@ -5,13 +5,13 @@ export const headerBarItems: { url: string; title: string; content: string }[] =
     content: "Home",
   },
   {
-    url: "/about-us",
-    title: "About Us",
-    content: "TechMarket eCommerce - Always free delivery",
+    url: "/shop",
+    title: "Shop",
+    content: "Shop - Always free delivery",
   },
   {
-    url: "/contact-us",
-    title: "Contact Us",
-    content: "TechMarket eCommerce - Always free delivery",
+    url: "/track-order",
+    title: "Track Order",
+    content: "Track Order - Always free delivery",
   },
 ];
