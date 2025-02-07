@@ -20,7 +20,7 @@ export default function CategorySelect({ register }: CategorySelectProps) {
         style={{ width: "158.015px" }}
         {...register("categories")}
       >
-        <option defaultValue={-1}>All Categories</option>
+        <option value={-1}>All Categories</option>
         {categories?.data.map((category) => (
           <option key={category.id} value={category.id}>
             {category.name}

@@ -118,7 +118,7 @@ export default function NavbarSearch() {
             {suggestions.length > 0 ? (
               <>
                 <ul className="suggest-link-list">
-                  {suggestionsLinks.map((link, index) => (
+                  {suggestionsLinks.slice(0, 3).map((link, index) => (
                     <li key={index} className="suggest-link">
                       <Link href={link.link} className="suggest-link-item">
                         <span>{link.name}</span>
@@ -129,7 +129,7 @@ export default function NavbarSearch() {
                 <div className="product-suggest">
                   <h5>Suggested products</h5>
                   <ul className="product-suggest-list">
-                    {suggestions.map((product) => (
+                    {suggestions.slice(0, 4).map((product) => (
                       <li key={product.id} className="product-suggest-item">
                         <Link
                           href={`/details/${product.slug}`}

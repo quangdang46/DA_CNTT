@@ -30,6 +30,8 @@ const productApiRequest = {
           throw error;
         }
       },
+      staleTime: 1000 * 60 * 5,
+      enabled: !!type,
     });
   },
   useProductList: () => {
@@ -51,6 +53,7 @@ const productApiRequest = {
           throw error;
         }
       },
+      staleTime: 1000 * 60 * 5,
     });
   },
   useProductDetail: (slug: string) => {
@@ -79,6 +82,7 @@ const productApiRequest = {
         }
       },
       enabled: !!slug, // Only run the query if slug exists
+      staleTime: 1000 * 60 * 5, // Giữ dữ liệu trong 5 phút
     });
   },
   useProductsRelatedBySlug: (slug: string) => {
@@ -100,6 +104,8 @@ const productApiRequest = {
           throw error;
         }
       },
+      staleTime: 1000 * 60 * 5,
+      enabled: !!slug,
     });
   },
 

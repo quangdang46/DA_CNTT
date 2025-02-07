@@ -39,7 +39,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
 
         // Lọc theo danh mục (categories)
-        if (!empty($params['categories'])) {
+        if (!empty($params['categories']) && !in_array(-1, $params['categories'])) {
             // Nếu có nhiều danh mục, tìm kiếm theo nhiều giá trị
             $query->whereIn('category_id', $params['categories']);
         }
