@@ -97,7 +97,7 @@ const UsersPage = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  const handlePageChange = (newPage:number) => {
+  const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
@@ -126,7 +126,7 @@ const UsersPage = () => {
               <td>
                 <div className={styles.user}>
                   <Image
-                    src="/noavatar.png"
+                    src="/static/images/avatar/noavatar.png"
                     alt=""
                     width={40}
                     height={40}

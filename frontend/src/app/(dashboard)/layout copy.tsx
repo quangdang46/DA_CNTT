@@ -1,4 +1,5 @@
 "use client";
+import accountApiRequest from "@/shared/apiRequests/account";
 import wishlistApiRequest from "@/shared/apiRequests/wishlist";
 import Footer from "@/shared/components/layouts/Footer";
 import HeaderBar from "@/shared/components/layouts/HeaderBar";
@@ -6,6 +7,7 @@ import Header from "@/shared/components/ui/Header";
 import { RootState } from "@/shared/state/store";
 import { setWishlist } from "@/shared/state/wishlistSlice";
 import { ERoleType } from "@/shared/types/RoleTypes";
+import { AccountResType } from "@/shared/types/UserTypes";
 import { WishlistResType } from "@/shared/types/WishlistTypes";
 import { getRoleFromToken } from "@/shared/utils/getRoleFromToken";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +30,33 @@ export default function MainLayout({
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch();
-  const [role, setRole] = React.useState<string>(ERoleType.GUEST);
+  const [role, setRole] = React.useState<string>("guest");
+
+  // const { data } = useQuery<Partial<AccountResType>, Error>({
+  //   queryKey: ["user-info"],
+  //   queryFn: async () => {
+  //     if (isLoggedIn) {
+  //       try {
+  //         const response = await accountApiRequest.me();
+  //         if (!response.success) {
+  //           // throw new Error(response.message);
+  //           // Đảm bảo trả về response thay vì ném lỗi
+  //           return { data: { role: "guest" } } as Partial<AccountResType>;
+  //         }
+  //         return response;
+  //       } catch (error) {
+  //         console.error("API error:", error);
+  //         return { data: { role: "guest" } } as Partial<AccountResType>;
+  //       }
+  //     } else {
+  //       return { data: { role: "guest" } } as Partial<AccountResType>;
+  //     }
+  //   },
+  //   enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
+  //   retry: false,
+  // });
+
+  // Lấy thông tin wishlist chỉ khi người dùng đã đăng nhập
 
   const { data: wishlistData } = useQuery<Partial<WishlistResType>, Error>({
     queryKey: ["wishlist"],
@@ -58,7 +86,6 @@ export default function MainLayout({
         } as Partial<WishlistResType>;
       }
     },
-    initialData: { data: { wishlist: [], user_id: 0 } },
     enabled: isLoggedIn, // Chỉ gọi API khi người dùng đã đăng nhập
     retry: false,
   });
@@ -78,24 +105,22 @@ export default function MainLayout({
   }, [token]);
 
   useEffect(() => {
-    if (role === ERoleType.ADMIN) {
+    if (role === "admin") {
       router.push("/admin"); // Chuyển hướng admin
     }
   }, [role, router]);
+  // if (role === "admin") return <>{children}</>;
   useEffect(() => {
-    if (role === ERoleType.ADMIN) {
+    if (role === "admin") {
       router.replace("/admin");
     }
   }, [role, router]);
-  if (!role) return null;
-  return role === ERoleType.ADMIN ? (
-    <>{children}</>
-  ) : (
+  return (
     <>
-      <HeaderBar />
-      <Header />
+      <HeaderBar></HeaderBar>
+      <Header></Header>
       {children}
-      <Footer />
+      <Footer></Footer>
     </>
   );
 }

@@ -8,6 +8,7 @@ interface AuthState {
   error: string | null;
   token: string | null;
   loading: boolean;
+  role: string | null;
 }
 
 const initialState: AuthState = {
@@ -16,11 +17,23 @@ const initialState: AuthState = {
   error: null,
   token: null,
   loading: false,
+  role: "guest",
 };
 const userFromLocalStorage =
   typeof window !== "undefined" ? localStorage.getItem("user") : null;
 const tokenFromLocalStorage =
   typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+// const initialStateFromLocalStorage =
+//   userFromLocalStorage && tokenFromLocalStorage
+//     ? {
+//         isLoggedIn: true,
+//         user: JSON.parse(userFromLocalStorage),
+//         error: null,
+//         token: tokenFromLocalStorage,
+//         loading: false,
+//       }
+//     : initialState;
+
 const initialStateFromLocalStorage: AuthState = {
   ...initialState,
   ...(userFromLocalStorage && tokenFromLocalStorage
@@ -47,6 +60,7 @@ const authSlice = createSlice({
 
       if (action.payload.user) {
         state.user = { ...state.user, ...action.payload.user };
+        state.role = action.payload.user.role;
       }
 
       if (action.payload.token) {
@@ -70,6 +84,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
       state.token = null;
+      state.role = "guest";
       state.loading = false;
       state.error = null;
       if (typeof window !== "undefined") {

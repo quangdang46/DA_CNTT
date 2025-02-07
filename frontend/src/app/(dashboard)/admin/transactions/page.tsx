@@ -10,7 +10,7 @@ const transaction = [
   {
     id: "123",
     name: "John Doe",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "pending",
     date: "26.01.25",
     amount: "$3,200",
@@ -18,7 +18,7 @@ const transaction = [
   {
     id: "124",
     name: "Jane Smith",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "cancelled",
     date: "27.01.25",
     amount: "$5,400",
@@ -26,7 +26,7 @@ const transaction = [
   {
     id: "125",
     name: "Robert Brown",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "done",
     date: "28.01.25",
     amount: "$1,800",
@@ -34,7 +34,7 @@ const transaction = [
   {
     id: "126",
     name: "Emily Davis",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "pending",
     date: "29.01.25",
     amount: "$2,300",
@@ -42,7 +42,7 @@ const transaction = [
   {
     id: "127",
     name: "Michael Johnson",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "done",
     date: "30.01.25",
     amount: "$7,500",
@@ -50,7 +50,7 @@ const transaction = [
   {
     id: "128",
     name: "Sophia Wilson",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "done",
     date: "31.01.25",
     amount: "$4,600",
@@ -58,7 +58,7 @@ const transaction = [
   {
     id: "129",
     name: "Liam Martinez",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "cancelled",
     date: "01.02.25",
     amount: "$2,100",
@@ -66,7 +66,7 @@ const transaction = [
   {
     id: "130",
     name: "Olivia Garcia",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "pending",
     date: "02.02.25",
     amount: "$6,300",
@@ -74,7 +74,7 @@ const transaction = [
   {
     id: "131",
     name: "Noah Hernandez",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "done",
     date: "03.02.25",
     amount: "$8,700",
@@ -82,7 +82,7 @@ const transaction = [
   {
     id: "132",
     name: "Isabella Lopez",
-    avatar: "/noavatar.png",
+    avatar: "/static/images/avatar/noavatar.png",
     status: "cancelled",
     date: "04.02.25",
     amount: "$3,400",
@@ -101,7 +101,7 @@ const TransactionsPage = () => {
     indexOfLastProduct
   );
 
-  const handlePageChange = (pageNumber:number) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 

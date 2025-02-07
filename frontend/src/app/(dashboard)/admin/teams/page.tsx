@@ -14,7 +14,7 @@ const teamData = [
     workedAt: "12.12.2002",
     role: "IT Support",
     status: "active",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const teamData = [
     workedAt: "14.01.2023",
     role: "HR Manager",
     status: "inactive",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const teamData = [
     workedAt: "20.05.2021",
     role: "Software Developer",
     status: "active",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const teamData = [
     workedAt: "18.09.2020",
     role: "Product Manager",
     status: "active",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
   {
     id: 5,
@@ -50,7 +50,7 @@ const teamData = [
     workedAt: "25.11.2021",
     role: "Marketing Specialist",
     status: "inactive",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ const teamData = [
     workedAt: "02.02.2019",
     role: "Sales Executive",
     status: "active",
-    image: "/noavatar.png",
+    image: "/static/images/avatar/noavatar.png",
   },
 ];
 
@@ -71,7 +71,7 @@ const TeamsPage = () => {
   const indexOfFirstTeam = indexOfLastTeam - teamsPerPage;
   const currentTeams = teamData.slice(indexOfFirstTeam, indexOfLastTeam);
 
-  const handlePageChange = (newPage:number) => {
+  const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 

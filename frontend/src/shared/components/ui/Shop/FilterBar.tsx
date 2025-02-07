@@ -81,9 +81,9 @@ export default function FilterBar() {
         </div>
         <RangeSlider
           min={0}
-          max={100000}
+          max={15000000}
           value={value}
-          step={1000}
+          step={150000}
           onChange={setValue}
         />
       </div>
