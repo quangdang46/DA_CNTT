@@ -8,7 +8,7 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
 
     const publicPages = ["/", "/details", "/about", "/contact"];
     const adminPages = ["/admin", "/admin/dashboard"]; // Trang chỉ admin truy cập
-    const guestPages = ["/my-account"]; // Trang dành cho khách
+    const guestPages = ["/my-account"]; // Trang dành cho khách khong vao
 
     if (!token) {
       // Nếu không có token và là trang công khai, cho phép truy cập
