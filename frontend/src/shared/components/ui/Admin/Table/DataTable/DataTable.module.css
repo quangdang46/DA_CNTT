@@ -1,0 +1,19 @@
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.dataTable th, .dataTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.dataTable th {
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+.dataTable tr:hover {
+  background-color: #f1f1f1;
+}

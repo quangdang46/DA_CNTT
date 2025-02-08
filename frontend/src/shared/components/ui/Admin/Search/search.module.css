@@ -2,15 +2,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 5px 10px;
   background-color: #2e374a;
-  padding: 10px;
   border-radius: 10px;
   width: max-content;
 }
 
-.input {
-  background-color: transparent;
+.search_input {
+  background-color: var(--bgSoft)!important;
   border: none;
   color: var(--text);
   outline: none;
+  color: white!important;
+  border-radius: 4px;
+  border: none!important;
 }

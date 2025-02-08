@@ -7,7 +7,7 @@ const Search = ({ placeholder }: Props) => {
   return (
     <div className={styles.container}>
       <SearchCheck />
-      <input type="text" placeholder={placeholder} className={styles.input} />
+      <input type="text" placeholder={placeholder} className={styles.search_input} />
     </div>
   );
 };
