@@ -87,6 +87,85 @@
   opacity: 0.8;
 }
 
+.attributeRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.addAttribute {
+  background: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.deleteAttribute {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.imagePreview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.imageItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imageItem img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.imageInfo {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deleteImage {
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.deleteImage:hover {
+  background: darkred;
+}
+
+@media (max-width: 500px) {
+  .attributeItem {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
 /* Responsive */
 @media (max-width: 500px) {
   .formGrid {

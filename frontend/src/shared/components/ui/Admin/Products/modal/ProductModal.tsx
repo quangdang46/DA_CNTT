@@ -8,50 +8,81 @@ interface Props {
   onClose: () => void;
   product?: Product;
 }
+const availableAttributes = [
+  { id: "color", name: "Màu sắc" },
+  { id: "size", name: "Kích thước" },
+  { id: "material", name: "Chất liệu" },
+];
 export default function ProductModal({ isOpen, onClose, product }: Props) {
-  const [formData, setFormData] = useState<Product>({
-    name: "",
-    description: "",
-    price: 0,
-    status: "available",
-    slug: "",
-    review_count: 0,
-    weight: 0,
-    category_id: 1,
-  } as Product);
+   const [formData, setFormData] = useState<Product>({
+     name: "",
+     description: "",
+     price: 0,
+     status: "available",
+     slug: "",
+     review_count: 0,
+     weight: 0,
+     category_id: 1,
+   } as Product);
 
-  const [images, setImages] = useState<File[]>([]);
+   const [images, setImages] = useState<File[]>([]);
+   const [attributes, setAttributes] = useState<
+     { key: string; value: string }[]
+   >([]);
 
-  useEffect(() => {
-    if (product) {
-      setFormData(product);
-    }
-  }, [product]);
+   useEffect(() => {
+     if (product) {
+       setFormData(product);
+     }
+   }, [product]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+   const handleChange = (
+     e: React.ChangeEvent<
+       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+     >
+   ) => {
+     setFormData({ ...formData, [e.target.name]: e.target.value });
+   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages([...images, ...Array.from(e.target.files)]);
-    }
-  };
+   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+     if (e.target.files) {
+       setImages([...images, ...Array.from(e.target.files)]);
+     }
+   };
 
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-  };
+   const removeImage = (index: number) => {
+     setImages(images.filter((_, i) => i !== index));
+   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitted Data:", formData);
-    console.log("Uploaded Images:", images);
-    onClose();
-  };
+   const addAttribute = () => {
+     setAttributes([...attributes, { key: "", value: "" }]);
+   };
+
+   const removeAttribute = (index: number) => {
+     setAttributes(attributes.filter((_, i) => i !== index));
+   };
+
+   const handleAttributeChange = (
+     index: number,
+     key: string,
+     value: string
+   ) => {
+     const updatedAttributes = [...attributes];
+     updatedAttributes[index] = { key, value };
+     setAttributes(updatedAttributes);
+   };
+
+   const handleSubmit = (e: React.FormEvent) => {
+     e.preventDefault();
+     console.log("Submitted Data:", formData);
+     console.log("Uploaded Images:", images);
+     console.log("Attributes:", attributes);
+     onClose();
+   };
+
+   const remainingAttributes = availableAttributes.filter(
+     (attr) => !attributes.some((a) => a.key === attr.id)
+   );
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modalContainer}>
@@ -65,7 +96,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <input
                 type="text"
                 name="name"
-                value={formData?.name}
+                value={formData.name}
                 onChange={handleChange}
                 className={styles.input}
                 required
@@ -77,7 +108,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <input
                 type="number"
                 name="price"
-                value={formData?.price}
+                value={formData.price}
                 onChange={handleChange}
                 className={styles.input}
                 required
@@ -89,7 +120,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <input
                 type="number"
                 name="weight"
-                value={formData?.weight}
+                value={formData.weight}
                 onChange={handleChange}
                 step="0.01"
                 className={styles.input}
@@ -100,7 +131,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <label className={styles.label}>Trạng thái</label>
               <select
                 name="status"
-                value={formData?.status}
+                value={formData.status}
                 onChange={handleChange}
                 className={styles.select}
               >
@@ -110,36 +141,11 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               </select>
             </div>
 
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Slug</label>
-              <input
-                type="text"
-                name="slug"
-                value={formData?.slug}
-                onChange={handleChange}
-                className={styles.input}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Danh mục</label>
-              <select
-                name="category_id"
-                value={formData?.category_id}
-                onChange={handleChange}
-                className={styles.select}
-              >
-                <option value="1">Điện thoại</option>
-                <option value="2">Laptop</option>
-                <option value="3">Phụ kiện</option>
-              </select>
-            </div>
-
             <div className={`${styles.formGroup} ${styles.fullWidth}`}>
               <label className={styles.label}>Mô tả</label>
               <textarea
                 name="description"
-                value={formData?.description}
+                value={formData.description}
                 onChange={handleChange}
                 className={styles.textarea}
                 rows={3}
@@ -166,6 +172,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
                 {images.map((img, index) => (
                   <div key={index} className={styles.imageItem}>
                     <img src={URL.createObjectURL(img)} alt="preview" />
+                    <span className={styles.imageInfo}>{img.name}</span>
                     <button
                       className={styles.deleteImage}
                       onClick={() => removeImage(index)}
@@ -175,6 +182,58 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Thêm Thuộc Tính */}
+            <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+              <label className={styles.label}>Thuộc tính</label>
+              {attributes.map((attr, index) => (
+                <div key={index} className={styles.attributeRow}>
+                  <select
+                    value={attr.key}
+                    onChange={(e) =>
+                      handleAttributeChange(index, e.target.value, attr.value)
+                    }
+                    className={styles.select}
+                  >
+                    <option value="">Chọn thuộc tính</option>
+                    {availableAttributes.map((option) => (
+                      <option
+                        key={option.id}
+                        value={option.id}
+                        disabled={attributes.some((a) => a.key === option.id)}
+                      >
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={attr.value}
+                    onChange={(e) =>
+                      handleAttributeChange(index, attr.key, e.target.value)
+                    }
+                    className={styles.input}
+                    placeholder="Nhập giá trị"
+                  />
+                  <button
+                    type="button"
+                    className={styles.deleteAttribute}
+                    onClick={() => removeAttribute(index)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              {remainingAttributes.length > 0 && (
+                <button
+                  type="button"
+                  className={styles.addAttribute}
+                  onClick={addAttribute}
+                >
+                  + Thêm thuộc tính
+                </button>
+              )}
             </div>
           </div>
 
