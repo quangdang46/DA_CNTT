@@ -18,6 +18,8 @@
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
+  max-height: 600px;
+  overflow: scroll;
   position: relative;
 }
 

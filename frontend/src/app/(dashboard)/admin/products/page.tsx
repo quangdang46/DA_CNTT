@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useMemo, useState } from "react";
 import {
@@ -11,15 +10,18 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import styles from "@/shared/components/ui/Admin/Products/product.module.css"; // Import CSS module
-import Link from "next/link";
 import { Product } from "@/shared/types/ProductTypes";
 import productApiRequest from "@/shared/apiRequests/product";
+import ProductModal from "@/shared/components/ui/Admin/Products/modal/ProductModal";
 
 const ProductsPage = () => {
+  const [open, setOpen] = useState(false);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
   });
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
   // Fetch data using React Query
   const { data, isLoading, isError } = productApiRequest.useGetProductPage({
@@ -39,8 +41,6 @@ const ProductsPage = () => {
     // await productApiRequest.deleteProduct(item.id);
     // Refetch data or update tableData state
   };
-
-
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [
@@ -137,118 +137,122 @@ const ProductsPage = () => {
   if (isError) return <div>Error fetching data</div>;
 
   return (
-    <div className={styles.container}>
-      {/* Top Section with Add Button */}
-      <div className={styles.top}>
-        <Link href="/admin/products/add">
-          <button className={styles.addButton}>Add New</button>
-        </Link>
-      </div>
+    <>
+      <ProductModal isOpen={open} onClose={closeModal}></ProductModal>
+      <div className={styles.container}>
+        {/* Top Section with Add Button */}
+        <div className={styles.top}>
+          <button className={styles.addButton} onClick={openModal}>
+            Add New
+          </button>
+        </div>
 
-      {/* Table */}
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
+        {/* Table */}
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id}>
+                      {/* Render header content */}
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
 
+                      {/* Add sorting indicator */}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted() as string] ?? null}
 
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id}>
-                    {/* Render header content */}
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                      {/* Add search input for filterable columns */}
+                      {header.column.id ===
+                      "status" ? null : header.column.getCanFilter() ? (
+                        <input
+                          type="text"
+                          onChange={(e) =>
+                            header.column.setFilterValue(e.target.value)
+                          }
+                          placeholder={`Search ${header.column.id}`}
+                          style={{ display: "block", marginTop: "4px" }}
+                        />
+                      ) : null}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-                    {/* Add sorting indicator */}
-                    {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted() as string] ?? null}
-
-                    {/* Add search input for filterable columns */}
-                    {header.column.id ===
-                    "status" ? null : header.column.getCanFilter() ? (
-                      <input
-                        type="text"
-                        onChange={(e) =>
-                          header.column.setFilterValue(e.target.value)
-                        }
-                        placeholder={`Search ${header.column.id}`}
-                        style={{ display: "block", marginTop: "4px" }}
-                      />
-                    ) : null}
-                  </th>
-                ))}
-              </tr>
+        {/* Pagination Controls */}
+        <div className={styles.pagination}>
+          <button
+            onClick={() =>
+              setPagination((prev) => ({
+                ...prev,
+                pageIndex: Math.max(prev.pageIndex - 1, 0),
+              }))
+            }
+            disabled={pagination.pageIndex === 0}
+          >
+            Previous
+          </button>
+          <span>
+            Page{" "}
+            <strong>
+              {pagination.pageIndex + 1} of {data?.last_page || 1}
+            </strong>
+          </span>
+          <button
+            onClick={() =>
+              setPagination((prev) => ({
+                ...prev,
+                pageIndex: Math.min(
+                  prev.pageIndex + 1,
+                  (data?.last_page || 1) - 1
+                ),
+              }))
+            }
+            disabled={pagination.pageIndex + 1 >= (data?.last_page || 1)}
+          >
+            Next
+          </button>
+          <select
+            value={pagination.pageSize}
+            onChange={(e) =>
+              setPagination((prev) => ({
+                ...prev,
+                pageSize: Number(e.target.value),
+                pageIndex: 0, // Reset to first page when changing page size
+              }))
+            }
+          >
+            {[5, 10, 20].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
             ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          </select>
+        </div>
       </div>
-
-      {/* Pagination Controls */}
-      <div className={styles.pagination}>
-        <button
-          onClick={() =>
-            setPagination((prev) => ({
-              ...prev,
-              pageIndex: Math.max(prev.pageIndex - 1, 0),
-            }))
-          }
-          disabled={pagination.pageIndex === 0}
-        >
-          Previous
-        </button>
-        <span>
-          Page{" "}
-          <strong>
-            {pagination.pageIndex + 1} of {data?.last_page || 1}
-          </strong>
-        </span>
-        <button
-          onClick={() =>
-            setPagination((prev) => ({
-              ...prev,
-              pageIndex: Math.min(
-                prev.pageIndex + 1,
-                (data?.last_page || 1) - 1
-              ),
-            }))
-          }
-          disabled={pagination.pageIndex + 1 >= (data?.last_page || 1)}
-        >
-          Next
-        </button>
-        <select
-          value={pagination.pageSize}
-          onChange={(e) =>
-            setPagination((prev) => ({
-              ...prev,
-              pageSize: Number(e.target.value),
-              pageIndex: 0, // Reset to first page when changing page size
-            }))
-          }
-        >
-          {[5, 10, 20].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
+    </>
   );
 };
 
