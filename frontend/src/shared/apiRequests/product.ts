@@ -167,6 +167,7 @@ const productApiRequest = {
           throw error;
         }
       },
+      placeholderData: (previousData) => previousData,
     });
   },
 
@@ -200,11 +201,11 @@ const productApiRequest = {
 
   useGetProductPage: ({ page, perPage }: ProductSearchType) => {
     return useQuery<ProductSearchResType, Error>({
-      queryKey: ["products"],
+      queryKey: ["products", page, perPage],
       queryFn: async () => {
         try {
           const response = await apiClient.get<ProductSearchResType>(
-            `/products/product-paginate?page=${page}&perPage=${perPage}`
+            `/products/product-paginate?page=${page}&per_page=${perPage}`
           );
 
           return response;
@@ -214,6 +215,7 @@ const productApiRequest = {
         }
       },
       staleTime: 1000 * 60 * 5,
+      placeholderData: (previousData) => previousData,
     });
   },
 };
