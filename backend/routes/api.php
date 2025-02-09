@@ -47,6 +47,7 @@ Route::group(
     ],
     function () {
         Route::get('/', [ProductController::class, 'index']);
+        Route::get('product-paginate', [ProductController::class, 'getProductsPaginate']);
         Route::post('byType', [ProductController::class, 'byType']);
         Route::get('search', [ProductController::class, 'search']);
         Route::get('new', [ProductController::class, 'new']);

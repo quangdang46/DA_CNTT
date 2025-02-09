@@ -11,59 +11,75 @@ import {
 } from "@tanstack/react-table";
 import styles from "@/shared/components/ui/Admin/Products/product.module.css"; // Import CSS module
 import Link from "next/link";
-
-interface DataItem {
-  id: number;
-  name: string;
-  age: number;
-  status: string;
-}
-
-const data: DataItem[] = [
-  { id: 1, name: "Alice", age: 25, status: "Active" },
-  { id: 2, name: "Bob", age: 30, status: "Inactive" },
-  { id: 3, name: "Charlie", age: 35, status: "Active" },
-  { id: 4, name: "David", age: 40, status: "Inactive" },
-  { id: 5, name: "Eve", age: 45, status: "Active" },
-];
+import productApiRequest from "@/shared/apiRequests/product";
+import { Product } from "@/shared/types/ProductTypes";
 
 const ProductsPage = () => {
-  const columns = useMemo<ColumnDef<DataItem>[]>(
-    () => [
-      {
-        accessorKey: "id",
-        header: "ID",
-      },
-      {
-        accessorKey: "name",
-        header: "Name",
-        enableSorting: true,
-      },
-      {
-        accessorKey: "age",
-        header: "Age",
-        enableSorting: true,
-      },
-      {
-        accessorKey: "status",
-        header: "Status",
-        enableColumnFilter: true,
-      },
-      {
-        id: "actions",
-        header: "Actions",
-        cell: ({ row }) => (
-          <div>
-            <button onClick={() => handleEdit(row.original)}>Edit</button>
-            <button onClick={() => handleDelete(row.original)}>Delete</button>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
+  const [statusFilter, setStatusFilter] = useState("");
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 2,
+  });
+  const [totalPages, setTotalPages] = useState(0);
 
-  const [tableData, setTableData] = useState(data);
+  const { data } = productApiRequest.useGetProductPage({
+    page: pagination.pageIndex + 1,
+    perPage: pagination.pageSize,
+  });
+  React.useEffect(() => {
+    if (data) {
+      setTotalPages(data?.last_page);
+    }
+  }, [data]);
+  const handleEdit = (item: Product) => {
+    console.log("Edit:", item);
+    // Thêm logic edit ở đây
+  };
+
+  const handleDelete = async (item: Product) => {
+    console.log("Delete:", item);
+    // Call API to delete the item
+    // await productApiRequest.deleteProduct(item.id);
+    // Refetch data or update tableData state
+  };
+const columns = useMemo<ColumnDef<Product>[]>(
+  () => [
+    {
+      accessorKey: "id",
+      header: "ID",
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      enableSorting: true,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      enableColumnFilter: true,
+      cell: ({ getValue }) => <span>{getValue() as string}</span>,
+      filterFn: (row, columnId, filterValue) => {
+        if (!filterValue) return true; // Nếu không chọn gì thì hiển thị tất cả
+        return row.getValue(columnId) === filterValue;
+      },
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div>
+          <button onClick={() => handleEdit(row.original)}>Edit</button>
+          <button onClick={() => handleDelete(row.original)}>Delete</button>
+        </div>
+      ),
+    },
+  ],
+  []
+);
+  const tableData =
+    data?.data?.filter(
+      (item: Product) => !statusFilter || item.status === statusFilter
+    ) || [];
 
   const table = useReactTable({
     data: tableData,
@@ -72,22 +88,11 @@ const ProductsPage = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 2, // Số hàng mỗi trang
-      },
-    },
+    manualPagination: true,
+    pageCount: totalPages,
+    state: { pagination },
+    onPaginationChange: setPagination,
   });
-
-  const handleEdit = (item: DataItem) => {
-    console.log("Edit:", item);
-    // Thêm logic edit ở đây
-  };
-
-  const handleDelete = (item: DataItem) => {
-    console.log("Delete:", item);
-    setTableData((prev) => prev.filter((i) => i.id !== item.id));
-  };
 
   return (
     <div className={styles.container}>
@@ -103,11 +108,7 @@ const ProductsPage = () => {
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th key={header.id}>
-                    <div
-                      {...{
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
+                    <div onClick={header.column.getToggleSortingHandler()}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -117,16 +118,27 @@ const ProductsPage = () => {
                         desc: " 🔽",
                       }[header.column.getIsSorted() as string] ?? null}
                     </div>
-                    {header.column.getCanFilter() ? (
-                      <div>
-                        <input
-                          type="text"
-                          onChange={(e) =>
-                            header.column.setFilterValue(e.target.value)
-                          }
-                          placeholder={`Search ${header.column.id}`}
-                        />
-                      </div>
+
+                    {/* Nếu là cột Status thì dùng dropdown thay vì input */}
+                    {header.column.id === "status" ? (
+                      <select
+                        onChange={(e) =>
+                          header.column.setFilterValue(e.target.value)
+                        }
+                      >
+                        <option value="">All</option>
+                        <option value="available">Available</option>
+                        <option value="out_of_stock">Out of Stock</option>
+                        <option value="discontinued">Discontinued</option>
+                      </select>
+                    ) : header.column.getCanFilter() ? (
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          header.column.setFilterValue(e.target.value)
+                        }
+                        placeholder={`Search ${header.column.id}`}
+                      />
                     ) : null}
                   </th>
                 ))}
@@ -157,8 +169,7 @@ const ProductsPage = () => {
           <span>
             Page{" "}
             <strong>
-              {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
+              {table.getState().pagination.pageIndex + 1} of {totalPages}
             </strong>
           </span>
           <button
@@ -168,10 +179,14 @@ const ProductsPage = () => {
             Next
           </button>
           <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
+            value={pagination.pageSize}
+            onChange={(e) =>
+              setPagination((prev) => ({
+                ...prev,
+                pageSize: Number(e.target.value),
+                pageIndex: 0,
+              }))
+            }
           >
             {[2, 5, 10].map((pageSize) => (
               <option key={pageSize} value={pageSize}>

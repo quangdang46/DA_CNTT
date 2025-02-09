@@ -197,6 +197,25 @@ const productApiRequest = {
       return null;
     }
   },
+
+  useGetProductPage: ({ page, perPage }: ProductSearchType) => {
+    return useQuery<ProductSearchResType, Error>({
+      queryKey: ["products"],
+      queryFn: async () => {
+        try {
+          const response = await apiClient.get<ProductSearchResType>(
+            `/products/product-paginate?page=${page}&perPage=${perPage}`
+          );
+
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+      staleTime: 1000 * 60 * 5,
+    });
+  },
 };
 
 export default productApiRequest;

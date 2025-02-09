@@ -50,4 +50,9 @@ class ProductService
         }
         return $this->productRepository->getInArray($ids, $perPage, $page);
     }
+
+    public function getProductPaginate($perPage = 1, $page = 1)
+    {
+        return $this->productRepository->getProductsPaginate($perPage, $page);
+    }
 }

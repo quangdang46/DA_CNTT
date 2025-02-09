@@ -43,7 +43,7 @@ class ProductController extends Controller
     {
         try {
             // Lấy tất cả tham số từ request
-            $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice','page', 'perPage', 'sortBy']);
+            $params = $request->only(['name', 'categories', 'minPrice', 'maxPrice', 'page', 'perPage', 'sortBy']);
 
             // Gọi service để thực hiện tìm kiếm
             $products = $this->productService->search($params);
@@ -137,5 +137,22 @@ class ProductController extends Controller
             "message" => "Danh sach san pham theo type " . $slug,
             "data" => $products,
         ]);
+    }
+
+    public function getProductsPaginate(Request $request)
+    {
+        try {
+            $perPage = $request->query('per_page', null);
+            $page = $request->query('page', null);
+            $products = $this->productService->getProductPaginate($perPage, $page);
+            return response()->json($products);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham  " . $th,
+                "data" => [],
+            ]);
+        }
     }
 }

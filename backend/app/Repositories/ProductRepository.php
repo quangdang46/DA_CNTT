@@ -152,4 +152,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->whereIn('id', $ids)
             ->paginate($perPage, ['*'], 'page', $page);
     }
+
+    public function getProductsPaginate($perPage, $page)
+    {
+        return $this->model->with(['attributes', 'images'])
+            ->paginate($perPage, ['*'], 'page', $page);
+    }
 }

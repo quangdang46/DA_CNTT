@@ -10,4 +10,5 @@ interface ProductRepositoryInterface
     public function getProductByType($type);
     public function related($slug);
     public function getInArray($ids, $perPage, $page);
+    public function getProductsPaginate($perPage, $page);
 }
