@@ -31,7 +31,7 @@
 
 .tableContainer {
   overflow-x: auto;
-  background: #807777cc;
+  background: #e7e7e7;
   padding: 15px;
   border-radius: 10px;
   width: 100%;
@@ -55,7 +55,7 @@
 }
 
 .table th {
-  background-color: #53585d;
+  background-color: #799cbf;
   color: white;
   cursor: pointer;
 }
@@ -86,7 +86,7 @@
   margin-left: 5px;
 }
 .table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: white;
 }
 
 .table tbody tr:hover {

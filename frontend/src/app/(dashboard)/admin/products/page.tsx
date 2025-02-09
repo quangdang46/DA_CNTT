@@ -65,6 +65,16 @@ const ProductsPage = () => {
         enableSorting: false,
       },
       {
+        accessorKey: "slug",
+        header: "Slug",
+        enableSorting: false,
+      },
+      {
+        accessorKey: "weight",
+        header: "Weight",
+        enableSorting: true,
+      },
+      {
         accessorKey: "rating",
         header: "Rating",
         enableSorting: true,
