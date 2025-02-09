@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderDiscountController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDiscountController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VNPayController;
 use App\Http\Controllers\Wishlist;
@@ -122,6 +123,13 @@ Route::group(
         Route::delete('/{id}', [DiscountController::class, 'destroy']); // Xóa mã giảm giá
     }
 );
+
+
+Route::group([
+        'prefix' => 'uploads'
+], function () {
+    Route::post('/', [UploadController::class, 'upload']);
+});
 
 
 // Route::group(

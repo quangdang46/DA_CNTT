@@ -2,13 +2,7 @@
 import { Modal } from "@/shared/components/ui/Admin/Model/Modal";
 import { Product } from "@/shared/types/ProductTypes";
 import styles from "./productmodal.module.css";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -40,34 +34,8 @@ const productSchema = z.object({
 });
 
 export default function ProductModal({ isOpen, onClose, product }: Props) {
+ 
   const uploadFileMutation = uploadApiRequest.useUploadFile();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<File[]>([]);
-  const [attributes, setAttributes] = useState<
-    { key: string; value: string }[]
-  >(() =>
-    product?.attributes
-      ? Object.entries(product.attributes).map(([key, value]) => ({
-          key,
-          value: value.toString(),
-        }))
-      : []
-  );
-
-  const defaultValues = useMemo(
-    () => ({
-      name: product?.name || "",
-      description: product?.description || "",
-      price: product?.price || 0,
-      status: product?.status || "available",
-      slug: product?.slug || "",
-      review_count: product?.review_count || 0,
-      weight: product?.weight || 0,
-      category_id: product?.category_id || 1,
-    }),
-    [product]
-  );
-
   const {
     register,
     handleSubmit,
@@ -75,67 +43,103 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     formState: { errors },
   } = useForm<Product>({
     resolver: zodResolver(productSchema),
-    defaultValues,
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0,
+      status: "available",
+      slug: "",
+      review_count: 0,
+      weight: 0,
+      category_id: 1,
+    },
   });
+
+  const [images, setImages] = useState<File[]>([]);
+  const [attributes, setAttributes] = useState<
+    { key: string; value: string }[]
+  >([]);
 
   useEffect(() => {
     if (product) {
-      reset(defaultValues);
-    }
-  }, [product, reset, defaultValues]);
-
-  const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        setImages((prev) => [...prev, ...Array.from(e.target.files)]);
+      reset(product);
+      if (product.attributes) {
+        setAttributes(
+          Object.entries(product.attributes).map(([key, value]) => ({
+            key,
+            value: value.toString(),
+          }))
+        );
       }
-    },
-    []
-  );
+    } else {
+      reset();
+      setAttributes([]);
+    }
+  }, [product, reset]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImages([...images, ...Array.from(e.target.files)]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   const addAttribute = () => {
     setAttributes([...attributes, { key: "", value: "" }]);
   };
 
-  const removeImage = useCallback((index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  }, []);
+  const removeAttribute = (index: number) => {
+    setAttributes(attributes.filter((_, i) => i !== index));
+  };
 
-  const handleAttributeChange = useCallback(
-    (index: number, key: string, value: string) => {
-      setAttributes((prev) =>
-        prev.map((attr, i) => (i === index ? { key, value } : attr))
-      );
-    },
-    []
-  );
+  const handleAttributeChange = (index: number, key: string, value: string) => {
+    const updatedAttributes = [...attributes];
+    updatedAttributes[index] = { key, value };
+    setAttributes(updatedAttributes);
+  };
 
   const onSubmit = async (data: Product) => {
     try {
       const imageUrls = await Promise.all(
-        images.map((image) =>
-          uploadFileMutation.mutateAsync({ file: image }).then((res) => res.url)
-        )
+        images.map(async (image) => {
+          const payload = { file: image }; // Payload cho uploadApiRequest
+          const response = await uploadFileMutation.mutateAsync(payload);
+
+          return response.url; // Lấy URL từ response
+        })
       );
-      const attributesObject = Object.fromEntries(
-        attributes.map(({ key, value }) => [key, value])
-      );
-      console.log("Submitted Data:", {
+      console.log("Image URLs:", imageUrls);
+      // Step 2: Prepare data to send to backend
+      const attributesObject = attributes.reduce((acc, { key, value }) => {
+        acc[key] = value;
+        return acc;
+      }, {} as Record<string, string>);
+
+      const submittedData = {
         ...data,
         attributes: attributesObject,
-        images: imageUrls,
-      });
+        images: imageUrls, // Thêm danh sách URL của ảnh vào dữ liệu gửi đi
+      };
+
+      console.log("Submitted Data:", submittedData);
+
+      // Send data to backend
+      //   await axios.post("/api/products", submittedData);
+
+      // Close modal after successful submission
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  const removeAttribute = (index: number) => {
-    setAttributes(attributes.filter((_, i) => i !== index));
-  };
   const remainingAttributes = availableAttributes.filter(
     (attr) => !attributes.some((a) => a.key === attr.id)
   );
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.modalContainer}>
@@ -212,12 +216,13 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <label className={styles.label}>Hình ảnh</label>
               <div
                 className={styles.uploadContainer}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => document.getElementById("fileUpload")?.click()}
               >
-                📷 Click để chọn ảnh
+                <span className={styles.uploadIcon}>📷</span>
+                Click để chọn ảnh
               </div>
               <input
-                ref={fileInputRef}
+                id="fileUpload"
                 type="file"
                 multiple
                 hidden
@@ -227,6 +232,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
                 {images.map((img, index) => (
                   <div key={index} className={styles.imageItem}>
                     <img src={URL.createObjectURL(img)} alt="preview" />
+                    <span className={styles.imageInfo}>{img.name}</span>
                     <button
                       className={styles.deleteImage}
                       onClick={() => removeImage(index)}
