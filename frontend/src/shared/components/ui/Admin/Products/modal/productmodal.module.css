@@ -110,11 +110,40 @@
   cursor: pointer;
 }
 
+
+
+
+.uploadContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 20px;
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  color: #007bff;
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: center;
+  font-size: 14px;
+}
+
+.uploadContainer:hover {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+.uploadIcon {
+  font-size: 24px;
+}
+
 .imagePreview {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
+  width: 100%;
 }
 
 .imageItem {
@@ -132,7 +161,6 @@
   height: 50px;
   object-fit: cover;
   border-radius: 5px;
-  margin-right: 10px;
 }
 
 .imageInfo {
@@ -157,6 +185,10 @@
 .deleteImage:hover {
   background: darkred;
 }
+
+
+
+
 
 @media (max-width: 500px) {
   .attributeItem {
