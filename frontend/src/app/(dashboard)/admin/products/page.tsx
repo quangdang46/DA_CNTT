@@ -9,7 +9,7 @@ import {
   ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import styles from "./Table.module.css"; // Import CSS module
+import styles from "@/shared/components/ui/Admin/Products/product.module.css"; // Import CSS module
 import Link from "next/link";
 
 interface DataItem {
@@ -27,9 +27,7 @@ const data: DataItem[] = [
   { id: 5, name: "Eve", age: 45, status: "Active" },
 ];
 
-
 const ProductsPage = () => {
-
   const columns = useMemo<ColumnDef<DataItem>[]>(
     () => [
       {
