@@ -24,7 +24,6 @@ const availableAttributes = [
   { id: "battery_type", name: "Loại pin" },
   { id: "camera_resolution", name: "Xây dựng mạng" },
   { id: "chip", name: "Chip" },
-  { id: "created_at", name: "Ngày tạo" },
   { id: "dimensions", name: "Kich thuoc" },
   { id: "operating_system", name: "He đồ" },
   { id: "ram", name: "Dung luong ram" },
@@ -40,7 +39,6 @@ const productSchema = z.object({
 });
 
 export default function ProductModal({ isOpen, onClose, product }: Props) {
-  console.log("Product:", product);
   const uploadFileMutation = uploadApiRequest.useUploadFile();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -85,6 +83,35 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
   //     }
   //   }, [product, reset, defaultValues]);
 
+  //   useEffect(() => {
+  //     if (product) {
+  //       reset({
+  //         name: product.name || "",
+  //         description: product.description || "",
+  //         price: product.price || 0,
+  //         status: product.status || "available",
+  //         slug: product.slug || "",
+  //         review_count: product.review_count || 0,
+  //         weight: product.weight || 0,
+  //         category_id: product.category_id || 1,
+  //       });
+
+  //       setImages(
+  //         product.images ? product.images.map((item) => new File([], item.image_url)) : []
+  //       );
+
+  //       const updatedAttributes = product.attributes
+  //         ? Object.entries(product.attributes).map(([key, value]) => ({
+  //             key,
+  //             value: value.toString(),
+  //           }))
+  //         : [];
+
+  //       console.log("Updated Attributes:", updatedAttributes);
+  //       setAttributes(updatedAttributes);
+  //     }
+  //   }, [product, reset]);
+
   useEffect(() => {
     if (product) {
       reset({
@@ -98,8 +125,9 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
         category_id: product.category_id || 1,
       });
 
+      // Lưu URL của ảnh hiện có
       setImages(
-        product.images ? product.images.map((item) => new File([], item.image_url)) : []
+        product.images ? product.images.map((item) => item.image_url) : []
       );
 
       const updatedAttributes = product.attributes
@@ -108,11 +136,19 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
             value: value.toString(),
           }))
         : [];
-
       console.log("Updated Attributes:", updatedAttributes);
       setAttributes(updatedAttributes);
     }
   }, [product, reset]);
+
+  //   const handleFileChange = useCallback(
+  //     (e: React.ChangeEvent<HTMLInputElement>) => {
+  //       if (e.target.files) {
+  //         setImages((prev) => [...prev, ...Array.from(e.target.files)]);
+  //       }
+  //     },
+  //     []
+  //   );
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +162,9 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     setAttributes([...attributes, { key: "", value: "" }]);
   };
 
+  //   const removeImage = useCallback((index: number) => {
+  //     setImages((prev) => prev.filter((_, i) => i !== index));
+  //   }, []);
   const removeImage = useCallback((index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   }, []);
@@ -139,21 +178,57 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     []
   );
 
+  //   const onSubmit = async (data: Product) => {
+  //     try {
+  //       const imageUrls = await Promise.all(
+  //         images.map((image) =>
+  //           uploadFileMutation.mutateAsync({ file: image }).then((res) => res.url)
+  //         )
+  //       );
+  //       const attributesObject = Object.fromEntries(
+  //         attributes.map(({ key, value }) => [key, value])
+  //       );
+  //       console.log("Submitted Data:", {
+  //         ...data,
+  //         attributes: attributesObject,
+  //         images: imageUrls,
+  //       });
+  //       onClose();
+  //     } catch (error) {
+  //       console.error("Error submitting form:", error);
+  //     }
+  //   };
+
   const onSubmit = async (data: Product) => {
     try {
-      const imageUrls = await Promise.all(
-        images.map((image) =>
+      // Phân loại ảnh hiện có và ảnh mới
+      const existingImageUrls = images.filter((img) => typeof img === "string");
+      const newImages = images.filter((img) => img instanceof File);
+
+      // Upload ảnh mới và lấy URL
+      const newImageUrls = await Promise.all(
+        newImages.map((image) =>
           uploadFileMutation.mutateAsync({ file: image }).then((res) => res.url)
         )
       );
-      const attributesObject = Object.fromEntries(
-        attributes.map(({ key, value }) => [key, value])
-      );
+
+      // Kết hợp URL của ảnh hiện có và ảnh mới
+      const allImageUrls = [...existingImageUrls, ...newImageUrls];
+
+      // Chuyển đổi attributes thành array
+      const attributesArray = attributes
+        .map((attr) => ({
+          key: attr.key, // Lấy tên thuộc tính từ `value.key`
+          value: attr.value, // Lấy giá trị thuộc tính từ `value.value`
+        }));
+
+      // Dữ liệu gửi lên backend
       console.log("Submitted Data:", {
         ...data,
-        attributes: attributesObject,
-        images: imageUrls,
+        attributes: attributesArray,
+        images: allImageUrls,
       });
+
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -256,7 +331,17 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
               <div className={styles.imagePreview}>
                 {images.map((img, index) => (
                   <div key={index} className={styles.imageItem}>
-                    <img src={URL.createObjectURL(img)} alt="preview" />
+                    {/* <img src={URL.createObjectURL(img)} alt="preview" />
+                     */}
+
+                    {typeof img === "string" ? (
+                      <img src={img} alt={`Product Image ${index}`} />
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(img)}
+                        alt={`New Image ${index}`}
+                      />
+                    )}
                     <button
                       className={styles.deleteImage}
                       onClick={() => removeImage(index)}

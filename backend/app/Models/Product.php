@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;
@@ -46,12 +45,4 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    // Tạo slug tự động khi lưu name
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($product) {
-            $product->slug = Str::slug($product->name);
-        });
-    }
 }
