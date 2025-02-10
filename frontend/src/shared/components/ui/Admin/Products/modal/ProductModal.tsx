@@ -81,7 +81,6 @@ export default function ProductModal({
     defaultValues,
   });
 
-
   useEffect(() => {
     if (product) {
       reset({
@@ -109,7 +108,6 @@ export default function ProductModal({
     }
   }, [product, reset]);
 
-
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
@@ -121,7 +119,6 @@ export default function ProductModal({
   const addAttribute = () => {
     setAttributes([...attributes, { key: "", value: "" }]);
   };
-
 
   const removeImage = useCallback((index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
@@ -136,8 +133,8 @@ export default function ProductModal({
     []
   );
 
-
   const onSubmit = async (data: Product) => {
+    console.log("type", type);
     try {
       // Phân loại ảnh hiện có và ảnh mới
       const existingImageUrls = images.filter((img) => typeof img === "string");
@@ -168,7 +165,15 @@ export default function ProductModal({
       if (type === "add") {
         await productAdd(body, {
           onSuccess: (res) => {
-            console.log("res", res);
+            if (res.success) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Thêm sản phẩm mới thành công",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
           },
         });
       }
@@ -245,9 +250,11 @@ export default function ProductModal({
                 <p className={styles.error}>{errors.status.message}</p>
               )}
             </div>
+
             <div className={styles.formGroup}>
               <label className={styles.label}>Category</label>
               <select {...register("category_id")} className={styles.select}>
+                <option value="">-- Chọn danh mục --</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -258,6 +265,7 @@ export default function ProductModal({
                 <p className={styles.error}>{errors.category_id.message}</p>
               )}
             </div>
+
             {/* Mô tả */}
             <div className={`${styles.formGroup} ${styles.fullWidth}`}>
               <label className={styles.label}>Mô tả</label>

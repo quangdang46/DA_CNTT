@@ -80,19 +80,13 @@ export type ProductSearchResType = {
 
 
 export const productAdminSchema = z.object({
-  name: z.string(),
-  price: z.number().int(),
-  weight: z.number(),
-  status: z.enum(["available", "out_of_stock", "discontinued"]), // Chỉ nhận 2 trạng thái hợp lệ
-  category_id: z.number().int(),
-  description: z.string(),
-  attributes: z.array(
-    z.object({
-      key: z.string(),
-      value: z.string(),
-    })
-  ),
-  images: z.array(z.string().url().or(z.string())), // Hỗ trợ cả URL và đường dẫn tĩnh
+  name: z.string().min(1, "Tên sản phẩm không được để trống"),
+  price: z.number().min(1, "Giá phải lớn hơn 0"),
+  weight: z.number().min(0, "Trọng lượng không hợp lệ"),
+  status: z.enum(["available", "out_of_stock", "discontinued"]),
+  description: z.string().optional(),
+  attributes: z.record(z.string(), z.string()).optional(),
+  category_id:z.string().optional(),
 });
 
 export type ProductAdmin = z.infer<typeof productAdminSchema>;
