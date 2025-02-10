@@ -13,8 +13,10 @@ import styles from "@/shared/components/ui/Admin/Products/product.module.css"; /
 import { Product } from "@/shared/types/ProductTypes";
 import productApiRequest from "@/shared/apiRequests/product";
 import ProductModal from "@/shared/components/ui/Admin/Products/modal/ProductModal";
+import Swal from "sweetalert2";
 
 const ProductsPage = () => {
+  const deleteProductMutation = productApiRequest.useDeleteProduct();
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [type, setType] = useState("add");
@@ -29,10 +31,11 @@ const ProductsPage = () => {
   const closeModal = () => setOpen(false);
 
   // Fetch data using React Query
-  const { data, isLoading, isError,refetch } = productApiRequest.useGetProductPage({
-    page: pagination.pageIndex + 1,
-    perPage: pagination.pageSize,
-  });
+  const { data, isLoading, isError, refetch } =
+    productApiRequest.useGetProductPage({
+      page: pagination.pageIndex + 1,
+      perPage: pagination.pageSize,
+    });
 
   // Handle Edit and Delete actions
   const handleEdit = (item: Product) => {
@@ -42,10 +45,49 @@ const ProductsPage = () => {
   };
 
   const handleDelete = async (item: Product) => {
-    console.log("Delete:", item);
-    // Call API to delete the item
-    // await productApiRequest.deleteProduct(item.id);
-    // Refetch data or update tableData state
+    // Hiển thị hộp thoại xác nhận
+    const result = await Swal.fire({
+      title: "Bạn có chắc chắn muốn xóa?",
+      text: "Hành động này không thể hoàn tác!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    // Nếu người dùng xác nhận xóa
+    if (result.isConfirmed) {
+      try {
+        console.log("item", item.id);
+        // Sử dụng useDeleteProduct để xóa sản phẩm
+        await deleteProductMutation.mutate(item.id, {
+          onSuccess: () => {
+            refetch();
+            // Hiển thị thông báo thành công
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Xóa sản phẩm thành công",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+        });
+
+        // Thực hiện các hành động khác nếu cần (ví dụ: cập nhật danh sách sản phẩm)
+        // Ví dụ: refetch dữ liệu từ API
+      } catch (error) {
+        // Hiển thị thông báo lỗi nếu xóa thất bại
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Xóa sản phẩm thất bại",
+          text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+        });
+      }
+    }
   };
 
   const columns = useMemo<ColumnDef<Product>[]>(

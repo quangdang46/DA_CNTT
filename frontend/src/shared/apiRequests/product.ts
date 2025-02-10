@@ -251,6 +251,21 @@ const productApiRequest = {
       },
     });
   },
+  useDeleteProduct: () => {
+    return useMutation({
+      mutationFn: async (id: string) => {
+        try {
+          const response = await apiClient.delete<ResType<ProductAdmin>>(
+            `/products/delete/${id}`
+          );
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default productApiRequest;

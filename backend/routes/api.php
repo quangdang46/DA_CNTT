@@ -53,6 +53,7 @@ Route::group(
         Route::get('search', [ProductController::class, 'search']);
         Route::get('new', [ProductController::class, 'new']);
         Route::post("create", [ProductController::class, 'store']);
+        Route::delete('delete/{id}', [ProductController::class, 'destroy']);
         Route::put('update/{id}', [ProductController::class, 'update']);
         Route::get("related/{slug}", [ProductController::class, 'related']);
         Route::get('{slug}', [ProductController::class, 'show']);

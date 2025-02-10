@@ -296,4 +296,29 @@ class ProductController extends Controller
             ]);
         }
     }
+    public function destroy($id)
+    {
+        try {
+            $product = \App\Models\Product::find($id);
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Sản phẩm khong ton tai',
+                ]);
+            }
+            $product->delete();
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'Sản phẩm da bi xoa',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Lỗi khi xóa sản phẩm: ' . $th->getMessage(),
+            ]);
+        }
+    }
 }
