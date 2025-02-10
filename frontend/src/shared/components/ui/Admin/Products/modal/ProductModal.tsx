@@ -1,6 +1,6 @@
 "use client";
 import { Modal } from "@/shared/components/ui/Admin/Model/Modal";
-import { Product } from "@/shared/types/ProductTypes";
+import { Product, productAdminSchema } from "@/shared/types/ProductTypes";
 import styles from "./productmodal.module.css";
 import React, {
   useCallback,
@@ -11,13 +11,15 @@ import React, {
 } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import uploadApiRequest from "@/shared/apiRequests/upload";
 import { categoryApiRequest } from "@/shared/apiRequests/category";
+import productApiRequest from "@/shared/apiRequests/product";
+import Swal from "sweetalert2";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   product?: Product;
+  type: "add";
 }
 
 const availableAttributes = [
@@ -30,16 +32,15 @@ const availableAttributes = [
   { id: "ram", name: "Dung luong ram" },
   { id: "storage", name: "Dung luong bo nho" },
 ];
-const productSchema = z.object({
-  name: z.string().min(1, "Tên sản phẩm không được để trống"),
-  price: z.number().min(1, "Giá phải lớn hơn 0"),
-  weight: z.number().min(0, "Trọng lượng không hợp lệ"),
-  status: z.enum(["available", "out_of_stock", "discontinued"]),
-  description: z.string().optional(),
-  attributes: z.record(z.string(), z.string()).optional(),
-});
 
-export default function ProductModal({ isOpen, onClose, product }: Props) {
+export default function ProductModal({
+  isOpen,
+  onClose,
+  product,
+  type = "add",
+}: Props) {
+  const { mutate: productAdd } = productApiRequest.useCreateProduct();
+
   const { data } = categoryApiRequest.useGetCategories();
   const categories = data?.data || [];
   const uploadFileMutation = uploadApiRequest.useUploadFile();
@@ -76,44 +77,10 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     reset,
     formState: { errors },
   } = useForm<Product>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productAdminSchema),
     defaultValues,
   });
 
-  //   useEffect(() => {
-  //     if (product) {
-  //       reset(defaultValues);
-  //     }
-  //   }, [product, reset, defaultValues]);
-
-  //   useEffect(() => {
-  //     if (product) {
-  //       reset({
-  //         name: product.name || "",
-  //         description: product.description || "",
-  //         price: product.price || 0,
-  //         status: product.status || "available",
-  //         slug: product.slug || "",
-  //         review_count: product.review_count || 0,
-  //         weight: product.weight || 0,
-  //         category_id: product.category_id || 1,
-  //       });
-
-  //       setImages(
-  //         product.images ? product.images.map((item) => new File([], item.image_url)) : []
-  //       );
-
-  //       const updatedAttributes = product.attributes
-  //         ? Object.entries(product.attributes).map(([key, value]) => ({
-  //             key,
-  //             value: value.toString(),
-  //           }))
-  //         : [];
-
-  //       console.log("Updated Attributes:", updatedAttributes);
-  //       setAttributes(updatedAttributes);
-  //     }
-  //   }, [product, reset]);
 
   useEffect(() => {
     if (product) {
@@ -128,7 +95,6 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
         category_id: product.category_id || 1,
       });
 
-      // Lưu URL của ảnh hiện có
       setImages(
         product.images ? product.images.map((item) => item.image_url) : []
       );
@@ -143,14 +109,6 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     }
   }, [product, reset]);
 
-  //   const handleFileChange = useCallback(
-  //     (e: React.ChangeEvent<HTMLInputElement>) => {
-  //       if (e.target.files) {
-  //         setImages((prev) => [...prev, ...Array.from(e.target.files)]);
-  //       }
-  //     },
-  //     []
-  //   );
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,9 +122,7 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     setAttributes([...attributes, { key: "", value: "" }]);
   };
 
-  //   const removeImage = useCallback((index: number) => {
-  //     setImages((prev) => prev.filter((_, i) => i !== index));
-  //   }, []);
+
   const removeImage = useCallback((index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   }, []);
@@ -180,26 +136,6 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     []
   );
 
-  //   const onSubmit = async (data: Product) => {
-  //     try {
-  //       const imageUrls = await Promise.all(
-  //         images.map((image) =>
-  //           uploadFileMutation.mutateAsync({ file: image }).then((res) => res.url)
-  //         )
-  //       );
-  //       const attributesObject = Object.fromEntries(
-  //         attributes.map(({ key, value }) => [key, value])
-  //       );
-  //       console.log("Submitted Data:", {
-  //         ...data,
-  //         attributes: attributesObject,
-  //         images: imageUrls,
-  //       });
-  //       onClose();
-  //     } catch (error) {
-  //       console.error("Error submitting form:", error);
-  //     }
-  //   };
 
   const onSubmit = async (data: Product) => {
     try {
@@ -222,13 +158,20 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
         key: attr.key, // Lấy tên thuộc tính từ `value.key`
         value: attr.value, // Lấy giá trị thuộc tính từ `value.value`
       }));
-
-      // Dữ liệu gửi lên backend
-      console.log("Submitted Data:", {
+      const body = {
         ...data,
         attributes: attributesArray,
         images: allImageUrls,
-      });
+      };
+      console.log("Submitted Data:", body);
+      // Dữ liệu gửi lên backend
+      if (type === "add") {
+        await productAdd(body, {
+          onSuccess: (res) => {
+            console.log("res", res);
+          },
+        });
+      }
 
       onClose();
     } catch (error) {
@@ -311,8 +254,8 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
                   </option>
                 ))}
               </select>
-              {errors.status && (
-                <p className={styles.error}>{errors.status.message}</p>
+              {errors.category_id && (
+                <p className={styles.error}>{errors.category_id.message}</p>
               )}
             </div>
             {/* Mô tả */}

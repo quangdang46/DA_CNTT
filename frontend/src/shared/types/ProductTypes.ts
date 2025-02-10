@@ -81,10 +81,10 @@ export type ProductSearchResType = {
 
 export const productAdminSchema = z.object({
   name: z.string(),
-  price: z.number().int().positive(),
-  weight: z.number().positive(),
+  price: z.number().int(),
+  weight: z.number(),
   status: z.enum(["available", "out_of_stock", "discontinued"]), // Chỉ nhận 2 trạng thái hợp lệ
-  category_id: z.number().int().positive(),
+  category_id: z.number().int(),
   description: z.string(),
   attributes: z.array(
     z.object({
