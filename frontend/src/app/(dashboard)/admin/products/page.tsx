@@ -25,8 +25,9 @@ const ProductsPage = () => {
     pageSize: 5,
   });
   const openModal = () => {
-    setSelectedProduct(null);
-    setOpen(true);
+    setType("add"); // Đặt type về "add"
+    setSelectedProduct(null); // Reset sản phẩm được chọn
+    setOpen(true); // Mở modal
   };
   const closeModal = () => setOpen(false);
 
@@ -39,9 +40,9 @@ const ProductsPage = () => {
 
   // Handle Edit and Delete actions
   const handleEdit = (item: Product) => {
-    setType("edit");
-    setSelectedProduct(item);
-    setOpen(true);
+    setType("edit"); // Đặt type thành "edit"
+    setSelectedProduct(item); // Chọn sản phẩm để chỉnh sửa
+    setOpen(true); // Mở modal
   };
 
   const handleDelete = async (item: Product) => {
