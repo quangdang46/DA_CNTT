@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import uploadApiRequest from "@/shared/apiRequests/upload";
+import { categoryApiRequest } from "@/shared/apiRequests/category";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -39,6 +40,8 @@ const productSchema = z.object({
 });
 
 export default function ProductModal({ isOpen, onClose, product }: Props) {
+  const { data } = categoryApiRequest.useGetCategories();
+  const categories = data?.data || [];
   const uploadFileMutation = uploadApiRequest.useUploadFile();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -136,7 +139,6 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
             value: value.toString(),
           }))
         : [];
-      console.log("Updated Attributes:", updatedAttributes);
       setAttributes(updatedAttributes);
     }
   }, [product, reset]);
@@ -216,11 +218,10 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
       const allImageUrls = [...existingImageUrls, ...newImageUrls];
 
       // Chuyển đổi attributes thành array
-      const attributesArray = attributes
-        .map((attr) => ({
-          key: attr.key, // Lấy tên thuộc tính từ `value.key`
-          value: attr.value, // Lấy giá trị thuộc tính từ `value.value`
-        }));
+      const attributesArray = attributes.map((attr) => ({
+        key: attr.key, // Lấy tên thuộc tính từ `value.key`
+        value: attr.value, // Lấy giá trị thuộc tính từ `value.value`
+      }));
 
       // Dữ liệu gửi lên backend
       console.log("Submitted Data:", {
@@ -301,7 +302,19 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
                 <p className={styles.error}>{errors.status.message}</p>
               )}
             </div>
-
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Category</label>
+              <select {...register("category_id")} className={styles.select}>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              {errors.status && (
+                <p className={styles.error}>{errors.status.message}</p>
+              )}
+            </div>
             {/* Mô tả */}
             <div className={`${styles.formGroup} ${styles.fullWidth}`}>
               <label className={styles.label}>Mô tả</label>

@@ -77,3 +77,22 @@ export type ProductSearchResType = {
   to: number;
   total: number;
 };
+
+
+export const productAdminSchema = z.object({
+  name: z.string(),
+  price: z.number().int().positive(),
+  weight: z.number().positive(),
+  status: z.enum(["available", "out_of_stock", "discontinued"]), // Chỉ nhận 2 trạng thái hợp lệ
+  category_id: z.number().int().positive(),
+  description: z.string(),
+  attributes: z.array(
+    z.object({
+      key: z.string(),
+      value: z.string(),
+    })
+  ),
+  images: z.array(z.string().url().or(z.string())), // Hỗ trợ cả URL và đường dẫn tĩnh
+});
+
+export type ProductAdmin = z.infer<typeof productAdminSchema>;

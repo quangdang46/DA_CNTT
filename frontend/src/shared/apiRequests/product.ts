@@ -6,7 +6,7 @@ import {
   ProductSearchType,
 } from "@/shared/types/ProductTypes";
 import { ResType } from "@/shared/types/resType";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 const productApiRequest = {
@@ -218,6 +218,22 @@ const productApiRequest = {
       placeholderData: (previousData) => previousData,
     });
   },
+  // useCreateProduct: () => {
+  //   return useMutation({
+  //     mutationFn: async ({ body }: CreateProductType) => {
+  //       try {
+  //         const response = await apiClient.post<ResType<ProductResType>>(
+  //           "/products/create",
+  //           body
+  //         );
+  //         return response;
+  //       } catch (error) {
+  //         console.error("API error:", error);
+  //         throw error;
+  //       }
+  //     },
+  //   });
+  // }
 };
 
 export default productApiRequest;
