@@ -52,6 +52,8 @@ Route::group(
         Route::post('byType', [ProductController::class, 'byType']);
         Route::get('search', [ProductController::class, 'search']);
         Route::get('new', [ProductController::class, 'new']);
+        Route::post("create", [ProductController::class, 'store']);
+        Route::put('update/{id}', [ProductController::class, 'update']);
         Route::get("related/{slug}", [ProductController::class, 'related']);
         Route::get('{slug}', [ProductController::class, 'show']);
     }

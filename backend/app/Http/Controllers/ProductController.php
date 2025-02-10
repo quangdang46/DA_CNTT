@@ -155,4 +155,134 @@ class ProductController extends Controller
             ]);
         }
     }
+
+
+    public function update(Request $request, $id)
+    {
+
+        try {
+
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'status' => 'required|string|in:available,out_of_stock,discontinued',
+                'category_id' => 'required|exists:categories,id',
+                'weight' => 'nullable|numeric|min:0',
+                'attributes' => 'array',
+                'attributes.*.key' => 'required|string',
+                'attributes.*.value' => 'required|string',
+                'images' => 'array',
+                'images.*' => 'string', // Chấp nhận URL ảnh
+            ]);
+
+            // Cập nhật thông tin sản phẩm
+            $product = \App\Models\Product::findOrFail($id);
+            $product->update($validatedData);
+
+            // Cập nhật hoặc tạo mới attributes
+            if ($request->has('attributes')) {
+                \App\Models\ProductAttribute::updateOrCreate(
+                    ['product_id' => $id],
+                    $request->only(['attributes'])
+                );
+            }
+
+            // Cập nhật hình ảnh
+            if ($request->has('images')) {
+                // Xóa ảnh cũ
+                \App\Models\ProductImage::where('product_id', $id)->delete();
+
+                // Thêm ảnh mới
+                foreach ($request->images as $imageUrl) {
+                    \App\Models\ProductImage::create([
+                        'product_id' => $id,
+                        'image_url' => $imageUrl,
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'Sản phẩm đã được cập nhật thành công'
+
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Khong co san pham  " . $th,
+                "data" => [],
+            ]);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            // Nếu attributes là object, chuyển thành array trước khi validate
+            if ($request->has('attributes') && is_array($request->attributes) === false) {
+                $request->merge([
+                    'attributes' => collect($request->attributes)->map(function ($value, $key) {
+                        return ['key' => $key, 'value' => $value];
+                    })->values()->toArray()
+                ]);
+            }
+
+            // Validate dữ liệu
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'status' => 'required|string|in:available,out_of_stock,discontinued',
+                'category_id' => 'required|exists:categories,id',
+                'weight' => 'nullable|numeric|min:0',
+                'attributes' => 'array',
+                'attributes.*.key' => 'required|string',
+                'attributes.*.value' => 'required|string',
+                'images' => 'array',
+                'images.*' => 'string', // Chấp nhận URL ảnh
+            ]);
+
+            // Tạo sản phẩm mới
+            $product = \App\Models\Product::create($validatedData);
+
+            // Thêm thuộc tính
+            if (!empty($validatedData['attributes'])) {
+                foreach ($validatedData['attributes'] as $attr) {
+                    \App\Models\ProductAttribute::create([
+                        'product_id' => $product->id,
+                        'key' => $attr['key'],
+                        'value' => $attr['value'],
+                    ]);
+                }
+            }
+
+            // Thêm hình ảnh
+            if ($request->has('images')) {
+                foreach ($request->images as $imageUrl) {
+                    \App\Models\ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $imageUrl,
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'Sản phẩm đã được thêm thành công',
+                'data' => $product
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "status" => "error",
+                "message" => "Lỗi khi thêm sản phẩm: " . $th->getMessage(),
+                "data" => [],
+            ]);
+        }
+    }
+
 }
