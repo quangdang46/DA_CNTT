@@ -40,6 +40,7 @@ const productSchema = z.object({
 });
 
 export default function ProductModal({ isOpen, onClose, product }: Props) {
+  console.log("Product:", product);
   const uploadFileMutation = uploadApiRequest.useUploadFile();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<File[]>([]);
@@ -78,11 +79,40 @@ export default function ProductModal({ isOpen, onClose, product }: Props) {
     defaultValues,
   });
 
+  //   useEffect(() => {
+  //     if (product) {
+  //       reset(defaultValues);
+  //     }
+  //   }, [product, reset, defaultValues]);
+
   useEffect(() => {
     if (product) {
-      reset(defaultValues);
+      reset({
+        name: product.name || "",
+        description: product.description || "",
+        price: product.price || 0,
+        status: product.status || "available",
+        slug: product.slug || "",
+        review_count: product.review_count || 0,
+        weight: product.weight || 0,
+        category_id: product.category_id || 1,
+      });
+
+      setImages(
+        product.images ? product.images.map((item) => new File([], item.image_url)) : []
+      );
+
+      const updatedAttributes = product.attributes
+        ? Object.entries(product.attributes).map(([key, value]) => ({
+            key,
+            value: value.toString(),
+          }))
+        : [];
+
+      console.log("Updated Attributes:", updatedAttributes);
+      setAttributes(updatedAttributes);
     }
-  }, [product, reset, defaultValues]);
+  }, [product, reset]);
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

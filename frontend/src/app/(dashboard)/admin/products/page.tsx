@@ -16,11 +16,15 @@ import ProductModal from "@/shared/components/ui/Admin/Products/modal/ProductMod
 
 const ProductsPage = () => {
   const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
   });
-  const openModal = () => setOpen(true);
+  const openModal = () => {
+    setSelectedProduct(null);
+    setOpen(true);
+  };
   const closeModal = () => setOpen(false);
 
   // Fetch data using React Query
@@ -31,8 +35,8 @@ const ProductsPage = () => {
 
   // Handle Edit and Delete actions
   const handleEdit = (item: Product) => {
-    console.log("Edit:", item);
-    // Add edit logic here
+    setSelectedProduct(item);
+    setOpen(true);
   };
 
   const handleDelete = async (item: Product) => {
@@ -138,7 +142,11 @@ const ProductsPage = () => {
 
   return (
     <>
-      <ProductModal isOpen={open} onClose={closeModal}></ProductModal>
+      <ProductModal
+        isOpen={open}
+        onClose={closeModal}
+        product={selectedProduct as Product}
+      ></ProductModal>
       <div className={styles.container}>
         {/* Top Section with Add Button */}
         <div className={styles.top}>
