@@ -17,6 +17,7 @@ import ProductModal from "@/shared/components/ui/Admin/Products/modal/ProductMod
 const ProductsPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [type, setType] = useState("add");
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -28,13 +29,14 @@ const ProductsPage = () => {
   const closeModal = () => setOpen(false);
 
   // Fetch data using React Query
-  const { data, isLoading, isError } = productApiRequest.useGetProductPage({
+  const { data, isLoading, isError,refetch } = productApiRequest.useGetProductPage({
     page: pagination.pageIndex + 1,
     perPage: pagination.pageSize,
   });
 
   // Handle Edit and Delete actions
   const handleEdit = (item: Product) => {
+    setType("edit");
     setSelectedProduct(item);
     setOpen(true);
   };
@@ -146,6 +148,8 @@ const ProductsPage = () => {
         isOpen={open}
         onClose={closeModal}
         product={selectedProduct as Product}
+        type={type}
+        refetch={refetch}
       ></ProductModal>
       <div className={styles.container}>
         {/* Top Section with Add Button */}

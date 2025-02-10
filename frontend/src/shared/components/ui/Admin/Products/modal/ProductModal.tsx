@@ -19,7 +19,8 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   product?: Product;
-  type: "add";
+  type: string;
+  refetch: () => void;
 }
 
 const availableAttributes = [
@@ -38,9 +39,12 @@ export default function ProductModal({
   onClose,
   product,
   type = "add",
+  refetch,
 }: Props) {
   const { mutate: productAdd } = productApiRequest.useCreateProduct();
-
+  const { mutate: updateProduct } = productApiRequest.useUpdateProduct(
+    product?.id || ""
+  );
   const { data } = categoryApiRequest.useGetCategories();
   const categories = data?.data || [];
   const uploadFileMutation = uploadApiRequest.useUploadFile();
@@ -176,6 +180,29 @@ export default function ProductModal({
             }
           },
         });
+      } else {
+        await updateProduct(body, {
+          onSuccess: (res) => {
+            if (res.success) {
+              refetch();
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Chỉnh sửa sản phẩm thành công",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          },
+          onError: () => {
+            refetch();
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Chỉnh sửa sản phẩm thất bại",
+            });
+          },
+        });
       }
 
       onClose();
@@ -307,6 +334,7 @@ export default function ProductModal({
                       />
                     )}
                     <button
+                      type="button"
                       className={styles.deleteImage}
                       onClick={() => removeImage(index)}
                     >
@@ -383,7 +411,7 @@ export default function ProductModal({
               type="submit"
               className={`${styles.button} ${styles.submitButton}`}
             >
-              Thêm
+              {product ? "Cập nhật" : "Thêm"}
             </button>
           </div>
         </form>

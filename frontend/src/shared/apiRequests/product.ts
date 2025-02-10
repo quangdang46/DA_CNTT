@@ -235,6 +235,22 @@ const productApiRequest = {
       },
     });
   },
+  useUpdateProduct: (id: string) => {
+    return useMutation({
+      mutationFn: async (body: ProductAdmin) => {
+        try {
+          const response = await apiClient.put<
+            ProductAdmin,
+            ResType<ProductAdmin>
+          >(`/products/update/${id}`, body);
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default productApiRequest;
