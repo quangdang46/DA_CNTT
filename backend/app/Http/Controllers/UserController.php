@@ -180,7 +180,12 @@ class UserController extends Controller
             }
             $user = User::find($id);
             $user->update($request->all());
-            return $user;
+            return response()->json([
+                "success" => true,
+                'status' => 'success',
+                'message' => 'User updated successfully',
+                'data' => $user
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,

@@ -1,5 +1,6 @@
 import apiClient from "@/shared/config/apiClient";
-import { UserAdminResType } from "@/shared/types/UserTypes";
+import { ResType } from "@/shared/types/resType";
+import { UserAdminResType, UserBodyAdmin } from "@/shared/types/UserTypes";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 const userApiRequest = {
@@ -22,37 +23,38 @@ const userApiRequest = {
       placeholderData: (previousData) => previousData,
     });
   },
-//   useUpdateUser: (id: string) => {
-//     return useMutation({
-//       mutationFn: async (body: ProductAdmin) => {
-//         try {
-//           const response = await apiClient.put<
-//             ProductAdmin,
-//             ResType<ProductAdmin>
-//           >(`/users/update/${id}`, body);
-//           return response;
-//         } catch (error) {
-//           console.error("API error:", error);
-//           throw error;
-//         }
-//       },
-//     });
-//   },
-//   useDeleteUser: () => {
-//     return useMutation({
-//       mutationFn: async (id: string) => {
-//         try {
-//           const response = await apiClient.delete<ResType<ProductAdmin>>(
-//             `/users/delete/${id}`
-//           );
-//           return response;
-//         } catch (error) {
-//           console.error("API error:", error);
-//           throw error;
-//         }
-//       },
-//     });
-//   },
+  useUpdateUser: () => {
+    return useMutation({
+      mutationFn: async ({ id, body }: { id: string; body: UserBodyAdmin }) => {
+        try {
+          const response = await apiClient.put<
+            UserBodyAdmin,
+            ResType<UserBodyAdmin>
+          >(`/users/update/${id}`, body);
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+  
+    });
+  },
+  useDeleteUser: () => {
+    return useMutation({
+      mutationFn: async (id: string) => {
+        try {
+          const response = await apiClient.delete<ResType<UserBodyAdmin>>(
+            `/users/delete/${id}`
+          );
+          return response;
+        } catch (error) {
+          console.error("API error:", error);
+          throw error;
+        }
+      },
+    });
+  },
 };
 
 export default userApiRequest;

@@ -3,7 +3,7 @@ import { ResType } from "@/shared/types/resType";
 import { z } from "zod";
 
 export const UserType = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   email: z.string(),
   phone: z.string(),
@@ -76,4 +76,9 @@ export type UserAdminResType = {
   from: number;
   to: number;
   total: number;
+};
+
+export type UserBodyAdmin = {
+  role?: string;
+  loyalty_points?: number;
 };

@@ -12,10 +12,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
 
 const UsersPage = () => {
+  const { mutate: updateUser } = userApiRequest.useUpdateUser();
+  const { mutate: deleteUser } = userApiRequest.useDeleteUser();
+  const [editingRowId, setEditingRowId] = useState<string | null>(null);
+  const [updatedData, setUpdatedData] = useState<
+    Record<string, Partial<UserResType>>
+  >({}); // Use Record<string, Partial<UserResType>>
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 2,
@@ -51,6 +57,24 @@ const UsersPage = () => {
         accessorKey: "loyalty_points",
         header: "Point",
         enableSorting: true,
+        cell: ({ row, getValue }) => {
+          const isEditing = row.original.id === editingRowId;
+          return isEditing ? (
+            <input
+              type="number"
+              defaultValue={getValue() as number}
+              onBlur={(e) =>
+                handleUpdateField(
+                  row.original.id,
+                  "loyalty_points",
+                  e.target.value
+                )
+              }
+            />
+          ) : (
+            getValue()
+          );
+        },
       },
 
       {
@@ -71,7 +95,24 @@ const UsersPage = () => {
             </select>
           </div>
         ),
-        cell: ({ getValue }) => <span>{getValue() as string}</span>,
+        cell: ({ row, getValue }) => {
+          const isEditing = row.original.id === editingRowId;
+
+          return isEditing ? (
+            <select
+              defaultValue={getValue() as string}
+              onChange={(e) =>
+                handleUpdateField(row.original.id, "role", e.target.value)
+              }
+            >
+              <option value="admin">Admin</option>
+              <option value="guest">Guest</option>
+              <option value="employee">Employee</option>
+            </select>
+          ) : (
+            <span>{getValue() as string}</span>
+          );
+        },
         filterFn: (row, columnId, filterValue) => {
           if (!filterValue) return true; // Show all if no filter is applied
           return row.getValue(columnId) === filterValue;
@@ -80,14 +121,26 @@ const UsersPage = () => {
       {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => (
-          <div>
-            <button onClick={() => handleDelete(row.original)}>Delete</button>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const isEditing = row.original.id === editingRowId;
+
+          return isEditing ? (
+            <div>
+              <button onClick={() => handleSave(row.original)}>Save</button>
+              <button onClick={() => setEditingRowId(null)}>Cancel</button>
+            </div>
+          ) : (
+            <div>
+              <button onClick={() => setEditingRowId(row.original.id)}>
+                Edit
+              </button>
+              <button onClick={() => handleDelete(row.original)}>Delete</button>
+            </div>
+          );
+        },
       },
     ],
-    []
+    [editingRowId]
   );
   const table = useReactTable({
     data: data?.data || [],
@@ -101,6 +154,103 @@ const UsersPage = () => {
     state: { pagination },
     onPaginationChange: setPagination,
   });
+
+  const handleUpdateField = (
+    id: string,
+    field: keyof UserResType,
+    value: string | number
+  ) => {
+    setUpdatedData((prev) => {
+      const newState = {
+        ...prev,
+        [id]: {
+          ...(prev[id] || {}),
+          [field]: field === "loyalty_points" ? Number(value) : value, // Chuyển đổi thành số nếu là điểm
+        },
+      };
+      console.log("newState", newState);
+      return newState;
+    });
+  };
+  const updatedDataRef = useRef(updatedData);
+
+  useEffect(() => {
+    updatedDataRef.current = updatedData;
+  }, [updatedData]);
+  const handleSave = async (item: UserResType) => {
+    try {
+      const updatedFields = updatedDataRef.current[item.id];
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!",
+      });
+      if (!result.isConfirmed) {
+        return;
+      }
+      if (!updatedFields) {
+        return;
+      }
+      await updateUser(
+        {
+          id: item.id,
+          body: updatedFields,
+        },
+        {
+          onSuccess: (data) => {
+            if (data.success) {
+              setEditingRowId(null);
+              setUpdatedData({});
+              refetch(); // Refetch data to reflect changes
+
+              // Hiển thị thong bao thanh cong
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Cap nhat thanh cong",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              return;
+            }
+            // Hiển thị thong bao loi
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Cap nhat that bai",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          onError: () => {
+            // Hiển thị thong bao loi
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Cap nhat that bai",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+        }
+      );
+
+
+
+      // Reset state
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Cập nhật thất bại",
+        text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+      });
+    }
+  };
   const handleDelete = async (item: UserResType) => {
     // Hiển thị hộp thoại xác nhận
     const result = await Swal.fire({
@@ -119,19 +269,39 @@ const UsersPage = () => {
       try {
         console.log("item", item);
         // Sử dụng useDeleteProduct để xóa sản phẩm
-        // await deleteProductMutation.mutate(item.id, {
-        //   onSuccess: () => {
-        //     refetch();
-        //     // Hiển thị thông báo thành công
-        //     Swal.fire({
-        //       position: "center",
-        //       icon: "success",
-        //       title: "Xóa sản phẩm thành công",
-        //       showConfirmButton: false,
-        //       timer: 1500,
-        //     });
-        //   },
-        // });
+        await deleteUser(item.id, {
+          onSuccess: (data) => {
+            if (data.success) {
+              refetch();
+              // Hiển thị thong bao thanh cong
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Xóa thanh cong",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              return;
+            }
+
+            // Hiện thị thong bao loi
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Xóa thất bài",
+              text: "Có lỗi xảy ra, vui，请 thử lại sau.",
+            });
+          },
+          onError: () => {
+            // Hiển thị thong bao loi
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Xóa thất bài",
+              text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+            });
+          },
+        });
       } catch (error) {
         Swal.fire({
           position: "center",
@@ -197,7 +367,6 @@ const UsersPage = () => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className={styles.pagination}>
         <button
           onClick={() =>
