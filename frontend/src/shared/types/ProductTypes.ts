@@ -86,7 +86,7 @@ export const productAdminSchema = z.object({
   status: z.enum(["available", "out_of_stock", "discontinued"]),
   description: z.string().optional(),
   attributes: z.record(z.string(), z.string()).optional(),
-  category_id:z.string().optional(),
+  category_id: z.string().min(1, "Vui lòng chọn danh mục"),
 });
 
 export type ProductAdmin = z.infer<typeof productAdminSchema>;

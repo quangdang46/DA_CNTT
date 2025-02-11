@@ -79,6 +79,7 @@ export default function ProductModal({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<Product>({
     resolver: zodResolver(productAdminSchema),
@@ -87,6 +88,7 @@ export default function ProductModal({
 
   useEffect(() => {
     if (product) {
+      console.log("Resetting form with category_id:", product.category_id);
       reset({
         name: product.name || "",
         description: product.description || "",
@@ -97,7 +99,7 @@ export default function ProductModal({
         weight: product.weight || 0,
         category_id: product.category_id || 1,
       });
-
+      setValue("category_id", product.category_id || 1);
       setImages(
         product.images ? product.images.map((item) => item.image_url) : []
       );
@@ -280,7 +282,12 @@ export default function ProductModal({
 
             <div className={styles.formGroup}>
               <label className={styles.label}>Category</label>
-              <select {...register("category_id")} className={styles.select}>
+              <select
+                {...register("category_id")}
+                className={styles.select}
+                defaultValue={product?.category_id || 1}
+                onChange={(e) => setValue("category_id", +e.target.value)}
+              >
                 <option value="">-- Chọn danh mục --</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
