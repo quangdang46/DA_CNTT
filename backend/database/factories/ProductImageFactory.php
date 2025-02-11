@@ -26,11 +26,14 @@ class ProductImageFactory extends Factory
             '/static/images/products-test/1/1-4.jpg',
             '/static/images/products-test/1/1-5.jpg',
             '/static/images/products-test/1/1-6.jpg',
+            '/static/images/products-test/1/1-7.jpg',
+            '/static/images/products-test/1/1-8.jpg',
             '/static/images/products-test/2/2.jpg',
+            '/static/images/products-test/2/2-1.jpg',
+            '/static/images/products-test/2/2-2.jpg',
             '/static/images/products-test/3/3.jpg',
             '/static/images/products-test/3/3-1.jpg',
             '/static/images/products-test/3/3-2.jpg',
-            '/static/images/products-test/3/3-3.jpg',
         ];
 
         // Chọn một ảnh ngẫu nhiên từ danh sách

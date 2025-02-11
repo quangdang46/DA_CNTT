@@ -1,24 +1,35 @@
 "use client";
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import CheckBox from "@/shared/components/ui/Component/CheckBox";
 import RangeSlider from "@/shared/components/ui/Component/RangeSlider";
 import { useSearchParams } from "next/navigation";
 import LatestProductsCarousel from "@/shared/components/ui/Shop/Slider/LatestProductsCarousel";
 import LastedHeader from "@/shared/components/ui/Shop/Slider/LastedHeader";
-
-const initialCheckboxes = [
-  { id: 1, label: "Smartphones", checked: false },
-  { id: 2, label: "Tablets", checked: false },
-  { id: 3, label: "Accessories", checked: false },
-  { id: 4, label: "Wearable Devices", checked: false },
-  { id: 5, label: "Gaming Phones", checked: false },
-];
-
+import { Category } from "@/shared/types/CategoryTypes";
+import { categoryApiRequest } from "@/shared/apiRequests/category";
+type CheckboxItem = {
+  id: number;
+  label: string;
+  checked: boolean;
+};
 export default function FilterBar() {
   const searchParams = useSearchParams();
   const [value, setValue] = useState({ min: 0, max: 1000 });
   const [name, setName] = useState(searchParams?.get("name") || "");
-  const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
+  const { data: categories } = categoryApiRequest.useGetCategories();
+  const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>([]);
+
+  useEffect(() => {
+    if (categories?.data) {
+      setCheckboxes(
+        categories.data.map((category: Category) => ({
+          id: category.id,
+          label: category.name,
+          checked: false,
+        }))
+      );
+    }
+  }, [categories]);
 
   const handleCheck = useCallback((id: number) => {
     setCheckboxes((prev) =>
@@ -118,7 +129,7 @@ export default function FilterBar() {
         className="widget woocommerce widget_layered_nav maxlist-more"
         id="woocommerce_layered_nav-2"
       >
-        <span className="gamma widget-title">Brands</span>
+        <span className="gamma widget-title">Categories</span>
         <ul>
           {checkboxes.map((checkbox) => (
             <li className="wc-layered-nav-term" key={checkbox.id}>

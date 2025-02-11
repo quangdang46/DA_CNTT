@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,16 +15,15 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Thêm dữ liệu mẫu vào bảng users
-        DB::table('users')->insert([
+        // Danh sách user cố định
+        $users = [
             [
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('admin@example.com'), // Mật khẩu mặc định là "password"
+                'password' => Hash::make('admin@example.com'),
                 'phone' => '0123456789',
                 'role' => 'admin',
                 'loyalty_points' => 100,
-                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -34,7 +34,6 @@ class UserSeeder extends Seeder
                 'phone' => '0987654321',
                 'role' => 'employee',
                 'loyalty_points' => 50,
-                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -45,7 +44,6 @@ class UserSeeder extends Seeder
                 'phone' => null,
                 'role' => 'guest',
                 'loyalty_points' => 0,
-                'email_verified_at' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -56,11 +54,25 @@ class UserSeeder extends Seeder
                 'phone' => '0123456789',
                 'role' => 'guest',
                 'loyalty_points' => 100,
-                'email_verified_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Pham Ngoc Linh',
+                'email' => 'phamngoclinh21@gmail.com',
+                'password' => Hash::make('phamngoclinh21@gmail.com'),
+                'phone' => '0123456789',
+                'role' => 'guest',
+                'loyalty_points' => 100,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
+        ];
 
-        ]);
+        // Thêm user cố định vào database
+        DB::table('users')->insert($users);
+
+        // Tạo thêm 10 user ngẫu nhiên bằng factory
+        User::factory(20)->create();
     }
 }

@@ -16,8 +16,29 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $categories = [
+            'Smartphones',
+            'Android Phones',
+            'iPhones',
+            'Gaming Phones',
+            'Budget Phones',
+            'Flagship Phones',
+            'Foldable Phones',
+            '5G Phones',
+            'Phone Accessories',
+            'Wireless Earbuds',
+            'Phone Cases',
+            'Power Banks',
+            'Screen Protectors',
+            'Chargers & Cables',
+            'Smartwatches',
+            'Tablets',
+            'Refurbished Phones',
+            'Second-hand Phones',
+        ];
+
         return [
-            'name' => $this->faker->word(),  // Tạo tên danh mục ngẫu nhiên
+            'name' => $this->faker->unique()->randomElement($categories),
         ];
     }
 }
