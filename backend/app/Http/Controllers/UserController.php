@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateMeRequest;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
@@ -123,6 +124,93 @@ class UserController extends Controller
                 'data' => [
                     'user' => $user,
                 ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
+    }
+
+    public function getUserPaginate(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $perPage = $request->query('per_page', null);
+            $page = $request->query('page', null);
+            $users = \App\Models\User::where('id', '!=', $user->id)
+                ->paginate($perPage, ['*'], 'page', $page);
+
+
+            return $users;
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $user = User::find($id);
+            $user->update($request->all());
+            return $user;
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => 'User not authenticated',
+                'data' => null
+            ]);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $user = User::find($id);
+            $user->delete();
+            return response()->json([
+                "success" => true,
+                'status' => 'success',
+                'message' => 'User deleted successfully',
+
             ]);
         } catch (\Throwable $th) {
             return response()->json([

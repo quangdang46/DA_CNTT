@@ -67,3 +67,13 @@ export const orderFormSchema = z.object({
 });
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;
+
+
+export type UserAdminResType = {
+  data: UserResType[];
+  current_page: number;
+  last_page: number;
+  from: number;
+  to: number;
+  total: number;
+};

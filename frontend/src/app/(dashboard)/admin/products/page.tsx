@@ -79,6 +79,7 @@ const ProductsPage = () => {
 
         // Thực hiện các hành động khác nếu cần (ví dụ: cập nhật danh sách sản phẩm)
         // Ví dụ: refetch dữ liệu từ API
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         // Hiển thị thông báo lỗi nếu xóa thất bại
         Swal.fire({

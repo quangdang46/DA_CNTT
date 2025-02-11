@@ -1,179 +1,252 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import Pagination from "@/shared/components/ui/Admin/Pagination/Pagination";
-import Search from "@/shared/components/ui/Admin/Search/Search";
+import userApiRequest from "@/shared/apiRequests/user";
 import styles from "@/shared/components/ui/Admin/Users/users.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-
-const users = [
-  {
-    id: 1,
-    name: "Ngoc Linh",
-    email: "ngoclinh@gmail.com",
-    createdAt: "12.12.02",
-    rank: "Silver",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    email: "johndoe@gmail.com",
-    createdAt: "01.01.00",
-    rank: "Gold",
-    status: "inactive",
-  },
-  {
-    id: 3,
-    name: "Jane Smith",
-    email: "janesmith@gmail.com",
-    createdAt: "15.06.03",
-    rank: "Platinum",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    email: "alicebrown@gmail.com",
-    createdAt: "22.09.01",
-    rank: "Silver",
-    status: "active",
-  },
-  {
-    id: 5,
-    name: "Charlie Black",
-    email: "charlieblack@gmail.com",
-    createdAt: "05.11.99",
-    rank: "Gold",
-    status: "inactive",
-  },
-  {
-    id: 6,
-    name: "David White",
-    email: "davidwhite@gmail.com",
-    createdAt: "30.07.98",
-    rank: "Silver",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "Emma Green",
-    email: "emmagreen@gmail.com",
-    createdAt: "10.03.04",
-    rank: "Platinum",
-    status: "active",
-  },
-  {
-    id: 8,
-    name: "Liam Brown",
-    email: "liambrown@gmail.com",
-    createdAt: "17.08.97",
-    rank: "Silver",
-    status: "inactive",
-  },
-  {
-    id: 9,
-    name: "Sophia Lee",
-    email: "sophialee@gmail.com",
-    createdAt: "25.12.05",
-    rank: "Gold",
-    status: "active",
-  },
-  {
-    id: 10,
-    name: "Mason King",
-    email: "masonking@gmail.com",
-    createdAt: "03.02.06",
-    rank: "Platinum",
-    status: "inactive",
-  },
-];
+import { UserResType } from "@/shared/types/UserTypes";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import Swal from "sweetalert2";
 
 const UsersPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 2,
+  });
+  const { data, isLoading, isError, refetch } = userApiRequest.useGetUsers({
+    page: pagination.pageIndex + 1,
+    perPage: pagination.pageSize,
+  });
 
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const columns = useMemo<ColumnDef<UserResType>[]>(
+    () => [
+      {
+        accessorKey: "id",
+        header: "ID",
+      },
+      {
+        accessorKey: "name",
+        header: "Name",
+        enableSorting: true,
+      },
+      {
+        accessorKey: "email",
+        header: "Email",
+        enableSorting: false,
+        cell: ({ getValue }) => `$${getValue()}`,
+      },
+      {
+        accessorKey: "phone",
+        header: "Phone",
+        enableSorting: false,
+      },
+      {
+        accessorKey: "loyalty_points",
+        header: "Point",
+        enableSorting: true,
+      },
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+      {
+        accessorKey: "role",
+        header: () => (
+          <div>
+            Role{" "}
+            <select
+              onChange={(e) =>
+                table.getColumn("role")?.setFilterValue(e.target.value)
+              }
+              style={{ marginLeft: "8px" }}
+            >
+              <option value="">All</option>
+              <option value="admin">Admin</option>
+              <option value="guest">Guest</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
+        ),
+        cell: ({ getValue }) => <span>{getValue() as string}</span>,
+        filterFn: (row, columnId, filterValue) => {
+          if (!filterValue) return true; // Show all if no filter is applied
+          return row.getValue(columnId) === filterValue;
+        },
+      },
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <div>
+            <button onClick={() => handleDelete(row.original)}>Delete</button>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+  const table = useReactTable({
+    data: data?.data || [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    manualPagination: true,
+    pageCount: data?.last_page || 1,
+    state: { pagination },
+    onPaginationChange: setPagination,
+  });
+  const handleDelete = async (item: UserResType) => {
+    // Hiển thị hộp thoại xác nhận
+    const result = await Swal.fire({
+      title: "Bạn có chắc chắn muốn xóa?",
+      text: "Hành động này không thể hoàn tác!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    // Nếu người dùng xác nhận xóa
+    if (result.isConfirmed) {
+      try {
+        console.log("item", item);
+        // Sử dụng useDeleteProduct để xóa sản phẩm
+        // await deleteProductMutation.mutate(item.id, {
+        //   onSuccess: () => {
+        //     refetch();
+        //     // Hiển thị thông báo thành công
+        //     Swal.fire({
+        //       position: "center",
+        //       icon: "success",
+        //       title: "Xóa sản phẩm thành công",
+        //       showConfirmButton: false,
+        //       timer: 1500,
+        //     });
+        //   },
+        // });
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Xóa sản phẩm thất bại",
+          text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+        });
+      }
+    }
   };
-
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching data</div>;
   return (
     <div className={styles.container}>
-      <div className={styles.top}>
-        <Search placeholder="Search for an user..." />
-        <Link href="/admin/users/add">
-          <button className={styles.addButton}>Add New</button>
-        </Link>
+      {/* Table */}
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id}>
+                    {/* Render header content */}
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+
+                    {/* Add sorting indicator */}
+                    {{
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted() as string] ?? null}
+
+                    {/* Add search input for filterable columns */}
+                    {header.column.id ===
+                    "role" ? null : header.column.getCanFilter() ? (
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          header.column.setFilterValue(e.target.value)
+                        }
+                        placeholder={`Search ${header.column.id}`}
+                        style={{ display: "block", marginTop: "4px" }}
+                      />
+                    ) : null}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Created At</td>
-            <td>Rank</td>
-            <td>Status</td>
-            <td>Action</td>
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsers.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <div className={styles.user}>
-                  <Image
-                    src="/static/images/avatar/noavatar.png"
-                    alt=""
-                    width={40}
-                    height={40}
-                    className={styles.userImage}
-                  />
-                  <div className={styles.userName}>{user.name}</div>
-                </div>
-              </td>
-              <td>
-                <div className={styles.userEmail}>{user.email}</div>
-              </td>
-              <td>{user.createdAt}</td>
-              <td>
-                <span
-                  className={`${styles.status} ${
-                    styles[user.rank.toLowerCase()]
-                  }`}
-                >
-                  {user.rank}
-                </span>
-              </td>
-              <td>
-                <span className={`${styles.status} ${styles[user.status]}`}>
-                  {user.status}
-                </span>
-              </td>
-              <td>
-                <div className={styles.buttons}>
-                  <Link href={`/admin/users/${user.id}`}>
-                    <button className={`${styles.button} ${styles.view}`}>
-                      View
-                    </button>
-                  </Link>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
-                </div>
-              </td>
-            </tr>
+
+      {/* Pagination Controls */}
+      <div className={styles.pagination}>
+        <button
+          onClick={() =>
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: Math.max(prev.pageIndex - 1, 0),
+            }))
+          }
+          disabled={pagination.pageIndex === 0}
+        >
+          Previous
+        </button>
+        <span>
+          Page{" "}
+          <strong>
+            {pagination.pageIndex + 1} of {data?.last_page || 1}
+          </strong>
+        </span>
+        <button
+          onClick={() =>
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: Math.min(
+                prev.pageIndex + 1,
+                (data?.last_page || 1) - 1
+              ),
+            }))
+          }
+          disabled={pagination.pageIndex + 1 >= (data?.last_page || 1)}
+        >
+          Next
+        </button>
+        <select
+          value={pagination.pageSize}
+          onChange={(e) =>
+            setPagination((prev) => ({
+              ...prev,
+              pageSize: Number(e.target.value),
+              pageIndex: 0, // Reset to first page when changing page size
+            }))
+          }
+        >
+          {[2, 3, 5].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
           ))}
-        </tbody>
-      </table>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(users.length / usersPerPage)}
-        onPageChange={handlePageChange}
-      />
+        </select>
+      </div>
     </div>
   );
 };

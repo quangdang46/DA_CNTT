@@ -12,7 +12,6 @@ export const checkAuthentication: MiddlewareFactory = (next) => {
       "/admin/users",
       "/admin/users/add",
       "/admin/products",
-      "/admin/products/add",
       "/admin/transactions",
       "/admin/transactions/add",
       "/admin/orderhistory",
