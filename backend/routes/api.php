@@ -190,4 +190,8 @@ Route::group([
 
 ],function () {
     Route::get('/dashboard', [AdminController::class, 'index']);
+    Route::get('/transactions', [AdminController::class, 'getTransaction']);
+    Route::put('/update-transaction/{id}', [AdminController::class, 'updateTransaction']);
+    Route::delete('/delete-transaction/{id}', [AdminController::class, 'deleteTransaction']);
+
 });

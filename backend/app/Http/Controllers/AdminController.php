@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\DB;
+
 class AdminController extends Controller
 {
     //
@@ -64,6 +65,113 @@ class AdminController extends Controller
                 'message' => 'Something went wrong',
                 'data' => [],
                 'error' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function getTransaction(Request $request)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $perPage = $request->query('per_page', null);
+            $page = $request->query('page', null);
+            $payments = \App\Models\Payment::where('id', '!=', $user->id)
+                ->paginate($perPage, ['*'], 'page', $page);
+
+
+            return $payments;
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
+    public function updateTransaction(Request $request, $id)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng từ token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $payment = \App\Models\Payment::find($id);
+            if (!$payment) {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'Payment not found',
+                    'data' => null
+                ]);
+            }
+            $payment->update($request->all());
+            return response()->json([
+                "success" => true,
+                'status' => 'success',
+                'message' => 'Update payment success',
+                'data' => $payment
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
+    public function deleteTransaction($id)
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate(); // Lấy thông tin người dùng của token
+            $role = $user->role;
+            if ($role != 'admin') {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'You are not admin',
+                    'data' => null
+                ]);
+            }
+            $payment = \App\Models\Payment::find($id);
+            if (!$payment) {
+                return response()->json([
+                    "success" => false,
+                    'status' => 'error',
+                    'message' => 'Payment not found',
+                    'data' => null
+                ]);
+            }
+            $payment->delete();
+            return response()->json([
+                "success" => true,
+                'status' => 'success',
+                'message' => 'Delete payment success',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => null
             ]);
         }
     }
