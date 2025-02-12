@@ -53,7 +53,7 @@ class ProductFactory extends Factory
             'status' => $this->faker->randomElement(['available', 'out_of_stock', 'discontinued']),
             'rating' => $this->faker->randomFloat(1, 3, 5),  // Giới hạn từ 3 - 5 sao
             'slug' => $this->faker->slug(),  // Slug tự động
-            'weight' => $this->faker->randomFloat(2, 120, 250), // Trọng lượng hợp lý từ 120g - 250g
+            'weight' => $this->faker->randomFloat(2, 0.1, 0.2), // Trọng lượng hợp lý từ 120g - 250g
             'review_count' => $this->faker->numberBetween(10, 5000),  // Số đánh giá
             'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory()->create()->id,
         ];
