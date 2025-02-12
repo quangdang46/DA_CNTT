@@ -157,7 +157,7 @@ class VNPayService
                 try {
                     $shippingInfo = $this->ghtkService->createOrderWithPay($dataForShipping);
                     $this->orderRepository->updateOrder($order, [
-                        'shipping_status' => 'pending',
+                        'shipping_status' => 'shipping',
                         'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
                         'tracking_url' => $shippingInfo['tracking_url'],
                         'tracking_code' => $shippingInfo['tracking_code'],
