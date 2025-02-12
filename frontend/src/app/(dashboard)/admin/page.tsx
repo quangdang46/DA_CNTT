@@ -34,7 +34,7 @@ export default function page() {
           />
         </div>
         <Transactions payments={dashboard?.payment} />
-        <Chart />
+        <Chart data={dashboard?.revenueByHour} />
       </div>
     </div>
   );

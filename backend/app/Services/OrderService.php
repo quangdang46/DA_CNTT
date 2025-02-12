@@ -141,6 +141,7 @@ class OrderService
             $shippingInfo = $this->ghtkService->createOrder($validated);
             $this->orderRepository->updateOrder($order, [
                 'shipping_status' => 'pending',
+                'payment_status' => 'pending',
                 'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
                 'tracking_url' => $shippingInfo['tracking_url'],
                 'tracking_code' => $shippingInfo['tracking_code'],

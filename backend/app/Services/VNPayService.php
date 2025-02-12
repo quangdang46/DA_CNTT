@@ -156,11 +156,13 @@ class VNPayService
 
                 try {
                     $shippingInfo = $this->ghtkService->createOrderWithPay($dataForShipping);
+
                     $this->orderRepository->updateOrder($order, [
-                        'shipping_status' => 'shipping',
-                        'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'],
-                        'tracking_url' => $shippingInfo['tracking_url'],
-                        'tracking_code' => $shippingInfo['tracking_code'],
+                        'shipping_status' => 'pending',
+                        'payment_status' => 'paid',
+                        'estimated_deliver_time' => $shippingInfo['estimated_deliver_time'] ?? null,
+                        'tracking_url' => $shippingInfo['tracking_url'] ?? null,
+                        'tracking_code' => $shippingInfo['tracking_code'] ?? null,
                     ]);
                     return response()->json([
                         'success' => true,
@@ -169,9 +171,8 @@ class VNPayService
                         'tracking_url' => $shippingInfo['tracking_url'] ?? '',
                     ]);
                 } catch (\Throwable $th) {
-                    return response()->json(['success' => false, 'message' => 'Error ship failed']);
+                    return response()->json(['success' => false, 'message' => $th->getMessage()]);
                 }
-
             } else {
 
                 $this->orderRepository->updateOrder($order, [

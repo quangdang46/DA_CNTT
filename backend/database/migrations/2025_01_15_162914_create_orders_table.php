@@ -42,7 +42,7 @@ return new class extends Migration
             $table->string('transaction_id', 50)->nullable();
 
             $table->timestamps();
-            $table->timestamp('order_time')->default(now()); // Mặc định là thời gian hiện tại
+            $table->timestamp('order_time')->useCurrent()->useCurrentOnUpdate(); // Mặc định là thời gian hiện tại
             $table->timestamp('delivery_time')->nullable();
             $table->timestamp('cancel_time')->nullable();
             $table->foreignId('address_id')->nullable()->constrained('user_addresses')->onDelete('set null');

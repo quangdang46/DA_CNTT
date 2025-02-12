@@ -49,7 +49,7 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->randomElement($phoneNames), // Chọn tên từ danh sách có sẵn
             'description' => $this->faker->randomElement($descriptions),  // Mô tả dài, có ý nghĩa
-            'price' => $this->faker->numberBetween(1000000, 15000000), // Giá từ 1 triệu - 15 triệu
+            'price' => $this->faker->numberBetween(1000000, 7000000), // Giá từ 1 triệu - 15 triệu
             'status' => $this->faker->randomElement(['available', 'out_of_stock', 'discontinued']),
             'rating' => $this->faker->randomFloat(1, 3, 5),  // Giới hạn từ 3 - 5 sao
             'slug' => $this->faker->slug(),  // Slug tự động
