@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplyDiscountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -182,4 +183,11 @@ Route::group([
     Route::get('/user-paginate', [UserController::class, 'getUserPaginate']);
     Route::put('/update/{id}', [UserController::class, 'updateUser']);
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
+});
+
+Route::group([
+    'prefix' => 'admin'
+
+],function () {
+    Route::get('/dashboard', [AdminController::class, 'index']);
 });

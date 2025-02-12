@@ -1,8 +1,11 @@
 import React from "react";
 import styles from "./transactions.module.css";
 import Image from "next/image";
-
-const Transactions = () => {
+import { PaymentType } from "@/shared/types/AdminTypes";
+interface Props {
+  payments: PaymentType[];
+}
+const Transactions = ({ payments }: Props) => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Latest Transactions</h2>

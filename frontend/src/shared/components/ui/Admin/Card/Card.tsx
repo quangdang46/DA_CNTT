@@ -1,17 +1,17 @@
 import React from "react";
 import styles from "./card.module.css";
-import { CircleUser } from "lucide-react";
-
-const Card = () => {
+interface Props {
+  icon: React.ReactNode;
+  title: string;
+  number: string;
+}
+const Card = ({ icon, title, number }: Props) => {
   return (
     <div className={styles.container}>
-      <CircleUser size={24} />
+      <div className={styles.icon}>{icon}</div>
       <div className={styles.texts}>
-        <span className={styles.title}>Total Users</span>
-        <span className={styles.number}>10.273</span>
-        <span className={styles.detail}>
-          <span className={styles.positive}>12%</span> more than previos week
-        </span>
+        <span className={styles.title}>{title}</span>
+        <span className={styles.number}>{number}</span>
       </div>
     </div>
   );
