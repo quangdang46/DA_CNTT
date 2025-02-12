@@ -29,7 +29,8 @@ class AdminController extends Controller
                 // total order
                 $totalOrder = \App\Models\Order::count();
                 // total get all payment
-                $payment = \App\Models\Payment::all();
+                $payment = \App\Models\Payment::orderBy('id', 'desc')->take(5)->get();
+
 
                 $revenueByHour = \App\Models\Order::where('status', 'delivered')
                     ->select(DB::raw("DATE_FORMAT(order_time, '%Y-%m-%d %H:00:00') as time"), DB::raw('SUM(total_price) as revenue'))

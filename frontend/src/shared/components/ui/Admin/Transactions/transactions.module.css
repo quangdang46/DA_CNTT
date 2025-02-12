@@ -1,50 +1,11 @@
+
 .container {
-  background-color: var(--bgSoft);
+  width: 100%;
+  margin: 0 auto;
   padding: 20px;
   border-radius: 10px;
-}
-
-.containerPage {
-  background-color: var(--bgSoft);
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.button {
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--text);
-  border: none;
-  cursor: pointer;
-}
-
-.view {
-  background-color: teal;
-}
-
-.delete {
-  background-color: crimson;
-}
-
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.addButton {
-  padding: 10px;
-  background-color: #5d57c9;
-  color: var(--text);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
 .title {
@@ -52,87 +13,67 @@
   font-weight: 300;
   color: var(--textSoft);
 }
-
-.table {
+.tableContainer {
+  overflow-x: auto;
+  background: #e7e7e7;
+  padding: 15px;
+  border-radius: 10px;
   width: 100%;
 }
 
-.table td {
-  padding: 10px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
 }
-
-.user {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.userImage {
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.status {
-  border-radius: 5px;
+.table input {
   padding: 5px;
-  font-size: 14px;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: left;
+  text-align: center;
+}
+
+.table th {
+  background-color: #799cbf;
   color: white;
+  cursor: pointer;
 }
 
-.pending {
-  background-color: #f7cb7375;
+.table th div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.done {
-  background-color: #afd6ee75;
+.table th div:hover {
+  opacity: 0.8;
 }
 
-.cancelled {
-  background-color: #f7737375;
+.table td button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.table td button:hover {
+  background-color: #0056b3;
+}
+.table td button:not(:first-child) {
+  margin-left: 5px;
+}
+.table tbody tr:nth-child(even) {
+  background-color: white;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-    margin-top: 10px;
-  }
-
-  .top {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .addButton {
-    width: 100%;
-    text-align: center;
-  }
-
-  .table {
-    overflow-x: auto; /* Allow horizontal scrolling for tables */
-    display: block;
-  }
-
-  .table td {
-    font-size: 14px; /* Adjust font size for smaller screens */
-    white-space: nowrap;
-  }
-
-  .buttons {
-    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-    gap: 5px;
-  }
-
-  .button {
-    font-size: 12px;
-    padding: 5px;
-  }
-
-  .productTitle {
-    max-width: 100px;
-  }
-
-  .productDescription {
-    max-width: 200px;
-  }
+.table tbody tr:hover {
+  opacity: 0.8;
 }
+
