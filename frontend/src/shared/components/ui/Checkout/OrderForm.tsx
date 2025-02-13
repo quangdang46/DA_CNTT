@@ -207,7 +207,7 @@ export default function OrderForm() {
                         <input
                           {...field}
                           type="text"
-                          disabled={isLoggedIn}
+                          disabled={isLoggedIn && user?.phone ? true : false}
                           placeholder=""
                           id="phone"
                           className="input-text"
