@@ -71,3 +71,22 @@ export const orderGetItemSchema = z.object({
 export type OrderItemType = z.infer<typeof orderGetItemSchema>;
 export type OrderGetResType = ResType<OrderItemType[]>;
 export type OrderType = z.infer<typeof orderSchema>;
+
+export type OrderAdminResType = {
+  data: OrderType[];
+  current_page: number;
+  last_page: number;
+  from: number;
+  to: number;
+  total: number;
+};
+
+export type OrderBodyAdmin = {
+  shipping_status:
+    | "pending"
+    | "shipped"
+    | "in_transit"
+    | "delivered"
+    | "returned"
+    | "canceled";
+};

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiClient from "@/shared/config/apiClient";
-import { OrderGetResType, OrderType } from "@/shared/types/OrderTypes";
+import { OrderAdminResType, OrderBodyAdmin, OrderGetResType, OrderType } from "@/shared/types/OrderTypes";
+import { ResType } from "@/shared/types/resType";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 const orderApiRequest = {
@@ -66,6 +67,10 @@ const orderApiRequest = {
       },
     });
   },
+
+  //////// order//////
+
+  //////// order//////
 };
 
 export default orderApiRequest;

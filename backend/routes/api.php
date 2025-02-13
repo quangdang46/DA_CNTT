@@ -194,4 +194,7 @@ Route::group([
     Route::put('/update-transaction/{id}', [AdminController::class, 'updateTransaction']);
     Route::delete('/delete-transaction/{id}', [AdminController::class, 'deleteTransaction']);
 
+    Route::get('/orders', [AdminController::class, 'getOrders']);
+    Route::put('/update-order/{id}', [AdminController::class, 'updateOrder']);
+    Route::delete('/delete-order/{id}', [AdminController::class, 'deleteOrder']);
 });
