@@ -1,10 +1,11 @@
 export type PaymentType = {
-  id: number;
+  id: string;
   amount: string;
-  payment_status: string;
+  payment_status: "success" | "failed" | "pending";
   customer_name: string;
   customer_email: string;
   customer_phone: string;
+  payment_method: string;
   created_at: string;
 };
 

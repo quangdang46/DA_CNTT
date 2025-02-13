@@ -19,14 +19,11 @@ return new class extends Migration
 
             // Trạng thái thanh toán
             $table->enum('payment_status', ['success', 'failed', 'pending'])->default('pending');
-            $table->string('failure_reason')->nullable(); // Lưu lý do thất bại nếu có
 
             // Hoàn tiền
             $table->enum('refund_status', ['none', 'requested', 'processing', 'refunded'])->default('none');
             $table->timestamp('refund_at')->nullable(); // Ngày hoàn tiền
 
-            // Thông tin VNPay (gom nhóm vào JSON để dễ quản lý)
-            $table->json('vnpay_data')->nullable(); // Lưu tất cả dữ liệu VNPay trong một cột
 
             $table->timestamp('paid_at')->nullable();
             $table->string('payment_gateway')->nullable();

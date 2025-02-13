@@ -84,7 +84,7 @@ class AdminController extends Controller
             }
             $perPage = $request->query('per_page', null);
             $page = $request->query('page', null);
-            $payments = \App\Models\Payment::where('id', '!=', $user->id)
+            $payments = \App\Models\Payment::query()
                 ->paginate($perPage, ['*'], 'page', $page);
 
 

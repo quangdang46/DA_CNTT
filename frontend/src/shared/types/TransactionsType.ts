@@ -1,6 +1,7 @@
 import { PaymentType } from "@/shared/types/AdminTypes";
 
 export type TransactionAdminResType = {
+  id:string;
   data: PaymentType[];
   current_page: number;
   last_page: number;
