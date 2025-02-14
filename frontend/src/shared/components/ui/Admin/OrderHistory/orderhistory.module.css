@@ -1,138 +1,102 @@
 .container {
-  background-color: var(--bgSoft);
+  width: 100%;
+  margin: 0 auto;
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
-.containerPage {
-  background-color: var(--bgSoft);
-  padding: 20px;
+.tableContainer {
+  overflow-x: auto;
+  background: #e7e7e7;
+  padding: 15px;
   border-radius: 10px;
-  margin-top: 20px;
-}
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.button {
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--text);
-  border: none;
-  cursor: pointer;
-}
-
-.view {
-  background-color: teal;
-}
-
-.delete {
-  background-color: crimson;
-}
-
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.addButton {
-  padding: 10px;
-  background-color: #5d57c9;
-  color: var(--text);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.title {
-  margin-bottom: 20px;
-  font-weight: 300;
-  color: var(--textSoft);
+  width: 100%;
 }
 
 .table {
   width: 100%;
+  border-collapse: collapse;
 }
-
-.table td {
-  padding: 10px;
-}
-
-.user {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.userImage {
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.status {
-  border-radius: 5px;
+.table input {
   padding: 5px;
-  font-size: 14px;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: left;
+  text-align: center;
+}
+
+.table th {
+  background-color: #799cbf;
   color: white;
+  cursor: pointer;
 }
 
-.Credit_Card {
-  background-color: #fc6e3b75;
+.table th div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.PayPal {
-  background-color: #5dabdb75;
+.table th div:hover {
+  opacity: 0.8;
 }
 
-.Bank_Transfer {
-  background-color: #b05dfd75;
+.table td button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.table td button:hover {
+  background-color: #0056b3;
+}
+.table td button:not(:first-child) {
+  margin-left: 5px;
+}
+.table tbody tr:nth-child(even) {
+  background-color: white;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-    margin-top: 10px;
-  }
+.table tbody tr:hover {
+  opacity: 0.8;
+}
 
-  .top {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
 
-  .addButton {
-    width: 100%;
-    text-align: center;
-  }
+.pagination button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
 
-  .table {
-    overflow-x: auto; /* Allow horizontal scrolling for tables */
-    display: block;
-  }
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
-  .table td {
-    font-size: 14px; /* Adjust font size for smaller screens */
-    white-space: nowrap;
-  }
-
-  .buttons {
-    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-    gap: 5px;
-  }
-
-  .button {
-    font-size: 12px;
-    padding: 5px;
-  }
-
-  .productTitle {
-    max-width: 100px;
-  }
-
-  .productDescription {
-    max-width: 200px;
-  }
+.pagination select {
+  padding: 5px 25px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

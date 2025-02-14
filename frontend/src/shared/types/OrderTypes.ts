@@ -71,9 +71,27 @@ export const orderGetItemSchema = z.object({
 export type OrderItemType = z.infer<typeof orderGetItemSchema>;
 export type OrderGetResType = ResType<OrderItemType[]>;
 export type OrderType = z.infer<typeof orderSchema>;
+export const orderGetItemSchemav2 = z.object({
+  id: z.string(),
+  tracking_code: z.string().nullable(),
+  customer_name: z.string(),
+  customer_email: z.string().email(),
+  customer_phone: z.string(),
+  total_price: z.number(), // Changed to number
+  status: z.enum(["processing", "delivered", "canceled"]).nullable(),
+  shipping_status: z
+    .enum(["pending", "shipped", "delivered", "returned", "canceled"])
+    .nullable(),
+  shipping_fee: z.number().nullable(), // Changed to number
+  payment_status: z.string().nullable(),
+  payment_method: z.string().nullable(), // Added
+  order_time: z.string(),
+  note: z.string().nullable(),
+});
 
+export type OrderItemTypeV2 = z.infer<typeof orderGetItemSchemav2>;
 export type OrderAdminResType = {
-  data: OrderType[];
+  data: OrderItemTypeV2[];
   current_page: number;
   last_page: number;
   from: number;
@@ -82,11 +100,11 @@ export type OrderAdminResType = {
 };
 
 export type OrderBodyAdmin = {
-  shipping_status:
+  shipping_status?:
     | "pending"
     | "shipped"
-    | "in_transit"
     | "delivered"
-    | "returned"
-    | "canceled";
+  status?: "processing" | "delivered" | "canceled";
 };
+
+
