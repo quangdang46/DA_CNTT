@@ -84,7 +84,7 @@ const BestSellingPage = () => {
               <td className={styles.productDescription}>
                 {product.description}
               </td>
-              <td>${product.price}</td>
+              <td>{Math.round(product.price)} VNĐ</td>
               <td>{product.createdAt}</td>
               <td>{product.stock}</td>
               <td>

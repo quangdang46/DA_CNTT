@@ -42,14 +42,14 @@ export default function ProductRow({
       <td className="product-price">
         <ins>
           <span className="woocommerce-Price-amount amount">
-            <span className="woocommerce-Price-currencySymbol">VNĐ </span>
-            {product.price}
+            {Math.round(product.price)}
+            <span className="woocommerce-Price-currencySymbol">VNĐ</span>
           </span>
         </ins>
         <del>
           <span className="woocommerce-Price-amount amount">
+            {Math.round(product.price * 2)}
             <span className="woocommerce-Price-currencySymbol">VNĐ </span>
-            {product.price * 0.8}
           </span>
         </del>
       </td>

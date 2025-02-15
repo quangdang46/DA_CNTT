@@ -41,8 +41,8 @@ export default function CartTableItem({
       <td className="product-price" data-title="Price">
         <span className="woocommerce-Price-amount amount">
           <bdi>
-            <span className="woocommerce-Price-currencySymbol">$</span>
-            {item.product.price}
+            {Math.round(item.product.price)}
+            <span className="woocommerce-Price-currencySymbol">VNĐ</span>
           </bdi>
         </span>
       </td>
@@ -81,8 +81,8 @@ export default function CartTableItem({
       <td className="product-subtotal" data-title="Subtotal">
         <span className="woocommerce-Price-amount amount">
           <bdi>
-            <span className="woocommerce-Price-currencySymbol">$</span>
-            {item.product.price * item.quantity}
+            {Math.round(item.product.price * item.quantity)}
+            <span className="woocommerce-Price-currencySymbol">VNĐ</span>
           </bdi>
         </span>
         <div

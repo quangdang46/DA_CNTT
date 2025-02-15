@@ -3,6 +3,7 @@ import productApiRequest from "@/shared/apiRequests/product";
 import ProductTabs from "@/shared/components/layouts/ProductTabs";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import BrandsCarousel from "@/shared/components/ui/BrandsCarousel";
+import { RatingStars } from "@/shared/components/ui/RatingStars";
 import RecommendedProducts from "@/shared/components/ui/RecommendedProducts";
 import SingleProductGallery from "@/shared/components/ui/SingleProductGallery";
 import { GalleryProvider } from "@/shared/contexts/GalleryContext";
@@ -10,7 +11,7 @@ import { useCart } from "@/shared/hooks/useCart";
 import useCompare from "@/shared/hooks/useCompare";
 import { useWishlist } from "@/shared/hooks/useWishlist";
 import { Product } from "@/shared/types/ProductTypes";
-import { Heart, Star, StarHalf } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -45,7 +46,7 @@ export default function Page() {
                   -
                   <span className="woocommerce-Price-amount amount">
                     <span className="woocommerce-Price-currencySymbol">$</span>
-                    {product.price}
+                    {Math.round(product.price)}
                   </span>
                 </span>
                 {/* ////////////// */}
@@ -101,15 +102,7 @@ export default function Page() {
                 <div className="rating-and-sharing-wrapper">
                   <div className="woocommerce-product-rating">
                     <div className="star-rating">
-                      {Array(Math.floor(product.rating))
-                        .fill(0)
-                        .map((_, i) => (
-                          <Star strokeWidth={1} key={`full-${i}`} />
-                        ))}
-
-                      {product.rating % 1 !== 0 && (
-                        <StarHalf strokeWidth={1} key="half-star" />
-                      )}
+                      <RatingStars rating={product.rating}></RatingStars>
                     </div>
                     <a
                       rel="nofollow"

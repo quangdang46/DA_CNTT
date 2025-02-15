@@ -3,12 +3,12 @@ import productApiRequest from "@/shared/apiRequests/product";
 import { Product } from "@/shared/types/ProductTypes";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import styles from "@/shared/style/LatestProductsCarousel.module.css";
 import Link from "next/link";
 import { useShopContext } from "@/shared/contexts/ShopContext";
+import { RatingStars } from "@/shared/components/ui/RatingStars";
 
 interface ProductCardProps {
   product: Product;
@@ -32,22 +32,18 @@ function ProductCard({ product }: ProductCardProps) {
           <div className="media-body">
             <span className="price">
               <ins>
-                <span className="amount">${product.price}</span>
+                <span className="amount">{Math.round(product.price)} VNĐ</span>
               </ins>
               <del>
-                <span className="amount">${product.price * 2}</span>
+                <span className="amount">
+                  {Math.round(product.price * 2)}
+                </span>
               </del>
             </span>
             <h2 className="woocommerce-loop-product__title">{product.name}</h2>
             <div className="techmarket-product-rating">
-              {Array(Math.floor(product.rating))
-                .fill(0)
-                .map((_, i) => (
-                  <Star strokeWidth={1} key={`full-${i}`} />
-                ))}
-              {product.rating % 1 !== 0 && (
-                <StarHalf strokeWidth={1} key="half-star" />
-              )}
+              <RatingStars rating={product.rating}></RatingStars>
+
               <span className="review-count">({product.review_count})</span>
             </div>
           </div>

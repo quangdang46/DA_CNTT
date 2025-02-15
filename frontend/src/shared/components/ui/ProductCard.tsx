@@ -42,7 +42,7 @@ export default function ProductCard({
           <ins>
             <span className="amount"></span>
           </ins>
-          <span className="amount">{product.price}</span>
+          <span className="amount">{Math.round(product.price)}</span>
         </span>
         <h2 className="woocommerce-loop-product__title">{product.name}</h2>
       </Link>

@@ -143,7 +143,7 @@ export default function NavbarSearch() {
                           />
                           <div>
                             <h6>{product.name}</h6>
-                            <span>{product.price} VND</span>
+                            <span>{Math.round(product.price)} VNĐ</span>
                           </div>
                         </Link>
                       </li>

@@ -56,18 +56,20 @@ export default function SaleProductsCarousel() {
                                 <span className="price">
                                   <ins>
                                     <span className="woocommerce-Price-amount amount">
+                                      {Math.round(product.price)}
+
                                       <span className="woocommerce-Price-currencySymbol">
                                         VNĐ
                                       </span>
-                                      {product.price}
                                     </span>
                                   </ins>
                                   <del>
                                     <span className="woocommerce-Price-amount amount">
+                                      {Math.round(product.price * 2)}
+
                                       <span className="woocommerce-Price-currencySymbol">
                                         VNĐ
                                       </span>
-                                      {product.price * 1.1}
                                     </span>
                                   </del>
                                 </span>
@@ -80,10 +82,10 @@ export default function SaleProductsCarousel() {
                                   <span className="saved-label-text">Save</span>
                                   <span className="saved-label-amount">
                                     <span className="woocommerce-Price-amount amount">
-                                      <span className="woocommerce-Price-currencySymbol">
+                                      {/* <span className="woocommerce-Price-currencySymbol">
                                         VNĐ
-                                      </span>
-                                      {(product.price * 0.1).toFixed(0)}
+                                      </span> */}
+                                      {Math.round(product.price * 0.1)}
                                     </span>
                                   </span>
                                 </div>

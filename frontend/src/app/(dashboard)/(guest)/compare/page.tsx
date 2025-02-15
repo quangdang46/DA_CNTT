@@ -1,5 +1,5 @@
 "use client";
-import { Star, StarHalf, Undo2, X } from "lucide-react";
+import { Undo2, X } from "lucide-react";
 import WrapperContent from "@/shared/components/layouts/WrapperContent";
 import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { removeFromCompare } from "@/shared/state/compareSlice";
 import { useCart } from "@/shared/hooks/useCart";
+import { RatingStars } from "@/shared/components/ui/RatingStars";
 
 const productAttributes = [
   { key: "battery_capacity", label: "Battery Capacity" },
@@ -96,14 +97,9 @@ export default function Page() {
                           <div className="product-info">
                             <h3 className="product-title">{product.name}</h3>
                             <div className="star-rating">
-                              {Array(Math.floor(product.rating))
-                                .fill(0)
-                                .map((_, i) => (
-                                  <Star strokeWidth={1} key={`full-${i}`} />
-                                ))}
-                              {product.rating % 1 !== 0 && (
-                                <StarHalf strokeWidth={1} key="half-star" />
-                              )}
+                              <RatingStars
+                                rating={product.rating}
+                              ></RatingStars>
                             </div>
                           </div>
                         </a>
@@ -118,9 +114,9 @@ export default function Page() {
                           <ins>
                             <span className="woocommerce-Price-amount amount">
                               <span className="woocommerce-Price-currencySymbol">
-                                {product.price}
+                                {Math.round(product.price)}
                               </span>
-                              {product.price}
+                              {Math.round(product.price)}
                             </span>
                           </ins>
                         </div>

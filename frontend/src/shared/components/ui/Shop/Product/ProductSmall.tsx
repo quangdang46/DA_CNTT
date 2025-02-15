@@ -1,5 +1,5 @@
+import { RatingStars } from "@/shared/components/ui/RatingStars";
 import { Product } from "@/shared/types/ProductTypes";
-import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 interface Props {
@@ -42,16 +42,9 @@ export default function ProductSmall({
                 {product.name}
               </h2>
               <div className="techmarket-product-rating">
-                {Array(Math.floor(product.rating))
-                  .fill(0)
-                  .map((_, i) => (
-                    <Star strokeWidth={1} key={`full-${i}`} />
-                  ))}
+                <RatingStars rating={product.rating}></RatingStars>
 
-                {product.rating % 1 !== 0 && (
-                  <StarHalf strokeWidth={1} key="half-star" />
-                )}
-                <span className="review-count">(1)</span>
+                <span className="review-count">({product.review_count})</span>
               </div>
             </a>
             <div className="woocommerce-product-details__short-description">
@@ -63,8 +56,8 @@ export default function ProductSmall({
           <div className="product-actions">
             <span className="price">
               <span className="woocommerce-Price-amount amount">
-                <span className="woocommerce-Price-currencySymbol">$</span>
-                {product.price}
+                {Math.round(product.price)}
+                <span className="woocommerce-Price-currencySymbol">VNĐ</span>
               </span>
             </span>
             <button

@@ -33,8 +33,8 @@ export default function ProductGrid({
         />
         <span className="price">
           <span className="woocommerce-Price-amount amount">
-            <span className="woocommerce-Price-currencySymbol">$</span>
-            {product.price}
+            {Math.round(product.price)}
+            <span className="woocommerce-Price-currencySymbol">VNĐ</span>
           </span>
         </span>
         <h2 className="woocommerce-loop-product__title">{product.name}</h2>

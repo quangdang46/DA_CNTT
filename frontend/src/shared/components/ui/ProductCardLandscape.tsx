@@ -1,6 +1,7 @@
+import { RatingStars } from "@/shared/components/ui/RatingStars";
 import { useWishlist } from "@/shared/hooks/useWishlist";
 import { Product } from "@/shared/types/ProductTypes";
-import { Heart, Star, StarHalf } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -51,24 +52,18 @@ export default function ProductCardLandscape({
           <div className="media-body">
             <span className="price">
               <ins>
-                <span className="amount">{product.price}</span>
+                <span className="amount">{Math.round(product.price)}</span>
               </ins>
               <del>
-                <span className="amount">{`${product.price * 1.2}`}</span>
+                <span className="amount">{`${Math.round(
+                  product.price * 2
+                )}`}</span>
               </del>
             </span>
             <h2 className="woocommerce-loop-product__title">{product.name}</h2>
             <div className="techmarket-product-rating">
               <div className="d-flex align-items-center gap-1">
-                {Array(Math.floor(product.rating))
-                  .fill(0)
-                  .map((_, i) => (
-                    <Star strokeWidth={1} key={`full-${i}`} />
-                  ))}
-
-                {product.rating % 1 !== 0 && (
-                  <StarHalf strokeWidth={1} key="half-star" />
-                )}
+                <RatingStars rating={product.rating}></RatingStars>
               </div>
               <span className="review-count">({product.review_count})</span>
             </div>
@@ -121,10 +116,12 @@ export default function ProductCardLandscape({
           >
             <span className="price">
               <ins>
-                <span className="amount">{product.price}</span>
+                <span className="amount">{Math.round(product.price)}</span>
               </ins>
               <del>
-                <span className="amount">{`${product.price * 1.2}`}</span>
+                <span className="amount">{`${Math.round(
+                  product.price * 2
+                )}`}</span>
               </del>
             </span>
             <h2 className="woocommerce-loop-product__title">{product.name}</h2>
@@ -133,9 +130,7 @@ export default function ProductCardLandscape({
             </div>
             <div className="techmarket-product-rating d-flex gap-0">
               <div className="d-flex align-items-center gap-1">
-                {Array.from({ length: product.rating }).map((_, index) => (
-                  <Star key={index}></Star>
-                ))}
+                <RatingStars rating={product.rating}></RatingStars>
               </div>
               <span className="review-count">({product.review_count})</span>
             </div>
