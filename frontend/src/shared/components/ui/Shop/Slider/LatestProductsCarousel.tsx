@@ -9,7 +9,7 @@ import styles from "@/shared/style/LatestProductsCarousel.module.css";
 import Link from "next/link";
 import { useShopContext } from "@/shared/contexts/ShopContext";
 import { RatingStars } from "@/shared/components/ui/RatingStars";
-
+import Skeleton from "react-loading-skeleton";
 interface ProductCardProps {
   product: Product;
 }
@@ -66,9 +66,9 @@ export default function LatestProductsCarousel() {
 
   const { data, isLoading, error } = productApiRequest.useProducts("new");
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -98,9 +98,25 @@ export default function LatestProductsCarousel() {
 
                 {groupedProducts.map((group, index) => (
                   <div className={styles.embla__slide} key={index}>
-                    {group.map((product) => (
-                      <ProductCard key={product.id} product={product} />
-                    ))}
+                    {group.map((product) =>
+                      // <ProductCard key={product.id} product={product} />
+                      isLoading ? (
+                        <div
+                          key={product.id}
+                          className="landscape-product-widget product"
+                        >
+                          <Skeleton height={300} />
+                          <div className="media-body">
+                            <Skeleton width="60%" height={20} />
+                            <Skeleton width="80%" height={30} />
+                            <Skeleton width="40%" height={20} />
+                            <Skeleton width="50%" height={20} />
+                          </div>
+                        </div>
+                      ) : (
+                        <ProductCard key={product.id} product={product} />
+                      )
+                    )}
                   </div>
                 ))}
               </div>

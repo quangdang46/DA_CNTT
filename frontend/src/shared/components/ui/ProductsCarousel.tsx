@@ -9,11 +9,11 @@ import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { ProductListResType } from "@/shared/types/ProductTypes";
 import useCompare from "@/shared/hooks/useCompare";
 import { useCart } from "@/shared/hooks/useCart";
-interface ProductsCarouselProps {
+interface Props {
   products: ProductListResType;
 }
 
-export default function ProductsCarousel({ products }: ProductsCarouselProps) {
+export default function ProductsCarousel({ products }: Props) {
   const { handleAddToCompare, CompareModal } = useCompare();
   const { handleAddToCart } = useCart();
   //   duplicate products
@@ -40,14 +40,11 @@ export default function ProductsCarousel({ products }: ProductsCarouselProps) {
       <CompareModal></CompareModal>
       <div className="tab-content">
         <div
-          id="tab-59f89f0881f930"
           className="tab-pane active"
           role="tabpanel"
         >
           <div
             className="products-carousel"
-            data-ride="tm-slick-carousel"
-            data-wrap=".products"
           >
             <div className="container-fluid">
               <div className="woocommerce">
