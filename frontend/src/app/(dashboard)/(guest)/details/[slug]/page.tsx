@@ -15,7 +15,68 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React from "react";
+import Skeleton from "react-loading-skeleton";
+function ProductDetailSkeleton() {
+  return (
+    <WrapperContent className="single-product">
+      <div className="product product-type-simple">
+        <div className="single-product-wrapper">
+          {/* Phần ảnh sản phẩm */}
+          <div className="product-images-wrapper thumb-count-4">
+            <Skeleton height={400} width="100%" />
+          </div>
 
+          {/* Phần chi tiết sản phẩm */}
+          <div className="summary entry-summary">
+            <div className="single-product-header">
+              {/* Tiêu đề */}
+              <h1 className="product_title entry-title">
+                <Skeleton height={25} width="70%" />
+              </h1>
+              {/* Nút Wishlist */}
+              <button className="add-to-wishlist">
+                <Heart strokeWidth={1} size={30} />
+              </button>
+            </div>
+
+            {/* Meta thông tin */}
+            <div className="single-product-meta">
+              <div className="brand">
+                <Skeleton height={50} width={100} />
+              </div>
+              <div className="cat-and-sku">
+                <Skeleton height={20} width="40%" />
+              </div>
+              <div className="product-label">
+                <Skeleton height={30} width={60} />
+              </div>
+            </div>
+
+            {/* Đánh giá */}
+            <div className="rating-and-sharing-wrapper">
+              <Skeleton height={20} width="30%" />
+            </div>
+
+            {/* Mô tả ngắn */}
+            <div className="woocommerce-product-details__short-description">
+              <Skeleton count={3} />
+            </div>
+
+            {/* Giá và hành động */}
+            <div className="product-actions-wrapper">
+              <div className="product-actions">
+                <p className="price">
+                  <Skeleton height={20} width="50%" />
+                </p>
+                <Skeleton height={40} width="100%" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </WrapperContent>
+  );
+}
 export default function Page() {
   const { handleAddToCompare, CompareModal } = useCompare();
   const { handleAddToCart } = useCart();
@@ -26,7 +87,7 @@ export default function Page() {
     slug as string
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ProductDetailSkeleton></ProductDetailSkeleton>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data?.data) return <div>Product not found</div>;
 
@@ -40,7 +101,6 @@ export default function Page() {
         <WrapperContent className="single-product">
           <div className="product product-type-simple">
             <div className="single-product-wrapper">
-              {/* anh */}
               <div className="product-images-wrapper thumb-count-4">
                 <span className="onsale">
                   -
@@ -49,14 +109,11 @@ export default function Page() {
                     {Math.round(product.price)}
                   </span>
                 </span>
-                {/* ////////////// */}
-                {/* ////////////// */}
                 <SingleProductGallery
                   thumbnails={thumbnails}
                 ></SingleProductGallery>
               </div>
 
-              {/* detail san pham */}
               <div className="summary entry-summary">
                 <div className="single-product-header">
                   <h1 className="product_title entry-title">{product.name}</h1>
@@ -155,18 +212,6 @@ export default function Page() {
                       </ins>
                     </p>
                     <form method="post" className="cart" autoComplete="off">
-                      {/* <div className="quantity">
-                        <label htmlFor="quantity-input">Quantity</label>
-                        <input
-                          type="number"
-                          size={4}
-                          className="input-text qty text"
-                          title="Qty"
-                          defaultValue="1"
-                          name="quantity"
-                          id="quantity-input"
-                        />
-                      </div> */}
                       <button
                         className="single_add_to_cart_button button alt"
                         onClick={() => handleAddToCart(product)}
