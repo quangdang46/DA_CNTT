@@ -34,9 +34,7 @@ function ProductDetailSkeleton() {
                 <Skeleton height={25} width="70%" />
               </h1>
               {/* Nút Wishlist */}
-              <button className="add-to-wishlist">
-                <Heart strokeWidth={1} size={30} />
-              </button>
+              <Skeleton height={40} width={40} />
             </div>
 
             {/* Meta thông tin */}
@@ -118,7 +116,7 @@ export default function Page() {
                 <div className="single-product-header">
                   <h1 className="product_title entry-title">{product.name}</h1>
                   <button
-                    className="add-to-wishlist"
+                    className=""
                     onClick={() => toggleWishlist(product.id)}
                   >
                     <Heart
@@ -196,18 +194,18 @@ export default function Page() {
                     <p className="price">
                       <del>
                         <span className="woocommerce-Price-amount amount">
+                          {Math.round(product.price * 2)}{" "}
                           <span className="woocommerce-Price-currencySymbol">
                             VNĐ
                           </span>
-                          1,239.99
                         </span>
                       </del>
                       <ins>
                         <span className="woocommerce-Price-amount amount">
+                          {Math.round(product.price)}{" "}
                           <span className="woocommerce-Price-currencySymbol">
                             VNĐ
                           </span>
-                          997.00
                         </span>
                       </ins>
                     </p>
