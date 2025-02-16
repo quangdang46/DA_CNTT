@@ -8,6 +8,7 @@ import productApiRequest from "@/shared/apiRequests/product";
 import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import { MoveRight } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 
 export default function HomePageSlider() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,10 +18,6 @@ export default function HomePageSlider() {
     useDotButton(emblaApi);
 
   const { data, isLoading, error } = productApiRequest.useProducts("new");
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -50,66 +47,93 @@ export default function HomePageSlider() {
           }}
         >
           <>
-            {slides.map((slide, index) => (
+            {isLoading ? (
               <div
-                key={index}
-                className={slide.className}
+                className="slider-1 slick-slide"
                 style={{
-                  backgroundImage: `url('${slide.backgroundImage}')`,
+                  backgroundImage: `url('/static/images/slider/background.jpg')`,
                   minWidth: "100%",
                   position: "relative",
                 }}
               >
-                {/* <Image
-                  src={slide.image}
-                  alt=""
-                  width={0}
-                  height={0}
+                <div
                   style={{
-                    objectFit: "cover",
                     position: "absolute",
-                    height: "100%",
+                    height:"100%" ,
                     width: "30%",
                     top: 0,
                     right: 0,
                     bottom: 0,
                   }}
-                /> */}
+                >
+                  <Skeleton height="100%" width="100%" />
+                </div>
 
-                <Image
-                  src={slide.image}
-                  alt=""
-                  width={500} // Đặt giá trị cụ thể
-                  height={300} // Đặt giá trị cụ thể
-                  quality={100} // Tăng chất lượng ảnh
-                  style={{
-                    objectFit: "cover",
-                    position: "absolute",
-                    height: "100%",
-                    width: "30%",
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                  }}
-                />
-
-                <div className="caption">
-                  <div className="title hidden">{slide.caption.title}</div>
-                  <div className="sub-title hidden">
-                    {slide.caption.subTitle}
-                  </div>
-                  <a
-                    className="button hidden"
-                    href={`/details/${slide.caption.slugProduct}`}
-                  >
-                    {slide.caption.button} <MoveRight />
-                  </a>
-                  <div className="bottom-caption hidden">
-                    {slide.caption.bottomCaption}
-                  </div>
+                <div className="caption" style={{ padding: "20px" }}>
+                  <Skeleton
+                    height={50}
+                    width={400}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <Skeleton
+                    height={100}
+                    width={700}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <Skeleton height={50} width={120} borderRadius={5} />
+                  <Skeleton
+                    height={30}
+                    width={70}
+                    style={{ marginTop: "10px" }}
+                  />
                 </div>
               </div>
-            ))}
+            ) : (
+              slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className={slide.className}
+                  style={{
+                    backgroundImage: `url('${slide.backgroundImage}')`,
+                    minWidth: "100%",
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    src={slide.image}
+                    alt=""
+                    width={500}
+                    height={300}
+                    quality={100}
+                    style={{
+                      objectFit: "cover",
+                      position: "absolute",
+                      height: "100%",
+                      width: "30%",
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
+
+                  <div className="caption">
+                    <div className="title hidden">{slide.caption.title}</div>
+                    <div className="sub-title hidden">
+                      {slide.caption.subTitle}
+                    </div>
+                    <a
+                      className="button hidden"
+                      href={`/details/${slide.caption.slugProduct}`}
+                    >
+                      {slide.caption.button} <MoveRight />
+                    </a>
+                    <div className="bottom-caption hidden">
+                      {slide.caption.bottomCaption}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </>
         </div>
       </div>
