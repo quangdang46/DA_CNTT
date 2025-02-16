@@ -55,6 +55,7 @@ const productApiRequest = {
         }
       },
       staleTime: 1000 * 60 * 5,
+      placeholderData: (previousData) => previousData,
     });
   },
   useProductDetail: (slug: string) => {

@@ -7,6 +7,7 @@ import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import { useDotButton } from "@/shared/hooks/EmblaCarouselDotButton";
 import productApiRequest from "@/shared/apiRequests/product";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 
 export default function ProductDisplay({
   title = "Related products",
@@ -28,7 +29,6 @@ export default function ProductDisplay({
 
   const { data, isLoading, error } = productApiRequest.useProductList();
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const products = data?.data || [];
@@ -67,16 +67,55 @@ export default function ProductDisplay({
             <div className={styles.embla}>
               <div className={styles.embla__viewport} ref={emblaRef}>
                 <div className={`products ${styles.embla__container}`}>
-                  {/* list */}
-                  {products &&
-                    products.length > 0 &&
-                    products.map((product, index) => (
-                      <div className={styles.embla__slide} key={index}>
-                        <ProductCardLandscape
-                          product={product}
-                        ></ProductCardLandscape>
-                      </div>
-                    ))}
+                  {isLoading
+                    ? [...Array(5)].map((_, index) => (
+                        <div
+                          className={`landscape-product product ${styles.embla__slide}`}
+                          key={index}
+                        >
+                          <div className="woocommerce-LoopProduct-link">
+                            <div className="media">
+                              <Skeleton
+                                width={200}
+                                height={130}
+                                borderRadius={8}
+                              />
+                              <div className="media-body">
+                                <span className="price">
+                                  <ins>
+                                    <span className="amount">
+                                      <Skeleton width={50} height={20} />
+                                    </span>
+                                  </ins>
+                                  <del>
+                                    <span className="amount">
+                                      <Skeleton width={50} height={20} />
+                                    </span>
+                                  </del>
+                                </span>
+                                <h2 className="woocommerce-loop-product__title">
+                                  <Skeleton width={150} height={20} />
+                                </h2>
+                                <div className="techmarket-product-rating">
+                                  <Skeleton width={100} height={16} />
+                                  <span className="review-count">
+                                    <Skeleton width={30} height={14} />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    : products &&
+                      products.length > 0 &&
+                      products.map((product, index) => (
+                        <div className={styles.embla__slide} key={index}>
+                          <ProductCardLandscape
+                            product={product}
+                          ></ProductCardLandscape>
+                        </div>
+                      ))}
                 </div>
               </div>
             </div>

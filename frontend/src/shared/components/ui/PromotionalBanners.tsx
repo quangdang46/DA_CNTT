@@ -6,7 +6,7 @@ export default function PromotionalBanners() {
       <div className="row">
         <div className="banner banner-long text-in-right">
           <a href="/shop">
-            <div
+            {/* <div
               style={{
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
@@ -26,6 +26,27 @@ export default function PromotionalBanners() {
                 </div>
                 <span className="banner-action button">Browse</span>
               </div>
+            </div> */}
+            <div
+              style={{
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+                backgroundImage:
+                  "url('https://plus.unsplash.com/premium_photo-1683758344017-61aec4a1d2d3?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                height: "259px",
+              }}
+              className="banner-bg"
+            >
+              <div className="caption">
+                <div className="banner-info">
+                  <h3 className="title">
+                    <strong>Mua ngay</strong> điện thoại chính hãng với giá cực
+                    tốt
+                    <br /> cùng nhiều ưu đãi hấp dẫn.
+                  </h3>
+                </div>
+                <span className="banner-action button">Khám phá ngay</span>
+              </div>
             </div>
           </a>
         </div>
@@ -37,7 +58,7 @@ export default function PromotionalBanners() {
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
                 backgroundImage:
-                  "url('https://images.unsplash.com/photo-1736401762820-a114e32f0072?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                  "url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
                 height: "259px",
               }}
               className="banner-bg"
@@ -45,12 +66,12 @@ export default function PromotionalBanners() {
               <div className="caption">
                 <div className="banner-info">
                   <h3 className="title">
-                    <strong>1000 mAh</strong>
-                    <br /> Power Bank Pro.
+                    <strong>Khám phá</strong>
+                    <br /> Điện thoại mới nhất, giá tốt nhất!
                   </h3>
                 </div>
-                <span className="price">$34.99</span>
-                <span className="banner-action button">Buy Now</span>
+                <span className="price">Ưu đãi hấp dẫn</span>
+                <span className="banner-action button">Mua ngay</span>
               </div>
             </div>
           </a>

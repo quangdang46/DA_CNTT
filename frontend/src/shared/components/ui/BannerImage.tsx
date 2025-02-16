@@ -10,7 +10,8 @@ export default function BannerImage() {
           style={{
             backgroundSize: "cover",
             backgroundPosition: "center center",
-            backgroundImage: "url('/static/images/banner/banner-home.jpg')",
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
             height: "236px",
           }}
           className="banner-bg"
@@ -18,13 +19,15 @@ export default function BannerImage() {
           <div className="caption">
             <div className="banner-info">
               <h3 className="title">
-                <strong>Extremely Portable</strong>, learn
-                <br /> to ride in just 3 minutes
+                <strong>Công nghệ đột phá</strong>, trải nghiệm
+                <br /> hiệu suất mạnh mẽ hàng đầu
               </h3>
-              <h4 className="subtitle">Travel up to 22km in a single charge</h4>
+              <h4 className="subtitle">
+                Pin bền bỉ, sạc nhanh – Giải trí suốt ngày dài
+              </h4>
             </div>
             <span className="banner-action button">
-              Browse now
+              Khám phá ngay
               <MoveRight />
             </span>
           </div>

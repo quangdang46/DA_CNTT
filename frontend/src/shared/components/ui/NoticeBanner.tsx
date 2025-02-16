@@ -5,8 +5,8 @@ export default function NoticeBanner() {
     <div className="fullwidth-notice stretch-full-width">
       <div className="col-full">
         <p className="message">
-          Download our new app today! Don`t miss our mobile-only offers and shop
-          with Android Play.
+          Mua sắm dễ dàng trên điện thoại! Khám phá hàng loạt ưu đãi hấp dẫn
+          ngay hôm nay.
         </p>
       </div>
     </div>

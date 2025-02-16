@@ -8,6 +8,7 @@ import DotCarousel from "@/shared/components/ui/Component/DotCarousel";
 import productApiRequest from "@/shared/apiRequests/product";
 import useCompare from "@/shared/hooks/useCompare";
 import { useCart } from "@/shared/hooks/useCart";
+import Skeleton from "react-loading-skeleton";
 export default function LandscapeFullProductCardsCarousel() {
   const { handleAddToCompare, CompareModal } = useCompare();
   const { handleAddToCart }=useCart();
@@ -18,7 +19,6 @@ export default function LandscapeFullProductCardsCarousel() {
 
   const { data, isLoading, error } = productApiRequest.useProductList();
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const products = data?.data || [];
@@ -46,7 +46,7 @@ export default function LandscapeFullProductCardsCarousel() {
         <div className="col-full">
           <header className="section-header">
             <h2 className="section-title">
-              <strong>Power Audio &amp; Visual </strong>entertainment
+              <strong>Khám phá công nghệ</strong> di động mới nhất
             </h2>
           </header>
           <div className="row">
@@ -57,30 +57,64 @@ export default function LandscapeFullProductCardsCarousel() {
                     <div className={styles.embla}>
                       <div className={styles.embla__viewport} ref={emblaRef}>
                         <div className={`products ${styles.embla__container}`}>
-                          {paginatedItems.map((productPerPage, pageIndex) => (
-                            <div
-                              className={styles.embla__slide}
-                              key={pageIndex}
-                            >
-                              <div
-                                style={{
-                                  display: "grid",
-                                  gridTemplateColumns: "repeat(2, 1fr)", // 2 phần tử mỗi hàng
-                                  gridTemplateRows: "repeat(2, 1fr)", // 2 hàng
-                                }}
-                              >
-                                {productPerPage.map((product, index) => (
-                                  <ProductCardLandscape
-                                    product={product}
-                                    version={2}
-                                    key={index}
-                                    onAddToCompare={handleAddToCompare}
-                                    onAddToCart={handleAddToCart}
-                                  ></ProductCardLandscape>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
+                          {isLoading
+                            ? [...Array(2)].map((_, pageIndex) => (
+                                <div
+                                  className={styles.embla__slide}
+                                  key={pageIndex}
+                                >
+                                  <div
+                                    style={{
+                                      display: "grid",
+                                      gridTemplateColumns: "repeat(2, 1fr)",
+                                      gridTemplateRows: "repeat(2, 1fr)",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    {[...Array(4)].map((_, index) => (
+                                      <div key={index}>
+                                        <Skeleton
+                                          height={120}
+                                          borderRadius={8}
+                                        />
+                                        <Skeleton
+                                          width="80%"
+                                          height={20}
+                                          style={{ marginTop: 10 }}
+                                        />
+                                        <Skeleton width="60%" height={18} />
+                                        <Skeleton width="40%" height={16} />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))
+                            : paginatedItems.map(
+                                (productPerPage, pageIndex) => (
+                                  <div
+                                    className={styles.embla__slide}
+                                    key={pageIndex}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(2, 1fr)", // 2 phần tử mỗi hàng
+                                        gridTemplateRows: "repeat(2, 1fr)", // 2 hàng
+                                      }}
+                                    >
+                                      {productPerPage.map((product, index) => (
+                                        <ProductCardLandscape
+                                          product={product}
+                                          version={2}
+                                          key={index}
+                                          onAddToCompare={handleAddToCompare}
+                                          onAddToCart={handleAddToCart}
+                                        ></ProductCardLandscape>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )
+                              )}
                         </div>
                       </div>
                       <DotCarousel
