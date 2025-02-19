@@ -1,11 +1,7 @@
 import {
-  BadgeHelp,
   Banknote,
-  Bolt,
   BookMarked,
-  ChartArea,
   CircleUser,
-  Handshake,
   History,
   LayoutDashboard,
   ShoppingBag,
@@ -48,32 +44,7 @@ export const menuItems = [
         title: "Revenue",
         path: "/admin/revenue",
         icon: <BookMarked />,
-      },
-      {
-        title: "Warehouse",
-        path: "/admin/warehouses",
-        icon: <ChartArea />,
-      },
-      {
-        title: "Teams",
-        path: "/admin/teams",
-        icon: <Handshake />,
-      },
-    ],
-  },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/admin/settings",
-        icon: <Bolt />,
-      },
-      {
-        title: "Help",
-        path: "/admin/help",
-        icon: <BadgeHelp />,
-      },
+      }
     ],
   },
 ];
