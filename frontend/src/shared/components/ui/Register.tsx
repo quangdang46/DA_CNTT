@@ -69,12 +69,13 @@ export default function Register() {
         onSubmit={handleSubmit(onSubmit)} // Handle form submission
       >
         <p className="before-register-text">
-          Create new account today to reap the benefits of a personalized
-          shopping experience. Praesent placerat, est sed aliquet finibus.
+          Tạo tài khoản ngay hôm nay để mua sắm nhanh chóng, nhận ưu đãi hấp dẫn
+          và theo dõi đơn hàng dễ dàng!
         </p>
+
         <div className="form-row form-row-wide">
           <label htmlFor="name">
-            Name <span className="required">*</span>
+            Tên <span className="required">*</span>
           </label>
           <input
             type="text"
@@ -86,7 +87,7 @@ export default function Register() {
         </div>
         <div className="form-row form-row-wide">
           <label htmlFor="reg_email">
-            Email address <span className="required">*</span>
+            Email <span className="required">*</span>
           </label>
           <input
             type="text"
@@ -100,7 +101,7 @@ export default function Register() {
         </div>
         <div className="form-row form-row-wide">
           <label htmlFor="re_password">
-            Password <span className="required">*</span>
+            Mật khẩu <span className="required">*</span>
           </label>
           <input
             type="password"
@@ -114,7 +115,7 @@ export default function Register() {
         </div>
         <div className="form-row form-row-wide">
           <label htmlFor="password_confirmation">
-            Password Confirmation <span className="required">*</span>
+            Xác nhận mật khẩu <span className="required">*</span>
           </label>
           <input
             type="password"
@@ -140,16 +141,19 @@ export default function Register() {
           </button>
         </div>
         <div className="register-benefits">
-          <h3>Sign up today and you will be able to :</h3>
+          <h3>Đăng ký ngay để mua sắm dễ dàng hơn:</h3>
           <ul>
             <li>
-              <Check strokeWidth={1} /> Speed your way through checkout
+              <Check strokeWidth={1} /> Thanh toán nhanh gọn, không cần nhập lại
+              thông tin
             </li>
             <li>
-              <Check strokeWidth={1} /> Track your orders easily
+              <Check strokeWidth={1} /> Theo dõi trạng thái đơn hàng mọi lúc,
+              mọi nơi
             </li>
             <li>
-              <Check strokeWidth={1} /> Keep a record of all your purchases
+              <Check strokeWidth={1} /> Quản lý lịch sử mua hàng và nhận ưu đãi
+              hấp dẫn
             </li>
           </ul>
         </div>

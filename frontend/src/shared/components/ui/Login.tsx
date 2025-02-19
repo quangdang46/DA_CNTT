@@ -85,12 +85,11 @@ export default function Login() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <p className="before-login-text">
-          Vestibulum lacus magna, faucibus vitae dui eget, aliquam fringilla. In
-          et commodo elit. Class aptent taciti sociosqu ad litora.
+          Đăng nhập để trải nghiệm đầy đủ tính năng và mua sắm dễ dàng hơn!
         </p>
         <div className="form-row form-row-wide">
           <label htmlFor="email">
-            Username or email address <span className="required">*</span>
+            Email <span className="required">*</span>
           </label>
           <input
             type="text"
@@ -104,7 +103,7 @@ export default function Login() {
         </div>
         <div className="form-row form-row-wide">
           <label htmlFor="password">
-            Password <span className="required">*</span>
+            Mật khẩu <span className="required">*</span>
           </label>
           <input
             className="input-text"

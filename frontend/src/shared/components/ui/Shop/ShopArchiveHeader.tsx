@@ -15,19 +15,15 @@ export default function ShopArchiveHeader() {
           />
         </div>
         <div className="jumbotron-caption">
-          <h3 className="jumbo-title">Virtual Reality Headsets</h3>
+          <h3 className="jumbo-title">Điện Thoại & Phụ Kiện</h3>
+
           <p className="jumbo-subtitle">
-            Nullam dignissim elit ut urna rutrum, a fermentum mi auctor. Mauris
-            efficitur magna orci, et dignissim lacus scelerisque sit amet. Proin
-            malesuada tincidunt nisl ac commodo. Vivamus eleifend porttitor ex
-            sit amet suscipit. Vestibulum at ullamcorper lacus, vel facilisis
-            arcu. Aliquam erat volutpat.
+            Khám phá bộ sưu tập mới nhất với nhiều mẫu mã đa dạng, phù hợp với
+            mọi nhu cầu.
             <br />
             <br />
-            Maecenas in sodales nisl. Pellentesque ac nibh mi. Ut lobortis odio
-            nulla, congue rhoncus risus facilisis eget. Orci varius natoque
-            penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-            <a href="#">read more →</a>
+            Xem ngay để không bỏ lỡ!
+            <a href="#">Xem chi tiết →</a>
           </p>
         </div>
         {/* .jumbotron-caption */}

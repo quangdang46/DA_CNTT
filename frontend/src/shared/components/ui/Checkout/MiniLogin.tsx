@@ -111,14 +111,13 @@ export default function MiniLogin() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <p className="before-login-text">
-            Vestibulum lacus magna, faucibus vitae dui eget, aliquam fringilla.
-            In et commodo elit. Class aptent taciti sociosqu ad litora.
+            Đăng nhập để trải nghiệm đầy đủ tính năng và mua sắm dễ dàng hơn!
           </p>
           <p>
-            If you have shopped with us before, please enter your details in the
-            boxes below. If you are a new customer, please proceed to the
-            Billing &amp; Shipping section.
+            Chào mừng bạn! Nếu đã có tài khoản, hãy đăng nhập để tiếp tục. Nếu
+            chưa, bạn có thể nhập thông tin thanh toán và giao hàng ngay.
           </p>
+
           <p className="form-row form-row-first">
             <label htmlFor="email">
               Email
@@ -136,7 +135,7 @@ export default function MiniLogin() {
           </p>
           <p className="form-row form-row-last">
             <label htmlFor="password">
-              Password
+              Mật khẩu
               <span className="required">*</span>
             </label>
             <input

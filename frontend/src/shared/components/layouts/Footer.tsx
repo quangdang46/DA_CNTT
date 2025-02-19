@@ -82,7 +82,7 @@ export default function Footer() {
                         (800) 8001-8588, (0600) 874 548
                       </span>
                       <address className="footer-contact-address">
-                        17 Princess Road, London, Greater London NW1 8JR, UK
+                        TDTU
                       </address>
                       <Link href={"#"} className="footer-address-map-link">
                         <MapPin strokeWidth={1} />

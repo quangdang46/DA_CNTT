@@ -22,10 +22,10 @@ const Home = () => {
               <DealsCarousel></DealsCarousel>
               <NoticeBanner></NoticeBanner>
               <RecommendedProducts
-                title={"Hot Best Sellers"}
+                title={"Sản phẩm bán chạy"}
               ></RecommendedProducts>
               <BannerImage></BannerImage>
-              <ProductDisplay title={"All products"}></ProductDisplay>
+              <ProductDisplay title={"Sản phẩm nổi bật"}></ProductDisplay>
               <PromotionalBanners></PromotionalBanners>
               <LandscapeFullProductCardsCarousel></LandscapeFullProductCardsCarousel>
             </main>
