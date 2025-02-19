@@ -1,11 +1,16 @@
 "use client";
+import useClickOutside from "@/shared/hooks/useClickOutside";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 export default function MainNav() {
   const [show, setShow] = useState(false);
-  const toggleDropdown = () => setShow(!show);
+  const dropdownRef = useRef<HTMLUListElement>(null);
+
+  useClickOutside(dropdownRef, () => setShow(false));
+
+  const toggleDropdown = () => setShow((prev) => !prev);
   return (
     <nav
       id="primary-navigation"
@@ -24,6 +29,7 @@ export default function MainNav() {
             title="Mother's Day"
             aria-haspopup="true"
             onClick={toggleDropdown}
+            aria-expanded={show}
           >
             FUNCTION
             <ChevronDown strokeWidth={1} />
@@ -32,6 +38,7 @@ export default function MainNav() {
             role="menu"
             className="dropdown-menu"
             style={{ display: show ? "block" : "none" }}
+            ref={dropdownRef}
           >
             <li className="menu-item animate-dropdown">
               <Link href="/wishlist" title="Wishlist">

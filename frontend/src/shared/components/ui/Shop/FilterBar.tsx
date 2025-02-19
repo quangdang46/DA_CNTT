@@ -14,7 +14,7 @@ type CheckboxItem = {
 };
 export default function FilterBar() {
   const searchParams = useSearchParams();
-  const [value, setValue] = useState({ min: 0, max: 1000 });
+  const [value, setValue] = useState({ min: 0, max: 7000000 });
   const [name, setName] = useState(searchParams?.get("name") || "");
   const { data: categories } = categoryApiRequest.useGetCategories();
   const [checkboxes, setCheckboxes] = useState<CheckboxItem[]>([]);
@@ -82,7 +82,7 @@ export default function FilterBar() {
             type="text"
             placeholder="Min price"
             // defaultValue={`${value.min} - ${value.max}$`}
-            value={`${value.min} - ${value.max}$`}
+            value={`${value.min} - ${value.max} VNĐ`}
             readOnly
             name="min_price"
           />
@@ -92,9 +92,9 @@ export default function FilterBar() {
         </div>
         <RangeSlider
           min={0}
-          max={15000000}
+          max={7000000}
           value={value}
-          step={150000}
+          step={175000}
           onChange={setValue}
         />
       </div>

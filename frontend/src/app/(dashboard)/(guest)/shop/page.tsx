@@ -20,7 +20,7 @@ export default function Page() {
         </div>
       </div>
       <div className="col-full">
-        <BrandsCarousel></BrandsCarousel>
+        {/* <BrandsCarousel></BrandsCarousel> */}
       </div>
     </>
   );

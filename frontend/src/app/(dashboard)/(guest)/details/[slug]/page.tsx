@@ -230,7 +230,7 @@ export default function Page() {
             {/* ///////////// */}
             <RecommendedProducts></RecommendedProducts>
             {/* ///////////// */}
-            <BrandsCarousel></BrandsCarousel>
+            {/* <BrandsCarousel></BrandsCarousel> */}
 
             <ProductTabs product={product}></ProductTabs>
           </div>
