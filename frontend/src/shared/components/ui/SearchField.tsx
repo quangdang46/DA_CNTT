@@ -18,7 +18,7 @@ export default function SearchField({ register, error }: SearchFieldProps) {
         dir="ltr"
         defaultValue=""
         {...register("name")}
-        placeholder="Search for products"
+        placeholder="Nhập tên sản phẩm..."
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </>
