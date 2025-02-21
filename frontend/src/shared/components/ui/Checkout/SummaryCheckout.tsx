@@ -14,15 +14,15 @@ export default function SummaryCheckout() {
   const initAddress = data?.data;
   return (
     <>
-      <h3 id="order_review_heading">Your order</h3>
+      <h3 id="order_review_heading">Đơn hàng</h3>
       <div className="woocommerce-checkout-review-order" id="order_review">
         <div className="order-review-wrapper">
-          <h3 className="order_review_heading">Your Order</h3>
+          <h3 className="order_review_heading">Đơn hàng</h3>
           <table className="shop_table woocommerce-checkout-review-order-table">
             <thead>
               <tr>
-                <th className="product-name">Product</th>
-                <th className="product-total">Total</th>
+                <th className="product-name">Sản phẩm</th>
+                <th className="product-total">Tổng</th>
               </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@ export default function SummaryCheckout() {
               <CheckoutShip address={initAddress || []}></CheckoutShip>
 
               <tr className="cart-subtotal">
-                <th>Subtotal</th>
+                <th>Tổng</th>
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
@@ -47,7 +47,7 @@ export default function SummaryCheckout() {
               <tr className="cart-subtotal">
                 {discountAmount !== 0 && (
                   <>
-                    <th>Discount</th>
+                    <th>Giảm giá</th>
                     <td data-title="Discount">
                       <span className="woocommerce-Price-amount amount">
                         <bdi>
@@ -60,7 +60,7 @@ export default function SummaryCheckout() {
                 )}
               </tr>
               <tr className="order-total">
-                <th>Total</th>
+                <th>Tổng cộng</th>
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>

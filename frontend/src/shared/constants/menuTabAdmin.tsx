@@ -1,6 +1,5 @@
 import {
   Banknote,
-  BookMarked,
   CircleUser,
   History,
   LayoutDashboard,
@@ -37,14 +36,5 @@ export const menuItems = [
       },
     ],
   },
-  {
-    title: "Analytics",
-    list: [
-      {
-        title: "Revenue",
-        path: "/admin/revenue",
-        icon: <BookMarked />,
-      }
-    ],
-  },
+
 ];

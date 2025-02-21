@@ -23,11 +23,11 @@ export default function CartSummary({ discountAmount }: Props) {
       ></AddressModal>
       <div className="cart-collaterals">
         <div className="cart_totals">
-          <h2>Cart totals</h2>
+          <h2>Giỏ hàng</h2>
           <table cellSpacing={0} className="shop_table shop_table_responsive">
             <tbody>
               <tr className="cart-subtotal">
-                <th>Subtotal</th>
+                <th>Tổng</th>
                 <td data-title="Subtotal">
                   <span className="woocommerce-Price-amount amount">
                     <bdi>
@@ -40,7 +40,7 @@ export default function CartSummary({ discountAmount }: Props) {
               <tr className="order-total">
                 {discountAmount !== 0 && (
                   <>
-                    <th>Discount</th>
+                    <th>Giảm giá</th>
                     <td data-title="Discount">
                       <span className="woocommerce-Price-amount amount">
                         <bdi>
@@ -54,7 +54,7 @@ export default function CartSummary({ discountAmount }: Props) {
               </tr>
               <ShippingForm address={initAddress || null}></ShippingForm>
               <tr className="order-total">
-                <th>Total</th>
+                <th>Tổng</th>
                 <td data-title="Total">
                   <strong>
                     <span className="woocommerce-Price-amount amount">
@@ -76,10 +76,10 @@ export default function CartSummary({ discountAmount }: Props) {
                 onClick={openModal}
               >
                 Select Address
-                <p>
+                <p style={{ fontSize: "12px", marginTop: "5px",color:"red" }}>
                   <strong>
-                    If address not found, click here to add address and select
-                    default
+                    Bấm vào đây nếu chưa chọn điểm giao hàng, vui lý chọn điểm giao hàng.
+                    Bấm lần nữa để chọn địa chỉ mặc định.
                   </strong>
                 </p>
               </div>
@@ -88,10 +88,10 @@ export default function CartSummary({ discountAmount }: Props) {
               href="/checkout"
               className="checkout-button button alt wc-forward"
             >
-              Proceed to checkout
+              Xử lý đơn hàng
             </Link>
             <Link href="/shop/" className="back-to-shopping">
-              Back to Shopping
+                Trở lại mua hàng
             </Link>
           </div>
         </div>

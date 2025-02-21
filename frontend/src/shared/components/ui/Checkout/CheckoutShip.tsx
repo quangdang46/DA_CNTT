@@ -70,7 +70,7 @@ export default function CheckoutShip({ address }: Props) {
               style={{ display: "flex", alignItems: "center" }}
             >
               <span style={{ textWrap: "nowrap", marginRight: "10px" }}>
-                Normal Delivery:{" "}
+                Giao bình thường:{" "}
               </span>
               <span className="woocommerce-Price-amount amount">
                 <bdi>
@@ -96,7 +96,7 @@ export default function CheckoutShip({ address }: Props) {
               style={{ display: "flex", alignItems: "center" }}
             >
               <span style={{ textWrap: "nowrap", marginRight: "10px" }}>
-                Express Delivery:
+               Giao nhanh:
               </span>
               <span className="woocommerce-Price-amount amount">
                 <bdi>

@@ -168,7 +168,7 @@ export default function OrderForm() {
                         className="form-row form-row-wide validate-required"
                       >
                         <label htmlFor="name">
-                          First Name
+                          Họ và tên
                           <abbr title="required" className="required">
                             *
                           </abbr>
@@ -199,7 +199,7 @@ export default function OrderForm() {
                         className="form-row form-row-last validate-required"
                       >
                         <label htmlFor="phone">
-                          Phone
+                          Số điện thoại
                           <abbr title="required" className="required">
                             *
                           </abbr>
@@ -230,7 +230,7 @@ export default function OrderForm() {
                         className="form-row form-row-first validate-required"
                       >
                         <label htmlFor="email">
-                          Email Address
+                          Địa chỉ email
                           <abbr title="required" className="required">
                             *
                           </abbr>
@@ -261,7 +261,7 @@ export default function OrderForm() {
                         className="form-row form-row-wide address-field validate-required"
                       >
                         <label htmlFor="address">
-                          Street address
+                          Địa chỉ giao hàng
                           <abbr title="required" className="required">
                             *
                           </abbr>
@@ -291,7 +291,7 @@ export default function OrderForm() {
                         style={{ cursor: "pointer", color: "blue" }}
                         onClick={openModal}
                       >
-                        Select delivery address?
+                        Chọn địa chỉ giao hàng,nếu chưa thấy bấm lần nữa để chọn địa chỉ mặc định?
                       </span>
                     </label>
                   </div>
@@ -300,7 +300,7 @@ export default function OrderForm() {
                     control={control}
                     render={({ field }) => (
                       <div id="order_comments_field" className="form-row notes">
-                        <label htmlFor="note">Order notes</label>
+                        <label htmlFor="note">Ghi chú</label>
                         <textarea
                           {...field}
                           cols={5}
