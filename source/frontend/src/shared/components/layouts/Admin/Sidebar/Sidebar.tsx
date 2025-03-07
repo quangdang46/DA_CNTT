@@ -10,7 +10,7 @@ import { menuItems } from "@/shared/constants/menuTabAdmin";
 import Link from "next/link";
 
 const Sidebar = () => {
-  const { token } = useSelector((state: RootState) => state.auth);
+  const { token, user } = useSelector((state: RootState) => state.auth);
   const [isClient, setIsClient] = useState(false);
   // Đảm bảo rằng chỉ thực hiện trên client
   useEffect(() => {
@@ -31,7 +31,7 @@ const Sidebar = () => {
           height="50"
         />
         <div className={styles.userDetail}>
-          <span className={styles.username}>John Joe</span>
+          <span className={styles.username}>{user?.name}</span>
           <span className={styles.userTitle}>Administrator</span>
         </div>
       </div>

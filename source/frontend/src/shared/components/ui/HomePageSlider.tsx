@@ -59,7 +59,7 @@ export default function HomePageSlider() {
                 <div
                   style={{
                     position: "absolute",
-                    height:"100%" ,
+                    height: "100%",
                     width: "30%",
                     top: 0,
                     right: 0,
